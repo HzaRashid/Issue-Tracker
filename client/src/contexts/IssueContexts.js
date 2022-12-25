@@ -1,0 +1,33 @@
+import  React, { 
+    createContext, 
+    useContext, 
+    useState,
+} from "react";
+
+const stateContext = createContext();
+
+export const IssueContextProvider = ({children}) => {
+    const [Issues, setIssues] = useState([]);
+    const [IssueModal, setIssueModal] = useState(false)
+    const [IssueStatus, setIssueStatus] = useState(-1);
+    const [EditIssueModal, setEditIssueModal] = useState(false)
+    const [SelectedIssue, setSelectedIssue] = useState({})
+   
+
+    return (
+        <stateContext.Provider
+        value={{ 
+            Issues, setIssues,
+            IssueModal, setIssueModal,
+            IssueStatus, setIssueStatus,
+            EditIssueModal, setEditIssueModal,
+            SelectedIssue, setSelectedIssue
+            
+        }}
+        >
+            {children}
+        </stateContext.Provider>
+    );
+}
+
+export const IssueContexts = () => useContext(stateContext);

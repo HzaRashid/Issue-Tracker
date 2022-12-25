@@ -1,0 +1,12 @@
+{
+    "getUsers": "http://localhost:4000/users",
+    "UserRole": "http://localhost:4000/users/edit-role",
+    "UserProjects": "http://localhost:4000/users/edit-project/",
+    "Projects": "http://localhost:4000/projects",
+    "Issues": "http://localhost:4000/issues",
+    "Sprints": "http://localhost:4000/Sprints",
+    "isAuth": "http://localhost:4000/auth",
+    "AuthGoogle": "http://localhost:4000/auth/google",
+    "AuthGithub": "http://localhost:4000/auth/github",
+    "AuthMicrosoft": "http://localhost:4000/auth/microsoft"
+}

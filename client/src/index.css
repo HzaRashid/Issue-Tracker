@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400&family=Open+Sans:wght@300;400;600&family=Quicksand:wght@300;400;500;600&display=swap');
+
+
+body {
+  background-color: #f0f0f0;
+  font-family: 'Quicksand', sans-serif;
+  overflow: auto;
+}
+
+/* modify autofill style */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #2a2a2a ;
+
+}

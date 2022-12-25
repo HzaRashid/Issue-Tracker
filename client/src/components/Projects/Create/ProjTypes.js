@@ -1,0 +1,1 @@
+export const ProjTypes = [{title:'Scrum'}, {title:'Kanban'}]
