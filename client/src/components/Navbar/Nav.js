@@ -67,7 +67,13 @@ function Nav() {
     <div 
     className='top'
     >
-      <button onClick={() => goToPage('/')}>
+      <button onClick={() => goToPage('/')}
+            style={{
+              visibility: nav ? 'visible' : 'hidden',
+              transition: '0.1s',
+              fontWeight: 300
+            }}
+      >
       <h1 
       className='appName'
       style={{

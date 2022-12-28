@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../App.css';
 import Nav from '../components/Navbar/Nav';
 import { 
@@ -18,25 +18,58 @@ import Profile from '../pages/Profile';
 import Popups from '../components/Popups';
 // import { UserContext } from '../contexts/UserContext';
 import Login from './Login/Login';
-import { Auth } from './Auth';
-// const data = require('../pages/routes.json')
+// import { AuthContexts } from './Auth';
+const data = require('../pages/routes.json')
 
 function AppRouter() {
-  
+  // const { setUser } = AuthContexts();
 
+  // const [user, setUser] = useState({
+  //   authenticated: null,
+  //   user: null
+  // })
+
+  const TBDAuthUser = {
+    authenticated: null,
+    user: null,
+  }
+  const [user, setUser] = useState(TBDAuthUser)
+  useEffect(
+    () => {
+        fetch(data.isAuth, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Credentials": true,
+          },
+        })
+        .then(res => res.json())
+        .then(json => { setUser(json) })
+        .catch(err => {
+          console.log(err);
+          setUser(TBDAuthUser);
+        })
+      // eslint-disable-next-line 
+    }, []
+  )
+
+  console.log(user)
   return (
   <>
   <Routes>    
-    <Route index element={<Login />}/>
-    <Route path='/login' element={<Login />}/>
+    <Route index element={<Login user={user}/>}/>
 
-    <Route path='/home' element={<PrivateRoute component={<Home />} />} />
-    <Route path='/projects' element={<PrivateRoute component={<Projects />} />} />
-    <Route path='/projects/:ProjectTitle/backlog' element={<PrivateRoute component={<Backlog />} />} />
-    <Route path='/projects/:ProjectTitle/sprint-board/:SprintTitle' element={<PrivateRoute component={<SprintBoard />} />} />
-    <Route path='/issues' element={<PrivateRoute component={<Issues />}/>} />
-    <Route path='/team' element={<PrivateRoute component={<Team />}/>} />
-    <Route path='/profile' element={<PrivateRoute component={<Profile />} />} />
+    <Route path='/login' element={<Login user={user}/>}/>
+
+    <Route path='/home' element={<PrivateRoute user={user} component={<Home />} />} />
+    <Route path='/projects' element={<PrivateRoute user={user} component={<Projects />} />} />
+    <Route path='/projects/:ProjectTitle/backlog' element={<PrivateRoute user={user} component={<Backlog />} />} />
+    <Route path='/projects/:ProjectTitle/sprint-board/:SprintTitle' element={<PrivateRoute user={user} component={<SprintBoard />} />} />
+    <Route path='/issues' element={<PrivateRoute user={user} component={<Issues />}/>} />
+    <Route path='/team' element={<PrivateRoute user={user} component={<Team />}/>} />
+    <Route path='/profile' element={<PrivateRoute user={user} component={<Profile />} />} />
 
   </Routes>
 
@@ -44,46 +77,12 @@ function AppRouter() {
   );
 }
 
-// const authContext = createContext();
-// const CheckAuth = () => {
-//   // const { setisAuthUser } = UserContext();
-//   const [isAuthUser, setisAuthUser] = useState(null)
-
-//   return (
-//     isAuthUser,
-
-//     fetch(data.isAuth, {
-//       method: "GET",
-//       credentials: "include",
-//       headers: {
-//         Accept: "application/json",
-//         "Content-Type": "application/json",
-//         "Access-Control-Allow-Credentials": true,
-//       },
-//     })
-//     .then(res => {
-//       console.log(res);
-//       if (res.status === 200) return res.json();
-//       throw new Error('user was not authenticated');
-//     })
-//     .then(json => {
-//       console.log(json.user)
-//       setisAuthUser(json.user);
-//     })
-//     .catch(err => {
-//       console.log(err);
-//       setisAuthUser(null);
-//     })
-//     )
-// }
-
-const PrivateRoute = ( { component } ) => {
+const PrivateRoute = ( { component, user } ) => {
   const location = useLocation();
 
-  console.log(Auth())
-  const { isAuth } = Auth();
+  if (user?.authenticated === null) return;
 
-  if (!isAuth) {
+  if (user?.authenticated === false) {
     return(
       <Navigate to='/login' replace state={{ path: location.pathname }}/>
     )
@@ -95,18 +94,6 @@ const PrivateRoute = ( { component } ) => {
     {component}
     </>
     )
-
-
-
 };
-
-    // eslint-disable-next-line
-    {/* <Route path='/home' element={isAuthUser ? <> <Nav/> <Popups/> <Home /> </> : <Login/>}/>
-    <Route path='/projects' element={isAuthUser ? <> <Nav/> <Popups/> <Projects /> </>: <Login/>}/>
-    <Route path='/projects/:ProjectTitle/backlog' element={isAuthUser ? <> <Nav/> <Popups/> <Backlog /> </> : <Login/>}/>
-    <Route path='/projects/:ProjectTitle/sprint-board/:SprintTitle' element={isAuthUser ? <> <Nav/> <Popups/> <SprintBoard /> </> : <Login/>}/>
-    <Route path='/issues' element={isAuthUser ? <> <Nav/> <Popups/> <Issues /> </> : <Login/>}/>
-    <Route path='/team' element={isAuthUser ? <> <Nav/> <Popups/> <Team /> </> : <Login/>}/>
-    <Route path='/profile' element={isAuthUser ? <> <Nav/> <Popups/> <Profile /> </> : <Login/>}/> */}
-
+ 
 export default AppRouter
