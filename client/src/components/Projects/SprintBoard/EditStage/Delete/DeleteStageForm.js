@@ -172,7 +172,7 @@ function DeleteStageForm() {
     formik.values.transferStage.replace(/\s/g, '').length > 0
     ) &&
     <div className='flex items-center text-[0.925em] mr-[0.25em]
-    text-[#ededed] antialiased break-words font-roboto font-normal	
+    text-[#e5e5e5]  break-words font-lato font-normal	
     bg-[#9c5656] p-1 rounded-lg hover:cursor-pointer shadow-sm
     transition ease-in-out delay-50 hover:scale-105 duration-150'
 

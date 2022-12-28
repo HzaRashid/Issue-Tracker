@@ -38,6 +38,7 @@ import { CustomTooltip } from "../../../CustomTooltip";
 import { AddContainer } from "../components/AddContainer";
 import axios from "axios";
 import { IssueContexts } from "../../../../contexts/IssueContexts";
+import { SprintContexts } from "../../../../contexts/SprintContexts";
 const data = require('../../../../pages/routes.json')
 
 
@@ -178,7 +179,9 @@ export function MultipleContainers(
   ScreenWidth,
   }: Props ) {
 
+  const { setSelectedSprint } = SprintContexts();
   const { setSelectedIssue } = IssueContexts();
+  
   const [items, setItems] = useState<Issues>()
   useEffect(
     () => setItems(issues), [issues]
@@ -191,6 +194,7 @@ export function MultipleContainers(
       }
     }, [issues]
   )
+
 
   
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -388,12 +392,23 @@ export function MultipleContainers(
 
         // dragging container
         if (active.id in items && over?.id) {
-          setContainers((containers) => { // @ts-ignore
-            const activeIndex = containers.indexOf(active.id); // @ts-ignore
-            const overIndex = containers.indexOf(over.id);
+          const activeIndex = containers.indexOf(active.id); // @ts-ignore
+          const overIndex = containers.indexOf(over.id);
 
-            return arrayMove(containers, activeIndex, overIndex);
-          });
+          const reOrderedContainers = arrayMove(containers, activeIndex, overIndex)
+          setContainers(reOrderedContainers);
+
+          // console.log(reOrderedContainers)
+          
+          setSelectedSprint(prev => {
+            const stages = prev.stages
+            // console.log(arrayToSort)
+            stages.sort((a, b) => reOrderedContainers.indexOf(a.title) - reOrderedContainers.indexOf(b.title));
+            return {...prev, stages: stages }
+          })
+          
+
+          // console.log(SelectedSprint)
         }
 
         // @ts-ignore
@@ -462,16 +477,17 @@ export function MultipleContainers(
             updatedItems.splice(overIndex, 0, 
               {...activeId, stage: overContainer})
               const prevStage = containers?.filter(stage => 
-                stage.toLowerCase() === activeId.stage.toLowerCase()
+                stage?.toLowerCase() === activeId?.stage?.toLowerCase()
                 )[0]
-
-              setIssues(issues => ({
-                ...issues,
-                [overContainer]: updatedItems,
-                [prevStage]: issues[prevStage].filter(
-                  issue => issue._id !== activeId._id
-                )
-              }))
+              if (prevStage) {
+                setIssues(issues => ({
+                  ...issues,
+                  [overContainer]: updatedItems,
+                  [prevStage]: issues[prevStage].filter(
+                    issue => issue._id !== activeId._id
+                  )
+                }))
+            }
           }
 
         }
@@ -483,6 +499,14 @@ export function MultipleContainers(
         })
         .then(res => console.log(res)) // REMEMBER TO CHANGE STATE OF ITEMS
         .catch(err => console.log(err))
+
+
+        // console.log(containers)
+          
+        // const arrayToSort = SelectedSprint.stages
+        // console.log(arrayToSort)
+        // arrayToSort.sort((a, b) => containers.indexOf(a.title) - containers.indexOf(b.title))
+        // console.log(arrayToSort)
 
         
         setActiveId(null);
@@ -566,7 +590,7 @@ export function MultipleContainers(
                   <AddContainer 
                   addStage={addStage}
                   setAddStage={setAddStage}
-
+                  
 
                   />
                   : null
@@ -575,8 +599,7 @@ export function MultipleContainers(
                   {!addStage && 
                   <CustomTooltip title={'Add Column'} placement='top' arrow> 
                     <div
-                    className="h-fit items-top 
-                    "
+                    className="h-fit items-top"
                     onClick={() => setAddStage(true)}
                     >
                       <AiOutlinePlus fontSize={'1.5em'}

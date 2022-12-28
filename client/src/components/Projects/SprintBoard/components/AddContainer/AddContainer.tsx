@@ -62,13 +62,20 @@ export function AddContainer(
 
     const handleClose = (e: any) => {
       stopDrag(e)
+      
+      if (StageTitle) {  //@ts-ignore
+        setTimeout(() => { setAddStage(false) }, 30)
+        FocusOut();
+        return;
+      }
       //@ts-ignore
       setAddStage(false);
       FocusOut();
     }
 
     
-    const scrollRef = useRef<HTMLDivElement>(null)
+    const scrollRef = useRef<HTMLDivElement>(null);
+    // const scroll = () => scrollRef.current?.scrollIntoView()
 
     useEffect(
       () => {
@@ -76,7 +83,7 @@ export function AddContainer(
           scrollRef.current?.scrollIntoView({behavior: 'smooth'})
         }
       },
-      [scrollRef, addStage]
+      [scrollRef]
     )
 
 
@@ -105,6 +112,7 @@ export function AddContainer(
             onKeyDown={stopDrag}
             onTouchStart={stopDrag}
             onClick={stopDrag}
+            onBlur={handleClose}
             >
               <input 
               autoFocus
@@ -116,13 +124,13 @@ export function AddContainer(
               focus:placeholder:text-[#707070]'
               //@ts-ignore
               ref={inputRef}
-              onBlur={handleClose}
+              
               onChange={e => setStageTitle(e.target.value)}
               value={StageTitle ? `${StageTitle}` : ''}
               />
             </h1>
 
-            <div className='flex items-center z-10 mr-2' 
+            <div className='flex items-center z-100 mr-2' 
             onMouseDown={stopDrag}
             onPointerDown={stopDrag}
             onKeyDown={stopDrag}
@@ -141,47 +149,50 @@ export function AddContainer(
             {/* CONFIRM NEW STAGE */}
             <div className='bg-[#e5e5e5] hover:bg-[#e0e0e0] 
             p-1 rounded-md shadow ml-1 cursor-pointer'
+            key={'confirm'}
+            ref={scrollRef}
             onClick={() => {
-             
-                axios.put(
-                  data.Sprints + '/add-stage',
-                  {
-                    sprintID: SelectedSprint?._id,
-                    stageTitle: StageTitle
-                  }
-                )
-                .then(res => {
-                  console.log(res);
-                  if (res.status === 200) {
-                    setSelectedSprint(
-                      (prevState: Sprint) => ({
-                        ...prevState,
-                        stages: prevState.stages?.push({
+              console.log('clicked') // @ts-ignore
+              
+              if (
+                StageTitle && 
+                StageTitle.replace(/\s/g, '').length > 0
+                ) {
+                  axios.put(
+                    data.Sprints + '/add-stage',
+                    {
+                      sprintID: SelectedSprint?._id,
+                      stageTitle: StageTitle
+                    }
+                  )
+                  .then(res => {
+                    console.log(res);
+                    if (res.status === 200) {
+                      setSelectedSprint((sprint: Sprint) => {
+                        const stages = sprint.stages;
+                        stages.push({
                           title: StageTitle,
                           issue_limit: null
                         })
+                        return {...sprint, stages: stages}
                       })
-                    )
-                    if (setAddStage){
-                      setAddStage(false);
                     }
-                    return;
-                  }
-                })
-                .catch(err => {
-                  console.log(err);
-                  setStageTitle(null)
-                  FocusIn();
+                  })
+                  .catch(err => {
+                    console.log(err);
+                    setStageTitle(null)
+                    FocusIn();
 
-                })
+                  })}
+                  
             }}
-
             > 
             <AiOutlineCheck color='#65A766' fontSize={'1.2em'}/>
             </div>
             </div> 
             
           </div> 
+          {/* {console.log(SelectedSprint)} */}
           </>
       </div>
     );
