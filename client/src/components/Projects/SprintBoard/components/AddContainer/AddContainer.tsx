@@ -50,6 +50,7 @@ export function AddContainer(
     const { 
       SelectedSprint, 
       setSelectedSprint,
+      setAddedStage
     } = SprintContexts();
 
 
@@ -150,7 +151,6 @@ export function AddContainer(
             <div className='bg-[#e5e5e5] hover:bg-[#e0e0e0] 
             p-1 rounded-md shadow ml-1 cursor-pointer'
             key={'confirm'}
-            ref={scrollRef}
             onClick={() => {
               console.log('clicked') // @ts-ignore
               
@@ -176,6 +176,9 @@ export function AddContainer(
                         })
                         return {...sprint, stages: stages}
                       })
+
+                      setAddedStage(true)
+                      
                     }
                   })
                   .catch(err => {

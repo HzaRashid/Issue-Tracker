@@ -111,7 +111,7 @@ function SprintList( props ) {
                             overflow: 'auto',
                             marginBottom:  ShowSprint && SelectedSprint?._id === sprint?._id ? '1em' : '0em',
                             transition: 'all 0.2s ease-in-out',
-                            transitionDelay: '0.01s'
+                            transitionDelay: '0.04s'
 
                             }}
                         onClick={

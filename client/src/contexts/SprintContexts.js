@@ -25,6 +25,7 @@ export const SprintContextProvider = ({children}) => {
     const [openIssuesLimit, setOpenIssuesLimit] = useState(false);
     const [SprintModal, setSprintModal] = useState(false);
     const [SprintStatus, setSprintStatus] = useState(-1);
+    const [AddedStage, setAddedStage] = useState(false);
 
           
 
@@ -41,7 +42,8 @@ export const SprintContextProvider = ({children}) => {
             openDeleteStage, setOpenDeleteStage,
             openIssuesLimit, setOpenIssuesLimit,
             SprintModal, setSprintModal,
-            SprintStatus, setSprintStatus
+            SprintStatus, setSprintStatus,
+            AddedStage, setAddedStage
         }}
         >
             {children}

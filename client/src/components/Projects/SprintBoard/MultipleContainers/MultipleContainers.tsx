@@ -179,7 +179,7 @@ export function MultipleContainers(
   ScreenWidth,
   }: Props ) {
 
-  const { setSelectedSprint } = SprintContexts();
+  const { setSelectedSprint, AddedStage, setAddedStage } = SprintContexts();
   const { setSelectedIssue } = IssueContexts();
   
   const [items, setItems] = useState<Issues>()
@@ -202,6 +202,20 @@ export function MultipleContainers(
   const lastOverId = useRef<UniqueIdentifier | null>(null);
   const recentlyMovedToNewContainer = useRef(false);
   const isSortingContainer = activeId ? containers.includes(activeId) : false;
+
+  // const numStages = SelectedSprint?.stages?.length;
+  
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const scroll = (offset) => { scrollRef.current.scrollLeft += offset };
+
+  useEffect(() => {
+    if (AddedStage) {
+      console.log('foo')
+      setTimeout(() => scroll(300), 5)
+    }
+    setAddedStage(false)
+    // eslint-disable-next-line
+  }, [AddedStage])
 
   // Custom collision detection strategy optimized for multiple containers
   const collisionDetectionStrategy: CollisionDetection = useCallback(
@@ -522,12 +536,13 @@ export function MultipleContainers(
               `${ScreenWidth > 1350 ? 'min-w-[59vw] w-[59vw]' : 'min-w-[55vw] w-[55vw]'}
               
               flex flex-nowrap font-lato whitespace-nowrap
-              mt-[8em] overflow-scroll list-none pb-5
+              mt-[8em] overflow-scroll list-none pb-5 scroll-smooth
               `
               }
               style={{
                 transition: 'all 0.2s ease-in-out'
               }}
+              ref={scrollRef}
               >
                 <SortableContext
                   items={[...containers, PLACEHOLDER_ID]}
@@ -590,8 +605,6 @@ export function MultipleContainers(
                   <AddContainer 
                   addStage={addStage}
                   setAddStage={setAddStage}
-                  
-
                   />
                   : null
 
