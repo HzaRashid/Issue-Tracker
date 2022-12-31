@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import '../App.css';
 import Nav from '../components/Navbar/Nav';
 import { 
@@ -18,6 +18,7 @@ import Profile from '../pages/Profile';
 import Popups from '../components/Popups';
 // import { UserContext } from '../contexts/UserContext';
 import Login from './Login/Login';
+import { AuthContexts } from './Auth';
 // import { AuthContexts } from './Auth';
 const data = require('../pages/routes.json')
 
@@ -29,11 +30,12 @@ function AppRouter() {
   //   user: null
   // })
 
-  const TBDAuthUser = {
-    authenticated: null,
-    user: null,
-  }
-  const [user, setUser] = useState(TBDAuthUser)
+  // const TBDAuthUser = {
+  //   authenticated: null,
+  //   user: null,
+  // }
+  // const [user, setUser] = useState(TBDAuthUser)
+  const { user, setUser, TBDAuthUser } = AuthContexts();
   useEffect(
     () => {
         fetch(data.isAuth, {

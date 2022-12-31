@@ -7,13 +7,11 @@ import { TeamContextProvider } from './contexts/TeamContexts';
 import { ProjContextProvider } from './contexts/ProjectContexts';
 import { IssueContextProvider } from './contexts/IssueContexts';
 import { SprintContextProvider } from './contexts/SprintContexts';
-import { UserContextProvider } from './contexts/UserContext';
-// import { AuthProvider } from './App/Auth';
+import { AuthProvider } from './App/Auth';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    // <AuthProvider>
-        <UserContextProvider> 
+    <AuthProvider>
             <ContextProvider>
                 <TeamContextProvider>
                     <ProjContextProvider>
@@ -25,8 +23,7 @@ root.render(
                     </ProjContextProvider>
                 </TeamContextProvider>
             </ContextProvider>
-        </UserContextProvider>
-    // </AuthProvider>
+     </AuthProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

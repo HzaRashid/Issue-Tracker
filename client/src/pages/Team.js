@@ -26,7 +26,7 @@ function Team() {
           }
         >
 
-    <div className='fixed mt-[1rem] ml-[2rem] text-[1.3rem]'>
+    <div className='fixed mt-[1rem] ml-[2rem] text-[1.2rem] text-[#4e779f]'>
     <button className='font-light'>
     {currLoc.pathname}
     </button>
