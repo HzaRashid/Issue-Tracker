@@ -19,22 +19,9 @@ import Popups from '../components/Popups';
 // import { UserContext } from '../contexts/UserContext';
 import Login from './Login/Login';
 import { AuthContexts } from './Auth';
-// import { AuthContexts } from './Auth';
 const data = require('../pages/routes.json')
 
 function AppRouter() {
-  // const { setUser } = AuthContexts();
-
-  // const [user, setUser] = useState({
-  //   authenticated: null,
-  //   user: null
-  // })
-
-  // const TBDAuthUser = {
-  //   authenticated: null,
-  //   user: null,
-  // }
-  // const [user, setUser] = useState(TBDAuthUser)
   const { user, setUser, TBDAuthUser } = AuthContexts();
   useEffect(
     () => {
@@ -65,13 +52,13 @@ function AppRouter() {
 
     <Route path='/login' element={<Login user={user}/>}/>
 
-    <Route path='/home' element={<PrivateRoute user={user} component={<Home />} />} />
-    <Route path='/projects' element={<PrivateRoute user={user} component={<Projects />} />} />
-    <Route path='/projects/:ProjectTitle/backlog' element={<PrivateRoute user={user} component={<Backlog />} />} />
-    <Route path='/projects/:ProjectTitle/sprint-board/:SprintTitle' element={<PrivateRoute user={user} component={<SprintBoard />} />} />
-    <Route path='/issues' element={<PrivateRoute user={user} component={<Issues />}/>} />
-    <Route path='/team' element={<PrivateRoute user={user} component={<Team />}/>} />
-    <Route path='/profile' element={<PrivateRoute user={user} component={<Profile />} />} />
+    <Route path='/home' element={<PrivateRoute component={<Home />} />} />
+    <Route path='/projects' element={<PrivateRoute component={<Projects />} />} />
+    <Route path='/projects/:ProjectTitle/backlog' element={<PrivateRoute component={<Backlog />} />} />
+    <Route path='/projects/:ProjectTitle/sprint-board/:SprintTitle' element={<PrivateRoute component={<SprintBoard />} />} />
+    <Route path='/issues' element={<PrivateRoute component={<Issues />}/>} />
+    <Route path='/team' element={<PrivateRoute component={<Team />}/>} />
+    <Route path='/profile' element={<PrivateRoute component={<Profile />} />} />
 
   </Routes>
 
@@ -79,8 +66,9 @@ function AppRouter() {
   );
 }
 
-const PrivateRoute = ( { component, user } ) => {
+const PrivateRoute = ( { component } ) => {
   const location = useLocation();
+  const { user } = AuthContexts();
 
   if (user?.authenticated === null) return;
 

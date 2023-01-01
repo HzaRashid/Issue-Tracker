@@ -1,10 +1,10 @@
 import React, { createContext, useState, useContext } from 'react'
 
-// const data = require('../pages/routes.json')
 
 const authContext = createContext();
 
 export function AuthProvider({children}) {
+  
   const TBDAuthUser = {
     authenticated: null,
     user: null,

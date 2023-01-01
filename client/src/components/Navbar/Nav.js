@@ -59,9 +59,8 @@ function Nav() {
   <div 
   className='sidebar'
   style={{
-    width: !nav ? '4.5rem' : (isMobile && nav) ? '100vw' : '12rem'
-    ,
-    zIndex: 20
+    width: !nav ? '4.5rem' : (isMobile && nav) ? '100vw' : '12rem',
+    zIndex: 20,
 }}
   >
     <div 

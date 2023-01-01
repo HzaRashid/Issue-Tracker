@@ -1,5 +1,6 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom';
+import CurrentWork from '../components/Home/CurrentWork';
 import { useStateContext } from '../contexts/ContextProvider';
 
 function Home() {
@@ -32,6 +33,7 @@ function Home() {
     {currLoc.pathname}
     </button>
     </div>
+    <CurrentWork/>
     </div>
     </div>
     

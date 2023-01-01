@@ -25,6 +25,7 @@ function SprintList( props ) {
     const handleSearch = e => setSearch(e.target.value)
 
     const [ShowSprint, setShowSprint] = useState(false);
+    // setSelectedSprint({});
 
 
     var searchResults = Sprints.filter(
@@ -136,7 +137,7 @@ function SprintList( props ) {
                             <div>{sprint.title}</div>
                             <div className={
                                 `${
-                                    !isEmpty(SelectedSprint) && 
+                                    // !isEmpty(SelectedSprint) && 
                                     SelectedSprint?._id === sprint?._id &&
                                     ShowSprint ? 
                                 'rotate-180' : 'rotate-0'} ml-2 ease-in-out duration-100`}> 
@@ -144,7 +145,7 @@ function SprintList( props ) {
                             </div>
                             </div>
                             {
-                                !isEmpty(SelectedSprint) && 
+                                // !isEmpty(SelectedSprint) && 
                                 SelectedSprint?._id === sprint?._id &&
                                 ShowSprint &&
                                 <SprintTable id={id} items={items} sprint={sprint}/>
