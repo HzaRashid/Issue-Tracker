@@ -3,6 +3,7 @@ const Issue = require('../models/Issue')
 const IssueVersion = require('../models/IssueVersion')
 const Sprint = require('../models/Sprint')
 const User = require('../models/User')
+const { StageIssues } = require('./BoardIssues')
 
 const getIssues = (req, res) => {
     Issue.find({}, 
@@ -403,7 +404,50 @@ const deleteIssue = (req, res) => {
         }
         )
     };
+
+
+// const reOrderIssues = async (req, res) => {
+//     try {
+//         const req = req.body;
+
+//         const movedIssue = await Issue.findById(req.movedIssue)
+
+//         const oldPrev = await Issue.findById(req?.oldPrev);
+//         const oldNext = await Issue.findById(req?.oldNext);
+//         const newPrev = await Issue.findById(req?.newPrev);
+
+//         oldPrev.next = req?.oldNext;
+//         await oldNext.save()
+
+//         newPrev.next = req.movedIssue;
+//         await newPrev.save();
+
+//         movedIssue.next = req?.newNext;
+//         await movedIssue.save();
+        
+
+        
+//     } catch (error) {
+//         console.log(err)
+//     }
+// }
+
+const reOrderIssues = async (req, res) => {
+    try {
+        const fields = req.body
+        var issues = new StageIssues(fields.stage)
+        console.log(issues)
+        console.log(issues.get())
+        
+        res.status(200).send('ok')
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).send('not ok')
+        return;
+    }
     
+}
 
 module.exports = {
     getIssues, 
@@ -418,5 +462,6 @@ module.exports = {
     editIssueAssignee,
     moveIssueToSprint,
     moveIssueToBacklog,
-    deleteIssue
+    deleteIssue,
+    reOrderIssues
 }

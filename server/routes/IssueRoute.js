@@ -12,7 +12,8 @@ const {
     editIssueAssignee,
     moveIssueToSprint,
     moveIssueToBacklog,
-    deleteIssue 
+    deleteIssue,
+    reOrderIssues
 } = require('../controllers/IssueCtrl')
 const { deleteSprintStage } = require('../controllers/SprintCtrl')
 
@@ -30,3 +31,5 @@ router.put('/many-issues-stage', transferManyIssuesStage, deleteSprintStage);
 router.put('/backlog-to-sprint', moveIssueToSprint)
 router.put('/sprint-to-backlog', moveIssueToBacklog)
 router.delete('/delete', deleteIssue);
+
+router.put('/reorder', reOrderIssues)
