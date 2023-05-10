@@ -20,12 +20,12 @@ export const NavItems = () => {
         {
             title: 'Backlog',
             icon: <BsStack style={iconStyle}/>,
-            link: `/projects/${WhtSpace(SelectedProj?.title)}/backlog`
+            link: `/projects/${WhtSpace(SelectedProj?.title)}/backlog/proj-nav=true`
         },
         {
             title: 'Board',
             icon: <HiViewBoards style={iconStyle}/>,
-            link: `/projects/${WhtSpace(SelectedProj?.title)}/${WhtSpace(SelectedSprint?.title)}`
+            link: `/projects/${WhtSpace(SelectedProj?.title)}/${WhtSpace(SelectedSprint?.title)}/proj-nav=true`
     
 
         },

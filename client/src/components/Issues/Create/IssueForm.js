@@ -68,7 +68,7 @@ function IssueForm() {
 
     })
 
-
+    const SelSprint = SelectedSprint;
   return (
     <>
 
@@ -392,7 +392,7 @@ function IssueForm() {
       setIssueModal(false);
       setShowUsers(false);
       setShowTypes(false);
-      setSelectedSprint({});
+      if (!NewSprintIssue) setSelectedSprint({});
       formik.resetForm();
       setTimeout(
         () => {
@@ -467,6 +467,9 @@ function IssueForm() {
               setIssueStatus(error.response.status)
             }
           }
+          setIssueModal(false); // double check this
+          setShowUsers(false);
+          setShowTypes(false);
       }
     }
     >

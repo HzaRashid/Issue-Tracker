@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { ProjContexts } from '../../../contexts/ProjectContexts';
 import { IssueContexts } from '../../../contexts/IssueContexts';
@@ -8,6 +8,8 @@ import { AiOutlinePlus } from 'react-icons/ai'
 import Empty from './Empty';
 import { useStateContext } from '../../../contexts/ContextProvider';
 import { TeamContexts } from '../../../contexts/TeamContexts';
+import GetTable from './GetTable';
+import styled from '@emotion/styled';
 const data = require('../../../pages/routes.json')
 
 
@@ -15,8 +17,10 @@ const data = require('../../../pages/routes.json')
 function BacklogContainer( props ) {
 
    const { id, items } = props;
-   const { nav, ProjectNav, ScreenWidth } = useStateContext();
-
+   const { nav, ProjectNav, ScreenWidth, 
+  
+          } = useStateContext();
+   const [doneLoad, setDoneLoad] = useState(false)
     const { setIssueModal } = IssueContexts();
     const {
       Backlog, setBacklog,
@@ -46,13 +50,21 @@ function BacklogContainer( props ) {
         )}, [SelectedProj, SprintIssues, Users])
         // console.log(Backlog)
 
+    const [loaded, setLoaded] = useState(false);
+    useEffect( () => { setTimeout( () => setLoaded(true), 50 ) }, [] )
+
+
+  console.log('ayeeyeey')
+
 
   return (
     <> 
-   {
-   Backlog && Backlog.length ? 
-   <BacklogTable id={id} items={items}/> : <Empty/>
-   }
+
+
+
+  <BacklogTable id={id} items={items} Backlog={Backlog} loaded={loaded}/> 
+
+
    <div className='flex body-font font-[Open Sans]'>
       <div className='ml-auto mr-auto'
         style={{

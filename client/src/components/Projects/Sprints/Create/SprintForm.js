@@ -30,15 +30,11 @@ function SprintForm() {
    const { ScreenWidth } = useStateContext();
    const isMobile = ScreenWidth < 768;
 
-
-
     const formik = useFormik({
         initialValues: {
             SprintTitle: '',
             Issues: [],
             dateRange: [null, null],
-            
-
         },
         validationSchema:  Yup.object({
           SprintTitle: Yup.string()
@@ -50,12 +46,9 @@ function SprintForm() {
                       .nullable()
                       .required('Required')
                       )
-                      
-
-  
-
       }),
       })
+      
       const [startDate, endDate] = formik.values.dateRange;
     
   return (

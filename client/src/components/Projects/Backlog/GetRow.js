@@ -30,8 +30,9 @@ function GetBacklogRow( props ) {
             <div 
               className={`
               bg-[#e6e6e6] text-[#505050] p-1 w-[100%]
-              hover:bg-[#e0e0e0] flex items-center 
-              justify-between `}
+               flex items-center 
+               hover:bg-[#e0e0e0] hover:shadow-sm
+              justify-between   `}
               style={style}
               ref={setNodeRef}   
               {...listeners}

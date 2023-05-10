@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {   } from 'react'
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { NavItems } from './NavItems';
 import "./Nav.css"
@@ -48,12 +48,14 @@ function Nav() {
 
    const { SelectedProj } = ProjContexts();
 
+  
 
-   const isProjectPage = currLocation.pathname
-  .includes(SelectedProj?.title?.replace(' ', '%20'))
+
   
    const isMobile = ScreenWidth < 768;
   // const closeNavStyle = { color: "#4a4a4a", fontSize: "2em"};
+
+  console.log(SelectedProj)
   return (
   <>
   <div 
@@ -170,7 +172,8 @@ function Nav() {
   </div>
 
   { 
-  isProjectPage ?  
+  currLocation.pathname
+  .includes('proj-nav=true') ?  
   <SelectedProjNav/> : <ProjectNavbar/> 
   }
 

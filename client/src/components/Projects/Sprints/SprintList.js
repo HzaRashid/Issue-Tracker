@@ -1,13 +1,52 @@
 // eslint-disable-next-line
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { SprintContexts } from '../../../contexts/SprintContexts';
 import SprintTable from './SprintTable';
 import { AiOutlineSearch, AiOutlinePlusCircle } from 'react-icons/ai'
-import { FiChevronDown } from 'react-icons/fi'
 import { CustomTooltip } from '../../CustomTooltip';
 import { isEmpty } from '../../utils/isEmptyObject';
 import { useStateContext } from '../../../contexts/ContextProvider';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MuiAccordion from '@mui/material/Accordion';
+import MuiAccordionSummary from '@mui/material/AccordionSummary';
+import MuiAccordionDetails from '@mui/material/AccordionDetails';
+import { styled } from '@mui/material/styles';
 
+const Accordion = styled((props) => (
+    <MuiAccordion disableGutters elevation={0} square {...props} />
+  ))(({ theme }) => ({
+    border: `1px solid ${theme.palette.divider}`,
+    '&:not(:last-child)': {
+      borderBottom: 0,
+    },
+    '&:before': {
+      display: 'none',
+    },
+  }));
+  
+  const AccordionSummary = styled((props) => (
+    <MuiAccordionSummary
+      expandIcon={<ExpandMoreIcon sx={{ fontSize: '0.9rem' }} />}
+      {...props}
+    />
+  ))(({ theme }) => ({
+    backgroundColor:
+      theme.palette.mode === 'dark'
+        ? 'rgba(255, 255, 255, .05)'
+        : 'rgba(0, 0, 0, .03)',
+    flexDirection: 'row-reverse',
+    '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+      transform: 'rotate(90deg)',
+    },
+    '& .MuiAccordionSummary-content': {
+      marginLeft: theme.spacing(1),
+    },
+  }));
+  
+  const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+    padding: theme.spacing(2),
+    borderTop: '1px solid rgba(0, 0, 0, .125)',
+  }));
 
 function SprintList( props ) {
 
@@ -40,13 +79,20 @@ function SprintList( props ) {
             ) { return sprint }
         }
     )
+
+      const [expanded, setExpanded] = React.useState(false);
+
+      const handleChange = (panel) => (event, isExpanded) => {
+        setExpanded(isExpanded ? panel : false);
+      };
     
   return (
     <div className='flex body-font font-[Open Sans] font-light subpixel-antialiased'>
       
       <div className='mt-[1.8em] ml-auto mr-auto'
         style={{
-            width: !nav && !ProjectNav ? '70vw' : (nav && ProjectNav && ScreenWidth<1024) ? '42.5vw' : '60vw',
+            width: !nav && !ProjectNav ? '70vw' : 
+            (nav && ProjectNav && ScreenWidth<1024) ? '42.5vw' : '60vw',
             transition: '0.3s',
             }}
       >
@@ -97,24 +143,24 @@ function SprintList( props ) {
         </CustomTooltip>
 
         </div>
-        <ul className='h-[auto] max-h-[8em] overflow-auto'>
+        <ul className='h-[auto] max-h-[10em] overflow-auto transition-all'>
+        
             {
                 searchResults
                 .map(
                     (sprint, key) => (
-                        <li key={key} 
-                        className='border-b-[0.01em] 
-                        p-2 border-[#c2c2c2] hover:shadow hover:rounded-lg' 
-                        style={{
-                            width: !nav && !ProjectNav ? '70vw' : (nav && ProjectNav && ScreenWidth<1024) ? '42.5vw' : '60vw',
-                            height: 'auto',
-                            maxHeight: SelectedSprint?._id === sprint?._id ? '12em' : '3em',
-                            overflow: 'auto',
-                            marginBottom:  ShowSprint && SelectedSprint?._id === sprint?._id ? '1em' : '0em',
-                            transition: 'all 0.2s ease-in-out',
-                            transitionDelay: '0.04s'
-
-                            }}
+                        <Accordion 
+                        expanded={expanded === key} 
+                        onChange={handleChange(key)}
+                        sx={{bgcolor: "#f0f0f0", border:"transparent"}}
+                        key={key}
+                        > 
+                       <AccordionSummary key={key} 
+                        className='flex border-b-[0.01em] hover:bg-slate-200
+                        p-2  hover:shadow-md hover:rounded-lg' 
+                        sx={{bgcolor: "#f0f0f0", border:"transparent"}}
+                        expandIcon={<ExpandMoreIcon />}
+    
                         onClick={
                             () => {
                                 if (SelectedSprint._id !== sprint._id ) {
@@ -127,34 +173,27 @@ function SprintList( props ) {
                                 else {
                                     setSelectedSprint({})
                                     setShowSprint(false)
-                                    // console.log('CLOSE: ' + ShowSprint)
                                 }
-                                
-                                // console.log(SelectedSprint)
                             }}
                         >
-                            <div className='flex items-center hover:cursor-pointer text-[1.1em]'>
+
                             <div>{sprint.title}</div>
-                            <div className={
-                                `${
-                                    // !isEmpty(SelectedSprint) && 
-                                    SelectedSprint?._id === sprint?._id &&
-                                    ShowSprint ? 
-                                'rotate-180' : 'rotate-0'} ml-2 ease-in-out duration-100`}> 
-                                    <FiChevronDown/>
-                            </div>
-                            </div>
-                            {
-                                // !isEmpty(SelectedSprint) && 
+
+                            </AccordionSummary>
+
+                            <AccordionDetails> 
+                             {
                                 SelectedSprint?._id === sprint?._id &&
                                 ShowSprint &&
-                                <SprintTable id={id} items={items} sprint={sprint}/>
-                            }
-                        </li>
+                                <SprintTable id={id} items={items} sprint={sprint}/>   
+                            } 
+                            </AccordionDetails>
+                        
+                        </Accordion>
                     )
                 )
             }
-
+        
         </ul>
       </div>
      </div>

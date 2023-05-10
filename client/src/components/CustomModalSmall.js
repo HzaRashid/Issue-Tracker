@@ -7,21 +7,19 @@ function CustomModalSmall({ ...props }) {
    const isMobile = ScreenWidth < 768;
   return (
     <div className={
-        `${props.open ? 
-        'visible' : 'invisible'
-        }
+        `
         ease-in-out duration-[0.09s] fixed z-50
         w-[100%] h-[100%] bg-[#0000002a] 
         flex items-center justify-center`}
         style={{
           WebkitTransformStyle: 'preserve-3d',
-          WebkitBackfaceVisibility: 'hidden'
+          WebkitBackfaceVisibility: 'hidden',
+          visibility:  props.open ? 'visible' : 'hidden',
+          opacity:  props.open ? '1' : '0',
+          transition: 'all 0.25s'
         }}
         >
-        <div className={`${
-          props.open ? 
-        'translate-y-[0vh]' : 'translate-y-[100vh]'
-        }
+        <div className={`
         ${ isMobile ? 'w-[90vw]' :  'w-[40vw]' }
         
         ease-in-out duration-[0.2s] body-font font-lato
@@ -31,6 +29,9 @@ function CustomModalSmall({ ...props }) {
         style={{
           WebkitTransformStyle: 'preserve-3d',
           WebkitBackfaceVisibility: 'hidden',
+          visibility:  props.open ? 'visible' : 'hidden',
+          opacity:  props.open ? '1' : '0',
+          transition: 'all 0.25s'
         }}
         > 
         { props.children }

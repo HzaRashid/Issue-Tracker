@@ -137,18 +137,17 @@ function ProjectNavbar() {
 
             <div key={key}>
             <Link
-            to={`/projects/${item.title}/backlog`}
+            to={`/projects/${item.title}/backlog/proj-nav=true`}
             key={key} 
             className='project-row'
             onClick={
               () => {
-                
                 setProjectNav(false);
                 setSelectedProj(item);
 
               }}
               id={
-                (currLoc.pathname.replace('%20', ' ') === `/projects/${item.title}/backlog`)
+                (currLoc.pathname.replace('%20', ' ') === `/projects/${item.title}/backlog/proj-nav=true`)
                 ?
                 'ProjOn' : 'ProjOff'
             }

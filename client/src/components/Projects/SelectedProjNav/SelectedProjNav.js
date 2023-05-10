@@ -8,13 +8,15 @@ import { BsChevronDown } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import { NavItems } from './NavItems';
 import SprintList from './SprintList';
+import SwapProjNav from '../ProjectNavbar/SwapProjNav';
+import SwapProjNavVertical from '../ProjectNavbar/SwapProjNavVertical';
 // import { SprintContexts } from '../../../contexts/SprintContexts';
 
 
 
 
 function SelectedProjNav() {
-    const { nav, ProjectNav, setProjectNav  } = useStateContext();
+    const { nav,setNav, ProjectNav, setProjectNav  } = useStateContext();
     const { SelectedProj } = ProjContexts();
     // const { SelectedSprint, setSelectedSprint } = SprintContexts();
     // eslint-disable-next-line
@@ -33,6 +35,7 @@ function SelectedProjNav() {
     } 
      ease duration-[0.3s] `
     }
+    
     >
     <div 
     className='selected-proj-sidebar'
@@ -55,10 +58,10 @@ function SelectedProjNav() {
         whiteSpace: 'nowrap'
       }}
       >
-        {SelectedProj.title}
+        {SelectedProj?.title}
       </div>
 
-      <ul className='mt-[5.5em]'>
+      <ul className='mt-[5.5em] flex  flex-col h-[80%]'>
         {
           navItems.map(
             (item, key) => (
@@ -112,6 +115,10 @@ function SelectedProjNav() {
             )
           )
         }
+
+          <SwapProjNav ProjectNav={ProjectNav}/>
+
+
       </ul>
 
       </div>
@@ -141,7 +148,7 @@ function SelectedProjNav() {
       }
       </button>      
       </CustomTooltip>
-
+      
 
 
 

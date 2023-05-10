@@ -12,11 +12,11 @@ function Empty() {
           Sprints
       </p>
 
-      <div className='w-[60vw] h-[2.5em]
+      <div className='w-[60vw] h-[10em]
       rounded-md border-dashed
       border-[#d4d4d4] border-[0.1em]'
       >
-      <div className='text-center translate-y-[30%]'> 
+      <div className='text-center translate-y-[300%]'> 
           <p className='text-[#6a6a6a] 
           font-lato font-normal text-[0.9em]'>
                 Empty 
