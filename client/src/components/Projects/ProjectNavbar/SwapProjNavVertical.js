@@ -5,7 +5,7 @@ import { AiFillProject, AiOutlineUnorderedList } from 'react-icons/ai'
 import { CustomTooltip } from '../../CustomTooltip'
 
 function SwapProjNavVertical( props ) {
-    const { enabled, setEnabled } = props;
+    const { enabled, setEnabled, setProjectNav } = props;
     console.log(enabled)
   return (
     <Switch
@@ -24,7 +24,7 @@ function SwapProjNavVertical( props ) {
 
     <div> 
     <CustomTooltip title={'Other Projects'} placement='right'>
-    <span className='flex justify-center h-[2em] w-8' onClick={() => setEnabled(true)}>
+    <span className='flex justify-center h-[2em] w-8' onClick={() => {setEnabled(true); setProjectNav(true)}}>
       <div className='mt-1'>
       <AiOutlineUnorderedList fontSize={'1.5em'}
       color={`${enabled ? '#505050' : '#00000054'}`} 

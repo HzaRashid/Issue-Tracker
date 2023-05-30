@@ -8,5 +8,6 @@
     "isAuth": "http://localhost:4000/auth",
     "AuthGoogle": "http://localhost:4000/auth/google",
     "AuthGithub": "http://localhost:4000/auth/github",
-    "AuthMicrosoft": "http://localhost:4000/auth/microsoft"
+    "AuthMicrosoft": "http://localhost:4000/auth/microsoft",
+    "Comments": "http://localhost:4000/comments/fetch"
 }

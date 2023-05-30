@@ -10,12 +10,13 @@ import { NavItems } from './NavItems';
 import SprintList from './SprintList';
 import SwapProjNav from '../ProjectNavbar/SwapProjNav';
 import SwapProjNavVertical from '../ProjectNavbar/SwapProjNavVertical';
+import NavBackGd from '../ProjectNavbar/NavBackGd';
 // import { SprintContexts } from '../../../contexts/SprintContexts';
 
 
 
 
-function SelectedProjNav() {
+function SelectedProjNav( props ) {
     const { nav,setNav, ProjectNav, setProjectNav  } = useStateContext();
     const { SelectedProj } = ProjContexts();
     // const { SelectedSprint, setSelectedSprint } = SprintContexts();
@@ -24,27 +25,12 @@ function SelectedProjNav() {
 
     const navItems = NavItems();
 
-    const [ showSprints, setShowSprints ] = useState(false);
+    const { showSprints, setShowSprints } = props;
 
   return (
     
-    <div 
-    className={`
-    ${
-      nav ? 'ml-[12rem]' : 'ml-[4.5rem]'
-    } 
-     ease duration-[0.3s] `
-    }
-    
-    >
-    <div 
-    className='selected-proj-sidebar'
-    style={{
-      width: ProjectNav ? '12em' : '3em',
-      transition: 'width 0.2s ease-in-out'
-    }}
-    >
 
+<>
 
       <div 
       className='mt-[2.15em] ml-[0.75em] font-normal font-lato text-[#404040] text-[1.15em]'
@@ -52,6 +38,7 @@ function SelectedProjNav() {
         // width: ProjectNav ? '12em' : '2em',
         position: 'absolute',
         visibility: ProjectNav ? 'visible' : 'hidden',
+        opacity: ProjectNav ? '1' : '0',
         transition: 'all 0.2s ease-in-out',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
@@ -116,14 +103,14 @@ function SelectedProjNav() {
           )
         }
 
-          <SwapProjNav ProjectNav={ProjectNav}/>
+          {/* <SwapProjNav ProjectNav={ProjectNav}/> */}
 
 
       </ul>
 
-      </div>
 
-      <CustomTooltip title={ProjectNav ? 'Close' : 'Open'} placement='right' arrow>
+
+      {/* <CustomTooltip title={ProjectNav ? 'Close' : 'Open'} placement='right' arrow>
       <button 
       className='hover:bg-[#7895B3] bg-[#f0f0f0] hover:text-[#e2e2e2] text-[#404040]' 
       onClick={
@@ -147,13 +134,13 @@ function SelectedProjNav() {
        <BiChevronLeft fontSize={'1.4em'}/> : <BiChevronRight fontSize={'1.4em'}/>
       }
       </button>      
-      </CustomTooltip>
+      </CustomTooltip> */}
       
 
+</>
 
 
 
-      </div>
 
    
   )

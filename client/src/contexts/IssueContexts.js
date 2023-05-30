@@ -12,7 +12,7 @@ export const IssueContextProvider = ({children}) => {
     const [IssueStatus, setIssueStatus] = useState(-1);
     const [EditIssueModal, setEditIssueModal] = useState(false)
     const [SelectedIssue, setSelectedIssue] = useState({})
-   
+    const [Comments, setComments] = useState([]);
 
     return (
         <stateContext.Provider
@@ -21,7 +21,8 @@ export const IssueContextProvider = ({children}) => {
             IssueModal, setIssueModal,
             IssueStatus, setIssueStatus,
             EditIssueModal, setEditIssueModal,
-            SelectedIssue, setSelectedIssue
+            SelectedIssue, setSelectedIssue,
+            Comments, setComments
             
         }}
         >

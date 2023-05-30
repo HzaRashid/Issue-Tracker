@@ -69,13 +69,9 @@ app.use('/users', require('./routes/UserRoute'))
 app.use('/issues', require('./routes/IssueRoute'))
 app.use('/sprints', require('./routes/SprintRoute'))
 app.use('/projects', require('./routes/ProjectRoute'))
+app.use('/comments', require('./routes/CommentRoute'))
 
-// app.use(function(err, req, res, next) {
-//   next(createError(404));
-// })
-// app.use(function(err, req, res, next) {
-//   res.redirect('/404-not-found')
-// })
+
 
 app.get('/is-authenticated', (req, res) => {console.log(req.user); res.send('aye');});
 

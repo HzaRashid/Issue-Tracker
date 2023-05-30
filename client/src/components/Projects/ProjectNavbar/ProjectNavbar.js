@@ -3,23 +3,26 @@ import "./ProjectNav.css"
 import '../../../index.css'
 import { AiOutlinePlus } from 'react-icons/ai';
 import { IoIosOpen } from "react-icons/io";
-import { BiChevronLeft, BiChevronRight }  from "react-icons/bi";
+
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useStateContext } from '../../../contexts/ContextProvider';
 import { ProjContexts } from '../../../contexts/ProjectContexts';
 import { CustomTooltip } from '../../CustomTooltip';
 import Axios from 'axios'
+
+import NavBackGd from './NavBackGd';
 const data = require('../../../pages/routes.json');
 
 
-function ProjectNavbar() {
+function ProjectNavbar( props ) {
 
   // eslint-disable-next-line
   const currLoc = useLocation();
   let goToPage = useNavigate();
+  const { isProjPage } = props;
 
   const { 
-    nav, setNav,
+    setNav,
     ProjectNav, setProjectNav,
    } = useStateContext();
 
@@ -38,32 +41,16 @@ function ProjectNavbar() {
       )}, [])
       
 
-
+  console.log(ProjectNav)
   return (
     <>
-    <div 
-    className={`
-    ${
-      nav ? 'ml-[12rem]' : 'ml-[4.5rem]'
-  } 
-     ease duration-[0.3s] `
-  }
-    >
-    <div 
-       >
 
-    <div 
-    className='project-sidebar'
-    style={{
-      width: ProjectNav ? '12em' : '0em',
-      transition: 'width 0.2s ease-in-out'
-    }}
-    >
-      <div className='all-top'>
-      <div className='flex items-center justify-between pt-[1em] pb-[1.25em]'>
+    <div className='all-top'>
 
-      </div>
 
+
+
+      
       <div className='search-add'>
       <input 
       className='search-bar' 
@@ -72,6 +59,7 @@ function ProjectNavbar() {
       onChange={(event) => setSearch(event.target.value)}
       >
       </input>
+
 
       <div className='flex items-center justify-between' > 
 
@@ -113,9 +101,10 @@ function ProjectNavbar() {
       </CustomTooltip>
     </div>
       </div>
-      </div>
 
-      <ul className='mt-[1em]'>
+      <ul> 
+        <li> 
+      <ul className='mt-[1em] h-auto max-h-[60vh] overflow-scroll'>
       {
         Projects
         .filter( // eslint-disable-next-line
@@ -158,30 +147,17 @@ function ProjectNavbar() {
           )
         )
       }
+
+    </ul>
+    </li>
+    <li className='mt-[-4.075em]'> 
+
+    </li>
     </ul>
     </div>
-    <CustomTooltip title={ProjectNav ? 'Close' : 'Open'} placement='right' arrow>
-      <button 
-      className='hover:bg-[#7895B3] bg-[#f0f0f0] hover:text-[#e2e2e2] text-[#404040]' 
-      onClick={() => setProjectNav(!ProjectNav)}
-      style={{
-        marginLeft: ProjectNav ? '11.15em' : '-2em',
-        position: 'absolute',
-        marginTop: '2.4em',
-        borderRadius: '1em',
-        border: '0.05em solid #0000001a',
-        padding: '0.1em',
-        transition: 'all 0.2s ease-in-out',
-        
-      }}
-      >
-      { ProjectNav ? 
-       <BiChevronLeft fontSize={'1.4em'}/> : <BiChevronRight fontSize={'1.4em'}/>
-      }
-      </button>      
-      </CustomTooltip>
-    </div>
-    </div>
+
+
+
   
   </>
   )

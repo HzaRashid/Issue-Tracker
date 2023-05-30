@@ -1,30 +1,26 @@
-import React, { useState } from 'react'
-import { AiFillProject, AiOutlineUnorderedList } from 'react-icons/ai'
-import { CustomTooltip } from '../../CustomTooltip'
+import React from 'react'
+import { useState } from 'react'
 import { Switch } from '@headlessui/react'
-import SwapProjNavVertical from './SwapProjNavVertical'
-import { ProjContexts } from '../../../contexts/ProjectContexts'
 import { useStateContext } from '../../../contexts/ContextProvider'
+import { CustomTooltip } from '../../CustomTooltip'
+import { AiFillProject, AiOutlineUnorderedList } from 'react-icons/ai'
+import SwapProjNavVertical from './SwapProjNavVertical'
 
-function SwapProjNav( props ) {
+
+
+
+function Boogey() {
   const [enabled, setEnabled] = useState(false)
-  const { SwapProjNav, setSwapProjNav } = useStateContext();
-  const { ProjectNav } = props
+  const { SwapProjNav, setSwapProjNav } = useStateContext()
+  const { nav,setNav, ProjectNav, setProjectNav  } = useStateContext();
   return (
-    <>
-    {/* <div className='mt-auto'>  */}
-    {/* <div className='flex justify-center items-center'>  */}
-    {/* <div className='flex justify-center items-center'>  */}
-
-    <li className='mt-auto ml-[2.5em] fixed'
-    // style={{
-    //   visibility: SwapProjNav ? 'visible' : 'hidden',
-    //   opacity: SwapProjNav ? '1' : '0',
-    //   transition: SwapProjNav ? '0.1s' : '0.1s'
-    // }}
-    >
-    <div className='flex justify-center items-center'> 
-      <Switch
+    <> 
+    <div className='flex justify-center items-center'
+    style={{
+      marginTop: SwapProjNav ? '7em' : '-2.85em',
+      }}
+    > 
+    <Switch
       // checked={enabled}
       // onChange={setEnabled}
       className={` bg-gray-200 relative inline-flex h-10 w-28 items-center rounded-md `}
@@ -71,24 +67,11 @@ function SwapProjNav( props ) {
     </div>
     </div>
     </Switch>
-    </div> 
-  </li>
-  {/* </div> */}
-  <li className=''
-  style={{
-    visibility: ProjectNav ? 'hidden' : 'visible',
-    opacity: ProjectNav ? '0' : '1',
-    transition: ProjectNav ? '0.1s' : '0.4s'
-  }}
-  >
-    {SwapProjNav && <SwapProjNavVertical enabled={SwapProjNav} setEnabled={setSwapProjNav} />}
+    </div>
     
-  </li>
-  {/* </div> */}
-
-  {/* </div> */}
     </>
   )
+
 }
 
-export default SwapProjNav
+export default Boogey

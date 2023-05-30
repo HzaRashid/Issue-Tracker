@@ -10,7 +10,7 @@ import { Types } from '../Create/Types'
 import { SprintContexts } from '../../../contexts/SprintContexts';
 const data = require('../../../pages/routes.json')
 
-function FormWrapper( {...props} ) {
+function FormWrapper( props ) {
 
   const { SelectedSprint, items, setItems } = SprintContexts()
   const { 
@@ -131,7 +131,7 @@ function FormWrapper( {...props} ) {
         }
   
 
-  const [Page, setPage] = useState(0);
+  const { Page, setPage, children } = props;
   const activePageClass = 'bg-[#00000008] text-[#446a67] font-normal shadow-sm'
       
   return (
@@ -495,7 +495,7 @@ function FormWrapper( {...props} ) {
 
 
     <div className='h-[20vh]'> 
-      {props.children}
+      { children }
     </div>
     
   </div>

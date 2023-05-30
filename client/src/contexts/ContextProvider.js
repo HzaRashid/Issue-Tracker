@@ -13,7 +13,7 @@ export const ContextProvider = ({children}) => {
     const [ProjectNav, setProjectNav] = useState(false);
     const [ SelectedProjNav, setSelectedProjNav ] = useState(false);
     const [ScreenWidth, setScreenWidth]= useState(window.innerWidth);
-    const [ SwapProjNav, setSwapProjNav ] = useState(false);
+    const [ SwapProjNav, setSwapProjNav ] = useState(true);
     return (
         <stateContext.Provider
         value={{ 

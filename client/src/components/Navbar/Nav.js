@@ -14,7 +14,9 @@ import { useStateContext } from '../../contexts/ContextProvider';
 // eslint-disable-next-line
 import ProjectNavbar from '../Projects/ProjectNavbar/ProjectNavbar';
 import SelectedProjNav from '../Projects/SelectedProjNav/SelectedProjNav';
-import { ProjContexts } from '../../contexts/ProjectContexts';
+import NavBackGd from '../Projects/ProjectNavbar/NavBackGd';
+import NavBackGdDefault from '../Projects/ProjectNavbar/NavBackGdDefault';
+// import { ProjContexts } from '../../contexts/ProjectContexts';
 
 
 
@@ -43,10 +45,11 @@ function Nav() {
   const { 
     nav, setNav,
     ProjectNav, setProjectNav,
-    ScreenWidth
+    ScreenWidth, SwapProjNav, 
+    // setSwapProjNav
    } = useStateContext();
 
-   const { SelectedProj } = ProjContexts();
+  //  const { SelectedProj } = ProjContexts();
 
   
 
@@ -54,8 +57,9 @@ function Nav() {
   
    const isMobile = ScreenWidth < 768;
   // const closeNavStyle = { color: "#4a4a4a", fontSize: "2em"};
-
-  console.log(SelectedProj)
+  const isProjPage = currLocation.pathname
+  .includes('proj-nav=true')
+  // console.log(SelectedProj)
   return (
   <>
   <div 
@@ -170,12 +174,26 @@ function Nav() {
     }
     
   </div>
-
-  { 
-  currLocation.pathname
-  .includes('proj-nav=true') ?  
-  <SelectedProjNav/> : <ProjectNavbar/> 
+  {isProjPage ?
+  <> 
+  {/* <div style={{
+    visibility: ProjectNav  ? 'visible' : 'hidden',
+    opacity:    ProjectNav ? '1'       : '0',
+    transition: ProjectNav ? '0.4s' : '0.2s'
+  }}>  */}
+  <NavBackGd/>
+  {/* </div> */}
+  </> 
+  : 
+  // <div style={{
+  //   visibility: ProjectNav  ? 'visible' : 'hidden',
+  //   opacity:    ProjectNav ? '1'       : '0',
+  //   transition: ProjectNav ? '0.4s' : '0.1s'
+  // }}> 
+  <NavBackGdDefault/>
+  // </div>
   }
+
 
   </>
 );

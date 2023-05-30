@@ -31,7 +31,7 @@ const addIssue = async (req, res, next) => {
         res.status(500).send(err)
     }
         
-    };
+};
 
 const editIssueSummary = async (req, res) => {
     const Fields = req.body;
@@ -406,31 +406,7 @@ const deleteIssue = (req, res) => {
     };
 
 
-// const reOrderIssues = async (req, res) => {
-//     try {
-//         const req = req.body;
 
-//         const movedIssue = await Issue.findById(req.movedIssue)
-
-//         const oldPrev = await Issue.findById(req?.oldPrev);
-//         const oldNext = await Issue.findById(req?.oldNext);
-//         const newPrev = await Issue.findById(req?.newPrev);
-
-//         oldPrev.next = req?.oldNext;
-//         await oldNext.save()
-
-//         newPrev.next = req.movedIssue;
-//         await newPrev.save();
-
-//         movedIssue.next = req?.newNext;
-//         await movedIssue.save();
-        
-
-        
-//     } catch (error) {
-//         console.log(err)
-//     }
-// }
 
 const reOrderIssues = async (req, res) => {
     try {
