@@ -20,11 +20,11 @@ import data from '../../../pages/routes.json';
 
 function Container( { items, setItems } ) {
 
-  const { setSprints } = SprintContexts();
-  
+  const { setSprints, SelectedSprint } = SprintContexts();
+  // console.log(SelectedSprint)
   useEffect(
     () => {
-
+      console.log(SelectedSprint)
         axios.get(
           data.Sprints
         )
@@ -177,13 +177,16 @@ function Container( { items, setItems } ) {
     ) {
       return;
     }
-
+console.log(SelectedSprint)
 
       axios.put(
         data.Issues + '/stage',
         {
           issueID: active.id._id,
-          stage: overContainer
+          stage: overContainer,
+          sprintID: SelectedSprint._id,
+          modifiedBy: user?.user,
+          
         }
       )
       .then(res => console.log(res))

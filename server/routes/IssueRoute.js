@@ -10,8 +10,8 @@ const {
     updateIssueStage,
     transferManyIssuesStage,
     editIssueAssignee,
-    moveIssueToSprint,
-    moveIssueToBacklog,
+    // moveIssueToSprint,
+    // moveIssueToBacklog,
     deleteIssue,
     reOrderIssues
 } = require('../controllers/IssueCtrl')
@@ -25,11 +25,11 @@ router.post('/', addIssue);
 router.put('/summary', editIssueSummary);
 router.put('/type', editIssueType);
 router.put('/stage', editIssueStage);
-router.put('/board-stage', updateIssueStage);
+router.put('/board-stage', editIssueStage);
 router.put('/assignee', editIssueAssignee);
 router.put('/many-issues-stage', transferManyIssuesStage, deleteSprintStage);
-router.put('/backlog-to-sprint', moveIssueToSprint)
-router.put('/sprint-to-backlog', moveIssueToBacklog)
+// router.put('/backlog-to-sprint', moveIssueToSprint)
+// router.put('/sprint-to-backlog', moveIssueToBacklog)
 router.delete('/delete', deleteIssue);
 
 router.put('/reorder', reOrderIssues)

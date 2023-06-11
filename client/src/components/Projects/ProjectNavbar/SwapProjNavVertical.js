@@ -6,7 +6,7 @@ import { CustomTooltip } from '../../CustomTooltip'
 
 function SwapProjNavVertical( props ) {
     const { enabled, setEnabled, setProjectNav } = props;
-    console.log(enabled)
+    // console.log(enabled)
   return (
     <Switch
     // checked={enabled}

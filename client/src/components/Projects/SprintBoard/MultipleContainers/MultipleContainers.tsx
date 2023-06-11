@@ -39,6 +39,7 @@ import { AddContainer } from "../components/AddContainer";
 import axios from "axios";
 import { IssueContexts } from "../../../../contexts/IssueContexts";
 import { SprintContexts } from "../../../../contexts/SprintContexts";
+import { AuthContexts } from "../../../../App/Auth";
 const data = require('../../../../pages/routes.json')
 
 
@@ -181,6 +182,7 @@ export function MultipleContainers(
 
   const { setSelectedSprint, AddedStage, setAddedStage } = SprintContexts();
   const { setSelectedIssue } = IssueContexts();
+  const { user } = AuthContexts();
   
   const [items, setItems] = useState<Issues>()
   useEffect(
@@ -510,6 +512,8 @@ export function MultipleContainers(
         {
             issueID: activeId._id,
             stage: overContainer,
+            sprintID: SelectedSprint._id,
+            modifiedBy: user?.user,
         })
         .then(res => console.log(res)) // REMEMBER TO CHANGE STATE OF ITEMS
         .catch(err => console.log(err))

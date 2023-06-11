@@ -12,6 +12,8 @@ const specs = {
     required: true
 }
 
+const typeStringOnly = { type: String }
+
 const IssueVersionSchema = new mongoose.Schema({
     
     Version: {
@@ -23,7 +25,11 @@ const IssueVersionSchema = new mongoose.Schema({
     },
 
     summary: summarySpecs,
-    
+
+    ModSummary: typeStringOnly,
+
+    NewSummary: typeStringOnly,
+
     type: specs,
 
     createdBy: {

@@ -8,16 +8,17 @@ import { useStateContext } from '../../../contexts/ContextProvider';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import Boogey from './Boogey'
+import SwitchBtn from './SwitchBtn'
 import SelectedProjNav from '../SelectedProjNav/SelectedProjNav';
 import ProjectNavbar from './ProjectNavbar';
 import SwapProjNavVertical from './SwapProjNavVertical';
+import { SprintContexts } from '../../../contexts/SprintContexts';
 
 
 function NavBackGd( props ) {
   const currLocation = useLocation();
   let goToPage = useNavigate();
-  const [ showSprints, setShowSprints ] = useState(false);
+  const { showSprints, setShowSprints } = SprintContexts();
 
   const isProjPage = currLocation.pathname
   .includes('proj-nav=true')
@@ -32,7 +33,7 @@ function NavBackGd( props ) {
     const { children } = props
 
     useEffect(() => setSwapProjNav(!isProjPage), []) 
-    console.log(isProjPage)
+    // console.log(isProjPage)
 
   return (
     <> 
@@ -75,12 +76,6 @@ function NavBackGd( props ) {
       </button>      
       </CustomTooltip>
 
-      {/* <div className='all-top'>
-      <div className='flex items-center justify-between pt-[1em] pb-[1.25em]'></div>
-
-
-      { children }
-      </div> */}
  
     {SwapProjNav ? <ProjectNavbar/> : <SelectedProjNav showSprints={showSprints} setShowSprints={setShowSprints}/>}
     <div 
@@ -91,7 +86,7 @@ function NavBackGd( props ) {
                              : 'visibility 0.1s, opacity 0.1s'
     }}
     > 
-    <Boogey/>
+    <SwitchBtn/>
     
     </div>
     {!SwapProjNav && 

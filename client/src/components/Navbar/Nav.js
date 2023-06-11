@@ -16,6 +16,7 @@ import ProjectNavbar from '../Projects/ProjectNavbar/ProjectNavbar';
 import SelectedProjNav from '../Projects/SelectedProjNav/SelectedProjNav';
 import NavBackGd from '../Projects/ProjectNavbar/NavBackGd';
 import NavBackGdDefault from '../Projects/ProjectNavbar/NavBackGdDefault';
+import { SprintContexts } from '../../contexts/SprintContexts';
 // import { ProjContexts } from '../../contexts/ProjectContexts';
 
 
@@ -48,6 +49,7 @@ function Nav() {
     ScreenWidth, SwapProjNav, 
     // setSwapProjNav
    } = useStateContext();
+   const { showSprints, setShowSprints } = SprintContexts();
 
   //  const { SelectedProj } = ProjContexts();
 
@@ -121,6 +123,7 @@ function Nav() {
           <MenuTooltip title={nav ? '' : item.title} placement='right' arrow>
           <li
           className='row'
+
           id={
             (
               (currLocation.pathname === item.link) ||
@@ -137,8 +140,10 @@ function Nav() {
           }
           onClick={() => {
             if (item.title==='Projects') {
-              setProjectNav(!ProjectNav)
-              if (isMobile) setNav(false)
+              setProjectNav(!ProjectNav);
+              setShowSprints(false);
+              if (isMobile) setNav(false);
+              
               return
             }
 

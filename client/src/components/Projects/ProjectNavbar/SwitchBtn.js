@@ -9,7 +9,7 @@ import SwapProjNavVertical from './SwapProjNavVertical'
 
 
 
-function Boogey() {
+function SwitchBtn() {
   const [enabled, setEnabled] = useState(false)
   const { SwapProjNav, setSwapProjNav } = useStateContext()
   const { nav,setNav, ProjectNav, setProjectNav  } = useStateContext();
@@ -74,4 +74,4 @@ function Boogey() {
 
 }
 
-export default Boogey
+export default SwitchBtn

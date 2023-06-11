@@ -41,7 +41,7 @@ function ProjectNavbar( props ) {
       )}, [])
       
 
-  console.log(ProjectNav)
+  // console.log(ProjectNav)
   return (
     <>
 

@@ -1,15 +1,10 @@
 import React, { useEffect } from 'react'
 import '../../../index.css'
-// import "./ProjectNav.css"
 import "./NavBack.css"
-
 import { CustomTooltip } from '../../CustomTooltip'
 import { useStateContext } from '../../../contexts/ContextProvider';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { useLocation, useNavigate } from 'react-router-dom';
-
-import Boogey from './Boogey'
-import SelectedProjNav from '../SelectedProjNav/SelectedProjNav';
 import ProjectNavbar from './ProjectNavbar';
 
 

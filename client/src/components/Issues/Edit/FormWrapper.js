@@ -8,6 +8,7 @@ import { BiChevronDown } from 'react-icons/bi';
 import { TeamContexts } from '../../../contexts/TeamContexts';
 import { Types } from '../Create/Types'
 import { SprintContexts } from '../../../contexts/SprintContexts';
+import { AuthContexts } from '../../../App/Auth';
 const data = require('../../../pages/routes.json')
 
 function FormWrapper( props ) {
@@ -19,7 +20,8 @@ function FormWrapper( props ) {
     } = IssueContexts();
 
     const { Users } = TeamContexts();
-     
+    const { user } = AuthContexts();  // get _id of logged-in user
+    // console.log(user?.user) 
     const [summary, setSummary] = useState('');
     // const [Assignee, setAssignee] = useState(null);
     const [showTypes, setShowTypes] = useState(false);
@@ -27,8 +29,9 @@ function FormWrapper( props ) {
     const [showStages, setShowStages] = useState(false);
     const [Search, setSearch] = useState('');
 
-    const userListRef = useRef(null)
-    const stageListRef = useRef(null)
+    const userListRef = useRef(null);
+    const stageListRef = useRef(null);
+   
 
     useEffect(() => {
       function handleOutsideClick(e) {
@@ -77,19 +80,22 @@ function FormWrapper( props ) {
 
 
         const handleSummarySubmit = () => {
+ 
           if (
             summary !== SelectedIssue.summary 
             && summary.replace(/\s/g, '').length > 0
             ) {
+              
               setSelectedIssue({
                 ...SelectedIssue,
-                summary: summary
+                summary: summary,
               })
             axios.put(
               data.Issues + '/summary',
               {
                 issueID: SelectedIssue?._id,
-                summary: summary
+                summary: summary,
+                modifiedBy: user?.user // logged-in user's _id
               }
             )
             .then(res => console.log(res))
@@ -123,7 +129,8 @@ function FormWrapper( props ) {
             data.Issues + '/assignee',
             {
               issueID: SelectedIssue?._id,
-              assignedTo: assignee?._id
+              assignedTo: assignee?._id,
+              modifiedBy: user?.user
             }
           )
           .then(res => console.log(res))
@@ -132,7 +139,7 @@ function FormWrapper( props ) {
   
 
   const { Page, setPage, children } = props;
-  const activePageClass = 'bg-[#00000008] text-[#446a67] font-normal shadow-sm'
+  const activePageClass = 'bg-[#00000005] text-[#446a67] font-normal shadow-sm'
       
   return (
     <> 
@@ -213,7 +220,8 @@ function FormWrapper( props ) {
               data.Issues + '/type',
               {
                 _id: SelectedIssue._id,
-                type: type.title
+                type: type.title,
+                modifiedBy: user?.user
               }
             )
             .then(res => console.log(res))
@@ -374,7 +382,7 @@ function FormWrapper( props ) {
     <ul className='absolute text-[0.8em] 
     mt-1.5 w-[7.5em] bg-[#e4e6e9] cursor-pointer
     text-[#606060] rounded-md shadow-md
-    space-y-1 py-1'
+    space-y-1 py-1 z-50'
     style={{
       visibility: showStages ? 'visible' : 'hidden',
       opacity: showStages ? '100' : '0',
@@ -435,7 +443,8 @@ function FormWrapper( props ) {
               {
                 issueID: SelectedIssue._id,
                 sprintID: SelectedSprint._id,
-                stage: stage?.title
+                stage: stage?.title,
+                modifiedBy: user?.user,
               }
             )
             .then(res => console.log(res))

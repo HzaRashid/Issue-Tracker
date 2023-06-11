@@ -24,7 +24,7 @@ function CustomModal({ ...props }) {
         className={`
         ${ isMobile ? 'w-[95vw]' :  'lg:w-[45vw] md:w-[60vw]' }
         ease-in-out duration-[0.2s] body-font font-lato
-        fixed h-[auto] p-4 pb-5
+        fixed h-[auto] p-4 pb-5 transition-all 
         bg-[#f0f0f0] rounded-3xl subpixel-antialiased
         shadow-lg text-[1.2em] overflow-auto`}
         style={{

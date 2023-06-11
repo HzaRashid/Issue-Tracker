@@ -20,6 +20,8 @@ import SprintsContainer from '../../components/Projects/Sprints/Container';
 import GetBacklogRow from "../../components/Projects/Backlog/GetRow";
 import GetSprintRow from "../../components/Projects/Sprints/GetRow";
 import axios from "axios";
+import { IssueContexts } from "../../contexts/IssueContexts";
+import { AuthContexts } from "../../App/Auth";
 
 const data = require('../routes.json')
 
@@ -32,6 +34,8 @@ function Backlog() {
     SelectedProj, setSelectedProj, 
     Backlog 
   } = ProjContexts();
+  const { Issues } = IssueContexts();
+  const { user } = AuthContexts();
 
   const { SprintIssues, SelectedSprint } = SprintContexts();
   const { Users } = TeamContexts()
@@ -320,14 +324,18 @@ function Backlog() {
     if ( id[4]?.toLowerCase() === ContainerIDs.backlog && overContainer === ContainerIDs.sprint ) {
  
        axios.put(
-        data.Issues + '/backlog-to-sprint',
+        data.Issues + '/stage',
         {
-          draggedIssue: {
-            _id: id[0],
+
+            issueID: id[0],
             sprint: SelectedSprint._id,
-            listIndex: overIndex,
+            sprintID: Issues.filter(i => i._id = id[0])
+                            .map(i => i.sprint),
+            ToBacklogOrSprint: true,
+            stage: 'to do',
+            modifiedBy: user.user
             
-          },
+
         }
        )
        .then(res => console.log(res))
@@ -345,15 +353,18 @@ function Backlog() {
         .map(item => item[0])                
 
         axios.put(
-          data.Issues + '/sprint-to-backlog',
+          data.Issues + '/stage',
           {
-            draggedIssue: {
-              _id: id[0],
-              sprint: SelectedSprint._id,
-              listIndex: overIndex,
-            },
-            moveActiveIssues: activeItems,
-            moveOverIssues: overItems
+
+              issueID: id[0],
+              sprint: SelectedSprint._id,           // new sprint
+              sprintID: Issues.filter(i => i._id = id[0])
+                              .map(i => i.sprint),  // current sprint
+              ToBacklogOrSprint: true,
+              stage: 'backlog',
+              modifiedBy: user.user
+              
+
           }
         )
         .then(res => console.log(res))

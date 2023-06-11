@@ -55,12 +55,23 @@ const editIssueSummary = async (req, res) => {
 
     delete prevDoc._id
 
+    const userOfMod = await User.findById(Fields.modifiedBy)
+    // [insert user name] updated the summary
+    const ModSummary = `${
+        userOfMod.firstName 
+        + ' ' + userOfMod.lastName 
+        + ' updated the Summary'}`
+
     // create issue version
     IssueVersion.create({
         Version: {
             issueID: prevUID,
             ID: VersionID
         },
+        ModSummary: ModSummary,
+        NewSummary: Fields.summary,
+        modifiedBy: Fields.modifiedBy,
+        modifiedField: 'summary',
         ...prevDoc
     },
     (err) => {
@@ -114,12 +125,23 @@ const editIssueAssignee = async (req, res) => {
 
     delete prevDoc._id
 
+    const userOfMod = await User.findById(Fields.modifiedBy)
+    // [insert user name] updated the Assignee
+    const ModSummary = `${
+        userOfMod.firstName 
+        + ' ' + userOfMod.lastName 
+        + ' updated the Assignee'}`
+
     // create issue version
     IssueVersion.create({
         Version: {
             issueID: prevUID,
             ID: VersionID
         },
+        ModSummary: ModSummary,
+        NewAssignee: Fields.assignedTo,
+        modifiedBy: Fields.modifiedBy,
+        modifiedField: 'assignedTo',
         ...prevDoc
     },
     (err) => {
@@ -138,21 +160,93 @@ const editIssueAssignee = async (req, res) => {
 }
 
 
+
 const editIssueType = async (req, res) => {
-    const issueFields = req.body;
-    Issue.findById(
-        issueFields._id, 
-        (err, doc) => {
+    const Fields = req.body;
+
+    try {
+    // update issue
+    const doc = await Issue.findById(Fields.issueID)
+    let prevDoc = {...doc._doc};
+
+    const Users = await User.find({})
+    const userExists = Users?.filter(user => 
+        user._id?.toString() === Fields?.assignedTo.toString()
+    )?.length
+
+    if (!userExists) {
+        res.status(501).json({
+            message: 'user does not exist'
+        })
+        return;
+    }
+
+    doc.type = Fields.type;
+    await doc.save()
+
+    const versions = await IssueVersion.find({});
+    // unique _id created by mongodb
+    const prevUID = prevDoc?._id  
+
+    // create version id 
+    const VersionID = versions.filter(ver => 
+        ver.Version?.issueID?.toString() === prevUID?.toString()
+    ).length + 1
+
+
+    delete prevDoc._id
+
+    const userOfMod = await User.findById(Fields.modifiedBy)
+    // [insert user name] updated the (issue's) Type
+    const ModSummary = `${
+        userOfMod.firstName 
+        + ' ' + userOfMod.lastName 
+        + ' updated the Type'}`
+
+    // create issue version
+    IssueVersion.create({
+        Version: {
+            issueID: prevUID,
+            ID: VersionID
+        },
+        ModSummary: ModSummary,
+        NewType: Fields.type,
+        modifiedBy: Fields.modifiedBy,
+        modifiedField: 'type',
+        ...prevDoc
+    },
+    (err) => {
         if (err) {
-            console.log(err)
-            res.status(500).send(err)
+            console.log(err);
+            res.status(502).send(err)
         }
-        doc.type = issueFields.type;
-        doc.updatedAt = Date();
-        doc.save();
-        res.status(200).send(issueFields.type)
-        });
-    };
+    }
+    )
+
+    res.status(200).send(doc)
+
+    } catch (err) {
+        res.status(500).send(err)
+    }
+
+}
+
+
+// const editIssueType = async (req, res) => {
+//     const issueFields = req.body;
+//     Issue.findById(
+//         issueFields._id, 
+//         (err, doc) => {
+//         if (err) {
+//             console.log(err)
+//             res.status(500).send(err)
+//         }
+//         doc.type = issueFields.type;
+//         doc.updatedAt = Date();
+//         doc.save();
+//         res.status(200).send(issueFields.type)
+//         });
+//     };
 
 
 const editIssueSprint = async (req, res, next) => {
@@ -222,15 +316,17 @@ const editIssueStage = async (req, res) => {
 
     try {
     // update issue
-
+    // copy the current version and save it before updating
     const doc = await Issue.findById(Fields.issueID)
     let prevDoc = {...doc._doc};
 
     const sprint = await Sprint.findById(Fields.sprintID);
+    // console.log(Fields.sprintID)
 
-    if (!sprint) {
+    //  
+    if (!sprint && !Fields?.ToBacklogOrSprint) {
         res.status(501).json({
-            message: 'could not find sprint'
+            message: 'could not find sprint',
         })
     }
 
@@ -238,13 +334,17 @@ const editIssueStage = async (req, res) => {
         stage.title?.toLowerCase() === Fields.stage?.toLowerCase()
         )?.length
         
-    if (!stageExists) {
+    if (!stageExists && !Fields?.ToBacklogOrSprint) {
         res.status(502).json({
-            message: 'stage does not exist'
+            message: 'stage does not exist' + Fields?.ToBacklogOrSprint,
+            foo: Fields?.ToBacklogOrSprint
         })
     }
 
     doc.stage = Fields.stage;
+    if (Fields?.ToBacklogOrSprint) {
+        doc.sprint = Fields.sprint;
+    }
     await doc.save()
 
     const versions = await IssueVersion.find({});
@@ -259,11 +359,21 @@ const editIssueStage = async (req, res) => {
 
     delete prevDoc._id
 
+    const userOfMod = await User.findById(Fields.modifiedBy)
+    // [insert user name] updated the Stage
+    const ModSummary = userOfMod.firstName + ' ' + userOfMod.lastName 
+    + ' updated the ' + `${Fields?.ToBacklogOrSprint ? 'Sprint' : 'Stage'}`
+
     // create issue version
     IssueVersion.create({
         Version: {
-            issueID: prevUID,
-            ID: VersionID
+            issueID:        prevUID,
+            ID:             VersionID,
+            ModSummary:     ModSummary,
+            NewStage:       Fields.type,
+            NewSprint:      Fields?.ToBacklogOrSprint ? Fields.sprint : '',
+            modifiedBy:     Fields?.modifiedBy,
+            modifiedField:  Fields?.ToBacklogOrSprint ? 'sprint' : 'stage'
         },
         ...prevDoc
     },
@@ -340,29 +450,105 @@ const editManyIssuesStage = async (req, res) => {
 
 
 // move issue from backlog to sprint
-const moveIssueToSprint = async (req, res) => {
-    const Fields = req.body;
+// const moveIssueToSprint = async (req, res) => {
+//     const Fields = req.body;
 
-    const {
-        draggedIssue,
-    } = Fields
+//     try {
+//     // update issue
 
-    Issue.findOneAndUpdate(
-        { '_id': draggedIssue._id }, 
-        { $set: { 
-            'sprint': draggedIssue.sprint, 
-            'stage': 'To Do',
-        }})
-         .exec(function(err, doc) {
-        if (err) {
-            console.log(err);
-            res.status(500).send(err);
-        } else {
-            res.status(200).send(doc)
-        }
-     });
+//     const doc = await Issue.findById(Fields.issueID)
+//     let prevDoc = {...doc._doc};
 
-}
+//     const sprint = await Sprint.findById(Fields.sprintID);
+
+//     if (!sprint) {
+//         res.status(501).json({
+//             message: 'could not find sprint'
+//         })
+//     }
+
+//     const stageExists = sprint?.stages?.filter(stage => 
+//         stage.title?.toLowerCase() === Fields.stage?.toLowerCase()
+//         )?.length
+        
+//     if (!stageExists) {
+//         res.status(502).json({
+//             message: 'stage does not exist'
+//         })
+//     }
+
+//     doc.stage = 'to do';
+//     await doc.save()
+
+//     const versions = await IssueVersion.find({});
+//     // unique _id created by mongodb
+//     const prevUID = prevDoc?._id  
+
+//     // create version id 
+//     const VersionID = versions.filter(ver => 
+//         ver.Version?.issueID?.toString() === prevUID?.toString()
+//     ).length + 1
+
+
+//     delete prevDoc._id
+
+//     const userOfMod = await User.findById(Fields.modifiedBy)
+//     // [insert user name] updated the Stage
+//     const ModSummary = `${
+//         userOfMod.firstName 
+//         + ' ' + userOfMod.lastName 
+//         + ' updated the Stage'}`
+
+//     // create issue version
+//     IssueVersion.create({
+//         Version: {
+//             issueID: prevUID,
+//             ID: VersionID,
+//             ModSummary: ModSummary,
+//             NewStage: 'to do',  
+//             NewSprint: Fields.sprint,
+//             modifiedBy: Fields.modifiedBy,
+//             modifiedField: 'sprint',
+//         },
+//         ...prevDoc
+//     },
+//     (err) => {
+//         if (err) {
+//             console.log(err);
+//             res.status(501).send(err)
+//         }
+//     }
+//     )
+
+//     res.status(200).send(doc)
+
+//     } catch (err) {
+//         res.status(500).send(err)
+//     }
+// }
+// const moveIssueToSprint = async (req, res) => {
+//     const Fields = req.body;
+
+//     const {
+//         draggedIssue,
+//     } = Fields
+
+//     Issue.findOneAndUpdate(
+//         { '_id': draggedIssue._id }, 
+//         { $set: { 
+//             'sprint': draggedIssue.sprint, 
+//             'stage': 'To Do',
+//         }})
+//          .exec(function(err, doc) {
+//         if (err) {
+//             console.log(err);
+//             res.status(500).send(err);
+//         } else {
+//             res.status(200).send(doc)
+//         }
+//      });
+
+// }
 
 // move issue from sprint to backlog
 const moveIssueToBacklog = async (req, res) => {
@@ -436,7 +622,7 @@ module.exports = {
     transferManyIssuesStage,
     editManyIssuesStage,
     editIssueAssignee,
-    moveIssueToSprint,
+    // moveIssueToSprint,
     moveIssueToBacklog,
     deleteIssue,
     reOrderIssues

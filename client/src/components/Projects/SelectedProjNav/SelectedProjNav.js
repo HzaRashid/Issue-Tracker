@@ -63,6 +63,11 @@ function SelectedProjNav( props ) {
               className='flex items-center p-[0.5em]
               text-[#404040] font-lato font-normal 
               hover:bg-[#c8e0f048] rounded-md hover:cursor-pointer'
+              style={{
+                transition: 'all 0.2s ease-in-out',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap'
+              }}
               onClick={() => {
                 
 
@@ -108,33 +113,6 @@ function SelectedProjNav( props ) {
 
       </ul>
 
-
-
-      {/* <CustomTooltip title={ProjectNav ? 'Close' : 'Open'} placement='right' arrow>
-      <button 
-      className='hover:bg-[#7895B3] bg-[#f0f0f0] hover:text-[#e2e2e2] text-[#404040]' 
-      onClick={
-        () => {
-          setProjectNav(!ProjectNav)
-          setShowSprints(false);
-        }
-      }
-      style={{
-        marginLeft: ProjectNav ? '11.15em' : '2.1em',
-        position: 'absolute',
-        marginTop: '2.4em',
-        borderRadius: '1em',
-        border: '0.05em solid #0000001a',
-        padding: '0.1em',
-        transition: 'all 0.2s ease-in-out',
-        zIndex: 10
-      }}
-      >
-      { ProjectNav ? 
-       <BiChevronLeft fontSize={'1.4em'}/> : <BiChevronRight fontSize={'1.4em'}/>
-      }
-      </button>      
-      </CustomTooltip> */}
       
 
 </>
