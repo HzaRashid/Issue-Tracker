@@ -44,7 +44,7 @@ function List( props ) {
                   className='flex items-center space-x-2'> 
                   <Avatar 
                   className=' antialiased'
-                  {...stringAvatar(u.firstName + ' ' + u.lastName)} 
+                  {...stringAvatar(u.firstName + ' ' + u.lastName, 22, 22, '0.4em')} 
                   
                   />
                   <div

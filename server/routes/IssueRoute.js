@@ -3,6 +3,8 @@ const router = express.Router();
 router.use(express.json());
 const {     
     getIssues, 
+    getIssueVersions,
+    sendIssueVersions,
     addIssue, 
     editIssueSummary,
     editIssueType,
@@ -21,6 +23,7 @@ module.exports = router;
 
 
 router.get('/', getIssues);
+router.get('/versions', sendIssueVersions)
 router.post('/', addIssue);
 router.put('/summary', editIssueSummary);
 router.put('/type', editIssueType);

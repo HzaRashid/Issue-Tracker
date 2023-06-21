@@ -41,7 +41,7 @@ function Create() {
     >
     
   <div className='flex items-center antialiased space-x-2 drop-shadow-sm'> 
-  <Avatar {...stringAvatar(loggedInUser.firstName + ' ' + loggedInUser.lastName)}  />
+  <Avatar {...stringAvatar(loggedInUser.firstName + ' ' + loggedInUser.lastName, 22, 22, '0.4em')}  />
 
     {
       Focus ? 

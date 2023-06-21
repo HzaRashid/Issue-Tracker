@@ -319,9 +319,11 @@ function Backlog() {
     const activeIndex = items[activeContainer].indexOf(active.id);
     const overIndex = items[overContainer].indexOf(overId);
 
-
+    console.log(activeContainer)
     // move issue from backlog to sprint
-    if ( id[4]?.toLowerCase() === ContainerIDs.backlog && overContainer === ContainerIDs.sprint ) {
+    if ( 
+      // id[4]?.toLowerCase() === ContainerIDs.backlog && 
+      overContainer === ContainerIDs.sprint ) {
  
        axios.put(
         data.Issues + '/stage',
@@ -343,7 +345,9 @@ function Backlog() {
 
     } 
     // move issue from sprint to backlog
-    else if ( id[4]?.toLowerCase() !== ContainerIDs.backlog && overContainer === ContainerIDs.backlog ) {
+    else if (
+      //  id[4]?.toLowerCase() !== ContainerIDs.backlog && 
+    overContainer === ContainerIDs.backlog ) {
         const overItems = items[overContainer]
                           .slice(overIndex + 1)
                           .map(item => item[0])

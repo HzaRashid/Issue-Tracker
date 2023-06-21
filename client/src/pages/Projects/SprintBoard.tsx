@@ -30,7 +30,7 @@ function SprintBoard() {
     items, setItems
   } = SprintContexts();
   // const { SelectedIssue } = IssueContexts();
-  console.log(SelectedSprint)
+  // console.log(SelectedSprint)
 
   useEffect(
     () => {

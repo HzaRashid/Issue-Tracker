@@ -508,7 +508,7 @@ export function MultipleContainers(
 
         }
        setSelectedIssue({...activeId, stage: overContainer})
-        axios.put(data.Issues + '/board-stage',
+        axios.put(data.Issues + '/stage',
         {
             issueID: activeId._id,
             stage: overContainer,
@@ -517,7 +517,7 @@ export function MultipleContainers(
         })
         .then(res => console.log(res)) // REMEMBER TO CHANGE STATE OF ITEMS
         .catch(err => console.log(err))
-
+        console.log(overContainer)
 
         // console.log(containers)
           
