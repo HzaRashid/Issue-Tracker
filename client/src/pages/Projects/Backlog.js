@@ -7,7 +7,8 @@ import {
   useSensor,
   useSensors,
   MouseSensor,
-  closestCorners
+  closestCorners,
+  TouchSensor
 } from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { useStateContext } from '../../contexts/ContextProvider';
@@ -73,7 +74,7 @@ function Backlog() {
   // [2]: SUMMARY
   // [3]: ASSIGNED USER
   // [4]: STAGE 
-  // [5]: LIST INDEX ( TO SAVE DRAG & DROP POSITION ) 
+  // [5]: ISSUE 
   useEffect(
     () => setItems({
       backlog: Backlog?.map(
@@ -89,6 +90,7 @@ function Backlog() {
             issue.summary, 
             user || null,
             issue.stage,
+            issue
           ]
           )}
         ),
@@ -105,6 +107,7 @@ function Backlog() {
             issue.summary, 
             user || null, 
             issue.stage,
+            issue
           ]
           )}
         ),
@@ -115,11 +118,23 @@ function Backlog() {
 
   const [activeId, setActiveId] = useState();
 
+  // const sensors = useSensors(
+  //   useSensor(MouseSensor),
+  //   useSensor(PointerSensor),
+  //   useSensor(KeyboardSensor, {
+  //     coordinateGetter: sortableKeyboardCoordinates
+  //   })
+  // );
   const sensors = useSensors(
-    useSensor(MouseSensor),
-    useSensor(PointerSensor),
+    useSensor(MouseSensor, {
+      activationConstraint: { distance: 0.5 }
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: { distance: 0.5 }
+    }),
     useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates
+      coordinateGetter: sortableKeyboardCoordinates,
+      activationConstraint: { distance: 1 }
     })
   );
 
@@ -318,13 +333,13 @@ function Backlog() {
 
     const activeIndex = items[activeContainer].indexOf(active.id);
     const overIndex = items[overContainer].indexOf(overId);
-
+    // console.log(id)
     console.log(activeContainer)
     // move issue from backlog to sprint
     if ( 
       // id[4]?.toLowerCase() === ContainerIDs.backlog && 
       overContainer === ContainerIDs.sprint ) {
- 
+      
        axios.put(
         data.Issues + '/stage',
         {
@@ -340,7 +355,7 @@ function Backlog() {
 
         }
        )
-       .then(res => console.log(res))
+       .then(res => {console.log(res); id[4] = 'to do'})
        .catch(err => console.log(err))
 
     } 
@@ -355,13 +370,13 @@ function Backlog() {
         const activeItems = items[ContainerIDs.backlog]
         .slice(id[5] + 1)
         .map(item => item[0])                
-
+        
         axios.put(
           data.Issues + '/stage',
           {
 
               issueID: id[0],
-              sprint: SelectedSprint._id,           // new sprint
+              sprint: '',           // new sprint
               sprintID: Issues.filter(i => i._id = id[0])
                               .map(i => i.sprint),  // current sprint
               ToBacklogOrSprint: true,
@@ -371,7 +386,7 @@ function Backlog() {
 
           }
         )
-        .then(res => console.log(res))
+        .then(res => {console.log(res); id[4] = 'backlog'})
         .catch(err => console.log(err))
 
     }

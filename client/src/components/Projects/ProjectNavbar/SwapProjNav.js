@@ -16,7 +16,7 @@ function SwapProjNav( props ) {
     {/* <div className='flex justify-center items-center'>  */}
     {/* <div className='flex justify-center items-center'>  */}
 
-    <li className='mt-auto ml-[2.5em] fixed'
+    <li className='mt-auto ml-[2.5em] '
     // style={{
     //   visibility: SwapProjNav ? 'visible' : 'hidden',
     //   opacity: SwapProjNav ? '1' : '0',
@@ -42,7 +42,7 @@ function SwapProjNav( props ) {
         } w-[0.2em] h-[0.2em] mt-[3em] bg-[#505050] rounded-full opacity-[100] inline-block`}></span>
       </span>
 
-      <div className=' text-center  fixed  inline-block'> 
+      <div className=' text-center    inline-block'> 
       <div className='flex justify-between w-[7em]'>
 
       <CustomTooltip title={'Current Project'} > 

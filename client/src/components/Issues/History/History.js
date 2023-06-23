@@ -5,13 +5,14 @@ import Avatar from '@mui/material/Avatar';
 import stringAvatar from '../../utils/UserAvatar/StringAvatar';
 import { AuthContexts } from '../../../App/Auth';
 import { formatDistance } from 'date-fns';
-import { AiOutlineArrowRight } from 'react-icons/ai';
-import { BsDot } from 'react-icons/bs';
+import { BsDot, BsArrowRightShort } from 'react-icons/bs';
+import { SprintContexts } from '../../../contexts/SprintContexts';
 const data = require('../../../pages/routes.json')
 
 
 function History() {
   const { SelectedIssue } = IssueContexts();
+  const { Sprints } = SprintContexts();
   const { Users } = TeamContexts();
   const [ IssueVersions, setIssueVersions ] = useState([]);
   const { user } = AuthContexts();
@@ -30,7 +31,7 @@ function History() {
 
   return (
     <div
-    className='flex items-center justify-center mt-3' 
+    className='flex items-center justify-center mt-3 ' 
     >
     <ul className='h-auto max-h-[8em] overflow-scroll'> 
       {
@@ -39,6 +40,9 @@ function History() {
           iv => iv?.issueID === SelectedIssue?._id
                    && iv.wasModified === true
         )
+        .sort(
+          (a,b) => (new Date(b?.dateOfUpdate) - new Date(a?.dateOfUpdate))
+          )
         .map(
           v => 
           <li key={v?._id}
@@ -49,11 +53,12 @@ function History() {
 
             <Avatar 
             {...stringAvatar(
-            loggedInUser.firstName + ' ' + loggedInUser.lastName,
-            24, 
-            24, 
-            '0.75em'
-            )}  
+              loggedInUser.firstName + ' ' + loggedInUser.lastName,
+              24, 
+              24, 
+              '0.75em'
+              )
+            }  
             />
             <div>
               <div className='flex items-center justify-center '>
@@ -69,12 +74,12 @@ function History() {
               <div className='flex items-center '>
 
                 <div className='text-[#303030] bg-[#00000010] p-[0.2em] rounded-md mr-[0.4em]'>
-                { titleCase(getModFields(v)?.oldField) }
-                {console.log(v)}
+                { titleCase(getModFields(v, Sprints)?.oldField || '') }
+                {/* {console.log(v)} */}
                 </div>
-                <AiOutlineArrowRight className='mt-[0.2em]'/>
+                <BsArrowRightShort className='mt-[0.2em]' size={'1.6em'}/>
                 <div className='text-[#193142] bg-gray-200 p-[0.2em] rounded-md ml-[0.4em]'>
-                { titleCase(getModFields(v)?.newField) }
+                { titleCase(getModFields(v, Sprints)?.newField) }
                 </div>
 
               </div>
@@ -146,13 +151,14 @@ function DateToString (issueVersion) {
 // stage
 // sprint
 
-// takes as input a json object -> issue version document
+// takes as input a json object : issue version document
+// and a list : the project's Sprints
 // returns both the old and the new values 
 // of the modified field as an object
-function getModFields (issueVersion) {
+function getModFields (issueVersion, Sprints) {
   const field = issueVersion.modifiedField;
   const iv = issueVersion;
-  console.log(field)
+  // console.log(field)
   switch ( field.toLowerCase() ) {
 
     case 'type':
@@ -181,8 +187,8 @@ function getModFields (issueVersion) {
 
     case 'sprint':
       return ({
-        oldField:   iv.sprint,
-        newField:   iv.newSprint
+        oldField: getSprintOldField(iv, Sprints),
+        newField: getSprintNewField(iv, Sprints),
       })
       default:
         return;
@@ -191,7 +197,28 @@ function getModFields (issueVersion) {
 
 }
 
+
+function getSprintOldField (IssueVersion, Sprints) {
+  if (IssueVersion?.stage?.toLowerCase() !== 'backlog') {
+    return (
+      Sprints?.filter(s => s?._id === IssueVersion?.sprint)?.map(s => s?.title)[0]
+      )
+  }
+  return 'backlog'
+}
+
+function getSprintNewField (IssueVersion, Sprints) {
+  if (IssueVersion?.newStage?.toLowerCase() !== 'backlog') {
+    return (
+      Sprints?.filter(s => s?._id === IssueVersion?.newSprint)?.map(s => s?.title)[0]
+      )
+  }
+  return 'backlog'
+}
+
+
 function titleCase(str) {
+  // console.log(str)
   var splitStr = str.toLowerCase().split(' ');
   for (var i = 0; i < splitStr.length; i++) {
       splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
@@ -199,9 +226,6 @@ function titleCase(str) {
 
   return splitStr.join(' '); 
 }
-
-
-
 
 
 export default History

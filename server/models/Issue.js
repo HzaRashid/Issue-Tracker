@@ -12,6 +12,8 @@ const specs = {
     required: true
 }
 
+  
+
 const IssueSchema = new mongoose.Schema({
     summary: summarySpecs,
     
@@ -35,6 +37,7 @@ const IssueSchema = new mongoose.Schema({
         ref: 'projects',
         required: true,
     },
+
     sprint: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'sprint'
@@ -50,6 +53,22 @@ const IssueSchema = new mongoose.Schema({
 
     listIndex: Number,
     
-});
+}, 
+// { discriminatorKey: 'kind' }
+)
+;
 
-module.exports = mongoose.model('issues', IssueSchema)
+// const Issue = mongoose.model('issues', IssueSchema)
+
+// const backlogIssue = Issue.discriminator('backlogIssue', new mongoose.Schema({
+//     sprint: String
+// }))
+
+// const sprintIssue = Issue.discriminator('sprintIssue', new mongoose.Schema({
+//     sprint: {
+//         type: mongoose.Schema.Types.ObjectId, 
+//         ref: 'sprint'
+//     },
+// }))
+
+module.exports = mongoose.model('issues', IssueSchema);

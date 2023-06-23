@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { MdError } from 'react-icons/md'
 import { AiFillCheckSquare } from 'react-icons/ai'
 import { AiFillTool } from 'react-icons/ai'
 import { CustomTooltip } from '../../CustomTooltip';
 import { useSortable, } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { IssueContexts } from '../../../contexts/IssueContexts';
 
 
 function GetSprintRow( props ) {
@@ -22,6 +23,7 @@ function GetSprintRow( props ) {
     transition,
     opacity: isDragging ? 0 : 1,
   };
+  const { Issues, setEditIssueModal, SelectedIssue, setSelectedIssue } = IssueContexts();
 
   return (
     <> 
@@ -33,6 +35,11 @@ function GetSprintRow( props ) {
               style={style}
               ref={setNodeRef} 
               {...listeners}
+              onClick={() => {
+                // console.log(props.id[5])
+                setSelectedIssue(props?.id[5]);
+                setEditIssueModal(true);
+              }}
               
               >
                 <div className='flex items-center ml-2'> 

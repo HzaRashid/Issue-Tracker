@@ -1,23 +1,20 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useStateContext } from '../../../contexts/ContextProvider'
 import { ProjContexts } from '../../../contexts/ProjectContexts';
 import { CustomTooltip } from '../../CustomTooltip'
 import './SelectedProjNav.css'
-import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
+// import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import { BsChevronDown } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import { NavItems } from './NavItems';
 import SprintList from './SprintList';
-import SwapProjNav from '../ProjectNavbar/SwapProjNav';
-import SwapProjNavVertical from '../ProjectNavbar/SwapProjNavVertical';
-import NavBackGd from '../ProjectNavbar/NavBackGd';
-// import { SprintContexts } from '../../../contexts/SprintContexts';
+
 
 
 
 
 function SelectedProjNav( props ) {
-    const { nav,setNav, ProjectNav, setProjectNav  } = useStateContext();
+    const { ProjectNav, setProjectNav  } = useStateContext();
     const { SelectedProj } = ProjContexts();
     // const { SelectedSprint, setSelectedSprint } = SprintContexts();
     // eslint-disable-next-line

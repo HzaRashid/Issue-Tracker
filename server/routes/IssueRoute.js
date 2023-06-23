@@ -3,17 +3,14 @@ const router = express.Router();
 router.use(express.json());
 const {     
     getIssues, 
-    getIssueVersions,
     sendIssueVersions,
     addIssue, 
     editIssueSummary,
     editIssueType,
     editIssueStage,
-    updateIssueStage,
+    editIssueSprint,
     transferManyIssuesStage,
     editIssueAssignee,
-    // moveIssueToSprint,
-    // moveIssueToBacklog,
     deleteIssue,
     reOrderIssues
 } = require('../controllers/IssueCtrl')
@@ -28,6 +25,7 @@ router.post('/', addIssue);
 router.put('/summary', editIssueSummary);
 router.put('/type', editIssueType);
 router.put('/stage', editIssueStage);
+router.put('/sprint', editIssueSprint);
 router.put('/board-stage', editIssueStage);
 router.put('/assignee', editIssueAssignee);
 router.put('/many-issues-stage', transferManyIssuesStage, deleteSprintStage);

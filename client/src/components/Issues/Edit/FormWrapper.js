@@ -8,16 +8,15 @@ import { BiChevronDown } from 'react-icons/bi';
 import { TeamContexts } from '../../../contexts/TeamContexts';
 import { Types } from '../Create/Types'
 import { SprintContexts } from '../../../contexts/SprintContexts';
+import { useLocation } from 'react-router-dom';
 import { AuthContexts } from '../../../App/Auth';
 const data = require('../../../pages/routes.json')
 
 function FormWrapper( props ) {
-
-  const { SelectedSprint, items, setItems } = SprintContexts()
-  const { 
-    setEditIssueModal,
-    SelectedIssue, setSelectedIssue
-    } = IssueContexts();
+  const currLoc = useLocation();
+  const { Sprints, SelectedSprint, items, setItems } = SprintContexts();
+  // console.log(SelectedSprint)
+  const { setEditIssueModal, SelectedIssue, setSelectedIssue } = IssueContexts();
 
     const { Users } = TeamContexts();
     const { user } = AuthContexts();  // get _id of logged-in user
@@ -27,7 +26,10 @@ function FormWrapper( props ) {
     const [showTypes, setShowTypes] = useState(false);
     const [showUsers, setShowUsers] = useState(false);
     const [showStages, setShowStages] = useState(false);
-    const [Search, setSearch] = useState('');
+    const [Search, setSearch] = useState('');  // search users
+
+    const [sprintSearch, setSprintSearch] = useState('');  // search sprints
+    const handleSprintSearch = e => setSprintSearch(e.target.value)
 
     const userListRef = useRef(null);
     const stageListRef = useRef(null);
@@ -64,6 +66,15 @@ function FormWrapper( props ) {
         }
       }, [Users, SelectedIssue]
      )
+     useEffect(
+      () => {
+
+
+          setSprintSearch(Sprints?.filter(s => s._id === SelectedIssue?.sprint)[0]?.title || 'Backlog') 
+
+      }, [SelectedIssue, Sprints]
+     )
+     useEffect(() => console.log(SelectedIssue), [SelectedIssue])
 
      useEffect(
       () => {
@@ -107,7 +118,7 @@ function FormWrapper( props ) {
 
       const handleAssigneeSubmit = (assignee) => {
 
-        console.log(assignee)
+        // console.log(assignee)
 
           const userExists = Users.filter(user => 
             user._id === assignee?._id)?.length
@@ -136,14 +147,93 @@ function FormWrapper( props ) {
           .then(res => console.log(res))
           .catch(err => console.log(err))
         }
-  
+
+
+  const handleSprintSubmit = (sprintID, issue) => {
+
+    axios.put(
+      data.Issues + '/sprint',
+      {
+        issueID: issue?._id,
+        sprint: sprintID,
+        modifiedBy: user?.user
+      }
+    )
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
+
+    if (currLoc.pathname.includes('sprint-board')){
+      const stage = titleCase(issue?.stage)
+      let prevIssues = items[stage].slice();
+      prevIssues = prevIssues.filter(
+        issue => issue._id !== SelectedIssue._id
+      )
+      
+      setItems(oldState => {
+        return ({
+        ...oldState,
+        [stage]: prevIssues
+      })})
+    }
+  }
 
   const { Page, setPage, children } = props;
-  const activePageClass = 'bg-[#00000005] text-[#446a67] font-normal shadow-sm'
+  const activePageClass = 'bg-[#00000005] text-[#446a67] font-normal shadow-sm';
+
+
+
+
+
+const [ShowSprints, setShowSprints] = useState(false);
+// setSelectedSprint({});
+
+// var searchResults = Sprints.filter(
+//     // eslint-disable-next-line
+//     sprint => 
+//     {
+//         if (Search === '') return sprint
+
+//         else if (
+//         sprint.title.toLowerCase()
+//         .includes(Search.toLowerCase()) 
+//         ) { return sprint }
+//     }
+// )
       
   return (
     <> 
     <div className='flex items-center justify-center mt-1 space-x-4'>
+    <div className='flex items-center'> 
+  <CustomTooltip 
+  title={'Change issue summary'}
+  arrow 
+  sx={{fontSize: '0.9em'}}
+  placement='top'
+  > 
+  <input 
+  type='text' 
+  placeholder={summary?.length ? summary : 'Summary..'}
+  className=' 
+  focus:border-b-[#4188b4]
+  focus:border-b-[0.05em] 
+  antialiased w-[15em] hover:bg-gray-200 p-1
+  border-b-[0.05em] truncate 
+  border-b-[#a8a8a8] whitespace-pre-line
+   outline-none font-normal text-[0.9em]
+  placeholder:text-[#404040] bg-transparent'
+  value={summary}
+  onChange={(e) => setSummary(e.target.value)}
+  onBlur={handleSummarySubmit}
+  onKeyDown={(e) => {
+   if (e.key === 'Enter') {
+    handleSummarySubmit()
+   }
+  }}
+  >
+  
+  </input>
+  </CustomTooltip>
+  </div>
     <div className=''>
     <CustomTooltip 
     title={'Change issue type'} 
@@ -151,8 +241,8 @@ function FormWrapper( props ) {
     sx={{fontSize: '0.9em'}}
     placement='top'
     >
-    <div className='flex items-center bg-[#f0f0f0] rounded-md
-    shadow cursor-pointer p-[0.025em] hover:bg-[#00000008] ' 
+    <div className='flex items-center bg-[#f0f0f029] rounded-md 
+    shadow cursor-pointer p-[0.025em] hover:bg-[#00000008] ml-3' 
       onClick={() => setShowTypes(!showTypes)}
     >  
     <div className='mr-1'>
@@ -199,7 +289,7 @@ function FormWrapper( props ) {
   </CustomTooltip>
   { showTypes &&
         <ul className='bg-[#e6e6e6] text-[#505050] h-auto max-h-[6em]
-         text-[0.825em] mt-2
+         text-[0.825em] mt-2 ml-3
         w-[7em] rounded-md shadow-md absolute overflow-auto'
         >
         {
@@ -242,50 +332,98 @@ function FormWrapper( props ) {
         </ul>
       }
       </div>
+      
 
 
-  <div className='flex items-center'> 
-  <CustomTooltip 
-  title={'Change issue summary'}
-  arrow 
-  sx={{fontSize: '0.9em'}}
-  placement='top'
-  > 
-  <input 
-  type='text' 
-  placeholder={summary?.length ? summary : 'Summary..'}
-  className=' 
-  focus:border-b-[#4188b4]
-  focus:border-b-[0.05em] 
-  antialiased w-[15em]
-  border-b-[0.05em] truncate 
-  border-b-[#a8a8a8] whitespace-pre-line
-   outline-none font-normal text-[0.9em]
-  placeholder:text-[#404040] bg-transparent'
-  value={summary}
-  onChange={(e) => setSummary(e.target.value)}
-  onBlur={handleSummarySubmit}
-  onKeyDown={(e) => {
-   if (e.key === 'Enter') {
-    handleSummarySubmit()
-   }
-  }}
-  >
+
+  </div>
+  <div className='flex items-center justify-center mt-4'>
+  <div> 
+    <CustomTooltip
+    title={'Change sprint'}
+    arrow 
+    sx={{fontSize: '0.9em'}}
+    placement='top'
+      >
+    <input 
+    type='text'
+    className='inline-block bg-[#00000002] 
+    rounded-lg outline-none font-normal w-[14em]
+    p-1 text-[#686868] placeholder:text-[#606060]
+    text-[0.8em] shadow-sm border-b-[0.125em]'
+    // placeholder={ SelectedSprint.title }
+    value={sprintSearch }
+    onChange={handleSprintSearch}
+    onFocus={() => {
+      setShowSprints(true)
+    }}
+    onBlur={() => {
+      setShowSprints(false)
+    }}
+    >
+      </input>  
+    </CustomTooltip>
+    <ul 
+    className='bg-[#eaeaea] h-auto max-h-[6em] 
+    text-[0.8em] overflow-y-auto w-[14em] mt-1 z-20
+    rounded-md text-[#6a6a6a] shadow-md absolute' 
+        style={{
+          visibility: ShowSprints ? 'visible' : 'hidden',
+          opacity: ShowSprints ? '100' : '0',
+          transition: 'all 0.1s ease-in-out'
+        }}
+        >
   
-  </input>
-  </CustomTooltip>
+      {
+      Sprints
+      .filter(// eslint-disable-next-line
+        sprint => {
+          const title = sprint.title;
+          if (sprintSearch ==='') 
+            return sprint
+          
+          else if(
+            title?.toLowerCase().includes(
+              sprintSearch?.toLowerCase()
+            )
+          ) {
+            return sprint
+          }
+        }
+      )
+      .map(
+        (sprint, key) =>
+        <li key={key}
+        className='hover:cursor-pointer
+        hover:bg-slate-200 rounded-md p-1'
+        onClick={() => {
+          setSprintSearch(sprint.title);
+          handleSprintSubmit(sprint._id, SelectedIssue)
+        }}
+        >
+          <div>
+            {sprint.title}
+          </div>
+        </li>
+        )
+
+      }
+    </ul>
+    </div>
   </div>
-  </div>
+
 
   <div className='flex items-center justify-center mt-4 space-x-4'> 
 
   <div ref={userListRef}>
+    
   <CustomTooltip 
   title={'Change assignee'}
   arrow 
   sx={{fontSize: '0.9em'}}
   placement='left'
   > 
+  
   <input 
   type='text' 
   placeholder={'Select assignee'}
@@ -357,23 +495,34 @@ function FormWrapper( props ) {
 
   <div ref={stageListRef}>
   <CustomTooltip
-  title={'Change stage'}
+  title={SelectedIssue?.stage?.toLowerCase() === 'backlog' ? 'Stage' : 'Change stage'}
   arrow 
   sx={{fontSize: '0.9em'}}
   placement='right'
+  
   > 
   <div className='flex items-center shadow-sm
   whitespace-nowrap text-[0.8em] p-1 pr-2 rounded-md 
   bg-[#001b470a] text-[#606060] w-auto
   max-w-[8.5em] overflow-auto cursor-pointer'
-    onClick={() => setShowStages(!showStages)}
+    onClick={() => {
+      if (SelectedIssue?.stage?.toLowerCase() !== 'backlog') setShowStages(!showStages)
+    }}
     > 
-  <div className='mr-1'> 
+  <div  className='mr-1'
+  style={{
+    visibility:  SelectedIssue?.stage?.toLowerCase() === 'backlog' ? 'hidden' : 'visible',
+
+  }}> 
   <BiChevronDown className={`${showStages ? 
     'rotate-180' : 'rotate-0'} ease-in-out duration-100`}
   />
   </div>
-  <div>
+  <div
+  style={{
+    marginLeft: SelectedIssue?.stage?.toLowerCase() === 'backlog' ? '-1em' : ''
+  }}
+  >
     {SelectedIssue?.stage?.toUpperCase()}
   </div>
   </div> 
@@ -413,7 +562,7 @@ function FormWrapper( props ) {
             prevStageIssues = prevStageIssues.filter(
               issue => issue._id !== SelectedIssue._id
             )
-            console.log(prevStageIssues)
+            // console.log(prevStageIssues)
 
             let newStageIssues = items[newStage].slice()
             const isDuplicated = newStageIssues.filter(issue => 
@@ -424,10 +573,10 @@ function FormWrapper( props ) {
               newStageIssues.push({...SelectedIssue, stage: newStage})
             }
 
-            console.log('OLD:')
-            console.log(prevStageIssues)
-            console.log('NEW:')
-            console.log(newStageIssues)
+            // console.log('OLD:')
+            // console.log(prevStageIssues)
+            // console.log('NEW:')
+            // console.log(newStageIssues)
             // console.log(newStageIssues)
 
             setItems(oldState => {
@@ -462,7 +611,10 @@ function FormWrapper( props ) {
 
   </div>
 
+
+
   </div>
+
 
 
 
@@ -471,7 +623,7 @@ function FormWrapper( props ) {
   <div> 
 
     <div className='flex items-center 
-    justify-center mt-8 space-x-2 font-light 
+    justify-center mt-6 space-x-2 font-light 
     text-[0.925em] text-[#404040]'>
       <div
       className={`
@@ -522,5 +674,17 @@ function FormWrapper( props ) {
     </>
   )
 }
+
+
+function titleCase(str) {
+  // console.log(str)
+  var splitStr = str.toLowerCase().split(' ');
+  for (var i = 0; i < splitStr.length; i++) {
+      splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
+  }
+
+  return splitStr.join(' '); 
+}
+
 
 export default FormWrapper

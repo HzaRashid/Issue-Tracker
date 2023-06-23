@@ -11,16 +11,16 @@ function SwapProjNavVertical( props ) {
     <Switch
     // checked={enabled}
     // onChange={setEnabled}
-    className={`bg-gray-200 relative inline-flex h-[4em] w-8 items-center rounded-md`}
+    className={`bg-gray-200  flex h-[4em] w-8 items-center rounded-md`}
   >
 
     <span
       className={`${
         enabled ? 'translate-y-[-1em]' : 'translate-y-[1em]'
-      } inline-block h-8 w-8 shadow
+      } inline-block h-8 w-8 shadow z-100 absolute
       transform rounded-md bg-[#ffcaf154] transition `}
     />
-    <div className='fixed w-8 h-[4em]'> 
+    <div className=' w-8 h-[4em]'> 
 
     <div> 
     <CustomTooltip title={'Other Projects'} placement='right'>

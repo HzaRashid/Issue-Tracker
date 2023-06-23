@@ -4,6 +4,7 @@ import { MdError } from 'react-icons/md'
 import { AiFillTool, AiFillCheckSquare } from 'react-icons/ai'
 import { useSortable, } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { IssueContexts } from '../../../contexts/IssueContexts';
 
 
 function GetBacklogRow( props ) {
@@ -24,9 +25,10 @@ function GetBacklogRow( props ) {
     transition,
     opacity: isDragging ? 0 : 1,
   };
-
+  const { setEditIssueModal, SelectedIssue, setSelectedIssue } = IssueContexts();
+  // console.log(props)
     return (
-      <>
+      // <>
             <div 
               className={`
               bg-[#e6e6e6] text-[#505050] p-1 w-[100%]
@@ -36,6 +38,11 @@ function GetBacklogRow( props ) {
               style={style}
               ref={setNodeRef}   
               {...listeners}
+              onClick={() => {
+                setSelectedIssue(props?.id[5]);
+                setEditIssueModal(true);
+              }}
+
               >
                 <div className='flex items-center ml-2'> 
                 <CustomTooltip title={props.id[1]}>
@@ -108,7 +115,7 @@ function GetBacklogRow( props ) {
                   
               </div>
       
-      </>
+      // </>
     )
 }
 

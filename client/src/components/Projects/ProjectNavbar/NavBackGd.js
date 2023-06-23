@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import '../../../index.css'
 // import "./ProjectNav.css"
 import "./NavBack.css"
@@ -6,7 +6,7 @@ import "./NavBack.css"
 import { CustomTooltip } from '../../CustomTooltip'
 import { useStateContext } from '../../../contexts/ContextProvider';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import SwitchBtn from './SwitchBtn'
 import SelectedProjNav from '../SelectedProjNav/SelectedProjNav';
@@ -17,7 +17,7 @@ import { SprintContexts } from '../../../contexts/SprintContexts';
 
 function NavBackGd( props ) {
   const currLocation = useLocation();
-  let goToPage = useNavigate();
+  // let goToPage = useNavigate();
   const { showSprints, setShowSprints } = SprintContexts();
 
   const isProjPage = currLocation.pathname
@@ -30,8 +30,8 @@ function NavBackGd( props ) {
         SwapProjNav,setSwapProjNav
        } = useStateContext();
 
-    const { children } = props
-
+    // const { children } = props
+    // eslint-disable-next-line
     useEffect(() => setSwapProjNav(!isProjPage), []) 
     // console.log(isProjPage)
 
@@ -45,7 +45,7 @@ function NavBackGd( props ) {
      ease duration-[0.3s]`
   }
     >
-    <div>
+    <div className=' overflow-visible'>
 
     <div 
     className={`project-sidebar`}
@@ -54,27 +54,7 @@ function NavBackGd( props ) {
       transition: 'width 0.2s ease-in-out'
     }}
     >
-    <CustomTooltip title={ProjectNav ? 'Close' : 'Open'} placement='right' arrow>
-      <button 
-      className='hover:bg-[#7895B3] bg-[#f0f0f0] hover:text-[#e2e2e2] text-[#404040]' 
-      onClick={() => {setProjectNav(!ProjectNav); if (ProjectNav) setShowSprints(false)}}
-      style={{
-        marginLeft: ProjectNav ? '11.15em' : !ProjectNav && SwapProjNav ? '-3em' : '2em',
-        position: 'fixed',
-        marginTop: '2.4em',
-        borderRadius: '1em',
-        border: '0.05em solid #0000001a',
-        padding: '0.1em',
-        transition: 'all 0.2s ease-in-out',
-        zIndex: '5'
-        
-      }}
-      >
-      { ProjectNav ? 
-       <BiChevronLeft fontSize={'1.4em'}/> : <BiChevronRight fontSize={'1.4em'}/>
-      }
-      </button>      
-      </CustomTooltip>
+
 
  
     {SwapProjNav ? <ProjectNavbar/> : <SelectedProjNav showSprints={showSprints} setShowSprints={setShowSprints}/>}
@@ -106,6 +86,28 @@ function NavBackGd( props ) {
     </div>
     }
   </div>
+  <CustomTooltip title={ProjectNav ? 'Close' : 'Open'} placement='right' arrow>
+      <button 
+      className='hover:bg-[#7895B3] bg-[#f0f0f0] hover:text-[#e2e2e2] text-[#404040]' 
+      onClick={() => {setProjectNav(!ProjectNav); if (ProjectNav) setShowSprints(false)}}
+      style={{
+        marginLeft: ProjectNav ? '11.15em' : !ProjectNav && SwapProjNav ? '-3em' : '2em',
+        zIndex: '5',
+        position: 'absolute',
+        marginTop: '2.4em',
+        borderRadius: '1em',
+        border: '0.05em solid #0000001a',
+        padding: '0.1em',
+        transition: 'all 0.2s ease-in-out',
+        
+        
+      }}
+      >
+      { ProjectNav ? 
+       <BiChevronLeft fontSize={'1.4em'}/> : <BiChevronRight fontSize={'1.4em'}/>
+      }
+      </button>      
+      </CustomTooltip>
   </div>
   </div>
   </>

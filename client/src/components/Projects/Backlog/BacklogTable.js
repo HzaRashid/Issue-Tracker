@@ -65,7 +65,9 @@ function BacklogTable( props ) {
         {
           items.map(
             item => (
+
             <GetBacklogRow key={item} id={item}/>
+    
             )
         
           )

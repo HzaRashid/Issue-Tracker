@@ -30,7 +30,7 @@ function SwitchBtn() {
       <span
         className={`${
           SwapProjNav ? 'translate-x-[3.5em]' : 'translate-x-0' 
-        } shadow inline-block h-10 w-14 transform rounded-md  
+        } shadow inline-block absolute h-10 w-14 transform rounded-md  
         bg-[#ffcaf154] ]  transition`}
       >
         <span className={`${
@@ -38,7 +38,7 @@ function SwitchBtn() {
         } w-[0.2em] h-[0.2em] mt-[3em] bg-[#505050] rounded-full opacity-[100] inline-block`}></span>
       </span>
 
-      <div className=' text-center  fixed  inline-block'> 
+      <div className=' text-center    inline-block'> 
       <div className='flex justify-between w-[7em]'>
 
       <CustomTooltip title={'Current Project'} > 

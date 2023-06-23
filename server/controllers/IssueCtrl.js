@@ -3,7 +3,8 @@ const Issue = require('../models/Issue')
 const IssueVersion = require('../models/IssueVersion')
 const Sprint = require('../models/Sprint')
 const User = require('../models/User')
-const { StageIssues } = require('./BoardIssues')
+const { StageIssues } = require('./BoardIssues');
+const { default: mongoose } = require('mongoose');
 
 const getIssues = (req, res) => {
     Issue.find({}, 
@@ -89,6 +90,7 @@ const addIssue = async (req, res, next) => {
         
 };
 
+
 const editIssueSummary = async (req, res) => {
     const Fields = req.body;
 
@@ -171,13 +173,17 @@ const editIssueAssignee = async (req, res) => {
 
     delete prevDoc._id
 
+    // console.log(prevDoc.assignedTo.toString())
+    // console.log(mongoose.Types.ObjectId(Fields.assignedTo) );
+    // console.log(prevDoc.assignedTo.toString() === Fields.assignedTo)
+    
     // create issue version
     IssueVersion.create({
         issueID: prevUID,
         newAssignee: Fields.assignedTo,
         modifiedBy: Fields.modifiedBy,
         modifiedField: 'assignedTo',
-        wasModified: !( Fields.assignedTo === prevDoc.assignedTo ),
+        wasModified: !( Fields.assignedTo === prevDoc.assignedTo.toString() ),
         ...prevDoc
     },
     (err) => {
@@ -259,6 +265,56 @@ const editIssueType = async (req, res) => {
 }
 
 
+const editIssueSprint = async (req, res) => {
+    const Fields = req.body;
+    console.log(Fields)
+    try {
+    // update issue
+    const doc = await Issue.findById(Fields.issueID)
+    console.log(doc.sprint)
+    let prevDoc = {...doc._doc};
+
+    console.log(mongoose.Types.ObjectId(Fields.sprint))
+    doc.sprint = Fields.sprint;
+    // await doc.markModified('sprint')
+    await doc.save()
+
+    console.log('UPDATED HERE:')
+    console.log(doc.sprint)
+
+    // unique _id created by mongodb
+    const prevUID = prevDoc?._id  
+
+    delete prevDoc._id
+
+
+    // create issue version
+    IssueVersion.create({
+        issueID: prevUID,
+        newSprint: Fields.sprint,
+        modifiedBy: Fields.modifiedBy,
+        modifiedField: 'sprint',
+        wasModified: !( Fields.sprint === prevDoc?.sprint?.toString() ),
+        ...prevDoc
+    },
+    (err) => {
+        if (err) {
+            console.log(err);
+            res.status(502).send(err)
+        }
+    }
+    )
+
+    res.status(200).send(doc)
+
+    } catch (err) {
+        res.status(500).send(err)
+        console.log(err)
+    }
+
+}
+
+
 // const editIssueType = async (req, res) => {
 //     const issueFields = req.body;
 //     Issue.findById(
@@ -276,67 +332,28 @@ const editIssueType = async (req, res) => {
 //     };
 
 
-const editIssueSprint = async (req, res, next) => {
-    const Fields = req.body;
-    Issue.updateMany(
-        { _id: {$in: Fields.issues} },
-        { sprint: Fields.SprintID },
-        { multi: true },
+// const editIssueSprint = async (req, res, next) => {
+//     const Fields = req.body;
+//     Issue.updateMany(
+//         { _id: {$in: Fields.issues} },
+//         { sprint: Fields.SprintID },
+//         { multi: true },
 
-            (err, docs) =>  {
-            if (err){
-                console.log(err)
-                res.status(501).send(err);
-            }
-            else {
-                next();
-            }
-        }
-    )
+//             (err, docs) =>  {
+//             if (err){
+//                 console.log(err)
+//                 res.status(501).send(err);
+//             }
+//             else {
+//                 next();
+//             }
+//         }
+//     )
 
-}
-
-
-// handles deletion of sprint
-const moveMultiIssuestoBacklog = async (req, res, next) => {
-    const Fields = req.body;
-    
-    Issue.updateMany(
-        { _id: {$in: Fields.SprintID} },
-        { $set: { sprint: undefined, stage: 'backlog' } },
-        { multi: true },
-
-            (err, docs) =>  {
-            if (err){
-                console.log(err)
-                res.status(501).send(err);
-            }
-            else {
-                res.status(200).send(err);
-            }
-        }
-    )
-
-}
+// }
 
 
-const deleteMultipleIssues = async (req, res, next) => {
-    const Fields = req.body;
-    
-    Issue.deleteMany(
-        { _id: {$in: Fields.SprintID} },
-            (err, docs) =>  {
-            if (err){
-                console.log(err)
-                res.status(501).send(err);
-            }
-            else {
-                res.status(200).send(err);
-            }
-        }
-    )
 
-}
 
 const editIssueStage = async (req, res) => {
     const Fields = req.body;
@@ -350,6 +367,7 @@ const editIssueStage = async (req, res) => {
     doc.stage = Fields.stage;
     if (Fields?.ToBacklogOrSprint) doc.sprint = Fields.sprint;
 
+    if (Fields.stage.toLowerCase() === 'backlog') doc.sprint = undefined
     await doc.save()
 
     const versions = await IssueVersion.find({});
@@ -367,12 +385,12 @@ const editIssueStage = async (req, res) => {
 
     // create issue version
     IssueVersion.create({
-        issueID:    prevUID,
+        issueID:        prevUID,
         newStage:       Fields.stage,
         newSprint:      Fields?.ToBacklogOrSprint ? Fields.sprint : '',
         modifiedBy:     Fields?.modifiedBy,
         modifiedField:  Fields?.ToBacklogOrSprint ? 'sprint' : 'stage',
-        wasModified: !( Fields.stage === prevDoc.stage ),
+        wasModified:    !( Fields.stage === prevDoc.stage ),
         ...prevDoc
     },
     (err) => {
@@ -592,6 +610,46 @@ const deleteIssue = (req, res) => {
 
 
 
+// handles deletion of sprint
+const moveMultiIssuestoBacklog = async (req, res, next) => {
+    const Fields = req.body;
+    
+    Issue.updateMany(
+        { _id: {$in: Fields.SprintID} },
+        { $set: { sprint: undefined, stage: 'backlog' } },
+        { multi: true },
+
+            (err, docs) =>  {
+            if (err){
+                console.log(err)
+                res.status(501).send(err);
+            }
+            else {
+                res.status(200).send(err);
+            }
+        }
+    )
+
+}
+
+
+const deleteMultipleIssues = async (req, res, next) => {
+    const Fields = req.body;
+    
+    Issue.deleteMany(
+        { _id: {$in: Fields.SprintID} },
+            (err, docs) =>  {
+            if (err){
+                console.log(err)
+                res.status(501).send(err);
+            }
+            else {
+                res.status(200).send(err);
+            }
+        }
+    )
+
+}
 
 const reOrderIssues = async (req, res) => {
     try {
@@ -618,12 +676,12 @@ module.exports = {
     editIssueSummary,
     editIssueType,
     editIssueSprint,
+
     editIssueStage,
     updateIssueStage,
     transferManyIssuesStage,
     editManyIssuesStage,
     editIssueAssignee,
-    // moveIssueToSprint,
     moveIssueToBacklog,
     deleteIssue,
     reOrderIssues
