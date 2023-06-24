@@ -31,46 +31,6 @@ const getIssues = (req, res) => {
 //     };
 
 
-const sendIssueVersions = (req, res) => {
-    res.writeHead(
-        200, {
-        'Content-Type'  : 'text/event-stream',
-        'Cache-Control' : 'no-cache',
-        'Connection'    : 'keep-alive'
-    },
-        getIssueVersions( res ) 
-    )
-}
-    
-let getIssueVersions = async ( res ) => {
-    IssueVersion.find({}, 
-        (err, result) => {
-            if (err) {
-                res.json(err)
-            } 
-            else {
-                res.write(
-                    'data: ' + 
-                    JSON.stringify({ msg: result }) + 
-                    '\n\n' 
-                    ) 
-            }
-        })
-        setTimeout(() => getIssueVersions( res ), 750)
-    };
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -670,13 +630,11 @@ const reOrderIssues = async (req, res) => {
 
 module.exports = {
     getIssues, 
-    getIssueVersions,
-    sendIssueVersions,
     addIssue, 
     editIssueSummary,
     editIssueType,
     editIssueSprint,
-
+    
     editIssueStage,
     updateIssueStage,
     transferManyIssuesStage,

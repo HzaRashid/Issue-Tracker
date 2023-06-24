@@ -28,8 +28,8 @@ function Home() {
           }
         >
 
-    <div className='fixed mt-[1rem] ml-[2rem] text-[1.2em] text-[#4e779f]'>
-    <button className='font-light'>
+    <div className='absolute mt-[1rem] ml-[2rem] text-[1.2em] text-[#4e779f]'>
+    <button className='font-light z-20'>
     {currLoc.pathname}
     </button>
     </div>

@@ -3,7 +3,6 @@ const router = express.Router();
 router.use(express.json());
 const {     
     getIssues, 
-    sendIssueVersions,
     addIssue, 
     editIssueSummary,
     editIssueType,
@@ -14,6 +13,9 @@ const {
     deleteIssue,
     reOrderIssues
 } = require('../controllers/IssueCtrl')
+const {     
+    sendIssueVersions,
+} = require('../controllers/IssueVersionCtrl')
 const { deleteSprintStage } = require('../controllers/SprintCtrl')
 
 module.exports = router;

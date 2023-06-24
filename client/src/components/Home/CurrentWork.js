@@ -1,9 +1,26 @@
-import React from 'react'
-
+import React, { useEffect } from 'react'
+import List from './Issues/List'
+import { SprintContexts } from '../../contexts/SprintContexts'
+import axios from 'axios'
+const data = require('../../pages/routes.json')
 function CurrentWork() {
+  const { setSprints } = SprintContexts();
+  useEffect(() => {
+    axios.get(
+      data.Sprints
+    )
+    .then(res => setSprints(res.data))
+    .catch(err => console.log(err))
+    // eslint-disable-next-line
+    }, [])
+
   return (
-    <div className='flex body-font font-[Open Sans]'>
-      <div className='ml-auto mr-auto mt-[4em] '>CurrentWork</div></div>
+    <div className='flex w-[100%] '>
+      <List/>
+      <div>
+
+      </div>
+    </div>
   )
 }
 

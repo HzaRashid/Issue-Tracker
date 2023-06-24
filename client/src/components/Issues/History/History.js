@@ -199,6 +199,7 @@ function getModFields (issueVersion, Sprints) {
 
 
 function getSprintOldField (IssueVersion, Sprints) {
+  console.log(IssueVersion)
   if (IssueVersion?.stage?.toLowerCase() !== 'backlog') {
     return (
       Sprints?.filter(s => s?._id === IssueVersion?.sprint)?.map(s => s?.title)[0]
