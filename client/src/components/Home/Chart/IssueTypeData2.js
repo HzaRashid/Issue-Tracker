@@ -22,54 +22,46 @@ const renderActiveShape = (props) => {
   const textAnchor = cos >= 0 ? 'start' : 'end';
 
   return (
-    <svg 
-    style={{stroke: 'transparent', strokeWidth: '0px', outline: 'none'}}
-    className='border-transparent focus:border-transparent focus:ring-0'
-    tabIndex={-1}
-    id='foo123'
-    onClick={() => { console.log('here') } }
-    >
+    <g tabIndex={-1} style={{outline: 'none'}}>
       <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
         {payload.name}
       </text>
       <Sector
-      
-      tabIndex={-1}
-      cx={cx}
-      cy={cy}
-      innerRadius={innerRadius}
-      outerRadius={outerRadius}
-      startAngle={startAngle}
-      endAngle={endAngle}
-      fill={fill}
+        tabIndex={-1} 
         style={{outline: 'none'}}
+        cx={cx}
+        cy={cy}
+        innerRadius={innerRadius}
+        outerRadius={outerRadius}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        fill={fill}
+        stroke='#f0f0f0'
       />
       <Sector
-      
-      tabIndex={-1} 
-      style={{outline: 'none'}}
-      cx={cx}
-      cy={cy}
-      startAngle={startAngle}
-      endAngle={endAngle}
-      innerRadius={outerRadius + 6}
-      outerRadius={outerRadius + 10}
-      fill={fill}
-       
+        tabIndex={-1} 
+        style={{outline: 'none'}}
+        cx={cx}
+        cy={cy}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        innerRadius={outerRadius + 6}
+        outerRadius={outerRadius + 10}
+        fill={fill}
+        stroke='f0f0f0'
       />
-      <path   style={{outline: 'none'}} tabIndex={-1}  d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
-      <circle style={{outline: 'none'}} tabIndex={-1} cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-      <text   style={{outline: 'none'}} tabIndex={-1}  x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`PV ${value}`}</text>
-      <text   style={{outline: 'none'}} tabIndex={-1}  x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
+      <path  d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
+      <circle  cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
+      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`PV ${value}`}</text>
+      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
         {`(Rate ${(percent * 100).toFixed(2)}%)`}
       </text>
-    </svg>
-
+    </g>
   );
 };
 
-
-export default class Example extends PureComponent {
+export default class Example2 extends PureComponent {
+  static demoUrl = 'https://codesandbox.io/s/pie-chart-with-customized-active-shape-y93si';
 
   state = {
     activeIndex: 0,
@@ -80,8 +72,6 @@ export default class Example extends PureComponent {
       activeIndex: index,
     });
   };
-  
-
 
   render() {
     return (
@@ -95,9 +85,10 @@ export default class Example extends PureComponent {
             cy="50%"
             innerRadius={60}
             outerRadius={80}
-            fill="#8884d8"
+            fill="#B592D1"
             dataKey="value"
             onMouseEnter={this.onPieEnter}
+            stroke='f0f0f0'
           />
         </PieChart>
       </ResponsiveContainer>

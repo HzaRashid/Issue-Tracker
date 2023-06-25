@@ -25,14 +25,17 @@ function GetBacklogRow( props ) {
     transition,
     opacity: isDragging ? 0 : 1,
   };
-  const { setEditIssueModal, SelectedIssue, setSelectedIssue } = IssueContexts();
+  const { 
+    setEditIssueModal, 
+    // SelectedIssue, 
+    setSelectedIssue } = IssueContexts();
   // console.log(props)
     return (
       // <>
             <div 
               className={`
               bg-[#e6e6e6] text-[#505050] p-1 w-[100%]
-               flex items-center 
+               flex items-center text-[0.925em] font-medium
                hover:bg-[#e0e0e0] hover:shadow-sm
               justify-between   `}
               style={style}
@@ -94,7 +97,7 @@ function GetBacklogRow( props ) {
                   >
                   <div 
                   className='bg-[#dbdbdb] p-1 shadow-sm
-                  font-normal rounded-md text-[0.8em]'
+                  font-normal rounded-md text-[0.875em]'
                   > 
                   {props.id[3].firstName + ' ' + props.id[3].lastName} 
                   </div> 
@@ -104,7 +107,7 @@ function GetBacklogRow( props ) {
                   <CustomTooltip title={`Unassigned`}>
                   <div
                  className='bg-[#e2d0d0] p-1 shadow-sm
-                 font-normal rounded-md text-[0.8em]'
+                 font-normal rounded-md text-[0.875em]'
                   >
                     None
                   </div>

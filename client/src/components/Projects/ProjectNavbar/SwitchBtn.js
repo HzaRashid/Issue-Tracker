@@ -1,18 +1,18 @@
 import React from 'react'
-import { useState } from 'react'
+// import { useState } from 'react'
 import { Switch } from '@headlessui/react'
 import { useStateContext } from '../../../contexts/ContextProvider'
 import { CustomTooltip } from '../../CustomTooltip'
 import { AiFillProject, AiOutlineUnorderedList } from 'react-icons/ai'
-import SwapProjNavVertical from './SwapProjNavVertical'
+// import SwapProjNavVertical from './SwapProjNavVertical'
 
 
 
 
 function SwitchBtn() {
-  const [enabled, setEnabled] = useState(false)
+  // const [enabled, setEnabled] = useState(false)
   const { SwapProjNav, setSwapProjNav } = useStateContext()
-  const { nav,setNav, ProjectNav, setProjectNav  } = useStateContext();
+  // const { nav,setNav, ProjectNav, setProjectNav  } = useStateContext();
   return (
     <> 
     <div className='flex justify-center items-center'

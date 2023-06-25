@@ -3,7 +3,7 @@ import {
   DndContext,
   DragOverlay,
   KeyboardSensor,
-  PointerSensor,
+  // PointerSensor,
   useSensor,
   useSensors,
   MouseSensor,
@@ -363,13 +363,13 @@ function Backlog() {
     else if (
       //  id[4]?.toLowerCase() !== ContainerIDs.backlog && 
     overContainer === ContainerIDs.backlog ) {
-        const overItems = items[overContainer]
-                          .slice(overIndex + 1)
-                          .map(item => item[0])
+        // const overItems = items[overContainer]
+        //                   .slice(overIndex + 1)
+        //                   .map(item => item[0])
 
-        const activeItems = items[ContainerIDs.backlog]
-        .slice(id[5] + 1)
-        .map(item => item[0])                
+        // const activeItems = items[ContainerIDs.backlog]
+        // .slice(id[5] + 1)
+        // .map(item => item[0])                
         
         axios.put(
           data.Issues + '/stage',

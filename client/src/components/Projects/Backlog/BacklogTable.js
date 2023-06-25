@@ -8,7 +8,7 @@ import {
 import {  useDroppable } from "@dnd-kit/core";
 import { useStateContext } from '../../../contexts/ContextProvider';
 import Empty from './Empty';
-import styled from '@emotion/styled';
+// import styled from '@emotion/styled';
 
 
 
@@ -29,7 +29,7 @@ function BacklogTable( props ) {
       <div className='ml-auto mr-auto mt-[4em] '>
       <p
       className='mb-2 lg:text-[1.55em] md:text-[1.3em] sm:text-[1.3em] 
-      text-[1.3em] drop-shadow-sm'
+      text-[1.3em] drop-shadow-sm font-medium'
       >
         Backlog
       </p>

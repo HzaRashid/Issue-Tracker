@@ -4,13 +4,13 @@ import "./NavBack.css"
 import { CustomTooltip } from '../../CustomTooltip'
 import { useStateContext } from '../../../contexts/ContextProvider';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import ProjectNavbar from './ProjectNavbar';
 
 
 function NavBackGdDefault( props ) {
   const currLocation = useLocation();
-  let goToPage = useNavigate();
+  // let goToPage = useNavigate();
   const isProjPage = currLocation.pathname
   .includes('proj-nav=true')
 
@@ -18,9 +18,13 @@ function NavBackGdDefault( props ) {
     const { 
         nav,
         //  setNav,
-        ProjectNav, setProjectNav, SwapProjNav,setSwapProjNav
+        ProjectNav, 
+        setProjectNav, 
+        // SwapProjNav,
+        setSwapProjNav
        } = useStateContext();
-    const { children } = props
+    // const { children } = props
+    // eslint-disable-next-line
     useEffect(() => setSwapProjNav(!isProjPage), []) 
     console.log(isProjPage)
   return (

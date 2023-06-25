@@ -104,7 +104,7 @@ function SprintList( props ) {
         > 
         <p
         className='mb-2 lg:text-[1.55em] md:text-[1.3em] sm:text-[1.3em] 
-        text-[1.3em] bg-inherit drop-shadow-sm'
+        text-[1.3em] bg-inherit drop-shadow-sm font-medium'
         >
             Sprints
         </p>
@@ -137,7 +137,7 @@ function SprintList( props ) {
          onClick={() => setSprintModal(true)}
 
          > 
-         <AiOutlinePlusCircle className='mr-1' color='#505050'/>
+         <AiOutlinePlusCircle className='mr-1 font-medium' color='#505050'/>
         Create
         </button>
         </CustomTooltip>
@@ -177,7 +177,7 @@ function SprintList( props ) {
                             }}
                         >
 
-                            <div>{sprint.title}</div>
+                            <div className='font-medium text-[1.1em]'>{sprint.title}</div>
 
                             </AccordionSummary>
 

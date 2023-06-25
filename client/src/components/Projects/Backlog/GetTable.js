@@ -1,6 +1,6 @@
 import React from 'react'
-import { ProjContexts } from '../../../contexts/ProjectContexts'
-import { useStateContext } from '../../../contexts/ContextProvider'
+// import { ProjContexts } from '../../../contexts/ProjectContexts'
+// import { useStateContext } from '../../../contexts/ContextProvider'
 import BacklogTable from './BacklogTable';
 import Empty from './Empty';
 function GetTable( props ) {

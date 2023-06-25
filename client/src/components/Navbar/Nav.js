@@ -12,8 +12,8 @@ import { CustomTooltip } from '../CustomTooltip';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useStateContext } from '../../contexts/ContextProvider';
 // eslint-disable-next-line
-import ProjectNavbar from '../Projects/ProjectNavbar/ProjectNavbar';
-import SelectedProjNav from '../Projects/SelectedProjNav/SelectedProjNav';
+// import ProjectNavbar from '../Projects/ProjectNavbar/ProjectNavbar';
+// import SelectedProjNav from '../Projects/SelectedProjNav/SelectedProjNav';
 import NavBackGd from '../Projects/ProjectNavbar/NavBackGd';
 import NavBackGdDefault from '../Projects/ProjectNavbar/NavBackGdDefault';
 import { SprintContexts } from '../../contexts/SprintContexts';
@@ -46,10 +46,13 @@ function Nav() {
   const { 
     nav, setNav,
     ProjectNav, setProjectNav,
-    ScreenWidth, SwapProjNav, 
+    ScreenWidth, 
+    // SwapProjNav, 
     // setSwapProjNav
    } = useStateContext();
-   const { showSprints, setShowSprints } = SprintContexts();
+   const { 
+    // showSprints, 
+    setShowSprints } = SprintContexts();
 
   //  const { SelectedProj } = ProjContexts();
 
@@ -86,7 +89,7 @@ function Nav() {
       style={{
         visibility: nav ? 'visible' : 'hidden',
         transition: '0.1s',
-        fontWeight: 300
+        fontWeight: 400
       }}
       >
         Flow
@@ -161,7 +164,7 @@ function Nav() {
           className='title'
           style={{
             visibility: nav ? 'visible' : 'hidden',
-            fontWeight: 300
+            fontWeight: 400
           }}
           >
             {item.title}

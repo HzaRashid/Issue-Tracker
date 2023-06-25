@@ -5,11 +5,11 @@ import { IssueContexts } from '../../../contexts/IssueContexts';
 import { SprintContexts } from '../../../contexts/SprintContexts';
 import BacklogTable from './BacklogTable';
 import { AiOutlinePlus } from 'react-icons/ai'
-import Empty from './Empty';
+// import Empty from './Empty';
 import { useStateContext } from '../../../contexts/ContextProvider';
 import { TeamContexts } from '../../../contexts/TeamContexts';
-import GetTable from './GetTable';
-import styled from '@emotion/styled';
+// import GetTable from './GetTable';
+// import styled from '@emotion/styled';
 const data = require('../../../pages/routes.json')
 
 
@@ -20,7 +20,7 @@ function BacklogContainer( props ) {
    const { nav, ProjectNav, ScreenWidth, 
   
           } = useStateContext();
-   const [doneLoad, setDoneLoad] = useState(false)
+  //  const [doneLoad, setDoneLoad] = useState(false)
     const { setIssueModal } = IssueContexts();
     const {
       Backlog, setBacklog,

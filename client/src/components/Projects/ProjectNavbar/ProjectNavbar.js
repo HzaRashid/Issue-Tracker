@@ -10,7 +10,7 @@ import { ProjContexts } from '../../../contexts/ProjectContexts';
 import { CustomTooltip } from '../../CustomTooltip';
 import Axios from 'axios'
 
-import NavBackGd from './NavBackGd';
+// import NavBackGd from './NavBackGd';
 const data = require('../../../pages/routes.json');
 
 
@@ -19,11 +19,12 @@ function ProjectNavbar( props ) {
   // eslint-disable-next-line
   const currLoc = useLocation();
   let goToPage = useNavigate();
-  const { isProjPage } = props;
+  // const { isProjPage } = props;
 
   const { 
     setNav,
-    ProjectNav, setProjectNav,
+    // ProjectNav, 
+    setProjectNav,
    } = useStateContext();
 
    const {

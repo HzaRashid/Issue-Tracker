@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React  from 'react'
 import { MdError } from 'react-icons/md'
 import { AiFillCheckSquare } from 'react-icons/ai'
 import { AiFillTool } from 'react-icons/ai'
@@ -23,14 +23,19 @@ function GetSprintRow( props ) {
     transition,
     opacity: isDragging ? 0 : 1,
   };
-  const { Issues, setEditIssueModal, SelectedIssue, setSelectedIssue } = IssueContexts();
+  const { 
+    // Issues, 
+    setEditIssueModal,
+    // SelectedIssue, 
+    setSelectedIssue } = IssueContexts();
+
 
   return (
     <> 
             <div 
               className='
               bg-[#e6e6e6] text-[#505050] p-1 w-[100%]
-              hover:bg-[#e0e0e0] flex
+              hover:bg-[#e0e0e0] flex text-[0.925em]
               items-center justify-between'
               style={style}
               ref={setNodeRef} 
@@ -92,7 +97,7 @@ function GetSprintRow( props ) {
                   >
                   <div 
                   className='bg-[#dbdbdb] p-1 shadow-sm
-                  font-normal rounded-md text-[0.8em]'
+                  font-normal rounded-md text-[0.875em]'
                   > 
                   {props.id[3].firstName + ' ' + props.id[3].lastName} 
                   </div> 
@@ -102,7 +107,7 @@ function GetSprintRow( props ) {
                   <CustomTooltip title={`Unassigned`}>
                   <div
                  className='bg-[#e2d0d0] p-1 shadow-sm
-                 font-normal rounded-md text-[0.8em]'
+                 font-normal rounded-md text-[0.875em]'
                   >
                     None
                   </div>

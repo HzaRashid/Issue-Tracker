@@ -61,7 +61,7 @@ function SprintTable( props ) {
         hover:cursor-pointer rounded-lg 
         md:text-[1.15em] sm:text-[1.15em] 
         xs:text-[1em] text-[1em] bg-transparent
-        block h-auto max-h-[10em] overflow-auto `}
+        block h-auto max-h-[10em] overflow-auto font-medium`}
         ref={setNodeRef}
       >
         {items.length ? 

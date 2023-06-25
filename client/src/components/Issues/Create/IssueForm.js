@@ -68,7 +68,7 @@ function IssueForm() {
 
     })
 
-    const SelSprint = SelectedSprint;
+    // const SelSprint = SelectedSprint;
   return (
     <>
 
