@@ -35,13 +35,13 @@ const getIssues = (req, res) => {
 
 
 
-const addIssue = async (req, res, next) => {
+const addIssue = async (req, res) => {
     try { 
         const issueFields = req.body;
         const newIssue = await Issue.create(issueFields);
         req.body.IssueID = newIssue._id;
         req.body.UserID = newIssue.assignedTo;
-        next();
+        res.json(newIssue).status(200).end();
     } 
     catch (err) {
         console.log(err.message)

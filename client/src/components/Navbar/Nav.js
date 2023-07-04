@@ -189,7 +189,9 @@ function Nav() {
     opacity:    ProjectNav ? '1'       : '0',
     transition: ProjectNav ? '0.4s' : '0.2s'
   }}>  */}
+  <div> 
   <NavBackGd/>
+  </div>
   {/* </div> */}
   </> 
   : 
@@ -198,8 +200,9 @@ function Nav() {
   //   opacity:    ProjectNav ? '1'       : '0',
   //   transition: ProjectNav ? '0.4s' : '0.1s'
   // }}> 
+  <div style={{ zIndex: 50 }}> 
   <NavBackGdDefault/>
-  // </div>
+   </div>
   }
 
 

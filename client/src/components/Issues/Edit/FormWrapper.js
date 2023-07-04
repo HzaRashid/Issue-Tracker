@@ -74,7 +74,7 @@ function FormWrapper( props ) {
 
       }, [SelectedIssue, Sprints]
      )
-     useEffect(() => console.log(SelectedIssue), [SelectedIssue])
+    //  useEffect(() => console.log(SelectedIssue), [SelectedIssue])
 
      useEffect(
       () => {
@@ -164,8 +164,8 @@ function FormWrapper( props ) {
 
     if (currLoc.pathname.includes('sprint-board')){
       const stage = titleCase(issue?.stage)
-      let prevIssues = items[stage].slice();
-      prevIssues = prevIssues.filter(
+      let prevIssues = items[stage]?.slice();
+      prevIssues = prevIssues?.filter(
         issue => issue._id !== SelectedIssue._id
       )
       

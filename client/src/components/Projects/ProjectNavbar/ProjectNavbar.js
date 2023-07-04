@@ -9,6 +9,7 @@ import { useStateContext } from '../../../contexts/ContextProvider';
 import { ProjContexts } from '../../../contexts/ProjectContexts';
 import { CustomTooltip } from '../../CustomTooltip';
 import Axios from 'axios'
+import { MdEdit } from 'react-icons/md';
 
 // import NavBackGd from './NavBackGd';
 const data = require('../../../pages/routes.json');
@@ -25,12 +26,13 @@ function ProjectNavbar( props ) {
     setNav,
     // ProjectNav, 
     setProjectNav,
+    
    } = useStateContext();
 
    const {
-    Projects, setProjects,
-    setSelectedProj,
-    setProjModal
+    Projects, setProjects, 
+    setSelectedProj, EditProj, 
+    setProjModal, setEditProjModal, setEditProj
   } = ProjContexts();
 
    const [Search, setSearch] = useState('');
@@ -39,7 +41,7 @@ function ProjectNavbar( props ) {
     .then( 
       response => setProjects(response.data) 
       // eslint-disable-next-line
-      )}, [])
+      )}, [EditProj])
       
 
   // console.log(ProjectNav)
@@ -125,7 +127,7 @@ function ProjectNavbar( props ) {
           (item, key) => 
           (
 
-            <div key={key}>
+            <div key={key} >
             <Link
             to={`/projects/${item.title}/backlog/proj-nav=true`}
             key={key} 
@@ -142,7 +144,28 @@ function ProjectNavbar( props ) {
                 'ProjOn' : 'ProjOff'
             }
             > 
+            
             <button className='project-title'>{item.title}</button>
+            
+            <div className='flex w-[100%] justify-end'> 
+            <button onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation(); 
+              setEditProjModal(true); 
+              setEditProj(true);
+              setSelectedProj(item);
+              console.log('flog')
+              }}
+              > 
+              <MdEdit 
+              className='p-1 text-[1.45em] text-[#505050]
+              hover:bg-[#304669] rounded-md 
+              hover:text-[#eaeaea]'
+              
+              />
+              </button>
+            </div>
+
             </Link>
             </div>
           )
@@ -165,3 +188,45 @@ function ProjectNavbar( props ) {
 }
 
 export default ProjectNavbar
+
+
+// {
+//   "_id": {
+//     "$oid": "62bcbc84f356c127c05c1708"
+//   },
+//   "key": "PRO-1",
+//   "title": "Project 1",
+//   "type": "Scrum",
+//   "assignedTo": [
+//     "all"
+//   ],
+//   "sprints": [
+//     {
+//       "$oid": "62d2e7af32f4e69c0b0d0360"
+//     },
+//     {
+//       "$oid": "62d3182d2791577eb46f660c"
+//     }
+//   ],
+//   "startDate": {
+//     "$date": "2022-07-07T00:00:00.000Z"
+//   },
+//   "endDate": {
+//     "$date": "2022-08-07T00:00:00.000Z"
+//   },
+//   "createdAt": {
+//     "$date": "2022-06-29T20:56:36.000Z"
+//   },
+//   "__v": 0,
+//   "backlog": [
+//     {
+//       "$oid": "62db18b556554478b77e2c3a"
+//     },
+//     "62d1d7bfe6bde173799fd497",
+//     "62d218c47b614e5221809f2f",
+//     "62d219177b614e5221809f32",
+//     "62d2c692663259ff3eae8f4d",
+//     "62d2c756663259ff3eae8f50",
+//     "62d73d921393f573f1fa6722"
+//   ]
+// }

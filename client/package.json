@@ -9,6 +9,7 @@
     "@dnd-kit/utilities": "^3.2.0",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.8.1",
+    "@faker-js/faker": "^8.0.2",
     "@headlessui/react": "^1.7.14",
     "@mui/icons-material": "^5.8.3",
     "@mui/material": "^5.8.1",

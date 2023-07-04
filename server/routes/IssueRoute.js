@@ -15,6 +15,7 @@ const {
 } = require('../controllers/IssueCtrl')
 const {     
     sendIssueVersions,
+    getIssueVersions
 } = require('../controllers/IssueVersionCtrl')
 const { deleteSprintStage } = require('../controllers/SprintCtrl')
 
@@ -22,8 +23,9 @@ module.exports = router;
 
 
 router.get('/', getIssues);
-router.get('/versions', sendIssueVersions)
-router.post('/', addIssue);
+router.get('/versions/sse', sendIssueVersions)
+router.get('/versions', getIssueVersions)
+router.post('/add-issue', addIssue);
 router.put('/summary', editIssueSummary);
 router.put('/type', editIssueType);
 router.put('/stage', editIssueStage);

@@ -12,6 +12,8 @@ import { BsCheck2Circle, BsChevronDown} from 'react-icons/bs'
 import axios from 'axios';
 import { Types } from './Types';
 import { isEmpty } from '../../utils/isEmptyObject';
+import { Avatar } from '@mui/material';
+import stringAvatar from '../../utils/UserAvatar/StringAvatar';
 
 const data = require('../../../pages/routes.json')
 
@@ -89,22 +91,22 @@ function IssueForm() {
     </div>
 
     <div className='flex items-center justify-center mt-[1.75em]'>
-    <ul className='h-[50vh] overflow-auto'>
+    <ul className='h-[40vh] overflow-auto'>
 
-    <li className='color-[#0000001a] font-light'>
+    <li className='color-[#00000010] font-light'>
       <label
       className='block mb-[0.2em] text-[0.95em] text-[#505050]'
       >
       <div className='flex items-center'>
-        <p className='font-light'>Type</p>
+        <p className='font-normal text-[0.875em] text-[#303030]'>Type</p>
         <p className='text-[#c94e4e] whitespace-pre'> *</p>
       </div>
       </label>
 
 
         <div className={`
-        flex items-center bg-[#0000001a] text-[#505050] 
-        p-[0.2em] w-fit hover:cursor-pointer rounded-md `}
+        flex items-center bg-[#00000010] text-[#505050] text-[0.95em]
+        p-[0.2em] w-fit hover:cursor-pointer rounded-md font-normal `}
         onClick={() => {
           if (ShowTypes) formik.setFieldTouched('IssueType', true);
           setShowTypes(!ShowTypes);
@@ -113,11 +115,19 @@ function IssueForm() {
         name='IssueType'
         onBlur={formik.handleBlur}
         >
-          <div>
+          <div className='text-[#303030]'>
            {
             formik.values.IssueType.length ? 
-            formik.values.IssueType :
-            'Issue Type..'  
+            <>
+            <div className='text-[0.975em]'>
+              {formik.values.IssueType}
+            </div>
+            </> :
+              <>
+              <div className='text-[0.925em]'>
+                Issue Type..
+              </div>
+              </>
           }
           </div>
           <div className='ml-2'>
@@ -129,8 +139,8 @@ function IssueForm() {
         </div>
 
       { ShowTypes &&
-        <ul className='bg-[#0000001a] text-[#505050] 
-        w-[7em] rounded-md shadow-md mt-[0.2em]'
+        <ul className='bg-[#00000010] text-[#505050] 
+        w-[7em] rounded-md shadow-md mt-[0.2em] text-[0.9em]'
         >
         {
         Types.map(
@@ -145,7 +155,7 @@ function IssueForm() {
           }}
           >
             
-            <div className='flex items-center'> 
+            <div className='flex items-center font-normal'> 
             <div> {type.icon} </div>
             <div className='ml-2'> {type.title} </div>
             </div>
@@ -171,7 +181,7 @@ function IssueForm() {
     {
       NewSprintIssue ? 
       
-      <li className='color-[#0000001a] mt-[2em] font-light'>
+      <li className='color-[#00000010] mt-[2em] font-light'>
       <label
       className='block mb-[0.2em] text-[0.95em] text-[#505050]'
       >
@@ -183,7 +193,7 @@ function IssueForm() {
 
 
         <div className={`
-        flex items-center bg-[#0000001a] text-[#505050] 
+        flex items-center bg-[#00000010] text-[#505050] 
         p-[0.2em] w-fit hover:cursor-pointer rounded-md`}
         onClick={() => {
           if (ShowSprints) formik.setFieldTouched('sprint', true);
@@ -208,7 +218,7 @@ function IssueForm() {
         </div>
 
       { ShowSprints &&
-        <ul className='bg-[#0000001a] text-[#505050] 
+        <ul className='bg-[#00000010] text-[#505050] 
         w-[7em] rounded-md shadow-md mt-[0.2em]' 
         >
         {
@@ -246,18 +256,19 @@ function IssueForm() {
       
       : null
     }
-    <li className=' mt-[2em] color-[#0000001a] font-light'>
+    <li className=' mt-[2em] color-[#00000010] font-light'>
       <label
-      className='block mb-[0.2em] text-[0.95em] text-[#505050]'
+      className='block mb-[0.2em] text-[0.85em] text-[#303030]
+      font-normal'
       >
-        Assign to
+        Assignee
       </label>
 
   { 
       formik.values.assignTo.length ? 
 
-      <div className='flex items-center 
-      bg-[#0000001a] text-[#505050] w-fit rounded-lg p-1'
+      <div className='flex items-center text-[#303030]
+      bg-[#00000010] w-fit rounded-lg p-1 font-normal text-[0.9em]'
       >
       <div className='mr-2'>{
       formik.values.assignTo[0].firstName + ' ' 
@@ -274,9 +285,10 @@ function IssueForm() {
       <div className='flex items-center'>
   
         <input id='assign' type='text' placeholder='Search users..' 
-        className='block bg-[#0000001a] lg:w-[20em] md:w-[20em] 
-        w-[50vw] rounded-lg outline-none font-light
-        p-[0.2em] placeholder:text-[#787878]'
+        className='block bg-[#00000010] lg:w-[20em] md:w-[20em] 
+        w-[50vw] rounded-lg outline-none
+        p-[0.2em] placeholder:text-[#787878]
+        font-normal text-[0.9em] text-[#303030]'
         value={Search}
         onChange={(e) => setSearch(e.target.value)}
         onClick={() => setShowUsers(true)}
@@ -296,7 +308,7 @@ function IssueForm() {
   
         {
           showUsers && 
-          <ul className='bg-[#eaeaea] h-[6em] font-light
+          <ul className='bg-[#eaeaea] h-[6em] font-normal text-[0.9em] text-[#303030]
           overflow-y-auto lg:w-[20em] md:w-[20em] w-[50vw]' 
           >
   
@@ -321,8 +333,8 @@ function IssueForm() {
         .map(
           (user, key) =>
           <li key={key}
-          className='hover:cursor-pointer
-          hover:bg-slate-200 rounded-md p-1'
+          className='hover:cursor-pointer flex items-center
+          hover:bg-slate-200 rounded-md p-1 space-x-2'
           onClick={
             () => {
               formik.setFieldValue('assignTo', [user]);
@@ -331,10 +343,20 @@ function IssueForm() {
             }
           }
           >
+                      <Avatar className=' antialiased'
+            {...stringAvatar(
+              user.firstName + ' ' + user.lastName,
+              22, 
+              22, 
+              '0.65em'
+              )
+            } 
+          />
             <div>
               {user.firstName + ' ' + user.lastName}
-  
             </div>
+
+
           </li>
           )
   
@@ -355,12 +377,12 @@ function IssueForm() {
       text-[0.95em] text-[#505050]'
       >
         <div className='flex items-center'>
-          <p>Summary</p>
+          <p className='font-normal text-[0.875em] text-[#303030]'>Summary</p>
           <p className='text-[#c94e4e]'>*</p>
         </div>
       </label>
       <textarea id='title 'type='text' placeholder='Describe..' 
-      className='block bg-[#0000001a] lg:w-[20em] md:w-[20em] 
+      className='block bg-[#00000010] lg:w-[20em] md:w-[20em] 
       w-[50vw] rounded-lg outline-none min-h-[2.5em] font-light
       p-[0.2em] overflow-auto placeholder:text-[#787878]'
       name='IssueSummary'
@@ -440,25 +462,22 @@ function IssueForm() {
         try {
           let response = await axios
                                   .post(
-                                  data.Issues, 
+                                  data.Issues + '/add-issue', 
                                   Issue
                                   )
-  
+          console.log(response)
           if (response.status === 200) {
   
-              setIssueStatus(200);
-              setIssueModal(false);
-              formik.resetForm();
-              
               if (isSprintIssue) {
                 setSprintIssues([...SprintIssues, Issue])
                 
               } 
-              else if ( Issue.stage === 'backlog' ) {
-                setBacklog([...Backlog, Issue])
+              else setBacklog([...Backlog, Issue])
                 
-            }
-    
+            
+              setIssueStatus(200);
+              setIssueModal(false);
+              formik.resetForm();
           } 
   
           } catch (error) {

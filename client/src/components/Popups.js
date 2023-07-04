@@ -8,6 +8,7 @@ import IsMobile from '../components/utils/isMobile'
 import DeleteStage from './Projects/SprintBoard/EditStage/Delete/DeleteStage'
 import SetIssueLimit from './Projects/SprintBoard/EditStage/IssueLimit/SetIssueLimit'
 import EditIssue from './Issues/Edit/EditIssue'
+import EditProj from './Projects/Edit/EditProj'
 
 
 
@@ -18,6 +19,7 @@ function Popups() {
     <CreateIssue/>
     <IssueStatus/>
     <CreateProj/>
+    <EditProj/>
     <ProjStatus/>
     <CreateSprint/>
     <DeleteStage/>

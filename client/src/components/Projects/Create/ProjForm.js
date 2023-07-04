@@ -31,7 +31,7 @@ function ProjForm( {showReview, setShowReview} ) {
 
     const [Search, setSearch] = useState('');
     const [showUsers, setShowUsers] = useState(false);
-    const [ShowTypes, setShowTypes] = useState(false)
+    // const [ShowTypes, setShowTypes] = useState(false)
 
     const UniqueTitleMsg = 'A project with this title already exists'
 
@@ -52,7 +52,6 @@ function ProjForm( {showReview, setShowReview} ) {
     const formik = useFormik({
     initialValues: {
         ProjTitle: '',
-        ProjType: '',
         ProjTeam: [],
     },
     validationSchema: Yup.object({
@@ -118,7 +117,7 @@ function ProjForm( {showReview, setShowReview} ) {
         </div>}
       </li>
       
-      <li className='mt-[2em] color-[#0000001a]'>
+      {/* <li className='mt-[2em] color-[#0000001a]'>
 
     <div className={`
         flex items-center bg-[#0000001a] text-[#505050] 
@@ -182,7 +181,7 @@ function ProjForm( {showReview, setShowReview} ) {
       </div> 
     }
 
-    </li>
+    </li> */}
     
     <li className=' mt-[2em] color-[#0000001a]'>
     <label
@@ -359,7 +358,7 @@ function ProjForm( {showReview, setShowReview} ) {
       onClick={() => {
         setProjModal(false);
         setShowUsers(false);
-        setShowTypes(false);
+       
         formik.resetForm();
       }}
       >
@@ -372,7 +371,7 @@ function ProjForm( {showReview, setShowReview} ) {
     {
       formik.isValid && 
       formik.values.ProjTitle.replace(/\s/g, '').length > 0 &&
-      formik.values.ProjType.length > 0 &&
+      
 
       <CustomTooltip title='Continue' placement='top'>
       <button type="button"
@@ -399,7 +398,6 @@ function ProjForm( {showReview, setShowReview} ) {
     showReview={showReview} 
     setShowReview={setShowReview}
     Title={formik.values.ProjTitle}
-    Type={formik.values.ProjType}
     Team={formik.values.ProjTeam}
     ResetForm={formik.resetForm}
     /> 

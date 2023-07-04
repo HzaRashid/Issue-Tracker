@@ -93,7 +93,7 @@ function NavBackGd( props ) {
       style={{
         marginLeft: ProjectNav ? '11.15em' : !ProjectNav && SwapProjNav ? '-3em' : '2em',
         zIndex: '5',
-        position: 'absolute',
+        position: 'fixed',
         marginTop: '2.4em',
         borderRadius: '1em',
         border: '0.05em solid #0000001a',

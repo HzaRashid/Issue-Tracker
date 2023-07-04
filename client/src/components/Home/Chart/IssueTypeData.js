@@ -1,106 +1,39 @@
-import React, { PureComponent } from 'react';
-import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts';
+import React from 'react';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Doughnut } from 'react-chartjs-2';
 
-const data = [
-  { name: 'Group A', value: 400 },
-  { name: 'Group B', value: 300 },
-  { name: 'Group C', value: 300 },
-  { name: 'Group D', value: 200 },
-];
+ChartJS.register(ArcElement, Tooltip, Legend);
 
-const renderActiveShape = (props) => {
-  const RADIAN = Math.PI / 180;
-  const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle, fill, payload, percent, value } = props;
-  const sin = Math.sin(-RADIAN * midAngle);
-  const cos = Math.cos(-RADIAN * midAngle);
-  const sx = cx + (outerRadius + 10) * cos;
-  const sy = cy + (outerRadius + 10) * sin;
-  const mx = cx + (outerRadius + 30) * cos;
-  const my = cy + (outerRadius + 30) * sin;
-  const ex = mx + (cos >= 0 ? 1 : -1) * 22;
-  const ey = my;
-  const textAnchor = cos >= 0 ? 'start' : 'end';
+export const data = {
+  labels: ['Bug', 'Task', 'Feature'],
+  datasets: [
+    {
+      label: '# of Issues',
+      data: [12, 19, 3],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        '#C5E1D1',
 
-  return (
-    <svg 
-    style={{stroke: 'transparent', strokeWidth: '0px', outline: 'none'}}
-    className='border-transparent focus:border-transparent focus:ring-0'
-    tabIndex={-1}
-    id='foo123'
-    onClick={() => { console.log('here') } }
-    >
-      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
-        {payload.name}
-      </text>
-      <Sector
-      
-      tabIndex={-1}
-      cx={cx}
-      cy={cy}
-      innerRadius={innerRadius}
-      outerRadius={outerRadius}
-      startAngle={startAngle}
-      endAngle={endAngle}
-      fill={fill}
-        style={{outline: 'none'}}
-      />
-      <Sector
-      
-      tabIndex={-1} 
-      style={{outline: 'none'}}
-      cx={cx}
-      cy={cy}
-      startAngle={startAngle}
-      endAngle={endAngle}
-      innerRadius={outerRadius + 6}
-      outerRadius={outerRadius + 10}
-      fill={fill}
-       
-      />
-      <path   style={{outline: 'none'}} tabIndex={-1}  d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
-      <circle style={{outline: 'none'}} tabIndex={-1} cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-      <text   style={{outline: 'none'}} tabIndex={-1}  x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`PV ${value}`}</text>
-      <text   style={{outline: 'none'}} tabIndex={-1}  x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
-        {`(Rate ${(percent * 100).toFixed(2)}%)`}
-      </text>
-    </svg>
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        '#98C6AD',
 
-  );
+      ],
+      borderWidth: 1,
+    },
+  ],
 };
 
-
-export default class Example extends PureComponent {
-
-  state = {
-    activeIndex: 0,
-  };
-
-  onPieEnter = (_, index) => {
-    this.setState({
-      activeIndex: index,
-    });
-  };
-  
-
-
-  render() {
-    return (
-      <ResponsiveContainer width="100%" height={250}>
-        <PieChart width={400} height={400}>
-          <Pie
-            activeIndex={this.state.activeIndex}
-            activeShape={renderActiveShape}
-            data={data}
-            cx="50%"
-            cy="50%"
-            innerRadius={60}
-            outerRadius={80}
-            fill="#8884d8"
-            dataKey="value"
-            onMouseEnter={this.onPieEnter}
+export function IssueTypeData() { 
+  return <div className='h-[200px] w-[50vw]'> 
+          <Doughnut
+          data={data} 
+          options={{ maintainAspectRatio: false }}
+          height={'250vh'}
+          width={'250vw'}
           />
-        </PieChart>
-      </ResponsiveContainer>
-    );
-  }
+          </div>
 }

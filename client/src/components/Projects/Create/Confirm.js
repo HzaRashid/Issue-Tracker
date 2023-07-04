@@ -15,43 +15,46 @@ function Confirm({...props}) {
  
     const { 
         setProjStatus, 
+        ProjStatus,
         setProjModal, 
-        Projects, setProjects
+        setEditProjModal,
+        Projects, setProjects,
+        EditProj, setEditProj
+
      } = ProjContexts();
-
+    //  console.log(props)
      const newProjectReq = {
-        title: props.Title,
-        type: props.Type,
-        assignedTo: props.Team,
-        
+        _id: props?._id,
+        title: props?.Title,
+        assignedTo: props?.Team,
     }
-
+    console.log(EditProj)
   return (
     <>
     <div>
     <h1 className='p-2 text-[1.1em] 
     text-[#505050] break-words font-normal'>
-        Review
+       {`Review Project`}
     </h1>
     </div>
-    <div className={`${props.Team.length === 0 ? 'mr-[1.3em]':''} 
+    <div className={`${props?.Team?.length === 0 ? 'mr-[1.3em]':''} 
     flex items-center justify-center overflow-auto
     mt-[1em] lg:ml-[0.5em] mx-auto text-[1.4em] font-light`}>
         
         <div>
-        <label htmlFor='Title' className='block'>
-        <h1 className='text-[#505050] text-[0.9em]'>
+        <div  className='block'>
+        <h1 className='text-[#404040] text-[0.6em] font-normal'>
                 Title 
             </h1>
-        </label>
+        </div>
             <div id='Title' 
-            className='block text-[#2d695e] mt-1 shadow-sm
-            bg-neutral-200 w-fit p-[0.15em] rounded-lg'
+            className='block text-[#2d695e] mt-1  font-normal
+            bg-neutral-200 w-fit p-[0.25em] rounded-lg text-[0.775em]'
             >
                 {props.Title}
             </div>
 
-        <label htmlFor='Type' className='block mt-[1em] '>
+        {/* <label htmlFor='Type' className='block mt-[1em] '>
         <h1 className='text-[#505050] text-[0.9em]' >
                 Type 
          </h1>
@@ -61,19 +64,19 @@ function Confirm({...props}) {
             bg-neutral-200 w-fit p-[0.15em] rounded-lg shadow-sm
             '>
                 {props.Type}
-            </div>
+            </div> */}
 
-        <label htmlFor='Team' className='block mt-[1em]'>
-        <h1 className='text-[#505050] text-[0.9em]'>
+        <div  className='block mt-[1em]'>
+        <h1 className='text-[#404040] text-[0.6em] font-normal'>
             Team 
         </h1>
-        </label> 
+        </div> 
         {
-        props.Team.length > 0 && 
+        props?.Team?.length > 0 && 
             <div id='Team' className='block text-[#505050]'>
-                <ul className='inline-block
-                 w-[30vw] lg:w-[20vw]
-                 text-[0.75em] whitespace-nowrap mt-1
+                <ul className='inline-block 
+                 w-[30vw] lg:w-[20vw] font-normal
+                 text-[0.7em] whitespace-nowrap mt-1
                  break-normal overflow-x-auto overflow-y-auto'
                  >
                 {
@@ -82,8 +85,8 @@ function Confirm({...props}) {
                         (member, key) => 
                         <li key={key} className='inline-block pr-3 last:pr-0'>
                             <div className='text-[#2d695e] 
-                            font-light shadow-sm
-                            bg-neutral-200 w-fit p-[0.15em] rounded-lg'>
+                            font-normal shadow-sm
+                            bg-neutral-200 w-fit p-[0.2em] rounded-lg'>
                                 {member.firstName + ' ' + member.lastName}
                             </div>
                         </li>
@@ -93,8 +96,8 @@ function Confirm({...props}) {
             </div>
             }
         {
-            props.Team.length===0 &&
-            <div>None</div>
+            props?.Team?.length===0 &&
+            <div className='text-[0.9em]'>None</div>
         }
 
         </div>
@@ -120,26 +123,52 @@ function Confirm({...props}) {
     className='hover:bg-[#e2e2e2]
     ease-in-out duration-100'
     onClick={
-        async () => {
-        
-        try {
-        let response = await axios
-                                .post(
-                                data.Projects, 
-                                newProjectReq
-                                )
-        console.log(response)
+    async () => {
+    try {
+        if ( !( EditProj === true ) ) {
+            let response = await axios
+                                    .post(
+                                    data.Projects, 
+                                    newProjectReq
+                                    )
+            console.log(response)
 
-        if (response.status === 200){
+            if (response.status === 200) {
 
-            setProjStatus(200);
-            setProjModal(false);
-            props.setShowReview(false)
-            props.ResetForm();
-            setProjects([...Projects, newProjectReq])
-  
-        } 
+                setProjStatus(200);
+                setProjModal(false);
+                props.setShowReview(false)
+                props.ResetForm();
+                setProjects([...Projects, newProjectReq])
+    
+            }
+            return
+    }  
+    let titleRes = await axios
+                            .put(
+                            data.Projects + '/title', 
+                            newProjectReq
+                            );
+    let teamRes = await axios
+                            .put(
+                            data.Projects + '/team', 
+                            newProjectReq
+                            )
+                            
+    
+    if ( titleRes.status === 200 && 
+          teamRes.status === titleRes.status ) {
+        setEditProjModal(false)
+        setEditProj(false);
 
+        setProjStatus(200);
+        setProjModal(false);
+        props.setShowReview(false)
+
+
+    }
+
+    // setProjStatus(titleRes.status === teamRes.status ? )
         } catch (error) {
             console.log(error.response)
             setProjStatus(error.response.status)
@@ -157,7 +186,8 @@ function Confirm({...props}) {
     </CustomTooltip>
     </div>
     {/* </div> */}
-
+    <div className='absolute'> 
+    </div>
     </>
   )
 }

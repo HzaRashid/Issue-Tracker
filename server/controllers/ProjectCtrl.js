@@ -1,6 +1,7 @@
 const { nextDay } = require('date-fns');
 const e = require('express');
-const Project = require('../models/Project')
+const Project = require('../models/Project');
+var mongoose = require('mongoose');
 
 const getProjects = (req, res) => {
     Project.find({}, 
@@ -48,10 +49,30 @@ const editProjectTitle = async (req, res) => {
     };
 
 
+const editProjectTeam = async (req, res) => {
+
+    const projectFields = req.body;
+    Project.findById(
+        projectFields?._id, 
+        (err, doc) => {
+        if (err) {
+            console.log(err)
+            res.status(400).send("Request failed")
+        }
+        doc.assignedTo = projectFields.assignedTo;
+        doc.updatedAt = Date();
+        doc.markModified('assignedTo');
+        doc.save();
+        res.status(200).send(projectFields.title)
+    });
+
+};
+
+
 const editProjectStartDate = async (req, res) => {
     const projectFields = req.body;
     Project.findById(
-        projectFields._id, 
+        mongoose.Types.ObjectId(projectFields?._id), 
         (err, doc) => {
         if (err) {
             console.log(err)
@@ -118,6 +139,7 @@ module.exports = {
     getProjects, 
     addProject, 
     editProjectTitle,
+    editProjectTeam,
     editProjectDesc,
     editProjectStartDate, 
     editProjectEndDate,

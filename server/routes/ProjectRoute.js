@@ -5,6 +5,7 @@ const {
     getProjects, 
     addProject, 
     editProjectTitle,
+    editProjectTeam,
     editProjectDesc,
     editProjectStartDate, 
     editProjectEndDate,
@@ -16,6 +17,7 @@ module.exports = router;
 router.get('/', getProjects);
 router.post('/', addProject);
 router.put('/title', editProjectTitle);
+router.put('/team', editProjectTeam);
 router.put('/key', editProjectTitle);
 router.put('/startDate', editProjectStartDate);
 router.put('/endDate', editProjectEndDate);

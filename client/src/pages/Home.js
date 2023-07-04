@@ -1,10 +1,33 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useLocation } from 'react-router-dom';
 import CurrentWork from '../components/Home/CurrentWork';
 import { useStateContext } from '../contexts/ContextProvider';
+import { SprintContexts } from '../contexts/SprintContexts';
+import axios from 'axios';
+import { IssueContexts } from '../contexts/IssueContexts';
+const data = require('../pages/routes.json')
 
 function Home() {
   const { nav, ProjectNav } = useStateContext();
+  const { setSprints } = SprintContexts();
+  const { setIssueVersions } = IssueContexts();
+  useEffect(() => {
+    axios.get(
+      data.Sprints
+    )
+    .then(res => setSprints(res.data))
+    .catch(err => console.log(err))
+    // eslint-disable-next-line
+    }, [])
+    useEffect(() => {
+      axios.get(
+        data.IssueVersions
+      )
+      .then(res => setIssueVersions(res.data))
+      .catch(err => console.log(err))
+      // eslint-disable-next-line
+      }, [])
+
 
   const currLoc = useLocation();
 

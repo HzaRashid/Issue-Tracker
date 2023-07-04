@@ -1,12 +1,14 @@
+import axios from "axios";
 import  React, { 
     createContext, 
     useContext, 
+    useEffect, 
     useState,
     // useEffect
 } from "react";
 // import axios from "axios";
 
-// const data = require('../pages/routes.json')
+const data = require('../pages/routes.json')
 
 
 const stateContext = createContext();
@@ -27,6 +29,7 @@ export const SprintContextProvider = ({children}) => {
     const [SprintStatus, setSprintStatus] = useState(-1);
     const [AddedStage, setAddedStage] = useState(false);
     const [showSprints, setShowSprints] = useState(false);
+
           
 
     return (

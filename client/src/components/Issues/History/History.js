@@ -20,7 +20,7 @@ function History() {
   const [ isListen, setIsListen ] = useState(false)
   useEffect(() => {
     if (!isListen){
-      const events = new EventSource(data.IssueVersions);
+      const events = new EventSource(data.IssueVersionsSSE);
       events.onmessage = ( e ) => {
           const parsedComments = JSON.parse( e.data )?.msg
           setIssueVersions(parsedComments);
@@ -219,7 +219,7 @@ function getSprintNewField (IssueVersion, Sprints) {
 
 
 function titleCase(str) {
-  // console.log(str)
+  if (!str) return
   var splitStr = str.toLowerCase().split(' ');
   for (var i = 0; i < splitStr.length; i++) {
       splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     

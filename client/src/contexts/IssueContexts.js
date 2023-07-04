@@ -8,6 +8,7 @@ const stateContext = createContext();
 
 export const IssueContextProvider = ({children}) => {
     const [Issues, setIssues] = useState([]);
+    const [IssueVersions, setIssueVersions] = useState([]);
     const [IssueModal, setIssueModal] = useState(false)
     const [IssueStatus, setIssueStatus] = useState(-1);
     const [EditIssueModal, setEditIssueModal] = useState(false)
@@ -18,6 +19,7 @@ export const IssueContextProvider = ({children}) => {
         <stateContext.Provider
         value={{ 
             Issues, setIssues,
+            IssueVersions, setIssueVersions,
             IssueModal, setIssueModal,
             IssueStatus, setIssueStatus,
             EditIssueModal, setEditIssueModal,

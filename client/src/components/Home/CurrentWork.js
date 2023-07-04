@@ -1,39 +1,75 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import List from './Issues/List'
-import { SprintContexts } from '../../contexts/SprintContexts'
-import axios from 'axios'
-// import Example from './Chart/IssueTypeData'
-import Example2 from './Chart/IssueTypeData2'
 
-const data = require('../../pages/routes.json')
-function CurrentWork() {
-  const { setSprints } = SprintContexts();
+import { IssueContexts } from '../../contexts/IssueContexts'
+// import { ProjContexts } from '../../contexts/ProjectContexts'
+import Header from './Projects/Header'
+import { useStateContext } from '../../contexts/ContextProvider'
+// import { IssueTypeData } from './Chart/IssueTypeData'
+import { IssueUpdateData } from './Chart/IssueUpdateData'
+
+// const data = require('../../pages/routes.json')
+function CurrentWork( ) {
+
+  const { IssueVersions } = IssueContexts()
+  // const { Projects } = ProjContexts();
+  // const [ sprints, setSprints ] = useState([])
+  // const { setSprints } = SprintContexts();
+  const { ScreenWidth, nav, ProjectNav } = useStateContext();
+
+  // var isMobile = () => ScreenWidth < 768 
+  const [ isMobile, setIsMobile ] = useState(false);
+
   useEffect(() => {
-    axios.get(
-      data.Sprints
-    )
-    .then(res => setSprints(res.data))
-    .catch(err => console.log(err))
+        if (nav && ProjectNav)  setIsMobile(ScreenWidth < 1312)
+        else if (nav) setIsMobile(ScreenWidth < 981)
+        else if (ProjectNav) setIsMobile(ScreenWidth < 1100)
+        else setIsMobile(ScreenWidth < 768)
+        return () => {}
     // eslint-disable-next-line
-    }, [])
-
-
-
-
+  }, [ScreenWidth])
 
   return (
-    <div> 
-    <div className=' w-[100%] '>
+    <div className=''> 
+
+    <div className='overflow-hidden z-0'>
       <List/>
-      <div className='mt-4 '>
-        <div className='antialiased'> 
+    </div> 
 
-        {/* <Example/> */}
-        <Example2/>
-        </div>
-      </div>
-
+    <div className='items-center mt-[2em]'
+        style={{
+          position: isMobile ? 'block' : 'flex',
+          display: isMobile ? 'block' : 'flex',
+          justifyContent: isMobile ? 'center' : 'start',
+        }}
+    > 
+    <div className='flex justify-center'
+            style={{
+              width: isMobile ? '100vw' : '50vw',
+              marginLeft: isMobile ? '2.5em' : '3em',
+              // marginRight: isMobile ? '4em' : ''
+            }}
+    > 
+    <IssueUpdateData IssueVersions={IssueVersions} isMobile={isMobile}/> 
     </div>
+    <div className='flex w-[50vw] items-center 
+    justify-center overflow-scroll'
+    style={{
+
+      marginTop:  isMobile? '2em' : '',
+      marginLeft:  isMobile? '2em' : '',
+      justifyContent:  isMobile ? 'center' : '',
+      width: isMobile ? '95vw' : '50vw',
+      
+    }}
+    > 
+    <Header isMobile={isMobile}/>
+    </div>
+
+       
+    </div> 
+        
+
     </div>
   )
 }

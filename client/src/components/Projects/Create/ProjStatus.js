@@ -11,10 +11,15 @@ function ProjStatus() {
   // 200: success
   // 500: project post request failed
   // 501: users put request failed
-    const { ProjStatus, setProjStatus } = ProjContexts();
+    const { 
+      ProjStatus, setProjStatus,
+      EditProj, setEditProj
+     } = ProjContexts();
+    console.log(ProjStatus)
   return (
+
     <>
-    <Snackbar open={ProjStatus===200}
+    <Snackbar open={ProjStatus===200 && EditProj===false}
      onClose={() => setProjStatus(-1)} autoHideDuration={3000}
      >
     <Alert severity="success" sx={{ width: '100%' }}>
@@ -22,21 +27,30 @@ function ProjStatus() {
     </Alert>
     </Snackbar>
 
-    <Snackbar open={ProjStatus===500} 
+    <Snackbar open={ProjStatus===200 && EditProj===true}
+     onClose={() => setProjStatus(-1)} autoHideDuration={3000}
+     >
+    <Alert severity="success" sx={{ width: '100%' }}>
+        Project updated
+    </Alert>
+    </Snackbar>
+
+    <Snackbar open={ProjStatus>=500} 
     onClose={() => setProjStatus(-1)} autoHideDuration={3000}
     >
     <Alert severity="error" sx={{ width: '100%' }}>
-        Project could not be created
+        Something went wrong
     </Alert>
     </Snackbar>
     
-    <Snackbar open={ProjStatus===501} 
+    {/* <Snackbar open={ProjStatus===501} 
     onClose={() => setProjStatus(-1)} autoHideDuration={3000}
     >
     <Alert severity="warning" sx={{ width: '100%' }}>
         Project created. User data was not updated.
     </Alert>
-    </Snackbar>
+    </Snackbar> */}
+
     </>
   )
 }

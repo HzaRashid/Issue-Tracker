@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Avatar, ThemeProvider, createTheme } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import { DataGrid, GridActionsCellItem, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarQuickFilter } from '@mui/x-data-grid';
+import { DataGrid, GridActionsCellItem, GridToolbarContainer, GridToolbarQuickFilter } from '@mui/x-data-grid';
 import { IssueContexts } from '../../../contexts/IssueContexts';
 import axios from 'axios';
 import { TeamContexts } from '../../../contexts/TeamContexts';
@@ -9,13 +9,29 @@ import TitleCase from '../../utils/TitleCase';
 import { AiFillCheckSquare, AiFillTool } from 'react-icons/ai';
 import { MdError } from 'react-icons/md';
 import stringAvatar from '../../utils/UserAvatar/StringAvatar';
+import { ProjContexts } from '../../../contexts/ProjectContexts';
 const data = require('../../../pages/routes.json')
 function List() {
     const { Issues, setIssues, setSelectedIssue, setEditIssueModal } = IssueContexts();
     const { Users } = TeamContexts();
-  
+    const { Projects } = ProjContexts();
+    // console.log(Projects)
 
-
+    const issueData = [
+      { 
+        name: 'Bug', 
+        value: Issues.filter(i => i.type.toLowerCase() === 'bug')?.length
+      },
+      { 
+        name: 'Task', 
+        value: Issues.filter(i => i.type.toLowerCase() === 'task')?.length
+      },
+      { 
+        name: 'Feature', 
+        value: Issues.filter(i => i.type.toLowerCase() === 'feature')?.length
+      },
+   
+    ];
     useEffect(() => {
             axios.get(
                 data.Issues
@@ -129,6 +145,22 @@ function List() {
             }
         },
 
+        {
+          field: 'project', 
+          headerName: 'Project', 
+          flex: 0.3,
+          width: 50,
+          renderCell: (params) => {
+            return (
+              <>
+              <div className='p-1 rounded-md bg-[#dddce8] text-[#454754]'>
+                {Projects.filter(p => p._id === params.value)[0]?.title}
+              </div>
+              </>
+            )
+          }
+      },
+
         { 
             field: 'assignedTo', 
             headerName: 'Assignee', 
@@ -151,9 +183,18 @@ function List() {
 
       ]
 
+      // function getAssignee (assigneeID) {
+      //   const index = Users.map(u => u._id).indexOf(assigneeID);
+      //   return Users[index]
+      // }
+
       function getAssignee (assigneeID) {
-        const index = Users.map(u => u._id).indexOf(assigneeID);
-        return Users[index]
+        const user = Users.filter(u => {
+          return u._id === assigneeID
+        })[0];
+        // console.log(user);
+        return user
+  
       }
       const [pageSize, setPageSize] = useState(10);
 
@@ -162,40 +203,47 @@ function List() {
   return (
     <>
     <ThemeProvider theme={theme}
-    
     >
 
     <div 
     className='relative font-bold' 
     style={{
-        height: 400, 
+        height: 390, 
         width: '100%', 
         top: '3rem',
-        flexGrow: 1 ,
-        text: 'bold',      
+        flexGrow: 0.5 ,
+        text: 'bold',  
         }}
     >
     <DataGrid
     rows={Issues}
     columns={columns}
     components={{Toolbar: CustomToolbar}}
-    componentsProps={{ toolbar: { issues: Issues } }}
+    componentsProps={{ toolbar: { issues: Issues, issueData: issueData } }}
     pageSize={pageSize}
     onPageSizeChange={
     (newPageSize) => setPageSize(newPageSize)
     }
     // rowsPerPageOptions={[5, 10, 20]}
-    pagination
+    // pagination
+    hideFooterPagination
     disableDensitySelector
     disableSelectionOnClick
+    // density='0.5em'
     getRowId={(row) => row._id}
     sx={{ 
         overflow:'scroll',
+        borderBottom: 'none',
+        zIndex:'0',
     mx: 4, 
-    bgcolor: '#f0f0f0', 
+    bgcolor: 'transparent', 
     '& .MuiDataGrid-cell:hover': {
     color: '#588B63',
     },
+    '& .MuiDataGrid-cell:focus': {
+      color: '#588B63',
+      outline: 'none',
+      },
     // '& .MuiDataGrid-cell': {
     //     fontWeight: 'normal',
     // },
@@ -222,8 +270,13 @@ function List() {
     },
     '& .css-o8va6p-MuiFormControl-root-MuiTextField-root-MuiDataGrid-toolbarQuickFilter .MuiSvgIcon-root': {
         color: '#808080'
-    }
+    },
 
+    '& .MuiDataGrid-footerContainer': {
+      color: 'transparent',
+      background: 'transparent',
+      border: 'none'
+    }
 
     }}
     GridLines="None"
@@ -242,10 +295,11 @@ function List() {
 function CustomToolbar( props ) {
     // console.log(props)
     const issueCount = props?.issues?.length
-    // console.log(issueCount)
+    // console.log(props.issueData)
     return (
     <div className='flex items-center font-lato'> 
       <GridToolbarContainer sx={{m: 1.25}}>
+
         <div className='flex items-center'> 
         <div className='font-bold text-[2em]'>
             Issues
@@ -263,17 +317,10 @@ function CustomToolbar( props ) {
                   //   fontWeight: 400
                 }}
         />
-        <GridToolbarDensitySelector 
-        sx={{
-          marginLeft: 3, 
-          marginTop:1.25, 
-          textTransform:'none',
-          color:'#7895B3',
-          fontSize:'1em',
-        //   fontWeight: 400
-      }}
-        />
+
+
         </div>
+
 
       </GridToolbarContainer>
       </div>
@@ -283,7 +330,7 @@ function CustomToolbar( props ) {
   const theme = createTheme({
     typography: {
      "fontFamily": `"Lato", sans-serif`,
-     "fontSize": 15.5,
+     "fontSize": 14.5,
      "fontWeightLight": 400,
      "fontWeightRegular": 300,
      "fontWeightMedium": 400

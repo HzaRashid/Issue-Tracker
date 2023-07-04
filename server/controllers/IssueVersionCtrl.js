@@ -13,11 +13,11 @@ const sendIssueVersions = (req, res) => {
         'Cache-Control' : 'no-cache',
         'Connection'    : 'keep-alive'
     },
-        getIssueVersions( res ) 
+    getIssueVersionsFeed( res ) 
     )
 }
     
-let getIssueVersions = async ( res ) => {
+let getIssueVersionsFeed = async ( res ) => {
     IssueVersion.find({}, 
         (err, result) => {
             if (err) {
@@ -31,8 +31,21 @@ let getIssueVersions = async ( res ) => {
                     ) 
             }
         })
-        setTimeout(() => getIssueVersions( res ), 750)
+        setTimeout(() => getIssueVersionsFeed( res ), 2000)
     };
+
+
+const getIssueVersions = (req, res) => {
+    IssueVersion.find({}, 
+        (err, result) => {
+            if (err) {
+                res.json(err)
+            } 
+            else {
+                res.json(result) 
+            }
+        })
+};
 
 
 module.exports = {

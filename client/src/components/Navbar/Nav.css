@@ -5,11 +5,11 @@
     font-weight: 400;
     background: #2a2b2d;
     width: 12rem;
-    position: absolute;
+    position: fixed;
     height: 100%;
     transition: all 0.3s;
     color: #e2e2e2;
-    z-index: 1;
+    z-index: 50;
     overflow: auto;
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     -webkit-font-smoothing: auto;

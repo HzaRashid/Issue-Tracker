@@ -26,7 +26,7 @@ function NavBackGdDefault( props ) {
     // const { children } = props
     // eslint-disable-next-line
     useEffect(() => setSwapProjNav(!isProjPage), []) 
-    console.log(isProjPage)
+    // console.log(isProjPage)
   return (
     <> 
     <div 
@@ -46,27 +46,7 @@ function NavBackGdDefault( props ) {
       transition: 'width 0.2s ease-in-out'
     }}
     >
-    <CustomTooltip title={ProjectNav ? 'Close' : 'Open'} placement='right' arrow>
-      <button 
-      className='hover:bg-[#7895B3] bg-[#f0f0f0] hover:text-[#e2e2e2] text-[#404040]' 
-      onClick={() => setProjectNav(!ProjectNav)}
-      style={{
-        marginLeft: ProjectNav ? '11.15em' : '-2em',
-        position: 'fixed',
-        marginTop: '2.4em',
-        borderRadius: '1em',
-        border: '0.05em solid #0000001a',
-        padding: '0.1em',
-        transition: 'all 0.2s ease-in-out',
-        zIndex: '5'
-        
-      }}
-      >
-      { ProjectNav ? 
-       <BiChevronLeft fontSize={'1.4em'}/> : <BiChevronRight fontSize={'1.4em'}/>
-      }
-      </button>      
-      </CustomTooltip>
+
 
       {/* <div className='all-top'>
       <div className='flex items-center justify-between pt-[1em] pb-[1.25em]'></div>
@@ -85,6 +65,28 @@ function NavBackGdDefault( props ) {
     </div>
 
       </div>
+
+      <CustomTooltip title={ProjectNav ? 'Close' : 'Open'} placement='right' arrow>
+      <button 
+      className='hover:bg-[#7895B3] bg-[#f0f0f0] hover:text-[#e2e2e2] text-[#404040]' 
+      onClick={() => setProjectNav(!ProjectNav)}
+      style={{
+        marginLeft: ProjectNav ? '11.15em' : '-2em',
+        position: 'fixed',
+        marginTop: '2.4em',
+        borderRadius: '1em',
+        border: '0.05em solid #0000001a',
+        padding: '0.1em',
+        transition: 'all 0.2s ease-in-out',
+        zIndex: 5
+        
+      }}
+      >
+      { ProjectNav ? 
+       <BiChevronLeft fontSize={'1.4em'}/> : <BiChevronRight fontSize={'1.4em'}/>
+      }
+      </button>      
+      </CustomTooltip>
       
       </div>
       

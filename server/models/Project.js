@@ -22,7 +22,6 @@ const dateSpecs = {
 const ProjectSchema = new mongoose.Schema({
 
     title: titleSpecs,
-    type: specs, 
 
     createdBy: {
         type: mongoose.Schema.Types.ObjectId, 
