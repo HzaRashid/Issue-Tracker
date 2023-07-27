@@ -18,10 +18,11 @@ const addUser = async (req, res) => {
     try { 
         const userFields = req.body;
         await User.create(userFields);
-        res.json(userFields);
+        res.json(userFields).status(200);
     } 
     catch (e) {
         console.log(e.message)
+        res.status(500).send(e)
     }
         
     };

@@ -17,7 +17,7 @@ function SwitchBtn() {
     <> 
     <div className='flex justify-center items-center'
     style={{
-      marginTop: SwapProjNav ? '7em' : '-2.85em',
+      marginTop: SwapProjNav ? '7em' : '-2.78em',
       }}
     > 
     <Switch

@@ -4,7 +4,7 @@ import  React, {
     useState,
     useEffect
 } from "react";
-
+import { useGridApiRef } from "@mui/x-data-grid";
 import axios from 'axios'
 const data = require('../pages/routes.json');
 
@@ -19,6 +19,11 @@ export const TeamContextProvider = ({children}) => {
     const [DeleteUser, setDeleteUser] = useState(false);
     const [EditUser, setEditUser] = useState(false);
     const [ModalClosed, setModalClosed] = useState(true);
+    const [ AssignProjModal, setAssignProjModal ] = useState(false);
+    const [ SelectedUsers, setSelectedUsers ] = useState([]);
+    const [ AddUserModal, setAddUserModal] = useState(false);
+    const tableRef = useGridApiRef();
+    const [ NewUserStatus, setNewUserStatus ] = useState(-1);
 
     useEffect( () => { axios.get(data.getUsers)
         .then( 
@@ -34,7 +39,12 @@ export const TeamContextProvider = ({children}) => {
             AddUser, setAddUser,
             DeleteUser, setDeleteUser,
             EditUser, setEditUser,
-            ModalClosed, setModalClosed
+            ModalClosed, setModalClosed,
+            AssignProjModal, setAssignProjModal,
+            SelectedUsers, setSelectedUsers,
+            tableRef,
+            AddUserModal, setAddUserModal,
+            NewUserStatus, setNewUserStatus
         }}
         >
             {children}

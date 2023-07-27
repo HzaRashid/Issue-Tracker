@@ -1,5 +1,6 @@
 {
     "getUsers": "http://localhost:4000/users",
+    "Users": "http://localhost:4000/users",
     "UserRole": "http://localhost:4000/users/edit-role",
     "UserProjects": "http://localhost:4000/users/edit-project/",
     "Projects": "http://localhost:4000/projects",

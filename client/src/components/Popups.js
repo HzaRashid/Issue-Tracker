@@ -9,7 +9,9 @@ import DeleteStage from './Projects/SprintBoard/EditStage/Delete/DeleteStage'
 import SetIssueLimit from './Projects/SprintBoard/EditStage/IssueLimit/SetIssueLimit'
 import EditIssue from './Issues/Edit/EditIssue'
 import EditProj from './Projects/Edit/EditProj'
-
+import AssignToProj from './Team/AssignToProject/AssignToProj'
+import AddUser from './Team/AddUser/AddUser'
+import AddUserStatus from './Team/AddUser/AddUserStatus'
 
 
 function Popups() {
@@ -25,6 +27,9 @@ function Popups() {
     <DeleteStage/>
     <SetIssueLimit/>
     <EditIssue/>
+    <AssignToProj/>
+    <AddUser/>
+    <AddUserStatus/>
     </>
   )
 }

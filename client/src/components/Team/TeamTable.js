@@ -4,10 +4,14 @@ import {
   GridToolbarContainer,
   GridToolbarDensitySelector,
   GridToolbarQuickFilter,
-  GridActionsCellItem
+  GridActionsCellItem,
+  useGridApiRef,
+  gridPaginatedVisibleSortedGridRowIdsSelector,
+
  } from '@mui/x-data-grid';
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { AiOutlineUserAdd } from "react-icons/ai";
+
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import { CustomTooltip } from '../CustomTooltip';
@@ -71,42 +75,75 @@ const theme = createTheme({
 
 
 
+
+// export const handleSelectFirstVisibleRow = () => {
+//   const visibleRows = gridPaginatedVisibleSortedGridRowIdsSelector(apiRef);
+//   if (visibleRows.length === 0) {
+//     return;
+//   }
+//   console.log(visibleRows)
+
+//   // tableRef.current.selectRow(
+//   //   visibleRows[0],
+//   //   !tableRef.current.isRowSelected(visibleRows[0]),
+//   // );
+// };
+
+// export const handleSelectFirstVisibleRow = (ref) => {
+//   const visibleRows = ref ? gridPaginatedVisibleSortedGridRowIdsSelector(ref) : [];
+//   if (visibleRows.length === 0) {
+//     return;
+//   }
+//   console.log(visibleRows)
+
+//   // tableRef.current.selectRow(
+//   //   visibleRows[0],
+//   //   !tableRef.current.isRowSelected(visibleRows[0]),
+//   // );
+// };
 function TeamTable() {
 
     const {
         Users,
-        AddUser, setAddUser,
+        AddUserModal, setAddUserModal,
         // DeleteUser, setDeleteUser,
         EditUser, setEditUser,
-        ModalClosed, setModalClosed
+        ModalClosed, setModalClosed,
+        AssignProjModal, setAssignProjModal,
+        SelectedUsers, setSelectedUsers,
+        tableRef, setTableRef
         } = TeamContexts()
 
+    
+    console.log(SelectedUsers)
 
-    const [SelectedUsers, setSelectedUsers] = useState([]);
+
+
+
     // const [Users, setUsers] = useState([]);
     const [pageSize, setPageSize] = useState(10);
 
 
-    useEffect(
-      () => {
-        const BoolStr = localStorage.getItem('EditUserBool');
+    // useEffect(
+    //   () => {
+    //     const BoolStr = localStorage.getItem('EditUserBool');
 
-        if (BoolStr==='true')
-          setEditUser(true)
+    //     if (BoolStr==='true')
+    //       setEditUser(true)
         
-        setSelectedUsers(
-          JSON.parse(localStorage.getItem('UserList'))
-          )
-      }
-      // eslint-disable-next-line
-      ,[])
+    //     setSelectedUsers(
+    //       JSON.parse(localStorage.getItem('UserList'))
+    //       )
+    //   }
+    //   // eslint-disable-next-line
+    //   ,[])
       
-    useEffect(
-      () => {
-        localStorage.setItem('EditUserBool', EditUser);
-        localStorage.setItem('UserList', JSON.stringify(SelectedUsers))
-      }
-    )
+    // useEffect(
+    //   () => {
+    //     localStorage.setItem('EditUserBool', EditUser);
+    //     localStorage.setItem('UserList', JSON.stringify(SelectedUsers))
+    //   }
+    // )
 
 
 
@@ -169,6 +206,45 @@ function TeamTable() {
 
       ]
 
+
+  const handleSelectFirstVisibleRow = () => {
+    const visibleRows = gridPaginatedVisibleSortedGridRowIdsSelector(tableRef);
+    if (visibleRows.length === 0) {
+      return;
+    }
+
+    tableRef.current.selectRow(
+      visibleRows[0],
+      !tableRef.current.isRowSelected(visibleRows[0])
+    );
+  };
+
+  useEffect(() => {
+    const visibleRows = gridPaginatedVisibleSortedGridRowIdsSelector(tableRef);
+    if (visibleRows.length === 0) {
+      return;
+    }
+
+
+    for (let i = 0; i < Users?.length - 1; i++) {
+      const isSelectedUser = SelectedUsers?.filter(u => {
+        return u._id === Users[i]?._id
+      })?.length
+
+      if ( isSelectedUser  ) {
+        // console.log(tableRef.current.isRowSelected(visibleRows[i]))
+        console.log(isSelectedUser)
+        tableRef.current.selectRow(
+          visibleRows[i],
+          // !tableRef.current.isRowSelected(visibleRows[i])
+        );
+      }
+    }
+
+
+
+  }, [SelectedUsers?.length])
+
     return (
         <>
         <ThemeProvider theme={theme}>
@@ -182,11 +258,13 @@ function TeamTable() {
             flexGrow: 1 
             }}
         >
+
             <DataGrid
+            apiRef={tableRef}
             rows={Users}
             columns={columns}
             checkboxSelection
-            components={{Toolbar: CustomToolbar}}
+            slots={{toolbar: CustomToolbar}}
             pageSize={pageSize}
             onPageSizeChange={
             (newPageSize) => setPageSize(newPageSize)
@@ -208,7 +286,7 @@ function TeamTable() {
             }}
             GridLines="None"
 
-            onSelectionModelChange={(ids) => {
+            onRowSelectionModelChange={(ids) => {
             const selectedIDs = new Set(ids);
             setSelectedUsers(Users.filter(
                 (row) => selectedIDs.has(row._id)
@@ -220,7 +298,7 @@ function TeamTable() {
         <div className='absolute right-8'>
         <CustomTooltip title='Add User'>
         <button 
-        onClick={() => setAddUser(!AddUser)} 
+        onClick={() => setAddUserModal(true)} 
         className='mt-3 p-1 ml-8
         hover:bg-[#e7e7e7]'
         >
@@ -232,13 +310,6 @@ function TeamTable() {
         </div>
 
 
-        <div className={AddUser ? 
-        'visibility: visible' :
-        'visibility: hidden'
-        }
-        >
-            echo
-        </div>
 
         <div 
         className={(SelectedUsers && SelectedUsers.length === 1 && ModalClosed===true) ? 
@@ -268,7 +339,7 @@ function TeamTable() {
             <button 
             className='mt-3 p-1 ml-8 
             hover:bg-[#e7e7e7]'
-            onClick={() => setEditUser(true)}
+            onClick={() => setAssignProjModal(true)}
             >
             <ListAltIcon
             style={{color: '#90B29E', fontSize: 40}}

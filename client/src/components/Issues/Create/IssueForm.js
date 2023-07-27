@@ -181,13 +181,13 @@ function IssueForm() {
     {
       NewSprintIssue ? 
       
-      <li className='color-[#00000010] mt-[2em] font-light'>
+      <li className='color-[#00000010] mt-[2em] text-[0.925em]'>
       <label
       className='block mb-[0.2em] text-[0.95em] text-[#505050]'
       >
       <div className='flex items-center'>
-        <p>Sprint</p>
-        <p className='text-[#c94e4e]'>*</p>
+        <p className='font-normal'>Sprint</p>
+        <p className='text-[#c94e4e] whitespace-pre'> *</p>
       </div>
       </label>
 
@@ -247,7 +247,7 @@ function IssueForm() {
     {
     formik.touched.sprint && formik.errors.sprint &&
       <div
-      className='text-[#c94e4e] text-[0.75em]'
+      className='text-[#c94e4e] text-[0.81em] font-light'
       >
         {formik.errors.sprint}
       </div> 

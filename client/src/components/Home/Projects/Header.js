@@ -14,7 +14,7 @@ function Header( { isMobile } ) {
     <div className='font-lato' 
     style={{
       height: isMobile ? '2em' : '',
-      marginBottom: isMobile ? '18em' : '5.4em',
+      marginBottom: isMobile ? '18em' : '7.4em',
       marginRight: isMobile ? '10vw' : ''
     }}
     >

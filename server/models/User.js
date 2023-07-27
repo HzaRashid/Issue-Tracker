@@ -20,12 +20,12 @@ const UserSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         immutable: true,
-        default: Date.now.toString(), 
+        default: () => Date(), 
         
     },
     updatedAt: {
         type: Date,
-        default: Date.now.toString(), 
+        default: () => Date(), 
     },
     role: {
         type: String,
