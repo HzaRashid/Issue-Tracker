@@ -12,6 +12,11 @@ import EditProj from './Projects/Edit/EditProj'
 import AssignToProj from './Team/AssignToProject/AssignToProj'
 import AddUser from './Team/AddUser/AddUser'
 import AddUserStatus from './Team/AddUser/AddUserStatus'
+import EditUser from './Team/EditUser/EditUser'
+import EditUserStatus from './Team/EditUser/EditUserStatus'
+import EditThisUser from './LoggedInUser/Edit/EditThisUser'
+import EditThisUserStatus from './LoggedInUser/Edit/EditThisUserStatus'
+
 
 
 function Popups() {
@@ -30,6 +35,10 @@ function Popups() {
     <AssignToProj/>
     <AddUser/>
     <AddUserStatus/>
+    <EditUser/>
+    <EditUserStatus/>
+    <EditThisUser/>
+    <EditThisUserStatus/>
     </>
   )
 }

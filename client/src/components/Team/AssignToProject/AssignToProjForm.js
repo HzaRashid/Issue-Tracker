@@ -6,13 +6,14 @@ import { BsCheck, BsCheck2Circle } from 'react-icons/bs';
 import stringAvatar from '../../utils/UserAvatar/StringAvatar';
 import { Avatar } from '@mui/material';
 import { ProjContexts } from '../../../contexts/ProjectContexts';
+import { gridPaginatedVisibleSortedGridRowIdsSelector } from '@mui/x-data-grid'
 import axios from 'axios';
 const data = require('../../../pages/routes.json')
 
 function AssignToProjForm() {
     const { 
-      AssignProjModal, setAssignProjModal,
-      SelectedUsers, setSelectedUsers, Users, tableRef
+      AssignProjModal, setAssignProjModal, 
+      SelectedGridUsers, setSelectedGridUsers, Users, tableRef
      } = TeamContexts();
      const { Projects } = ProjContexts();
      const [Search, setSearch] = useState('');
@@ -43,7 +44,7 @@ function AssignToProjForm() {
       </p>
       {
 
-        SelectedUsers
+        SelectedGridUsers
         ?.length > 0 &&
 
       <ul className='inline-block lg:w-[26.5em] md:w-[26.5em] 
@@ -51,7 +52,7 @@ function AssignToProjForm() {
           break-normal overflow-x-auto p-1'>
         {
 
-          SelectedUsers
+          SelectedGridUsers
           .map(
             (user, key) => {
               // console.log(ProjTeam)
@@ -65,11 +66,25 @@ function AssignToProjForm() {
                   {user.firstName + ' ' + user.lastName}
                   <CustomTooltip title='Remove'>
                   <button 
-                  onClick={() => setSelectedUsers(
-                        SelectedUsers
-                        ?.filter(
-                            u => u._id !== user._id
-                        ))}
+                  onClick={() => {
+                    var selUsers = [...SelectedGridUsers];
+                    var index = selUsers.indexOf(user);
+                    console.log(index);
+                    selUsers.splice(index, 1);
+                    console.log(selUsers)
+                    // setSelectedGridUsers(selUsers)
+
+                    const visibleRows = gridPaginatedVisibleSortedGridRowIdsSelector(tableRef);
+                    if (visibleRows.length === 0) {
+                    return;
+                    }
+                    const idx = Users.indexOf(user)
+                    // console.log(isSelectedUser)
+                    tableRef?.current.selectRow(
+                      visibleRows[idx],
+                      false
+                    );
+                  }}
                     >
                   <AiOutlineCloseCircle
                   className='ml-1 text-[1.1em]' color='#303030'/>
@@ -136,7 +151,7 @@ function AssignToProjForm() {
         (user, key) =>
         <li key={key}
         className={`${
-        SelectedUsers
+        SelectedGridUsers
           ?.filter(
             u => u._id===user._id
           )
@@ -150,35 +165,55 @@ function AssignToProjForm() {
         onClick={() => {
           console.log('clked')
           
-          const alreadyUser = SelectedUsers
+          const alreadyUser = SelectedGridUsers
                               ?.filter(
                               u => u._id===user._id
                               );
           
           if (!alreadyUser?.length) {
-            if (SelectedUsers?.length) {
-              setSelectedUsers(
-                [...SelectedUsers, user]
+            if (SelectedGridUsers?.length) {
+              setSelectedGridUsers(
+                [...SelectedGridUsers, user]
                 )
-            } else setSelectedUsers( [user] )
-
-
-            // tableRef.current.selectRow(
-            //   visibleRows[0],
-            //   !apiRef.current.isRowSelected(visibleRows[0]),
-            // );
+            } else setSelectedGridUsers( [user] )
+              
+            const visibleRows = gridPaginatedVisibleSortedGridRowIdsSelector(tableRef);
+            if (visibleRows.length === 0) {
+            return;
+            }
+            const idx = Users.indexOf(user)
+            // console.log(isSelectedUser)
+            tableRef?.current.selectRow(
+              visibleRows[idx],
+              true
+            );
 
           } 
 
           else {
 
-            setSelectedUsers(
-              SelectedUsers
+            setSelectedGridUsers(
+              SelectedGridUsers
               ?.filter(
                 u => u._id !== alreadyUser[0]._id
               ))
+
+            const visibleRows = gridPaginatedVisibleSortedGridRowIdsSelector(tableRef);
+            if (visibleRows.length === 0) {
+            return;
+            }
+            const idx = Users.indexOf(user)
+            // console.log(isSelectedUser)
+            tableRef?.current.selectRow(
+              visibleRows[idx],
+              false
+            );
+
+
+
             }
             // console.log(ProjTeam)
+
         }
         }
         >
@@ -197,7 +232,7 @@ function AssignToProjForm() {
           
           <div className=' ml-[0.5em] mt-[0.15em]'>
           { 
-          SelectedUsers
+          SelectedGridUsers
           ?.filter(
             u => u._id===user._id
             )
@@ -369,7 +404,7 @@ function AssignToProjForm() {
       {
     (
 
-    SelectedUsers?.length > 0
+    SelectedGridUsers?.length > 0
     && SelectedProj?.title 
 
     ) &&
@@ -382,7 +417,7 @@ function AssignToProjForm() {
       axios.put(data.Projects + '/team',
       {
         _id: SelectedProj?._id,
-        assignedTo: SelectedProj?.assignedTo?.concat(SelectedUsers?.map(u => u._id))
+        assignedTo: SelectedProj?.assignedTo?.concat(SelectedGridUsers?.map(u => u._id))
       }
       )
     }}

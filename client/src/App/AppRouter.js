@@ -19,6 +19,8 @@ import Popups from '../components/Popups';
 // import { UserContext } from '../contexts/UserContext';
 import Login from './Login/Login';
 import { AuthContexts } from './Auth';
+import UserInfo from '../components/TopBar/UserInfo';
+import { useStateContext } from '../contexts/ContextProvider';
 const data = require('../pages/routes.json')
 
 function AppRouter() {
@@ -69,6 +71,9 @@ function AppRouter() {
 const PrivateRoute = ( { component } ) => {
   const location = useLocation();
   const { user } = AuthContexts();
+  const { ScreenWidth } = useStateContext();
+
+
 
   if (user?.authenticated === null) return;
 
@@ -81,6 +86,7 @@ const PrivateRoute = ( { component } ) => {
     <>
     <Nav/>
     <Popups/>
+    { ScreenWidth > 880 ? <UserInfo/> : null }
     {component}
     </>
     )

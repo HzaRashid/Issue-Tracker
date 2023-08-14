@@ -14,6 +14,7 @@ function History() {
   const { SelectedIssue } = IssueContexts();
   const { Sprints } = SprintContexts();
   const { Users } = TeamContexts();
+  const userList = Users.slice();
   const [ IssueVersions, setIssueVersions ] = useState([]);
   const { user } = AuthContexts();
   const loggedInUser = Users.filter(u => u?._id === user?.user)[0];
@@ -28,7 +29,7 @@ function History() {
         setIsListen(true);
       }  // eslint-disable-next-line
   }, [isListen, IssueVersions])
-
+  if (!SelectedIssue) return
   return (
     <div
     className='flex items-center justify-center mt-3 ' 
@@ -50,20 +51,11 @@ function History() {
           items-center justify-start space-x-3
           mt-5 first:mt-0 text-[#303030] '
           >
-
-            <Avatar 
-            {...stringAvatar(
-              loggedInUser.firstName + ' ' + loggedInUser.lastName,
-              24, 
-              24, 
-              '0.75em'
-              )
-            }  
-            />
+            {renderAvatar(v, userList)}
             <div>
               <div className='flex items-center justify-center '>
                 <div>
-                { RenderUpdate(v, Users) }
+                { RenderUpdate(v, userList) }
                 </div>
                 <BsDot color='#0000007e'/>
                 <div className='text-[#0000007e] whitespace-pre'>
@@ -91,22 +83,88 @@ function History() {
           )
         
       }
+      <li
+      className='text-[0.7em] flex 
+          items-center justify-start space-x-3
+          mt-5 first:mt-0 text-[#303030] '
+      >
+      <Avatar 
+      {...stringAvatar(
+        loggedInUser?.firstName + ' ' + loggedInUser?.lastName,
+        24, 
+        24, 
+        '0.75em'
+        )
+      }  
+      />
+      <div>
+        <div className='flex items-center justify-center '>
+          <div>
+          {SelectedIssue?._id && RenderCreated(SelectedIssue, Users) }
+          </div>
+          <BsDot color='#0000007e'/>
+          <div className='text-[#0000007e] whitespace-pre'>
+          {SelectedIssue?._id &&  DateToString2(SelectedIssue) }
+          </div>
+        </div>
+
+
+      </div>
+
+      </li>
       </ul>
     </div>
   )
 }
 
-
-
-function RenderUpdate (issueVersion, Users) {
+function renderAvatar(issueVersion, Users) {
   const v = issueVersion;
-  const user = Users.filter(u => u._id === v.modifiedBy)[0];
+  const userList = Users.slice()
+  const User = userList.filter(u => u._id === v.modifiedBy)[0];
+  return (
+    <Avatar 
+    {...stringAvatar(
+      User.firstName + ' ' + User.lastName,
+      24, 
+      24, 
+      '0.75em'
+      )
+    }  
+    />
+  )
+}
+
+
+function RenderCreated (selectedIssue, Users) {
+  const issue = selectedIssue;
+  console.log(selectedIssue)
+  const user = Users.filter(u => u._id === issue?.createdBy)[0];
   
   return (
     <div key={user?._id}
     className='flex items-center justify-center whitespace-pre'>
       <div className='font-bold'>
-      {user.firstName + ' ' + user.lastName + ' '}
+      {user?.firstName + ' ' + user?.lastName + ' '}
+      </div>
+      <div className='font-normal'>
+      {'created the issue'}
+      </div>
+    </div>
+
+  )
+
+}
+
+
+function RenderUpdate (issueVersion, Users) {
+  const v = issueVersion;
+  const user = Users.filter(u => u?._id === v?.modifiedBy)[0];
+  
+  return (
+    <div key={user?._id}
+    className='flex items-center justify-center whitespace-pre'>
+      <div className='font-bold'>
+      {user?.firstName + ' ' + user?.lastName + ' '}
       </div>
       <div className=''>
       {'updated the '}
@@ -117,7 +175,6 @@ function RenderUpdate (issueVersion, Users) {
     </div>
 
   )
-
 
 }
 
@@ -140,6 +197,27 @@ function DateToString (issueVersion) {
       { addSuffix: true,
         includeSeconds: true
       });
+}
+
+function DateToString2 (selectedIssue) {
+  if (!selectedIssue) return null
+  const updateDate = new Date(selectedIssue?.createdAt);
+  const sevenDaysAgoDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
+if (!updateDate) return
+console.log(updateDate.toDateString())
+  if (updateDate < sevenDaysAgoDate) {
+    return (
+      updateDate.toDateString() + ' at ' 
+      + updateDate.toLocaleTimeString().slice(0,4)
+      + updateDate.toLocaleTimeString().slice(7)
+      )
+  }
+return formatDistance(
+    updateDate, new Date(), 
+    { addSuffix: true,
+      includeSeconds: true
+    });
 }
 
 
@@ -199,19 +277,22 @@ function getModFields (issueVersion, Sprints) {
 
 
 function getSprintOldField (IssueVersion, Sprints) {
-  console.log(IssueVersion)
+  // console.log(IssueVersion)
   if (IssueVersion?.stage?.toLowerCase() !== 'backlog') {
+    const sprints = Sprints.slice()
     return (
-      Sprints?.filter(s => s?._id === IssueVersion?.sprint)?.map(s => s?.title)[0]
+      sprints?.filter(s => s?._id === IssueVersion?.sprint)?.map(s => s?.title)[0]
       )
   }
   return 'backlog'
 }
 
 function getSprintNewField (IssueVersion, Sprints) {
+
   if (IssueVersion?.newStage?.toLowerCase() !== 'backlog') {
+    const sprints = Sprints.slice()
     return (
-      Sprints?.filter(s => s?._id === IssueVersion?.newSprint)?.map(s => s?.title)[0]
+      sprints?.filter(s => s?._id === IssueVersion?.newSprint)?.map(s => s?.title)[0]
       )
   }
   return 'backlog'

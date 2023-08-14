@@ -17,6 +17,11 @@ const getSprints = (req, res) => {
 const addSprint = async (req, res, next) => {
     try { 
         const sprintFields = req.body;
+        const sprintFamily = await Sprint.find({ project: sprintFields.project });
+        const titleConflict = sprintFamily.filter(s => s.title === sprintFields.title)?.length;
+        if ( titleConflict ) {
+            res.status(555).send('No two sprints in the same project can have the same title')
+        }
         const newSprint = await Sprint.create(sprintFields);
         req.body.SprintID = newSprint._id
         next();

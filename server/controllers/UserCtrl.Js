@@ -1,5 +1,7 @@
 const e = require('express');
-const User = require('../models/User')
+const User = require('../models/User');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 const getUsers = (req, res) => {
     User.find({}, 
@@ -16,9 +18,12 @@ const getUsers = (req, res) => {
 
 const addUser = async (req, res) => {
     try { 
-        const userFields = req.body;
-        await User.create(userFields);
-        res.json(userFields).status(200);
+        const userFields = req.body
+        const hash = await bcrypt.hash(userFields.password, saltRounds);
+        userFields.password = hash;
+        const newUser = await User.create(userFields);
+        res.status(200).json( { ...newUser, password: undefined } );
+        
     } 
     catch (e) {
         console.log(e.message)
@@ -27,6 +32,50 @@ const addUser = async (req, res) => {
         
     };
 
+
+
+// const editUser = async (req, res) => {
+//     const userFields = req.body;
+//     User.findById(
+//         userFields._id, 
+//         (err, doc) => {
+//         if (err) {
+//             console.log(err)
+//             res.status(400).send("Request failed")
+//         }
+//         doc.firstName =     userFields.firstName ?? doc.firstName;
+//         doc.lastName  =     userFields.lastName  ?? doc.lastName
+//         doc.email     =     userFields.email     ?? doc.email;
+//         doc.role      =     userFields.role      ?? doc.role;
+//         doc.password  =     userFields.password  ?? doc.password;
+//         doc.updatedAt =     Date();
+//         doc.save();
+//         res.status(200).send(userFields)
+//     });
+// };
+
+const editUser = async (req, res) => {
+    try { 
+    const userFields =  req.body;
+    const doc        =  await User.findById(userFields._id);
+    doc.firstName =     userFields.firstName ?? doc.firstName;
+    doc.lastName  =     userFields.lastName  ?? doc.lastName
+    doc.email     =     userFields.email     ?? doc.email;
+    doc.role      =     userFields.role      ?? doc.role;
+
+    if (userFields?.password) {
+    const hash    =     await bcrypt.hash(userFields.password, saltRounds);
+    doc.password  =     hash;
+    }
+    doc.updatedAt =     Date();
+    await doc.save();
+
+    res.status(200).send(userFields)
+    
+    } catch (err) {
+        res.status(500).send(err)
+    }
+};
 
 const editUserRole = async (req, res) => {
     const userFields = req.body;
@@ -42,7 +91,7 @@ const editUserRole = async (req, res) => {
         doc.save();
         res.status(200).send(userFields.role)
       });
-    };
+};
 
 
 const editUserProjs = async (req, res) => {
@@ -86,6 +135,7 @@ module.exports = {
     getUsers, 
     addUser, 
     editUserRole, 
+    editUser,
     editUserProjs, 
     deleteUser
 }

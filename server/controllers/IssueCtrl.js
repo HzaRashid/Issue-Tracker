@@ -41,6 +41,21 @@ const addIssue = async (req, res) => {
         const newIssue = await Issue.create(issueFields);
         req.body.IssueID = newIssue._id;
         req.body.UserID = newIssue.assignedTo;
+
+        IssueVersion.create({
+            issueID: newIssue._id,
+            modifiedField: 'created',
+            wasModified: true,
+            ...prevDoc
+        },
+        (err) => {
+            if (err) {
+                console.log(err);
+                res.status(501).send(err)
+            }
+        }
+        )
+
         res.json(newIssue).status(200).end();
     } 
     catch (err) {
@@ -65,13 +80,13 @@ const editIssueSummary = async (req, res) => {
     // unique _id created by mongodb
     const prevUID = prevDoc?._id  
 
-    // create version id 
-    const VersionID = versions.filter(ver => 
-        ver.Version?.issueID?.toString() === prevUID?.toString()
-    ).length + 1
+    // // create version id 
+    // const VersionID = versions.filter(ver => 
+    //     ver.Version?.issueID?.toString() === prevUID?.toString()
+    // ).length + 1
 
 
-    delete prevDoc._id
+    // delete prevDoc._id
 
     // create issue version
     IssueVersion.create({
@@ -191,9 +206,9 @@ const editIssueType = async (req, res) => {
     const prevUID = prevDoc?._id  
 
     // create version id 
-    const VersionID = versions.filter(ver => 
-        ver.Version?.issueID?.toString() === prevUID?.toString()
-    ).length + 1
+    // const VersionID = versions.filter(ver => 
+    //     ver.Version?.issueID?.toString() === prevUID?.toString()
+    // ).length + 1
 
 
     delete prevDoc._id
@@ -236,6 +251,7 @@ const editIssueSprint = async (req, res) => {
 
     console.log(mongoose.Types.ObjectId(Fields.sprint))
     doc.sprint = Fields.sprint;
+    doc.stage  = 'To Do'
     // await doc.markModified('sprint')
     await doc.save()
 
@@ -335,9 +351,9 @@ const editIssueStage = async (req, res) => {
     const prevUID = prevDoc?._id  
 
     // create version id (== no. of versions of this issue)
-    const VersionID = versions.filter(ver => 
-        ver.Version?.issueID?.toString() === prevUID?.toString()
-    ).length + 1
+    // const VersionID = versions.filter(ver => 
+    //     ver.Version?.issueID?.toString() === prevUID?.toString()
+    // ).length + 1
 
 
     delete prevDoc._id

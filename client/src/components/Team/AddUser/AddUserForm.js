@@ -73,9 +73,8 @@ function AddUserForm() {
     // console.log(formSchema)
 
   const submitData = (data) => { 
-    console.log(data)
     axios.post(
-      routeData.Users,
+      routeData.Users + '/add',
       {
         firstName:  data.FirstName,
         lastName:   data.LastName,
@@ -85,7 +84,11 @@ function AddUserForm() {
       }
     )
     .then(res => {
-      if ( res.status === 200 ) setNewUserStatus(200);
+      if ( res.status === 200 ) {
+        setNewUserStatus(200);
+        setAddUserModal(false);
+
+      }
       else setNewUserStatus(500);
     })
     .catch(err => {
@@ -366,9 +369,9 @@ function AddUserForm() {
 
     <button type="submit"
     className='float-right hover:bg-[#e2e2e2] 
-    mr-[0.25em] ease-in-out duration-100'
+    rounded-lg mr-[0.25em] ease-in-out duration-100'
     >
-      <BsCheck2Circle fontSize={'1.5em'} color='#538A58'/>
+      <BsCheck2Circle fontSize={'1.75em'} color='#538A58' className='drop-shadow-sm p-1'/>
     </button>
 
     </CustomTooltip>

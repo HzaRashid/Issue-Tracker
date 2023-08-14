@@ -1,5 +1,5 @@
 import React, {   } from 'react'
-import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
+import { AiOutlineLeft, AiOutlineLogout, AiOutlineRight } from "react-icons/ai";
 import { NavItems } from './NavItems';
 import "./Nav.css"
 import "../../index.css"
@@ -18,7 +18,11 @@ import NavBackGd from '../Projects/ProjectNavbar/NavBackGd';
 import NavBackGdDefault from '../Projects/ProjectNavbar/NavBackGdDefault';
 import { SprintContexts } from '../../contexts/SprintContexts';
 // import { ProjContexts } from '../../contexts/ProjectContexts';
-
+import stringAvatar from '../utils/UserAvatar/StringAvatar';
+import { Avatar, Divider } from '@mui/material';
+import { AuthContexts } from '../../App/Auth';
+import { TeamContexts } from '../../contexts/TeamContexts';
+import { BiRightArrow } from 'react-icons/bi';
 
 
 const MenuTooltip = styled(({ className, ...props }) => (
@@ -53,10 +57,11 @@ function Nav() {
    const { 
     // showSprints, 
     setShowSprints } = SprintContexts();
+    const { LoggedInUser } = AuthContexts()
 
   //  const { SelectedProj } = ProjContexts();
 
-  
+  const { setEditThisUserModal } = TeamContexts()
 
 
   
@@ -120,24 +125,21 @@ function Nav() {
     {
       NavItems.map(
         (item, key) => {
-          return (
-
-            <div key={key}>
+          
+          if (item.title.toLowerCase() !== 'profile') return (
+          <div key={key}>
           <MenuTooltip title={nav ? '' : item.title} placement='right' arrow>
           <li
           className='row'
-
           id={
             (
               (currLocation.pathname === item.link) ||
-              
                 ( 
                 currLocation
                 .pathname
                 .includes('/projects') && 
                 item.title === 'Projects'
-                ) ||
-                (ProjectNav && item.title === 'Projects')
+                ) 
               ) ? 
             'active' : 'idle'
           }
@@ -146,20 +148,28 @@ function Nav() {
               setProjectNav(!ProjectNav);
               setShowSprints(false);
               if (isMobile) setNav(false);
-              
               return
             }
-
             goToPage(item.link);
             setNav(false)
             }}
-        
           > 
-
-          <div className='icon'>
+          <div className='icon' 
+          style={{
+            color: currLocation.pathname === item.link ? '#fff' : '#f0f0f0',
+            
+          }}
+          >
             {item.icon}
           </div>
-          
+          {
+          item.title.toLowerCase() === 'projects' && ProjectNav &&
+          <div className={`${nav ? 'ml-[8em]' : 'ml-[1.7em]'} 
+          absolute z-50 text-[#d48c98] transition-all duration-200 ease-in-out`}
+          >  
+          <BiRightArrow className='text-[1em]' />
+          </div>  
+          } 
           <div 
           className='title'
           style={{
@@ -172,13 +182,71 @@ function Nav() {
 
           </li>
           </MenuTooltip>
+
           </div>
           
-
         );
-      }
 
-      )
+        else return (
+        <div key={key}>  
+        <>
+        <Divider sx={{ background: '#20212236'}}/>
+        <Divider sx={{ background: '#20212236'}}/>
+        {/* <div className={`${nav ? 'bg-[#00000053]' : ''} rounded p-1 mt-[1em] transition-all duration-200 ease-in-out`}>  */}
+        <div className='rounded p-1 mt-[3em] 
+        //  text-[#20212236]
+        transition-all duration-200 ease-in-out'> 
+        <div className={`${nav ? '' : ''}
+        flex items-center justify-center transition-all duration-200 ease-in-out
+        text-[#e2e2e2]  hover:cursor-pointer p-2 hover:bg-[#00000038]`}
+        onClick={() => {
+          setEditThisUserModal(true)
+        }}
+        >
+        <div className='hover:cursor-pointer'> 
+        <Avatar 
+        className='hover:bg-[#00000038]'
+            {...stringAvatar(
+              LoggedInUser?.firstName + ' ' + LoggedInUser?.lastName,
+              36, 
+              36, 
+              '0.875em'
+              )
+            }  
+            />
+        <div className='flex items-center justify-center mt-1'> 
+        <p className='text-[0.5em] text-[#f0f0f0] font-normal '> Edit </p>
+        </div>
+        </div>
+        </div>
+
+        <div className='flex items-center justify-center 
+        space-x-8 mt-2 text-[1.2em] '
+        >
+         
+          <button className='w-[3em] p-1 hover:bg-[#00000038]
+          text-[#eaeaea] font-normal rounded-lg
+          transition-all duration-100 ease-in-out'
+          style={{
+            visibility: nav ? 'visible' : 'hidden',
+            opacity:    nav ? '1'       : '0'
+          }}
+          >
+            <AiOutlineLogout className='ml-[0.8em]'/>
+            <p className='text-[0.5em]'>Log out </p>
+          </button>
+   
+          </div>
+        
+        
+        </div>
+        </>
+        </div>)
+
+        
+
+
+      })
     }
     
   </div>

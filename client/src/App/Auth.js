@@ -11,10 +11,11 @@ export function AuthProvider({children}) {
   }
 
   const [user, setUser] = useState(TBDAuthUser);
+  const [LoggedInUser, setLoggedInUser] = useState({});
   
   return (
   <authContext.Provider 
-  value={{ user, setUser, TBDAuthUser}}
+  value={{ user, setUser, TBDAuthUser, LoggedInUser, setLoggedInUser}}
   >
     {children}
   </authContext.Provider>

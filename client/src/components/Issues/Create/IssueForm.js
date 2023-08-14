@@ -14,6 +14,7 @@ import { Types } from './Types';
 import { isEmpty } from '../../utils/isEmptyObject';
 import { Avatar } from '@mui/material';
 import stringAvatar from '../../utils/UserAvatar/StringAvatar';
+import { AuthContexts } from '../../../App/Auth';
 
 const data = require('../../../pages/routes.json')
 
@@ -31,17 +32,19 @@ function IssueForm() {
 
     const { 
       Sprints,
-      SelectedSprint, setSelectedSprint,
+      // SelectedSprint, setSelectedSprint,
       NewSprintIssue, setNewSprintIssue,
       SprintIssues, setSprintIssues
     } = SprintContexts();
 
     const { Users } = TeamContexts();
+    const { user } = AuthContexts()
 
     const [Search, setSearch] = useState('');
     const [showUsers, setShowUsers] = useState(false);
     const [ShowTypes, setShowTypes] = useState(false);
     const [ShowSprints, setShowSprints] = useState(false);
+    const [SelectedSprint, setSelectedSprint] = useState({});
     
     
 
@@ -451,6 +454,8 @@ function IssueForm() {
 
           assignedTo: isAssigned ? 
           formik.values.assignTo[0]._id : undefined,
+
+          createdBy: user.user,
 
           project: SelectedProj._id,
 

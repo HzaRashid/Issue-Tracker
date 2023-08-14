@@ -42,7 +42,7 @@ function NavBackGd( props ) {
     ${
       nav ? 'ml-[12rem]' : 'ml-[4.5rem]'
   } 
-     ease duration-[0.3s]`
+     ease duration-[0.3s] h-[100%]`
   }
     >
     <div className=' overflow-visible'>
@@ -58,17 +58,7 @@ function NavBackGd( props ) {
 
  
     {SwapProjNav ? <ProjectNavbar/> : <SelectedProjNav showSprints={showSprints} setShowSprints={setShowSprints}/>}
-    <div 
-    style={{
-      visibility: ProjectNav ? 'visible' : 'hidden',
-      opacity:    ProjectNav ? '1' : '0',
-      transition: ProjectNav ? 'visibility 0.5s, opacity 0.5s' 
-                             : 'visibility 0.1s, opacity 0.1s'
-    }}
-    > 
-    <SwitchBtn/>
-    
-    </div>
+
     {!SwapProjNav && 
     <div className='flex justify-center items-center mt-[-3.65em]'
     style={{
@@ -86,6 +76,10 @@ function NavBackGd( props ) {
     </div>
     }
   </div>
+
+    <SwitchBtn ProjectNav={ProjectNav}/>
+    
+  
   <CustomTooltip title={ProjectNav ? 'Close' : 'Open'} placement='right' arrow>
       <button 
       className='hover:bg-[#7895B3] bg-[#f0f0f0] hover:text-[#e2e2e2] text-[#404040]' 

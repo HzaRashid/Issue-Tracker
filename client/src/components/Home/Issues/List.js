@@ -17,21 +17,21 @@ function List() {
     const { Projects } = ProjContexts();
     // console.log(Projects)
 
-    const issueData = [
-      { 
-        name: 'Bug', 
-        value: Issues.filter(i => i.type.toLowerCase() === 'bug')?.length
-      },
-      { 
-        name: 'Task', 
-        value: Issues.filter(i => i.type.toLowerCase() === 'task')?.length
-      },
-      { 
-        name: 'Feature', 
-        value: Issues.filter(i => i.type.toLowerCase() === 'feature')?.length
-      },
+    // const issueData = [
+    //   { 
+    //     name: 'Bug', 
+    //     value: Issues.filter(i => i.type.toLowerCase() === 'bug')?.length
+    //   },
+    //   { 
+    //     name: 'Task', 
+    //     value: Issues.filter(i => i.type.toLowerCase() === 'task')?.length
+    //   },
+    //   { 
+    //     name: 'Feature', 
+    //     value: Issues.filter(i => i.type.toLowerCase() === 'feature')?.length
+    //   },
    
-    ];
+    // ];
     useEffect(() => {
             axios.get(
                 data.Issues
@@ -219,7 +219,7 @@ function List() {
     rows={Issues}
     columns={columns}
     components={{Toolbar: CustomToolbar}}
-    componentsProps={{ toolbar: { issues: Issues, issueData: issueData } }}
+    componentsProps={{ toolbar: { issues: Issues } }}
     pageSize={pageSize}
     onPageSizeChange={
     (newPageSize) => setPageSize(newPageSize)

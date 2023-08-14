@@ -3,7 +3,7 @@
 .sidebar{
     font-family: 'Quicksand', sans-serif;
     font-weight: 400;
-    background: #2a2b2d;
+    background: #202122;
     width: 12rem;
     position: fixed;
     height: 100%;
@@ -24,7 +24,7 @@
     justify-content: space-between;
     padding: 2em;
     color: #e2e2e2;
-    background-color: #2a2b2d;
+    background-color: #202122;
     position: sticky;
     top: 0;
 
@@ -58,7 +58,7 @@
     padding: 1.5em;
     align-items: center;
     gap: 1em;
-    background: #2a2a2a;
+    background: #202122;
     overflow: hidden;
     color: #dbdbdb;
     
@@ -68,7 +68,7 @@
 
 
 .sidebar #active{
-    background-color: #ffffff20;
+    background-color: #ffffff15;
     /* border-left: 0.3em solid #c8c8c8; */
     border-radius: 1.75em;
     cursor: pointer;

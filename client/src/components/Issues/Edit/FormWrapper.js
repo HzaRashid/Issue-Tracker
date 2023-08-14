@@ -10,12 +10,21 @@ import { Types } from '../Create/Types'
 import { SprintContexts } from '../../../contexts/SprintContexts';
 import { useLocation } from 'react-router-dom';
 import { AuthContexts } from '../../../App/Auth';
+import { ProjContexts } from '../../../contexts/ProjectContexts';
 const data = require('../../../pages/routes.json')
 
 function FormWrapper( props ) {
   const currLoc = useLocation();
-  const { Sprints, SelectedSprint, items, setItems } = SprintContexts();
+  const { 
+    Sprints, 
+    SelectedSprint, 
+    setSelectedSprint, 
+    items, setItems,
+    SprintIssues,
+    setSprintIssues
+  } = SprintContexts();
   // console.log(SelectedSprint)
+  const { Backlog, setBacklog } = ProjContexts()
   const { setEditIssueModal, SelectedIssue, setSelectedIssue } = IssueContexts();
 
     const { Users } = TeamContexts();
@@ -34,6 +43,15 @@ function FormWrapper( props ) {
     const userListRef = useRef(null);
     const stageListRef = useRef(null);
    
+    useEffect(() => {
+
+      if (SelectedIssue?.sprint) {
+        setSelectedSprint(
+          Sprints?.filter(s => s._id === SelectedIssue?.sprint)[0]
+        )
+      }
+      // eslint-disable-next-line
+    }, [SelectedIssue]);
 
     useEffect(() => {
       function handleOutsideClick(e) {
@@ -74,7 +92,7 @@ function FormWrapper( props ) {
 
       }, [SelectedIssue, Sprints]
      )
-    //  useEffect(() => console.log(SelectedIssue), [SelectedIssue])
+
 
      useEffect(
       () => {
@@ -150,7 +168,7 @@ function FormWrapper( props ) {
 
 
   const handleSprintSubmit = (sprintID, issue) => {
-
+    const origIssue = {...issue};
     axios.put(
       data.Issues + '/sprint',
       {
@@ -159,8 +177,25 @@ function FormWrapper( props ) {
         modifiedBy: user?.user
       }
     )
-    .then(res => console.log(res))
+    .then(res => { 
+      console.log(res);
+      if ( res.status === 200 ) {
+        setSelectedIssue({
+          ...SelectedIssue,
+          stage: 'To Do',
+          sprint: sprintID
+        })
+        
+      }
+    })
     .catch(err => console.log(err))
+
+    if (origIssue.stage.toLowerCase() === 'backlog' && currLoc.pathname.includes('backlog')) {
+      setBacklog(
+        Backlog?.filter(i => i._id !== origIssue._id)
+      )
+    }
+
 
     if (currLoc.pathname.includes('sprint-board')){
       const stage = titleCase(issue?.stage)
@@ -185,20 +220,7 @@ function FormWrapper( props ) {
 
 
 const [ShowSprints, setShowSprints] = useState(false);
-// setSelectedSprint({});
 
-// var searchResults = Sprints.filter(
-//     // eslint-disable-next-line
-//     sprint => 
-//     {
-//         if (Search === '') return sprint
-
-//         else if (
-//         sprint.title.toLowerCase()
-//         .includes(Search.toLowerCase()) 
-//         ) { return sprint }
-//     }
-// )
       
   return (
     <> 
@@ -392,17 +414,18 @@ const [ShowSprints, setShowSprints] = useState(false);
         }
       )
       .map(
-        (sprint, key) =>
+        (s, key) =>
         <li key={key}
-        className='hover:cursor-pointer
+        className='hover:cursor-pointer z-10
         hover:bg-slate-200 rounded-md p-1'
         onClick={() => {
-          setSprintSearch(sprint.title);
-          handleSprintSubmit(sprint._id, SelectedIssue)
+          console.log('foo')
+          setSprintSearch(s.title);
+          return handleSprintSubmit(s._id, SelectedIssue)
         }}
         >
           <div>
-            {sprint.title}
+            {s.title}
           </div>
         </li>
         )
@@ -538,9 +561,10 @@ const [ShowSprints, setShowSprints] = useState(false);
       transition: 'all 0.1s ease-in-out'
     }}
     >
+
       {SelectedSprint?.stages?.map(
         (stage, key) => (
-
+         
           <li
           key={key}
           className='hover:bg-[#00000008] 

@@ -6,13 +6,11 @@ import {
   GridToolbarQuickFilter,
   GridActionsCellItem,
   useGridApiRef,
-  gridPaginatedVisibleSortedGridRowIdsSelector,
-
  } from '@mui/x-data-grid';
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { AiOutlineUserAdd } from "react-icons/ai";
 
-import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
+// import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import { CustomTooltip } from '../CustomTooltip';
 import TeamEditUserModal from './TeamEditUserModal';
@@ -74,33 +72,6 @@ const theme = createTheme({
 });
 
 
-
-
-// export const handleSelectFirstVisibleRow = () => {
-//   const visibleRows = gridPaginatedVisibleSortedGridRowIdsSelector(apiRef);
-//   if (visibleRows.length === 0) {
-//     return;
-//   }
-//   console.log(visibleRows)
-
-//   // tableRef.current.selectRow(
-//   //   visibleRows[0],
-//   //   !tableRef.current.isRowSelected(visibleRows[0]),
-//   // );
-// };
-
-// export const handleSelectFirstVisibleRow = (ref) => {
-//   const visibleRows = ref ? gridPaginatedVisibleSortedGridRowIdsSelector(ref) : [];
-//   if (visibleRows.length === 0) {
-//     return;
-//   }
-//   console.log(visibleRows)
-
-//   // tableRef.current.selectRow(
-//   //   visibleRows[0],
-//   //   !tableRef.current.isRowSelected(visibleRows[0]),
-//   // );
-// };
 function TeamTable() {
 
     const {
@@ -110,40 +81,20 @@ function TeamTable() {
         EditUser, setEditUser,
         ModalClosed, setModalClosed,
         AssignProjModal, setAssignProjModal,
-        SelectedUsers, setSelectedUsers,
-        tableRef, setTableRef
+        SelectedGridUsers, setSelectedGridUsers,
+        tableRef, setTableRef, 
+        setEditUserModal,
+        setSelectedUser
         } = TeamContexts()
 
     
-    console.log(SelectedUsers)
+    // console.log(SelectedUsers)
 
 
 
 
     // const [Users, setUsers] = useState([]);
     const [pageSize, setPageSize] = useState(10);
-
-
-    // useEffect(
-    //   () => {
-    //     const BoolStr = localStorage.getItem('EditUserBool');
-
-    //     if (BoolStr==='true')
-    //       setEditUser(true)
-        
-    //     setSelectedUsers(
-    //       JSON.parse(localStorage.getItem('UserList'))
-    //       )
-    //   }
-    //   // eslint-disable-next-line
-    //   ,[])
-      
-    // useEffect(
-    //   () => {
-    //     localStorage.setItem('EditUserBool', EditUser);
-    //     localStorage.setItem('UserList', JSON.stringify(SelectedUsers))
-    //   }
-    // )
 
 
 
@@ -160,9 +111,10 @@ function TeamTable() {
             label="Edit"
             onClick={
               () => {
-                setSelectedUsers([params.row]); 
-                setEditUser(!EditUser)
-                setModalClosed(false);
+                setSelectedUser(params.row) 
+                setEditUserModal(true);
+                // setEditUser(!EditUser)
+                // setModalClosed(false);
               }
             }
           />,
@@ -207,45 +159,47 @@ function TeamTable() {
       ]
 
 
-  const handleSelectFirstVisibleRow = () => {
-    const visibleRows = gridPaginatedVisibleSortedGridRowIdsSelector(tableRef);
-    if (visibleRows.length === 0) {
-      return;
-    }
 
-    tableRef.current.selectRow(
-      visibleRows[0],
-      !tableRef.current.isRowSelected(visibleRows[0])
-    );
-  };
+  const ref = useGridApiRef();
+  console.log(tableRef)
 
-  useEffect(() => {
-    const visibleRows = gridPaginatedVisibleSortedGridRowIdsSelector(tableRef);
-    if (visibleRows.length === 0) {
-      return;
-    }
+  useEffect(() => setTableRef(ref), [])
+  useEffect(() => setSelectedGridUsers([]), [])
+
+// useEffect(() => {
+
+//     if (tableRef.current !== null) {
+//       console.log(/ref not null/)
+//     const visibleRows = gridPaginatedVisibleSortedGridRowIdsSelector(tableRef);
+//     if (visibleRows.length === 0) {
+//       return;
+//     }
 
 
-    for (let i = 0; i < Users?.length - 1; i++) {
-      const isSelectedUser = SelectedUsers?.filter(u => {
-        return u._id === Users[i]?._id
-      })?.length
+//     for (let i = 0; i < Users?.length - 1; i++) {
+//       const isSelectedUser = SelectedUsers?.filter(u => {
+//         return u._id === Users[i]?._id
+//       })?.length
 
-      if ( isSelectedUser  ) {
-        // console.log(tableRef.current.isRowSelected(visibleRows[i]))
-        console.log(isSelectedUser)
-        tableRef.current.selectRow(
-          visibleRows[i],
-          // !tableRef.current.isRowSelected(visibleRows[i])
-        );
-      }
-    }
+//       if ( isSelectedUser  ) {
+//         // console.log(tableRef.current.isRowSelected(visibleRows[i]))
+//         console.log(isSelectedUser)
+//         tableRef.current.selectRow(
+//           visibleRows[i],
+//           // !tableRef.current.isRowSelected(visibleRows[i])
+//         );
+//       }
+//     }}
+//     else console.log(/ref null/)
+
+//   }, [SelectedUsers?.length])
+
+  if (tableRef.current === null) return
 
 
+ return (
 
-  }, [SelectedUsers?.length])
 
-    return (
         <>
         <ThemeProvider theme={theme}>
 
@@ -288,10 +242,10 @@ function TeamTable() {
 
             onRowSelectionModelChange={(ids) => {
             const selectedIDs = new Set(ids);
-            setSelectedUsers(Users.filter(
+            setSelectedGridUsers(Users.filter(
                 (row) => selectedIDs.has(row._id)
             ));
-            console.log(SelectedUsers);
+            console.log(SelectedGridUsers);
             }}
         />
         
@@ -310,8 +264,7 @@ function TeamTable() {
         </div>
 
 
-
-        <div 
+        {/* <div 
         className={(SelectedUsers && SelectedUsers.length === 1 && ModalClosed===true) ? 
         'visibility: visible' :
         'visibility: hidden'
@@ -328,9 +281,9 @@ function TeamTable() {
             />
             </button>
             </CustomTooltip>
-        </div>
+        </div> */}
 
-        <div className={(SelectedUsers?.length > 1) ? 
+        <div className={(SelectedGridUsers?.length >= 1) ? 
         'visibility: visible' :
         'visibility: hidden'
         }
@@ -350,13 +303,13 @@ function TeamTable() {
 
         </div>
 
-        { EditUser && 
+        {/* { EditUser && 
         <TeamEditUserModal 
         Users={Users} 
-        SelectedUsers={SelectedUsers}
-        setSelectedUsers={setSelectedUsers}
+        SelectedUsers={SelectedGridUsers}
+        setSelectedUsers={setSelectedGridUsers}
         /> 
-        }
+        } */}
 
         </ThemeProvider>
         </>

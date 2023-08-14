@@ -9,16 +9,19 @@ import { AiFillProject, AiOutlineUnorderedList } from 'react-icons/ai'
 
 
 
-function SwitchBtn() {
+function SwitchBtn( { ProjectNav } ) {
   // const [enabled, setEnabled] = useState(false)
   const { SwapProjNav, setSwapProjNav } = useStateContext()
   // const { nav,setNav, ProjectNav, setProjectNav  } = useStateContext();
   return (
     <> 
-    <div className='flex justify-center items-center'
+    <div className='absolute bottom-16 z-10   ml-[2.65em]'
     style={{
-      marginTop: SwapProjNav ? '7em' : '-2.78em',
-      }}
+      visibility: ProjectNav ? 'visible' : 'hidden',
+      opacity:    ProjectNav ? '1' : '0',
+      transition: ProjectNav ? 'visibility 0.5s, opacity 0.5s' 
+                             : 'visibility 0.1s, opacity 0.1s'
+    }}
     > 
     <Switch
       // checked={enabled}
