@@ -1,7 +1,8 @@
 const express = require('express');
 var router = express.Router()
-
-
+const User = require('../../models/User')
+// const DemoUsers = require('./Issue-Tracker.users copy.json');
+// const { default: mongoose } = require('mongoose');
 router.use('/google', require('./GoogleAuth'))
 
 
@@ -12,6 +13,14 @@ router.get('/', (req, res) => {
         user: req.user
         })
         console.log(req.user)
+        console.log(DemoUsers[0])
+        console.log('fofofo')
+
+        // const newUser = { ...DemoUsers[0] }
+        // newUser._id =  mongoose.Types.ObjectId(DemoUsers[0]._id)
+        // newUser.createdAt =  new Date(DemoUsers[0].createdAt),
+        // newUser.updatedAt =   new Date(DemoUsers[0].updatedAt),
+        // User.create(newUser)
         return;
     }
     res.status(400).json({
@@ -20,4 +29,16 @@ router.get('/', (req, res) => {
     })
     
 })
+
+router.get('/logout', function(req, res, next) {
+  req.logout(function(err) {
+    if (err) { 
+      console.log(err);
+      return next(err); 
+      
+    }
+    res.redirect(process.env.CLIENT_URL_LOGIN);
+  });
+});
+  
 module.exports = router

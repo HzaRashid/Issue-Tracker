@@ -36,7 +36,10 @@ export const TeamContextProvider = ({children}) => {
 
     useEffect( () => { axios.get(data.getUsers)
         .then( 
-          response => setUsers(response.data) 
+          response =>{ 
+            setUsers(response.data); 
+            console.log(response.data)
+        }
           // eslint-disable-next-line
           )}, [])
 

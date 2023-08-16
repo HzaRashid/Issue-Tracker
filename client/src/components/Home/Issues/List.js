@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Avatar, ThemeProvider, createTheme } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { DataGrid, GridActionsCellItem, GridToolbarContainer, GridToolbarQuickFilter } from '@mui/x-data-grid';
@@ -17,21 +17,7 @@ function List() {
     const { Projects } = ProjContexts();
     // console.log(Projects)
 
-    // const issueData = [
-    //   { 
-    //     name: 'Bug', 
-    //     value: Issues.filter(i => i.type.toLowerCase() === 'bug')?.length
-    //   },
-    //   { 
-    //     name: 'Task', 
-    //     value: Issues.filter(i => i.type.toLowerCase() === 'task')?.length
-    //   },
-    //   { 
-    //     name: 'Feature', 
-    //     value: Issues.filter(i => i.type.toLowerCase() === 'feature')?.length
-    //   },
-   
-    // ];
+    // cons
     useEffect(() => {
             axios.get(
                 data.Issues
@@ -40,7 +26,24 @@ function List() {
             .catch(err => console.log(err))
     // eslint-disable-next-line
     }, []);
+ 
+    // allow user to search issues by assignee
+    const rows = useMemo(() =>
+    Issues?.map(
+      ( i, key ) => {
+        i.id = key;
+        const user = Users?.filter( u => u._id === i?.assignedTo )
+        if ( user?.length ) {
+          i.assignedTo = user[0]?.firstName + ' ' + user[0]?.lastName;
+        } 
+        else i.assignedTo = 'Unassigned'
+      const projID = i.project 
+      i.project = Projects.filter(p => p._id === projID)[0]?.title
+      return i
+    }
+    ), [Issues, Users])
 
+    
     const columns = [ 
         {
         headerName:'Edit',
@@ -154,7 +157,7 @@ function List() {
             return (
               <>
               <div className='p-1 rounded-md bg-[#dddce8] text-[#454754]'>
-                {Projects.filter(p => p._id === params.value)[0]?.title}
+                {params.value}
               </div>
               </>
             )
@@ -164,39 +167,42 @@ function List() {
         { 
             field: 'assignedTo', 
             headerName: 'Assignee', 
+            valueGetter: params => params?.value ?? 'Unassigned',
+            
             flex: 0.5,
             renderCell: (params) => {
-                const user = getAssignee(params.value)
-                const name = user?.firstName + ' ' + user?.lastName
-                return (
+                if (params?.value !== 'Unassigned') return (
                     <div className='flex items-center'>
                     <Avatar 
                   className=' antialiased mr-3'
-                  {...stringAvatar(name, 22, 22, '0.75em')} 
+                  {...stringAvatar(params?.value, 22, 22, '0.75em')} 
                   
                   />
-                        {name}
+                        {params.value}
                     </div>
                 )
-            }
+                return (
+                  
+                  <div className='p-1 rounded bg-gray-200'>
+                    Unassigned
+                  </div>
+                )
+            },
+            
         },
 
       ]
 
-      // function getAssignee (assigneeID) {
-      //   const index = Users.map(u => u._id).indexOf(assigneeID);
-      //   return Users[index]
-      // }
 
-      function getAssignee (assigneeID) {
-        const user = Users.filter(u => {
-          return u._id === assigneeID
-        })[0];
-        // console.log(user);
-        return user
+      // function getAssignee (assigneeID) {
+      //   const user = Users.filter(u => {
+      //     return u._id === assigneeID
+      //   })[0];
+      //   // console.log(user);
+      //   return user
   
-      }
-      const [pageSize, setPageSize] = useState(10);
+      // }
+      // const [pageSize, setPageSize] = useState(10);
 
 
 
@@ -216,21 +222,21 @@ function List() {
         }}
     >
     <DataGrid
-    rows={Issues}
+    rows={rows}
     columns={columns}
-    components={{Toolbar: CustomToolbar}}
-    componentsProps={{ toolbar: { issues: Issues } }}
-    pageSize={pageSize}
-    onPageSizeChange={
-    (newPageSize) => setPageSize(newPageSize)
-    }
-    // rowsPerPageOptions={[5, 10, 20]}
-    // pagination
+    slots={{ toolbar: CustomToolbar }}
+    
+    slotProps={{
+      toolbar: {
+        issues: Issues
+      },
+    }}
+
     hideFooterPagination
     disableDensitySelector
     disableSelectionOnClick
-    // density='0.5em'
-    getRowId={(row) => row._id}
+
+    getRowId={(row) => row?._id}
     sx={{ 
         overflow:'scroll',
         borderBottom: 'none',

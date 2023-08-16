@@ -12,6 +12,7 @@ function Stage( props ) {
     const { setNodeRef } = useDroppable( { id } );
 
     const { 
+      SelectedSprint,
       editStage, setEditStage, 
       SelectedStage, setSelectedStage,
       setOpenDeleteStage,
@@ -83,7 +84,14 @@ function Stage( props ) {
     >
       {
         editStageOptions.map(
-          (option, key) => (
+          (option, key) => { 
+            // must have at least one stage
+            if ( option.title.toLowerCase() === 'delete' 
+                 && SelectedSprint?.stages?.length === 1 ) {
+                  return null
+                 }
+
+            return (
             <div 
             key={key} 
             className='hover:bg-[#98c9e521] p-[0.2em]'
@@ -94,7 +102,7 @@ function Stage( props ) {
             >
             <p className='ml-1 text-[0.95em]'> {option.title}</p>
             </div>
-          )
+          )}
         )
       }
       </div>

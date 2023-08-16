@@ -91,7 +91,10 @@ function TeamTable() {
     // console.log(SelectedUsers)
 
 
-
+useEffect(() => {
+  const getB = Users?.filter(u => u._id === "62a0f6fa520c2b1a7ea89a5a")[0];
+  console.log(getB?.updatedAt)
+}, [])
 
     // const [Users, setUsers] = useState([]);
     const [pageSize, setPageSize] = useState(10);
@@ -159,40 +162,11 @@ function TeamTable() {
       ]
 
 
-
   const ref = useGridApiRef();
   console.log(tableRef)
 
   useEffect(() => setTableRef(ref), [])
   useEffect(() => setSelectedGridUsers([]), [])
-
-// useEffect(() => {
-
-//     if (tableRef.current !== null) {
-//       console.log(/ref not null/)
-//     const visibleRows = gridPaginatedVisibleSortedGridRowIdsSelector(tableRef);
-//     if (visibleRows.length === 0) {
-//       return;
-//     }
-
-
-//     for (let i = 0; i < Users?.length - 1; i++) {
-//       const isSelectedUser = SelectedUsers?.filter(u => {
-//         return u._id === Users[i]?._id
-//       })?.length
-
-//       if ( isSelectedUser  ) {
-//         // console.log(tableRef.current.isRowSelected(visibleRows[i]))
-//         console.log(isSelectedUser)
-//         tableRef.current.selectRow(
-//           visibleRows[i],
-//           // !tableRef.current.isRowSelected(visibleRows[i])
-//         );
-//       }
-//     }}
-//     else console.log(/ref null/)
-
-//   }, [SelectedUsers?.length])
 
   if (tableRef.current === null) return
 
@@ -263,26 +237,6 @@ function TeamTable() {
         </CustomTooltip>
         </div>
 
-
-        {/* <div 
-        className={(SelectedUsers && SelectedUsers.length === 1 && ModalClosed===true) ? 
-        'visibility: visible' :
-        'visibility: hidden'
-        }
-        >
-            <CustomTooltip title="Edit User">
-            <button 
-            className='mt-3 p-1 ml-8 
-            hover:bg-[#e7e7e7]'
-            onClick={() => setEditUser(!EditUser)}
-            >
-            <ModeEditOutlineIcon
-            style={{color: '#90B29E', fontSize: 40}}
-            />
-            </button>
-            </CustomTooltip>
-        </div> */}
-
         <div className={(SelectedGridUsers?.length >= 1) ? 
         'visibility: visible' :
         'visibility: hidden'
@@ -302,14 +256,6 @@ function TeamTable() {
         </div>
 
         </div>
-
-        {/* { EditUser && 
-        <TeamEditUserModal 
-        Users={Users} 
-        SelectedUsers={SelectedGridUsers}
-        setSelectedUsers={setSelectedGridUsers}
-        /> 
-        } */}
 
         </ThemeProvider>
         </>

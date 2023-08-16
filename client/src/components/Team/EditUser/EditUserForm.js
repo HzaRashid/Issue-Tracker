@@ -30,7 +30,7 @@ function EditUserForm() {
       if (SelectedUser?.role?.toLowerCase() === 'admin') setSwapRole(true);
       }, [])
 
-    console.log(SelectedUser)
+    // console.log(SelectedUser)
     const formSchema = z.object({
       FirstName:        z.string().min(1, 'Must have at least 1 character'),
       LastName:         z.string().min(1, 'Must have at least 1 character'),

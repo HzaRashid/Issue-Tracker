@@ -1,4 +1,5 @@
 {
+    "index": "http://localhost:4000",
     "getUsers": "http://localhost:4000/users",
     "Users": "http://localhost:4000/users",
     "UserRole": "http://localhost:4000/users/edit-role",

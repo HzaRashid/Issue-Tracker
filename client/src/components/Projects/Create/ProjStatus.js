@@ -15,7 +15,7 @@ function ProjStatus() {
       ProjStatus, setProjStatus,
       EditProj, setEditProj
      } = ProjContexts();
-    console.log(ProjStatus)
+    // console.log(ProjStatus)
   return (
 
     <>

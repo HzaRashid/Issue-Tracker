@@ -1,4 +1,4 @@
-import React, {   } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiOutlineLeft, AiOutlineLogout, AiOutlineRight } from "react-icons/ai";
 import { NavItems } from './NavItems';
 import "./Nav.css"
@@ -11,19 +11,15 @@ import { CustomTooltip } from '../CustomTooltip';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useStateContext } from '../../contexts/ContextProvider';
-// eslint-disable-next-line
-// import ProjectNavbar from '../Projects/ProjectNavbar/ProjectNavbar';
-// import SelectedProjNav from '../Projects/SelectedProjNav/SelectedProjNav';
 import NavBackGd from '../Projects/ProjectNavbar/NavBackGd';
 import NavBackGdDefault from '../Projects/ProjectNavbar/NavBackGdDefault';
 import { SprintContexts } from '../../contexts/SprintContexts';
-// import { ProjContexts } from '../../contexts/ProjectContexts';
 import stringAvatar from '../utils/UserAvatar/StringAvatar';
 import { Avatar, Divider } from '@mui/material';
 import { AuthContexts } from '../../App/Auth';
 import { TeamContexts } from '../../contexts/TeamContexts';
 import { BiRightArrow } from 'react-icons/bi';
-
+const data = require('../../pages/routes.json')
 
 const MenuTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -43,7 +39,6 @@ const MenuTooltip = styled(({ className, ...props }) => (
 
 
 function Nav() {
-
   const currLocation = useLocation();
   let goToPage = useNavigate();
 
@@ -54,22 +49,35 @@ function Nav() {
     // SwapProjNav, 
     // setSwapProjNav
    } = useStateContext();
-   const { 
-    // showSprints, 
-    setShowSprints } = SprintContexts();
-    const { LoggedInUser } = AuthContexts()
+  const { Users } = TeamContexts()
+  const { setShowSprints } = SprintContexts();
+  const { 
+    LoggedInUser, setLoggedInUser, 
+    user, setUser 
+  } = AuthContexts()
 
-  //  const { SelectedProj } = ProjContexts();
+  useEffect(() => {
+    setLoggedInUser(
+      Users?.filter(u => u._id === user.user)[0]
+    )}, [user, Users])
+
+  const [name, setName] = useState('');
+  useEffect(
+    () => setName(LoggedInUser?.firstName + ' ' + LoggedInUser?.lastName),
+    [user, LoggedInUser] )
+//  const { SelectedProj } = ProjContexts();
 
   const { setEditThisUserModal } = TeamContexts()
 
 
   
-   const isMobile = ScreenWidth < 768;
-  // const closeNavStyle = { color: "#4a4a4a", fontSize: "2em"};
+  const isMobile = ScreenWidth < 768;
+// const closeNavStyle = { color: "#4a4a4a", fontSize: "2em"};
   const isProjPage = currLocation.pathname
   .includes('proj-nav=true')
-  // console.log(SelectedProj)
+// console.log(SelectedProj)
+
+  // if (!LoggedInUser?.firstName) return
   return (
   <>
   <div 
@@ -114,7 +122,7 @@ function Nav() {
       }}
       >
       { nav ? 
-       <AiOutlineLeft  /> : <AiOutlineRight />
+      <AiOutlineLeft  /> : <AiOutlineRight />
       }
       
       </button>      
@@ -204,6 +212,7 @@ function Nav() {
         }}
         >
         <div className='hover:cursor-pointer'> 
+        {LoggedInUser?.firstName && 
         <Avatar 
         className='hover:bg-[#00000038]'
             {...stringAvatar(
@@ -213,7 +222,7 @@ function Nav() {
               '0.875em'
               )
             }  
-            />
+            />}
         <div className='flex items-center justify-center mt-1'> 
         <p className='text-[0.5em] text-[#f0f0f0] font-normal '> Edit </p>
         </div>
@@ -223,7 +232,7 @@ function Nav() {
         <div className='flex items-center justify-center 
         space-x-8 mt-2 text-[1.2em] '
         >
-         
+        
           <button className='w-[3em] p-1 hover:bg-[#00000038]
           text-[#eaeaea] font-normal rounded-lg
           transition-all duration-100 ease-in-out'
@@ -231,20 +240,23 @@ function Nav() {
             visibility: nav ? 'visible' : 'hidden',
             opacity:    nav ? '1'       : '0'
           }}
+          onClick={() => {
+            window.open(data.index + '/auth/logout', "_self")
+            setUser({
+              user: null,
+              authenticated: false
+            })
+          }}
           >
             <AiOutlineLogout className='ml-[0.8em]'/>
             <p className='text-[0.5em]'>Log out </p>
           </button>
-   
+  
           </div>
-        
         
         </div>
         </>
         </div>)
-
-        
-
 
       })
     }
@@ -252,27 +264,15 @@ function Nav() {
   </div>
   {isProjPage ?
   <> 
-  {/* <div style={{
-    visibility: ProjectNav  ? 'visible' : 'hidden',
-    opacity:    ProjectNav ? '1'       : '0',
-    transition: ProjectNav ? '0.4s' : '0.2s'
-  }}>  */}
   <div> 
   <NavBackGd/>
   </div>
-  {/* </div> */}
   </> 
   : 
-  // <div style={{
-  //   visibility: ProjectNav  ? 'visible' : 'hidden',
-  //   opacity:    ProjectNav ? '1'       : '0',
-  //   transition: ProjectNav ? '0.4s' : '0.1s'
-  // }}> 
   <div style={{ zIndex: 50 }}> 
   <NavBackGdDefault/>
-   </div>
+  </div>
   }
-
 
   </>
 );

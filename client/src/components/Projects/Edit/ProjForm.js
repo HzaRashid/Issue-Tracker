@@ -38,7 +38,7 @@ function ProjForm( { showReview, setShowReview } ) {
     const [ShowTypes, setShowTypes] = useState(false);
 
     // useEffect(() => setEditProj(true), []);
-    console.log(EditProj)
+    // console.log(EditProj)
     const UniqueTitleMsg = 'A project with this title already exists'
 
     function uniqueTitle() {

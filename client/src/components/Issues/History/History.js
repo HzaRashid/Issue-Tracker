@@ -119,12 +119,13 @@ function History() {
 
 function renderAvatar(issueVersion, Users) {
   const v = issueVersion;
+  console.log(v)
   const userList = Users.slice()
   const User = userList.filter(u => u._id === v.modifiedBy)[0];
   return (
     <Avatar 
     {...stringAvatar(
-      User.firstName + ' ' + User.lastName,
+      User?.firstName + ' ' + User?.lastName,
       24, 
       24, 
       '0.75em'
