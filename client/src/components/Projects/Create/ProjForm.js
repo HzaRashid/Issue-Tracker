@@ -59,10 +59,6 @@ function ProjForm( {showReview, setShowReview} ) {
                 .required('Required')
                 .max(30, "30 characters max")
                 .uniqueTitle(),
-                
-
-        ProjType: Yup.string()
-                .required('Required'),
 
         ProjTeam: Yup.array().max(Users.length)
     })
@@ -75,7 +71,7 @@ function ProjForm( {showReview, setShowReview} ) {
     <>
     <div className='sticky top-0 bg-inherit'>
     <h1 className='p-3 text-[1.05em]
-      text-[#656565] font-normal break-words '>
+      text-[#404040] font-normal break-words '>
         {formik.values.ProjTitle ? 
           'New Project: ' + 
           formik.values
@@ -84,7 +80,7 @@ function ProjForm( {showReview, setShowReview} ) {
           : 'New Project: '}
       </h1>
     </div>
-      <div className='flex items-center justify-center mt-[1em] font-light'>
+      <div className='flex items-center justify-center mt-[1em] font-normal'>
 
       <ul className='h-auto max-h-[50vh] overflow-auto'>
 
@@ -93,14 +89,14 @@ function ProjForm( {showReview, setShowReview} ) {
       className='mb-[0.2em] 
       text-[0.95em] text-[#505050]'
       >
-        <div className='flex items-center'>
+        <div className='flex items-center text-[0.9em] text-[#404040]'>
           <p>Title</p>
-          <p className='text-[#c94e4e]'>*</p>
+          <p className='text-[#a44e4e]'>*</p>
         </div>
       </label>
       <input id='title' type='text' placeholder='Project name..' 
       className='block bg-[#0000001a] lg:w-[20em] md:w-[20em] 
-      w-[50vw] rounded-lg outline-none font-light 
+      w-[50vw] rounded-lg outline-none font-normal text-[0.9em]
       p-[0.2em] placeholder:text-[#787878]'
       name='ProjTitle'
       value={formik.values.ProjTitle}
@@ -111,81 +107,17 @@ function ProjForm( {showReview, setShowReview} ) {
       {
       (formik.errors.ProjTitle && formik.touched.ProjTitle) &&
       <div
-      className='text-[#c94e4e] text-[0.75em]'
+      className='text-[#a44e4e] text-[0.65em]'
       >
         {formik.errors.ProjTitle}
         </div>}
       </li>
       
-      {/* <li className='mt-[2em] color-[#0000001a]'>
 
-    <div className={`
-        flex items-center bg-[#0000001a] text-[#505050] 
-        p-[0.2em] w-fit hover:cursor-pointer rounded-md`}
-        onClick={() => {
-          if (ShowTypes) formik.setFieldTouched('ProjType', true);
-          setShowTypes(!ShowTypes);
-        }}
-        id='ProjType'
-        name='ProjType'
-        onBlur={formik.handleBlur}
-        >
-          <div>
-           {
-            formik.values.ProjType.length ? 
-            formik.values.ProjType :
-            'Project Type..'  
-          }
-          </div>
-          <div className='ml-2'>
-          <BsChevronDown className={`
-          ${ShowTypes ? 'rotate-180' : 'rotate-0'} 
-          ease-in-out duration-100`}
-          />
-          </div>
-        </div>
-
-      { ShowTypes &&
-        <ul className='bg-[#0000001a] text-[#505050] 
-        w-[7em] rounded-md shadow-md my-[0.2em]'
-        >
-        {
-        ProjTypes.map(
-          (type, index) => (
-          <li 
-          key={index} 
-          className='rounded-md w-[7em] p-1 
-          hover:cursor-pointer hover:bg-[#00000008]'
-          onClick={() => {
-            formik.setFieldValue('ProjType', type.title)
-            setShowTypes(false);
-          }}
-          >
-            <div className='ml-2'> {type.title} </div>
-
-          </li>
-          )
-        )
-        }
-
-        </ul>
-      }
-      
-      
-    {
-    formik.touched.ProjType && formik.errors.ProjType &&
-      <div
-      className='text-[#c94e4e] text-[0.75em]'
-      >
-        {formik.errors.ProjType}
-      </div> 
-    }
-
-    </li> */}
     
     <li className=' mt-[2em] color-[#0000001a]'>
     <label
-      className='block mb-[0.2em] text-[0.95em] text-[#505050]'
+      className='block mb-[0.2em] text-[0.9em] text-[#404040]'
       >
         Team
       </label>
@@ -238,7 +170,7 @@ function ProjForm( {showReview, setShowReview} ) {
       <div className='flex items-center'>
       <input id='team' type='text' placeholder='Search users..' 
       className='block bg-[#0000001a] lg:w-[20em] md:w-[20em] 
-      w-[50vw] rounded-lg outline-none font-light
+      w-[50vw] rounded-lg outline-none font-normal text-[0.9em]
       p-[0.2em] placeholder:text-[#787878]'
       value={Search}
       onChange={(e) => setSearch(e.target.value)}
@@ -259,7 +191,7 @@ function ProjForm( {showReview, setShowReview} ) {
     {
     showUsers && 
     <ul className='bg-[#eaeaea] h-[6em] overflow-y-auto
-    lg:w-[20em] md:w-[20em] w-[50vw]' 
+    lg:w-[20em] md:w-[20em] w-[50vw] text-[0.9em]' 
     >
     {
       Users

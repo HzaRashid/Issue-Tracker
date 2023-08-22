@@ -29,8 +29,20 @@ const addUser = async (req, res) => {
         console.log(e.message)
         res.status(500).send(e)
     }
-        
-    };
+};
+
+
+const addProject = async (req, res) => {
+    const Fields = req.body
+    User.updateMany(
+        {  _id: { $in: Fields.assignedTo } },
+        { projects: { $push: Fields.project }},
+        function(err, docs) {
+        if (err) return res.status(500)
+        return res.status(200).send( { message: 'users added to project'})
+        }
+    )
+};
 
 
 
@@ -134,6 +146,7 @@ const deleteUser = (req, res) => {
 module.exports = {
     getUsers, 
     addUser, 
+    addProject,
     editUserRole, 
     editUser,
     editUserProjs, 

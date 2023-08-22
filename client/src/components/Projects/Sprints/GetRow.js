@@ -36,7 +36,7 @@ function GetSprintRow( props ) {
               className='
               bg-[#e6e6e6] text-[#505050] p-1 w-[100%]
               hover:bg-[#e0e0e0] flex text-[0.925em]
-              items-center justify-between'
+              items-center justify-between font-normal'
               style={style}
               ref={setNodeRef} 
               {...listeners}

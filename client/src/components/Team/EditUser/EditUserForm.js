@@ -16,7 +16,7 @@ const routeData = require('../../../pages/routes.json')
 
 function EditUserForm() {
 
-    const { SelectedUser, setSelectedUser, setEditUserModal, EditUserModal, setEditUserStatus } = TeamContexts();
+    const { Users, setUsers, SelectedUser, setSelectedUser, setEditUserModal, EditUserModal, setEditUserStatus } = TeamContexts();
 
     const [ ChangePassword, setChangePassword ] = useState(false);
     const [ DeleteUserConfirm, setDeleteUserConfirm] = useState(false);
@@ -29,20 +29,37 @@ function EditUserForm() {
     useEffect(() => {
       if (SelectedUser?.role?.toLowerCase() === 'admin') setSwapRole(true);
       }, [])
-
+      const pwdReqs = z
+          .union([
+            z.string().length(0), 
+            z.string().min(8), 
+            z.string().max(14, 'Cannot exceed 14 characters'),
+            z.string().regex(/(?=.*[A-Z])+/, 'At least one uppercase letter'),
+            z.string().regex(/\d/, '          At least one number'),
+            z.string().regex(/(?=.*\W)+/,    'At least one special character')
+          ])
+          .optional()
+          .transform(e => e === "" ? undefined : e);
+      const confirmPwdReqs = z
+            .string()
+            .optional()
+            .transform(e => e === "" ? undefined : e);
     // console.log(SelectedUser)
     const formSchema = z.object({
       FirstName:        z.string().min(1, 'Must have at least 1 character'),
       LastName:         z.string().min(1, 'Must have at least 1 character'),
       Email:            z.string().email(),
-      Password:         z.string()
-                         .min(8,  'Must have at least 8 characters')
-                         .max(14, 'Cannot exceed 14 characters')
-                         .regex(/(?=.*[A-Z])+/, 'At least one uppercase letter')
-                         .regex(/\d/, '          At least one number')
-                         .regex(/(?=.*\W)+/,    'At least one special character'),
+      Password:         pwdReqs
+      // Password:         z.string()
+      //                    .min(8,  'Must have at least 8 characters')
+      //                    .max(14, 'Cannot exceed 14 characters')
+      //                    .regex(/(?=.*[A-Z])+/, 'At least one uppercase letter')
+      //                    .regex(/\d/, '          At least one number')
+      //                    .regex(/(?=.*\W)+/,    'At least one special character')
+      //                    .optional()
+                         ,
                          
-      ConfirmPassword:  z.string()
+      ConfirmPassword:  confirmPwdReqs
 
     })
     .refine(
@@ -88,9 +105,10 @@ useEffect(() => {
 }, [EditUserModal, ChangePassword] )
 
 
+  const [Submitted, setSubmitted ] = useState(false);
 
   const submitData = (data) => { 
-
+    setSubmitted(true);
     var newDoc =  {
       _id:        SelectedUser?._id,
       firstName:  data.FirstName,
@@ -99,16 +117,16 @@ useEffect(() => {
       role:       SwapRole ? 'admin' : 'developer',
       password:   data.Password,
     }
-    var oldDoc = {
-      _id:        SelectedUser?._id,
-      firstName:  SelectedUser.firstName,
-      lastName:   SelectedUser.lastName,
-      email:      SelectedUser.email,
-      role:       SelectedUser.role,
-      password:   SelectedUser.password,
-    }
+    // var oldDoc = {
+    //   _id:        SelectedUser?._id,
+    //   firstName:  SelectedUser.firstName,
+    //   lastName:   SelectedUser.lastName,
+    //   email:      SelectedUser.email,
+    //   role:       SelectedUser.role,
+    //   password:   SelectedUser.password,
+    // }
 
-    console.log(_.isEqual(newDoc, oldDoc))
+    // console.log(_.isEqual(newDoc, oldDoc))
     // if (!_.isEqual(newDoc, oldDoc) ) {
       axios.put(
         routeData.Users + '/edit',
@@ -118,7 +136,12 @@ useEffect(() => {
         console.log(res)
         if ( res.status === 200) {
           setEditUserStatus(200);
-          setSelectedUser({...SelectedUser, ...newDoc})
+          setSelectedUser({...newDoc})
+          setUsers(
+            Users.map(u => {
+              if (u._id !== SelectedUser?._id) return u
+              return newDoc
+            }))
         }
         else setEditUserStatus(500);
       })
@@ -127,6 +150,8 @@ useEffect(() => {
         setEditUserStatus(501);
       })
     // }
+
+    
   }
 
 
@@ -483,6 +508,8 @@ useEffect(() => {
     className='float-right hover:bg-[#e2e2e2] 
     rounded-lg mr-[0.25em] ease-in-out duration-100'
     onClick={() => {
+      console.log(errors)
+      // if (!Submitted) setEditUserStatus(400)
       setTimeout(() => {
       setEditUserModal(false); 
 

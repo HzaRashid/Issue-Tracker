@@ -16,14 +16,13 @@ const getProjects = (req, res) => {
     };
 
 
-const addProject = async (req, res, next) => {
+const addProject = async (req, res) => {
     try { 
         const projectFields = req.body;
         const newProject = await Project.create(projectFields);
         req.body.ProjID = newProject._id
         console.log(req.body)
-        next();
-        
+        res.status(200).send(newProject)
     } 
     catch (e) {
         console.log(e.message)

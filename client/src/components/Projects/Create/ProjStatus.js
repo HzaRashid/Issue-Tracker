@@ -16,18 +16,20 @@ function ProjStatus() {
       EditProj, setEditProj
      } = ProjContexts();
     // console.log(ProjStatus)
+
   return (
 
     <>
-    <Snackbar open={ProjStatus===200 && EditProj===false}
+    {console.log(EditProj)}
+    <Snackbar open={ EditProj===false && ProjStatus===200}
      onClose={() => setProjStatus(-1)} autoHideDuration={3000}
      >
     <Alert severity="success" sx={{ width: '100%' }}>
-        Project created
+    Project created
     </Alert>
     </Snackbar>
 
-    <Snackbar open={ProjStatus===200 && EditProj===true}
+    <Snackbar open={EditProj===true && ProjStatus===200 }
      onClose={() => setProjStatus(-1)} autoHideDuration={3000}
      >
     <Alert severity="success" sx={{ width: '100%' }}>

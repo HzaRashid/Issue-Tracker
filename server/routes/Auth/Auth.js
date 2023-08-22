@@ -1,6 +1,7 @@
 const express = require('express');
-var router = express.Router()
-const User = require('../../models/User')
+var router = express.Router();
+const User = require('../../models/User');
+var passport = require('passport')
 // const DemoUsers = require('./Issue-Tracker.users copy.json');
 // const { default: mongoose } = require('mongoose');
 router.use('/google', require('./GoogleAuth'))
@@ -13,8 +14,8 @@ router.get('/', (req, res) => {
         user: req.user
         })
         console.log(req.user)
-        console.log(DemoUsers[0])
-        console.log('fofofo')
+        // console.log(DemoUsers[0])
+        // console.log('fofofo')
 
         // const newUser = { ...DemoUsers[0] }
         // newUser._id =  mongoose.Types.ObjectId(DemoUsers[0]._id)
@@ -29,6 +30,26 @@ router.get('/', (req, res) => {
     })
     
 })
+
+
+router.post('/login', function(req, res, next) {
+
+  passport.authenticate('local', function(err, user, info) {
+  
+    if (err) return next(err);
+    if (!user) return res.status(400).send(
+      { authenticated: false, message: 'authentication unsuccessful' }
+      )
+    req.login(user, lgnErr => {
+      if (lgnErr) return next(lgnErr);
+      return res.status(200).send({
+        authenticated: true,
+        user: user
+      })
+    })
+  })(req, res, next);
+});
+
 
 router.get('/logout', function(req, res, next) {
   req.logout(function(err) {

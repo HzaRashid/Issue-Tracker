@@ -76,10 +76,13 @@ function FormWrapper( props ) {
      
      useEffect(
       () => {
-        if (Users && SelectedIssue?.assignedTo) {
+        if (!SelectedIssue?.assignedTo) setSearch('Unassigned')
+        if (Users && SelectedIssue?.assignedTo?.length) {
+          console.log(SelectedIssue?.assignedTo)
           const user = Users?.filter(user => 
             user._id === SelectedIssue.assignedTo
           )[0];
+          console.log(user)
           setSearch(user?.firstName + ' ' + user?.lastName) 
         }
       }, [Users, SelectedIssue]
@@ -331,7 +334,7 @@ const [ShowSprints, setShowSprints] = useState(false);
             axios.put(
               data.Issues + '/type',
               {
-                _id: SelectedIssue._id,
+                issueID: SelectedIssue._id,
                 type: type.title,
                 modifiedBy: user?.user
               }
@@ -374,7 +377,7 @@ const [ShowSprints, setShowSprints] = useState(false);
     p-1 text-[#686868] placeholder:text-[#606060]
     text-[0.8em] shadow-sm border-b-[0.125em]'
     // placeholder={ SelectedSprint.title }
-    value={sprintSearch }
+    value={sprintSearch}
     onChange={handleSprintSearch}
     onFocus={() => {
       setShowSprints(true)
@@ -457,7 +460,9 @@ const [ShowSprints, setShowSprints] = useState(false);
    text-[0.8em] shadow-sm'
   onChange={(e) => setSearch(e.target.value)}
   onFocus={() => {
-    setShowUsers(true)
+    
+    if (Search === 'Unassigned') setSearch('')
+    setShowUsers(true);
   }}
   >
   </input>
@@ -466,7 +471,7 @@ const [ShowSprints, setShowSprints] = useState(false);
 
 
     <ul className='bg-[#eaeaea] h-auto max-h-[6em] 
-    text-[0.8em] overflow-y-auto w-[8em] mt-1
+    text-[0.8em] overflow-y-auto w-[12em] mt-1 z-10
     rounded-md text-[#6a6a6a] shadow-md absolute' 
     style={{
       visibility: showUsers ? 'visible' : 'hidden',
@@ -499,7 +504,8 @@ const [ShowSprints, setShowSprints] = useState(false);
         hover:bg-slate-200 rounded-md p-1'
         onClick={() => {
           setSearch(user?.firstName + ' ' + user?.lastName);
-          handleAssigneeSubmit(user)
+          handleAssigneeSubmit(user);
+          setShowUsers(false);
           
         }}
         >

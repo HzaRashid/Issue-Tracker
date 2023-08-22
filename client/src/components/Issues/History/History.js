@@ -29,6 +29,14 @@ function History() {
         setIsListen(true);
       }  // eslint-disable-next-line
   }, [isListen, IssueVersions])
+
+  const [ SelectedIssuer, setSelectedIssuer ] = useState({});
+
+  useEffect(() => {
+    const checkIssuer = Users?.filter( u => u._id === SelectedIssue?.createdBy )
+    if (checkIssuer.length) setSelectedIssuer(checkIssuer[0])
+  }, [Users, SelectedIssue])
+
   if (!SelectedIssue) return
   return (
     <div
@@ -66,12 +74,12 @@ function History() {
               <div className='flex items-center '>
 
                 <div className='text-[#303030] bg-[#00000010] p-[0.2em] rounded-md mr-[0.4em]'>
-                { titleCase(getModFields(v, Sprints)?.oldField || '') }
+                { titleCase(getModFields(v, Sprints, Users)?.oldField || '') }
                 {/* {console.log(v)} */}
                 </div>
                 <BsArrowRightShort className='mt-[0.2em]' size={'1.6em'}/>
                 <div className='text-[#193142] bg-gray-200 p-[0.2em] rounded-md ml-[0.4em]'>
-                { titleCase(getModFields(v, Sprints)?.newField) }
+                { titleCase(getModFields(v, Sprints, Users)?.newField) }
                 </div>
 
               </div>
@@ -90,7 +98,7 @@ function History() {
       >
       <Avatar 
       {...stringAvatar(
-        loggedInUser?.firstName + ' ' + loggedInUser?.lastName,
+        SelectedIssuer?.firstName + ' ' + SelectedIssuer?.lastName,
         24, 
         24, 
         '0.75em'
@@ -102,13 +110,11 @@ function History() {
           <div>
           {SelectedIssue?._id && RenderCreated(SelectedIssue, Users) }
           </div>
-          <BsDot color='#0000007e'/>
-          <div className='text-[#0000007e] whitespace-pre'>
+          {/* <BsDot color='#0000007e'/> */}
+        </div>
+        <div className='text-[#0000007e] whitespace-pre'>
           {SelectedIssue?._id &&  DateToString2(SelectedIssue) }
           </div>
-        </div>
-
-
       </div>
 
       </li>
@@ -119,7 +125,7 @@ function History() {
 
 function renderAvatar(issueVersion, Users) {
   const v = issueVersion;
-  console.log(v)
+  // console.log(v)
   const userList = Users.slice()
   const User = userList.filter(u => u._id === v.modifiedBy)[0];
   return (
@@ -138,7 +144,7 @@ function renderAvatar(issueVersion, Users) {
 
 function RenderCreated (selectedIssue, Users) {
   const issue = selectedIssue;
-  console.log(selectedIssue)
+  // console.log(selectedIssue)
   const user = Users.filter(u => u._id === issue?.createdBy)[0];
   
   return (
@@ -171,7 +177,7 @@ function RenderUpdate (issueVersion, Users) {
       {'updated the '}
       </div>
       <div className='font-bold'>
-        { titleCase(v?.modifiedField) }
+        {v?.modifiedField !== 'assignedTo' ? titleCase(v?.modifiedField) : "Assignee"}
       </div>
     </div>
 
@@ -206,7 +212,7 @@ function DateToString2 (selectedIssue) {
   const sevenDaysAgoDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 
 if (!updateDate) return
-console.log(updateDate.toDateString())
+// console.log(updateDate.toDateString())
   if (updateDate < sevenDaysAgoDate) {
     return (
       updateDate.toDateString() + ' at ' 
@@ -222,6 +228,14 @@ return formatDistance(
 }
 
 
+function getUserName(userID, Users) {
+  console.log(userID)
+  var newAss = Users?.filter(u => u._id.toString() === userID?.toString())[0];
+  console.log(newAss)
+  
+  return newAss?.firstName + ' ' + newAss?.lastName
+}
+
 // **** **** **** **** **** **** **** **** **** **** **** **** ****  
 // ** the following issue fields can be modified by the user: 
 // type
@@ -234,10 +248,11 @@ return formatDistance(
 // and a list : the project's Sprints
 // returns both the old and the new values 
 // of the modified field as an object
-function getModFields (issueVersion, Sprints) {
+function getModFields (issueVersion, Sprints, Users) {
   const field = issueVersion.modifiedField;
   const iv = issueVersion;
-  // console.log(field)
+  console.log(field)
+  // if (field === 'assignedTo') return getUserName(iv.newAssignee, Users)
   switch ( field.toLowerCase() ) {
 
     case 'type':
@@ -252,10 +267,11 @@ function getModFields (issueVersion, Sprints) {
         newField:   iv.newSummary
       })
 
-    case 'assignee':
+    case 'assignedto':
       return ({
-        oldField:  iv.assignedTo,
-        newField:  iv.newAssignee
+        oldField:  iv.assignedTo ? getUserName(iv.assignedTo, Users) 
+                                 : 'Unassigned',
+        newField:  getUserName(iv?.newAssignee, Users)
       })
 
     case 'stage':
@@ -270,7 +286,7 @@ function getModFields (issueVersion, Sprints) {
         newField: getSprintNewField(iv, Sprints),
       })
       default:
-        return;
+        return ;
 
   }
 

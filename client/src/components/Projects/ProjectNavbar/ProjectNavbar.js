@@ -78,6 +78,7 @@ function ProjectNavbar( props ) {
           // setProjectNav(false);
           // setNav(false);
           setProjModal(true);
+          setEditProj(false)
         }
       }
       >

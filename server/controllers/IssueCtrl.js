@@ -123,7 +123,7 @@ const editIssueAssignee = async (req, res) => {
 
     const Users = await User.find({})
     const userExists = Users?.filter(user => 
-        user._id?.toString() === Fields?.assignedTo.toString()
+        user._id?.toString() === Fields?.assignedTo?.toString()
     )?.length
 
     if (!userExists) {
@@ -136,14 +136,9 @@ const editIssueAssignee = async (req, res) => {
     doc.assignedTo = Fields.assignedTo;
     await doc.save()
 
-    const versions = await IssueVersion.find({});
+    // const versions = await IssueVersion.find({});
     // unique _id created by mongodb
-    const prevUID = prevDoc?._id  
-
-    // create version id 
-    const VersionID = versions.filter(ver => 
-        ver.Version?.issueID?.toString() === prevUID?.toString()
-    ).length + 1
+    const prevUID = prevDoc?._id 
 
 
     delete prevDoc._id
@@ -158,7 +153,7 @@ const editIssueAssignee = async (req, res) => {
         newAssignee: Fields.assignedTo,
         modifiedBy: Fields.modifiedBy,
         modifiedField: 'assignedTo',
-        wasModified: !( Fields.assignedTo === prevDoc.assignedTo.toString() ),
+        wasModified: !( Fields.assignedTo === prevDoc.assignedTo?.toString() ),
         ...prevDoc
     },
     (err) => {
@@ -172,6 +167,7 @@ const editIssueAssignee = async (req, res) => {
     res.status(200).send(doc)
 
     } catch (err) {
+        console.log(err)
         res.status(500).send(err)
     }
 }
@@ -187,32 +183,15 @@ const editIssueType = async (req, res) => {
     let prevDoc = {...doc._doc};
 
     const Users = await User.find({})
-    const userExists = Users?.filter(user => 
-        user._id?.toString() === Fields?.assignedTo.toString()
-    )?.length
 
-    if (!userExists) {
-        res.status(501).json({
-            message: 'user does not exist'
-        })
-        return;
-    }
+
 
     doc.type = Fields.type;
     await doc.save()
 
-    const versions = await IssueVersion.find({});
     // unique _id created by mongodb
     const prevUID = prevDoc?._id  
-
-    // create version id 
-    // const VersionID = versions.filter(ver => 
-    //     ver.Version?.issueID?.toString() === prevUID?.toString()
-    // ).length + 1
-
-
     delete prevDoc._id
-
 
     // create issue version
     IssueVersion.create({
@@ -234,6 +213,7 @@ const editIssueType = async (req, res) => {
     res.status(200).send(doc)
 
     } catch (err) {
+        console.log(err);
         res.status(500).send(err)
     }
 

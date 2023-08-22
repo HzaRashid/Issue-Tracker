@@ -12,36 +12,38 @@ import stringAvatar from '../../utils/UserAvatar/StringAvatar';
 import { ProjContexts } from '../../../contexts/ProjectContexts';
 const data = require('../../../pages/routes.json')
 function List() {
-    const { Issues, setIssues, setSelectedIssue, setEditIssueModal } = IssueContexts();
+    const {  Issues, setIssues, setSelectedIssue, setEditIssueModal } = IssueContexts();
     const { Users } = TeamContexts();
     const { Projects } = ProjContexts();
     // console.log(Projects)
 
+    const [ HomeIssues, setHomeIssues ] = useState([]);
     // cons
     useEffect(() => {
             axios.get(
                 data.Issues
             )
-            .then(res => { setIssues(res.data) })
+            .then(res => { setIssues(res.data); setHomeIssues(res.data) })
             .catch(err => console.log(err))
     // eslint-disable-next-line
     }, []);
  
     // allow user to search issues by assignee
-    const rows = useMemo(() =>
-    Issues?.map(
+    const rows = useMemo(() => {
+     
+    return HomeIssues?.map(
       ( i, key ) => {
         i.id = key;
         const user = Users?.filter( u => u._id === i?.assignedTo )
         if ( user?.length ) {
-          i.assignedTo = user[0]?.firstName + ' ' + user[0]?.lastName;
+          i.assigneeName = user[0]?.firstName + ' ' + user[0]?.lastName;
         } 
-        else i.assignedTo = 'Unassigned'
+        else i.assigneeName = 'Unassigned'
       const projID = i.project 
-      i.project = Projects.filter(p => p._id === projID)[0]?.title
+      i.projectName = Projects.filter(p => p._id === projID)[0]?.title
       return i
     }
-    ), [Issues, Users])
+    )}, [Issues, Users])
 
     
     const columns = [ 
@@ -57,7 +59,8 @@ function List() {
             label="Edit"
             onClick={
               () => {
-                console.log(params)
+                console.log(params.row._id);
+                console.log(Issues)
                 setSelectedIssue(params.row); 
                 setEditIssueModal(true)
               }
@@ -149,7 +152,7 @@ function List() {
         },
 
         {
-          field: 'project', 
+          field: 'projectName', 
           headerName: 'Project', 
           flex: 0.3,
           width: 50,
@@ -165,7 +168,7 @@ function List() {
       },
 
         { 
-            field: 'assignedTo', 
+            field: 'assigneeName', 
             headerName: 'Assignee', 
             valueGetter: params => params?.value ?? 'Unassigned',
             

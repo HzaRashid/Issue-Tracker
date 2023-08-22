@@ -26,7 +26,7 @@ function Confirm({...props}) {
      const newProjectReq = {
         _id: props?._id,
         title: props?.Title,
-        assignedTo: props?.Team,
+        assignedTo: props?.Team.map(user => user?._id),
     }
     console.log(EditProj)
   return (
@@ -43,13 +43,13 @@ function Confirm({...props}) {
         
         <div>
         <div  className='block'>
-        <h1 className='text-[#404040] text-[0.6em] font-normal'>
+        <h1 className='text-[#404040] text-[0.55em] font-normal'>
                 Title 
             </h1>
         </div>
             <div id='Title' 
             className='block text-[#2d695e] mt-1  font-normal
-            bg-neutral-200 w-fit p-[0.25em] rounded-lg text-[0.775em]'
+            bg-neutral-200 w-fit p-[0.25em] rounded-lg text-[0.7em]'
             >
                 {props.Title}
             </div>
@@ -67,7 +67,7 @@ function Confirm({...props}) {
             </div> */}
 
         <div  className='block mt-[1em]'>
-        <h1 className='text-[#404040] text-[0.6em] font-normal'>
+        <h1 className='text-[#404040] text-[0.55em] font-normal'>
             Team 
         </h1>
         </div> 
@@ -76,7 +76,7 @@ function Confirm({...props}) {
             <div id='Team' className='block text-[#505050]'>
                 <ul className='inline-block 
                  w-[30vw] lg:w-[20vw] font-normal
-                 text-[0.7em] whitespace-nowrap mt-1
+                 text-[0.7em] whitespace-nowrap mt-1 pb-3
                  break-normal overflow-x-auto overflow-y-auto'
                  >
                 {
@@ -104,11 +104,11 @@ function Confirm({...props}) {
     </div>
 
     {/* <div className='flex items-center justify-center mt-[4em]'> */}
-    <div className='flex items-center justify-center mt-[3.5em]  '>
+    <div className='flex items-center justify-center mt-[3.5em] space-x-12  '>
 
     <CustomTooltip title='Go back'>
     <button 
-    className='hover:bg-[#e2e2e2] ease-in-out duration-100 mr-6'
+    className='hover:bg-[#e2e2e2] ease-in-out duration-100 p-1 rounded-lg'
     onClick={() => props.setShowReview(false)}
     >
         <BsFillArrowLeftCircleFill fontSize={'1.5em'} color='#505050'
@@ -121,26 +121,22 @@ function Confirm({...props}) {
     <button 
     type='submit'
     className='hover:bg-[#e2e2e2]
-    ease-in-out duration-100'
+    ease-in-out duration-100 p-1 rounded-lg'
     onClick={
     async () => {
     try {
-        if ( !( EditProj === true ) ) {
-            let response = await axios
-                                    .post(
-                                    data.Projects, 
-                                    newProjectReq
-                                    )
+        if ( !EditProj ) {
+            let response = await axios.post(
+                data.Projects, newProjectReq)
             console.log(response)
 
             if (response.status === 200) {
-
                 setProjStatus(200);
                 setProjModal(false);
                 props.setShowReview(false)
                 props.ResetForm();
-                setProjects([...Projects, newProjectReq])
-    
+                setProjects([...Projects, { ...newProjectReq, 
+                _id: response.data?._id }])
             }
             return
     }  
@@ -159,16 +155,12 @@ function Confirm({...props}) {
     if ( titleRes.status === 200 && 
           teamRes.status === titleRes.status ) {
         setEditProjModal(false)
-        setEditProj(false);
-
         setProjStatus(200);
         setProjModal(false);
         props.setShowReview(false)
-
-
     }
 
-    // setProjStatus(titleRes.status === teamRes.status ? )
+
         } catch (error) {
             console.log(error.response)
             setProjStatus(error.response.status)

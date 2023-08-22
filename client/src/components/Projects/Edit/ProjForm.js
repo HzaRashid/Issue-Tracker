@@ -35,7 +35,6 @@ function ProjForm( { showReview, setShowReview } ) {
 
     const [Search, setSearch] = useState('');
     const [showUsers, setShowUsers] = useState(false);
-    const [ShowTypes, setShowTypes] = useState(false);
 
     // useEffect(() => setEditProj(true), []);
     // console.log(EditProj)
@@ -71,21 +70,24 @@ function ProjForm( { showReview, setShowReview } ) {
       const user = Users.filter(u => {
         return u._id === assigneeID
       })[0];
-      // console.log(user);
+      console.log(user);
+      console.log(Users);
       return user
 
     }
     useEffect(() => {
       setProjTitle(SelectedProj?.title);
-      setProjTeam(SelectedProj
-        ?.assignedTo
-        ?.map(
-          id => getAssignee(id)
-          ));
+      console.log(SelectedProj)
+      const teamIds = SelectedProj?.assignedTo?.slice()
+
+      setProjTeam(teamIds?.map(id => getAssignee(id)));
           setProjID(SelectedProj?._id)
     }
     , [SelectedProj, SelectedProj?.title, SelectedProj?.assignedTo])
 
+    useEffect(() => console.log(ProjTeam), [ProjTeam])
+    useEffect(() => setEditProj(true), [])
+  if (!EditProj) return
   return (
 <> 
 {
@@ -155,7 +157,7 @@ function ProjForm( { showReview, setShowReview } ) {
                 <div className='flex items-center'>
                 <div className='flex items-center m-1 p-1 
                 bg-[#d5d5d5] rounded-md shadow-sm'>
-                  {user.firstName + ' ' + user.lastName}
+                  {user?.firstName + ' ' + user?.lastName}
                   <CustomTooltip title='Remove'>
                   <button 
                   onClick={() => setProjTeam(
@@ -231,7 +233,7 @@ function ProjForm( { showReview, setShowReview } ) {
         className={`${
         ProjTeam
           ?.filter(
-            u => u._id===user._id
+            u => (u?._id===user?._id)
           )
           ?.length > 0 ? 
           'bg-[#dbdbdb]' : 'bg-[#eaeaea] hover:bg-[#dfe7ee] rounded-md'
@@ -267,12 +269,12 @@ function ProjForm( { showReview, setShowReview } ) {
         }
         >
           <div className='flex items-center space-x-2'> 
-          <Avatar className=' antialiased'
+          <Avatar className='antialiased'
             {...stringAvatar(
               user.firstName + ' ' + user.lastName,
               22, 
               22, 
-              '0.65em'
+              '0.675em'
               )
             } 
           />
@@ -283,7 +285,7 @@ function ProjForm( { showReview, setShowReview } ) {
           { 
           ProjTeam
           ?.filter(
-            u => u._id===user._id
+            u => u?._id===user?._id
             )
             ?.length > 0 &&
           <BsCheck color='#5B9960' fontSize={'1.15em'}/>
