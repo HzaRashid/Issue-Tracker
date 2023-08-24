@@ -24,11 +24,16 @@ function Confirm({...props}) {
      } = ProjContexts();
     //  console.log(props)
      const newProjectReq = {
-        _id: props?._id,
+        projectID: props?._id,
         title: props?.Title,
-        assignedTo: props?.Team.map(user => user?._id),
+        assignedTo: props?.Team.map(user => user?._id),  // new team
+        removeUsers: props?.initTeam?.map(u => u._id)?.filter(
+            initID => { // return user if not included in the new team
+                return !props?.Team.map(u => u._id).includes(initID)
+            })
     }
     console.log(EditProj)
+    console.log(newProjectReq)
   return (
     <>
     <div>
@@ -53,18 +58,6 @@ function Confirm({...props}) {
             >
                 {props.Title}
             </div>
-
-        {/* <label htmlFor='Type' className='block mt-[1em] '>
-        <h1 className='text-[#505050] text-[0.9em]' >
-                Type 
-         </h1>
-
-        </label>
-            <div id='Type' className='block text-[#2d695e] mt-1
-            bg-neutral-200 w-fit p-[0.15em] rounded-lg shadow-sm
-            '>
-                {props.Type}
-            </div> */}
 
         <div  className='block mt-[1em]'>
         <h1 className='text-[#404040] text-[0.55em] font-normal'>
@@ -97,7 +90,7 @@ function Confirm({...props}) {
             }
         {
             props?.Team?.length===0 &&
-            <div className='text-[0.9em]'>None</div>
+            <div className='text-[0.75em]'>None</div>
         }
 
         </div>
@@ -135,8 +128,9 @@ function Confirm({...props}) {
                 setProjModal(false);
                 props.setShowReview(false)
                 props.ResetForm();
-                setProjects([...Projects, { ...newProjectReq, 
-                _id: response.data?._id }])
+                setProjects([...Projects, { 
+                    ...newProjectReq, 
+                    _id: response.data?._id }])
             }
             return
     }  
@@ -147,7 +141,7 @@ function Confirm({...props}) {
                             );
     let teamRes = await axios
                             .put(
-                            data.Projects + '/team', 
+                            data.Users + '/project-team', 
                             newProjectReq
                             )
                             
@@ -162,7 +156,7 @@ function Confirm({...props}) {
 
 
         } catch (error) {
-            console.log(error.response)
+            console.log(error)
             setProjStatus(error.response.status)
             console.log(error.response.status)
         }

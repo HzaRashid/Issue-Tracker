@@ -12,6 +12,7 @@ import Home from '../pages/Home';
 import Projects from '../pages/Projects/Projects';
 import Backlog from '../pages/Projects/Backlog';
 import SprintBoard from '../pages/Projects/SprintBoard';
+import ProjectTeam from '../pages/Projects/Team';
 import Issues from '../pages/Issues';
 import Team from '../pages/Team';
 import Profile from '../pages/Profile';
@@ -58,6 +59,7 @@ function AppRouter() {
     <Route path='/projects' element={<PrivateRoute component={<Projects />} />} />
     <Route path='/projects/:ProjectTitle/backlog/proj-nav=true' element={<PrivateRoute component={<Backlog />} />} />
     <Route path='/projects/:ProjectTitle/sprint-board/:SprintTitle/proj-nav=true' element={<PrivateRoute component={<SprintBoard />} />} />
+    <Route path='/projects/:ProjectTitle/team/proj-nav=true' element={<PrivateRoute component={<ProjectTeam />} />} />
     <Route path='/issues' element={<PrivateRoute component={<Issues />}/>} />
     <Route path='/team' element={<PrivateRoute component={<Team />}/>} />
     <Route path='/profile' element={<PrivateRoute component={<Profile />} />} />

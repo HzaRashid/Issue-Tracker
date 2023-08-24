@@ -15,11 +15,13 @@ import {
   AiOutlineCloseCircle,
   AiOutlineClose
 } from 'react-icons/ai';
-import { BsFillArrowRightCircleFill, BsChevronDown } from 'react-icons/bs';
+import { BsFillArrowRightCircleFill, BsChevronDown, BsCheck } from 'react-icons/bs';
 import { CustomTooltip } from '../../CustomTooltip';
 import Confirm from './Confirm';
 
 import { ProjTypes } from './ProjTypes';
+import { Avatar } from '@mui/material';
+import stringAvatar from '../../utils/UserAvatar/StringAvatar';
 
 
 
@@ -255,20 +257,31 @@ function ProjForm( {showReview, setShowReview} ) {
         }
         >
 
+<div className='flex items-center space-x-2'> 
+          <Avatar className='antialiased'
+            {...stringAvatar(
+              user.firstName + ' ' + user.lastName,
+              22, 
+              22, 
+              '0.675em'
+              )
+            } 
+          />
           <div className='flex items-center justify-between'>
             {user.firstName + ' ' + user.lastName}
           
-          <div className='float-right mr-[0.3em]'>
+          <div className=' ml-[0.5em] mt-[0.15em]'>
           { 
-          formik
-          .values
-          .ProjTeam
-          .filter(
-            u => u._id===user._id
+                        formik
+                        .values
+                        .ProjTeam
+          ?.filter(
+            u => u?._id===user?._id
             )
-            .length > 0 &&
-          <AiFillCheckCircle color='#5B9960' fontSize={'1.15em'}/>
+            ?.length > 0 &&
+          <BsCheck color='#5B9960' fontSize={'1.15em'}/>
           }
+          </div>
           </div>
           </div>
         </li>

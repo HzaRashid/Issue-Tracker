@@ -3,6 +3,10 @@ import { BsStack } from "react-icons/bs";
 import { HiViewBoards } from "react-icons/hi";
 import { ProjContexts } from '../../../contexts/ProjectContexts';
 import { SprintContexts } from '../../../contexts/SprintContexts'
+import { AiOutlineTeam } from 'react-icons/ai';
+import { MdViewKanban } from 'react-icons/md';
+import { CgStack } from 'react-icons/cg';
+import { BiSolidGroup } from 'react-icons/bi';
 const iconStyle={ color: "#404040", fontSize: 22.5 };
 
 
@@ -19,15 +23,18 @@ export const NavItems = () => {
     [
         {
             title: 'Backlog',
-            icon: <BsStack style={iconStyle}/>,
+            icon: <CgStack style={iconStyle}/>,
             link: `/projects/${WhtSpace(SelectedProj?.title)}/backlog/proj-nav=true`
         },
         {
-            title: 'Board',
-            icon: <HiViewBoards style={iconStyle}/>,
+            title: 'Boards',
+            icon: <MdViewKanban style={iconStyle}/>,
             link: `/projects/${WhtSpace(SelectedProj?.title)}/${WhtSpace(SelectedSprint?.title)}/proj-nav=true`
-    
-
+        },
+        {
+            title: 'Team',
+            icon: <BiSolidGroup style={iconStyle}/>,
+            link: `/projects/${WhtSpace(SelectedProj?.title)}/team/proj-nav=true`
         },
 
     ]

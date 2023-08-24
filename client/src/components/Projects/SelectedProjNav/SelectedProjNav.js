@@ -8,6 +8,7 @@ import { BsChevronDown } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import { NavItems } from './NavItems';
 import SprintList from './SprintList';
+import { MdEdit } from 'react-icons/md';
 
 
 
@@ -15,7 +16,7 @@ import SprintList from './SprintList';
 
 function SelectedProjNav( props ) {
     const { ProjectNav, setProjectNav  } = useStateContext();
-    const { SelectedProj } = ProjContexts();
+    const { SelectedProj, setEditProjModal, setSelectedProjModal, setEditProj } = ProjContexts();
     // const { SelectedSprint, setSelectedSprint } = SprintContexts();
     // eslint-disable-next-line
     let goToPage = useNavigate();
@@ -42,7 +43,19 @@ function SelectedProjNav( props ) {
         whiteSpace: 'nowrap'
       }}
       >
-        {SelectedProj?.title}
+        <div className='flex items-center space-x-4'> 
+        <p> {SelectedProj?.title} </p>
+        <button className='p-1 rounded-md bg-[#00000010] 
+        hover:bg-[#304669] hover:text-[#eaeaea]'
+        onClick={() => {
+          setEditProjModal(true);
+          setEditProj(true);
+          setSelectedProjModal(SelectedProj);
+        }}
+        > 
+        <MdEdit/>
+        </button>
+        </div>
       </div>
 
       <ul className='mt-[5.5em] flex  flex-col h-[80%]'>
@@ -68,7 +81,7 @@ function SelectedProjNav( props ) {
               onClick={() => {
                 
 
-                if (item.title === 'Board') {
+                if (item.title === 'Boards') {
                   setProjectNav(true)
                   setShowSprints(!showSprints)
                   return
@@ -80,7 +93,7 @@ function SelectedProjNav( props ) {
               >
                 <div className='ml-[0.3em]'>{item.icon}</div>
                 <div className='ml-[0.6em] truncate'>{item.title}</div>
-                { item.title==='Board' &&
+                { item.title==='Boards' &&
                 <>
                 <div className={`${showSprints ? 'rotate-180' : 'rotate-0'} ml-[4.5em]
                 ease-in-out duration-100`}> 
@@ -91,7 +104,7 @@ function SelectedProjNav( props ) {
               </div>
               </CustomTooltip>
               {  
-                item.title==='Board' &&
+                item.title==='Boards' &&
                 <div> 
                 <SprintList 
                 showSprints={showSprints} 

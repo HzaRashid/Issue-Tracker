@@ -193,12 +193,13 @@ function PostedList() {
     <div 
     className='relative font-bold' 
     style={{
-        height: 'auto', 
-        maxHeight: 350,
+        // height: 'auto', 
+        height: 350,
         width: '100%', 
         top: '3rem',
         flexGrow: 0.5 ,
         text: 'bold',  
+        
         }}
     >
     <DataGrid
@@ -225,6 +226,9 @@ function PostedList() {
     bgcolor: 'transparent', 
     '& .MuiDataGrid-cell:hover': {
     color: '#588B63',
+    },
+    '& .MuiDataGrid-virtualScroller': {
+      overflow: 'scroll'
     },
     '& .MuiDataGrid-cell:focus': {
       color: '#588B63',

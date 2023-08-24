@@ -192,7 +192,7 @@ function AssigneeList() {
     <div 
     className='relative font-bold' 
     style={{
-        height: 'auto', 
+        // height: 'auto', 
         maxHeight: 350,
         width: '100%', 
         top: '3rem',
@@ -206,9 +206,9 @@ function AssigneeList() {
     components={{Toolbar: CustomToolbar}}
     componentsProps={{ toolbar: { issues: Issues } }}
     pageSize={pageSize}
-    onPageSizeChange={
-    (newPageSize) => setPageSize(newPageSize)
-    }
+    // onPageSizeChange={
+    // (newPageSize) => setPageSize(newPageSize)
+    // }
 
     hideFooterPagination
     disableDensitySelector

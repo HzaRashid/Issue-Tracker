@@ -31,7 +31,7 @@ function ProjectNavbar( props ) {
 
    const {
     Projects, setProjects, 
-    setSelectedProj, EditProj, 
+    setSelectedProjModal, EditProj, 
     setProjModal, setEditProjModal, setEditProj
   } = ProjContexts();
 
@@ -136,7 +136,7 @@ function ProjectNavbar( props ) {
             onClick={
               () => {
                 setProjectNav(false);
-                setSelectedProj(item);
+                setSelectedProjModal(item);
 
               }}
               id={
@@ -154,7 +154,7 @@ function ProjectNavbar( props ) {
               e.stopPropagation(); 
               setEditProjModal(true); 
               setEditProj(true);
-              setSelectedProj(item);
+              setSelectedProjModal(item);
               console.log('flog')
               }}
               > 

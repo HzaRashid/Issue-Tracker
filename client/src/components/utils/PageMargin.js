@@ -19,7 +19,9 @@ function PageMargin( {...props} ) {
     transition: 'all 0.2s ease-in-out'
   }}
   >
+
     { props.children }
+
   </div>
   )
 }

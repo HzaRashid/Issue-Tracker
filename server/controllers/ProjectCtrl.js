@@ -34,12 +34,13 @@ const addProject = async (req, res) => {
 const editProjectTitle = async (req, res) => {
     const projectFields = req.body;
     Project.findById(
-        projectFields._id, 
+        projectFields.projectID, 
         (err, doc) => {
         if (err) {
             console.log(err)
             res.status(400).send("Request failed")
         }
+        if (!doc) res.status(500).send("project not found")
         doc.title = projectFields.title;
         doc.updatedAt = Date();
         doc.save();

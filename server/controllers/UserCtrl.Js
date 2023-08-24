@@ -32,19 +32,37 @@ const addUser = async (req, res) => {
 };
 
 
-const addProject = async (req, res) => {
+const addProject = async (req, res, next) => {
     const Fields = req.body
+    console.log(req.body)
     User.updateMany(
         {  _id: { $in: Fields.assignedTo } },
-        { projects: { $push: Fields.project }},
+        { $push: { projects: Fields.projectID } },
+        {multi: true},
         function(err, docs) {
-        if (err) return res.status(500)
-        return res.status(200).send( { message: 'users added to project'})
+        if (err) return res.status(500);
+        console.log(docs);
+        // res.status(200).send( { message: 'users added to project'} );
+        // console.log('GOING NEXT')
+        next();
         }
     )
 };
 
-
+const deleteProject = async (req, res) => {
+    const Fields = req.body
+    console.log(req.body)
+    User.updateMany(
+        {  _id: { $in: Fields.removeUsers } },
+        { $pull: { projects: Fields.projectID } },
+        {multi: true},
+        function(err, docs) {
+        if (err) return res.status(500)
+        console.log(docs)
+        return res.status(200).send( { message: 'project users updated'} )
+        }
+    )
+};
 
 // const editUser = async (req, res) => {
 //     const userFields = req.body;
@@ -147,6 +165,7 @@ module.exports = {
     getUsers, 
     addUser, 
     addProject,
+    deleteProject,
     editUserRole, 
     editUser,
     editUserProjs, 

@@ -29,7 +29,7 @@ export const NavItems = [
 
     },
     {
-        title: 'Team',
+        title: 'Users',
         icon: <IoMdPeople style={iconStyle}/>,
         link: '/team',
        

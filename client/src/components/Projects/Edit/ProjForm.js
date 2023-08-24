@@ -29,7 +29,7 @@ function ProjForm( { showReview, setShowReview } ) {
 
     const { Users } = TeamContexts();
     const { setEditProjModal, Projects, 
-            SelectedProj,
+            SelectedProjModal,
             EditProj, setEditProj
             } = ProjContexts();
 
@@ -75,15 +75,21 @@ function ProjForm( { showReview, setShowReview } ) {
       return user
 
     }
+    const [InitTeam, setInitTeam] = useState([])
     useEffect(() => {
-      setProjTitle(SelectedProj?.title);
-      console.log(SelectedProj)
-      const teamIds = SelectedProj?.assignedTo?.slice()
-
+      setProjTitle(SelectedProjModal?.title);
+      console.log(SelectedProjModal)
+      // const teamIds = SelectedProjModal?.assignedTo?.slice()
+      const teamIds = Users?.filter(
+        u => u.projects.includes(SelectedProjModal?._id)
+      )
+      .map(u => u._id)
       setProjTeam(teamIds?.map(id => getAssignee(id)));
-          setProjID(SelectedProj?._id)
+      setInitTeam(teamIds?.map(id => getAssignee(id)));
+      setProjID(SelectedProjModal?._id)
     }
-    , [SelectedProj, SelectedProj?.title, SelectedProj?.assignedTo])
+    
+    , [SelectedProjModal, SelectedProjModal?.title, SelectedProjModal?.assignedTo, Users])
 
     useEffect(() => console.log(ProjTeam), [ProjTeam])
     useEffect(() => setEditProj(true), [])
@@ -98,7 +104,7 @@ function ProjForm( { showReview, setShowReview } ) {
       text-[#656565] font-normal break-words '>
         {
           'Edit Project:  ' + 
-          SelectedProj?.title?.substring(0,20)
+          SelectedProjModal?.title?.substring(0,20)
         }
       </h1>
     </div>
@@ -312,7 +318,8 @@ function ProjForm( { showReview, setShowReview } ) {
       onClick={() => {
         setEditProjModal(false);
         setShowUsers(false);
-        setEditProj(false);
+        setTimeout(() => setEditProj(false), 100)
+        
         // formik.resetForm();
       }}
       >
@@ -352,6 +359,7 @@ function ProjForm( { showReview, setShowReview } ) {
     setEditProjModal={setEditProjModal}
     Title={ProjTitle}
     Team={ProjTeam}
+    initTeam={InitTeam}
     Edit={EditProj} 
     setEdit={setEditProj}
     _id={ProjID}

@@ -28,7 +28,8 @@ function EditUserForm() {
     const [ SwapRole, setSwapRole ] = useState(false);
     useEffect(() => {
       if (SelectedUser?.role?.toLowerCase() === 'admin') setSwapRole(true);
-      }, [])
+      else setSwapRole(false)
+      }, [SelectedUser])
       const pwdReqs = z
           .union([
             z.string().length(0), 
@@ -439,7 +440,7 @@ useEffect(() => {
     w-[100%] mt-2 ml-[0.98em] text-[#552121]'>
     <div className=''>
     <div className='flex items-center justify-center'>
-    <button className='w-[8em] rounded p-1 mr-[1.9em]'
+    <button className='w-[8em] rounded p-1 mr-[1.9em] hover:cursor-pointer'
     onClick={() => setDeleteUserConfirm(false)}
     >
     <div className='flex rounded p-1 items-center justify-center 
@@ -481,8 +482,8 @@ useEffect(() => {
 
      <div className='text-center mt-[3.25em]'>
       <CustomTooltip title='Cancel' placement='top'>
-      <button 
-      className='float-left hover:bg-[#e2e2e2] 
+      <div 
+      className='float-left hover:bg-[#e2e2e2] hover:cursor-pointer
       rounded-lg ml-[0.25em] ease-in-out duration-100'
       onClick={() => {
         setEditUserModal(false);
@@ -497,7 +498,7 @@ useEffect(() => {
       <AiOutlineClose fontSize={'1.75em'} color='#202020'
       className='drop-shadow-sm p-1'
       />
-      </button>
+      </div>
       </CustomTooltip>
 
 
