@@ -22,7 +22,9 @@ import Login from './Login/Demo/Login';
 import { AuthContexts } from './Auth';
 import UserInfo from '../components/TopBar/UserInfo';
 import { useStateContext } from '../contexts/ContextProvider';
+import axios from 'axios';
 const data = require('../pages/routes.json')
+axios.defaults.withCredentials = true
 
 function AppRouter() {
   const { user, setUser, TBDAuthUser } = AuthContexts();

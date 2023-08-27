@@ -16,6 +16,9 @@ import EditUser from './Team/EditUser/EditUser'
 import EditUserStatus from './Team/EditUser/EditUserStatus'
 import EditThisUser from './LoggedInUser/Edit/EditThisUser'
 import EditThisUserStatus from './LoggedInUser/Edit/EditThisUserStatus'
+import EditSprint from './Projects/Sprints/Edit/EditSprint'
+import SprintStatus from './Projects/Sprints/Create/SprintStatus'
+import EditSprintStatus from './Projects/Sprints/Edit/EditSprintStatus'
 
 
 
@@ -29,6 +32,7 @@ function Popups() {
     <EditProj/>
     <ProjStatus/>
     <CreateSprint/>
+    <SprintStatus/>
     <DeleteStage/>
     <SetIssueLimit/>
     <EditIssue/>
@@ -39,6 +43,8 @@ function Popups() {
     <EditUserStatus/>
     <EditThisUser/>
     <EditThisUserStatus/>
+    <EditSprint/>
+    <EditSprintStatus/>
     </>
   )
 }

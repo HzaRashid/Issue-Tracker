@@ -5,18 +5,24 @@ const {
     getProjects, 
     addProject, 
     editProjectTitle,
+    editProjectTitleNext,
     editProjectTeam,
     editProjectDesc,
     editProjectStartDate, 
     editProjectEndDate,
     deleteProject 
 } = require('../controllers/ProjectCtrl')
-
+const { addProjectUser,addProjectUserNext, deleteProjectUser } = require('../controllers/UserCtrl')
+const { isAuthDemo } = require('../routes/Auth/isAuth')
 module.exports = router;
 
 router.get('/', getProjects);
-router.post('/', addProject);
-router.put('/title', editProjectTitle);
+
+router.post('/',        isAuthDemo, addProject);
+router.put('/title',    isAuthDemo, editProjectTitle);
+router.put('/edit-all', isAuthDemo, editProjectTitleNext, addProjectUserNext, deleteProjectUser);
+router.put('/add-team', isAuthDemo, addProjectUser);
+
 router.put('/team', editProjectTeam);
 router.put('/key', editProjectTitle);
 router.put('/startDate', editProjectStartDate);

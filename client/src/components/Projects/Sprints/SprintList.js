@@ -11,6 +11,7 @@ import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import { styled } from '@mui/material/styles';
+import { MdEdit } from 'react-icons/md';
 
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -56,6 +57,7 @@ function SprintList( props ) {
         Sprints, 
         SelectedSprint, setSelectedSprint,
         setSprintModal,
+        EditSprintModal, setEditSprintModal
     } = SprintContexts();
     
     const { nav, ProjectNav, ScreenWidth } = useStateContext();
@@ -176,8 +178,28 @@ function SprintList( props ) {
                                 }
                             }}
                         >
+                          <div className='flex items-center'>
 
-                            <div className='font-medium text-[1.1em]'>{sprint.title}</div>
+                          <p className='flex justify-start font-medium text-[1.1em]'>{sprint.title}</p>
+                          <div className='absolute right-8'> 
+                          <CustomTooltip title='Edit'> 
+                          <button className='p-1 rounded-md bg-[#00000010] 
+                          hover:bg-[#304669] hover:text-[#eaeaea] '
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedSprint(sprint);
+                            setEditSprintModal(true)
+                            
+                          }}
+                          > 
+                          <MdEdit className='text-[1.2em]'/>
+                          </button>
+                          </CustomTooltip>
+
+                          </div>
+                          </div>
+                          {/* </div> */}
+                            
 
                             </AccordionSummary>
 

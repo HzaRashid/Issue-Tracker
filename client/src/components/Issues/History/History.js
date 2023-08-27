@@ -229,11 +229,11 @@ return formatDistance(
 
 
 function getUserName(userID, Users) {
-  console.log(userID)
-  var newAss = Users?.filter(u => u._id.toString() === userID?.toString())[0];
-  console.log(newAss)
+  // console.log(userID)
+  var newAssignee = Users?.filter(u => u._id.toString() === userID?.toString())[0];
+  // console.log(newAssignee)
   
-  return newAss?.firstName + ' ' + newAss?.lastName
+  return newAssignee?.firstName + ' ' + newAssignee?.lastName
 }
 
 // **** **** **** **** **** **** **** **** **** **** **** **** ****  
@@ -251,7 +251,7 @@ function getUserName(userID, Users) {
 function getModFields (issueVersion, Sprints, Users) {
   const field = issueVersion.modifiedField;
   const iv = issueVersion;
-  console.log(field)
+  // console.log(field)
   // if (field === 'assignedTo') return getUserName(iv.newAssignee, Users)
   switch ( field.toLowerCase() ) {
 

@@ -48,6 +48,23 @@ const editProjectTitle = async (req, res) => {
         });
     };
 
+const editProjectTitleNext = async (req, res, next) => {
+    const projectFields = req.body;
+    Project.findById(
+        projectFields.projectID, 
+        (err, doc) => {
+        if (err) {
+            console.log(err)
+            res.status(400).send("Request failed")
+        }
+        if (!doc) res.status(500).send("project not found")
+        doc.title = projectFields.title;
+        doc.updatedAt = Date();
+        doc.save();
+        next()
+    });
+};
+
 
 const editProjectTeam = async (req, res) => {
 
@@ -139,6 +156,7 @@ module.exports = {
     getProjects, 
     addProject, 
     editProjectTitle,
+    editProjectTitleNext,
     editProjectTeam,
     editProjectDesc,
     editProjectStartDate, 

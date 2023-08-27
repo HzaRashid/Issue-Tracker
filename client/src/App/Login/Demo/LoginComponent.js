@@ -102,7 +102,7 @@ function LoginComponent() {
                     items-center space-x-2 w-[15em] rounded-2xl 
                     border-[0.05em] border-[#bebebe] p-[0.5em]'>         
                     <div> {OAuthMethods[0].logo} </div>
-                    <p className='font-light text-[1.15em]'>
+                    <p className='font-normal text-[1.15em]'>
                     {OAuthMethods[0].name}
                     </p>
            

@@ -86,7 +86,7 @@ const editIssueSummary = async (req, res) => {
     // ).length + 1
 
 
-    // delete prevDoc._id
+    delete prevDoc._id
 
     // create issue version
     IssueVersion.create({

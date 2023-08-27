@@ -29,7 +29,8 @@ export const SprintContextProvider = ({children}) => {
     const [SprintStatus, setSprintStatus] = useState(-1);
     const [AddedStage, setAddedStage] = useState(false);
     const [showSprints, setShowSprints] = useState(false);
-
+    const [EditSprintModal, setEditSprintModal] = useState(false);
+    const [EditSprintStatus, setEditSprintStatus] = useState(-1);
           
 
     return (
@@ -47,7 +48,9 @@ export const SprintContextProvider = ({children}) => {
             SprintModal, setSprintModal,
             SprintStatus, setSprintStatus,
             AddedStage, setAddedStage,
-            showSprints, setShowSprints
+            showSprints, setShowSprints,
+            EditSprintModal, setEditSprintModal,
+            EditSprintStatus, setEditSprintStatus
         }}
         >
             {children}

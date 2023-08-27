@@ -61,5 +61,7 @@ router.get('/logout', function(req, res, next) {
     res.redirect(process.env.CLIENT_URL_LOGIN);
   });
 });
+
+
   
 module.exports = router

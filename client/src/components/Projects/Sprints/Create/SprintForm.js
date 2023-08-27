@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SprintContexts } from '../../../../contexts/SprintContexts';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -50,13 +50,16 @@ function SprintForm() {
       })
       
       const [startDate, endDate] = formik.values.dateRange;
+      useEffect(()=> {
+        console.log(new Date(startDate))
+      }, [startDate])
     
   return (
     <>
     
        <div className='sticky top-0 bg-inherit flex items-center justify-between'>
     <h1 className='p-3 pr-[0.4em] text-[1.05em] 
-      text-[#6a6a6a] break-words font-normal'>
+      text-[#252525] break-words font-normal'>
         New Sprint
         </h1>
 
@@ -66,7 +69,7 @@ function SprintForm() {
     <div className='text-[#497770] text-[0.9em]
     bg-neutral-200 '
     >
-      <p className='font-light'>{SelectedProj?.title}</p>
+      <p className='font-normal'>{SelectedProj?.title}</p>
     </div>
     </div>
     </div>
@@ -74,11 +77,11 @@ function SprintForm() {
     <ul className='h-[40vh] overflow-auto'>
     <li className='color-[#0000001a]'>
       <label
-      className='block mb-[0.2em] text-[0.95em] text-[#505050]'
+      className='block mb-[0.2em] text-[0.825em] text-[#303030]'
       >
-      <div className='flex items-center'>
+      <div className='flex items-center font-normal'>
         <p>Title</p>
-        <p className='text-[#c94e4e]'>*</p>
+        <p className='text-[#b15454]'>*</p>
       </div>
       </label>
 
@@ -87,8 +90,8 @@ function SprintForm() {
       type='text' 
       placeholder='Sprint title..' 
       className='block bg-[#0000001a] lg:w-[20em] md:w-[20em] 
-      w-[50vw] rounded-lg outline-none font-light 
-      p-[0.2em] placeholder:text-[#787878]'
+      w-[50vw] rounded-lg outline-none font-normal text-[0.9em]
+      p-[0.2em] placeholder:text-[#787878] placeholder:text-[0.9em]'
       value={formik.values.SprintTitle}
       onChange={formik.handleChange}
       onBlur={formik.handleBlur}
@@ -97,7 +100,7 @@ function SprintForm() {
       {
       (formik.errors.SprintTitle && formik.touched.SprintTitle) &&
       <div
-      className='text-[#c94e4e] text-[0.75em]'
+      className='text-[#b15454] text-[0.725em] font-normal'
       >
         {formik.errors.SprintTitle}
         </div>
@@ -107,12 +110,12 @@ function SprintForm() {
       <li className='color-[#0000001a] mt-[2em]' id='test'>
 
       <label
-      className='block mb-[0.2em] text-[0.95em] text-[#505050]'
+      className='block mb-[0.2em] text-[0.825em] text-[#303030]'
       >
 
-      <div className='flex items-center'>
+      <div className='flex items-center font-normal'>
         <p>Date Range</p>
-        <p className='text-[#c94e4e]'>*</p>
+        <p className='text-[#b15454]'>*</p>
       </div>
       </label>
 
@@ -145,7 +148,7 @@ function SprintForm() {
         (formik.errors.dateRange && formik.touched.dateRange) && 
         (startDate === null || endDate === null) &&
       <div
-      className='text-[#c94e4e] text-[0.75em]'
+      className='text-[#b15454] text-[0.725em] font-normal'
       >
         {formik.errors.dateRange[0] || 'End date required'}
         </div>
