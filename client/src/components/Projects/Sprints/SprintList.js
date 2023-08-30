@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SprintContexts } from '../../../contexts/SprintContexts';
 import SprintTable from './SprintTable';
 import { AiOutlineSearch, AiOutlinePlusCircle } from 'react-icons/ai'
@@ -12,6 +12,7 @@ import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import { styled } from '@mui/material/styles';
 import { MdEdit } from 'react-icons/md';
+import { IssueContexts } from '../../../contexts/IssueContexts';
 
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -56,37 +57,32 @@ function SprintList( props ) {
     const { 
         Sprints, 
         SelectedSprint, setSelectedSprint,
+        setSelectedSprintEdit,
         setSprintModal,
-        EditSprintModal, setEditSprintModal
+        setEditSprintModal,
     } = SprintContexts();
+    const { SearchSptIssues, setSearchSptIssues } = IssueContexts();
     
     const { nav, ProjectNav, ScreenWidth } = useStateContext();
 
-    const [Search, setSearch] = useState('');
-    const handleSearch = e => setSearch(e.target.value)
+
+    const handleSearch = e => setSearchSptIssues(e.target.value)
 
     const [ShowSprint, setShowSprint] = useState(false);
-    // setSelectedSprint({});
 
 
-    var searchResults = Sprints.filter(
-        // eslint-disable-next-line
-        sprint => 
-        {
-            if (Search === '') return sprint
 
-            else if (
-            sprint.title.toLowerCase()
-            .includes(Search.toLowerCase()) 
-            ) { return sprint }
-        }
-    )
+
 
       const [expanded, setExpanded] = React.useState(false);
+      const [IsOpen, setIsOpen] = React.useState(false);
+
 
       const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
+        setIsOpen(isExpanded);
       };
+      
     
   return (
     <div className='flex body-font font-[Open Sans] font-light subpixel-antialiased'>
@@ -111,6 +107,22 @@ function SprintList( props ) {
             Sprints
         </p>
 
+
+        <CustomTooltip title='Create Sprint' sx={{ zIndex: 0 }}>
+        <button className='flex items-center lg:ml-[2em] md:ml-[2em] ml-1 
+        mb-[0.35em] hover:cursor-pointer bg-neutral-200 font-normal
+         p-[0.4em] rounded-lg hover:shadow-md text-[#505050]'
+         style={{
+            marginLeft: ScreenWidth < 1024 ? '0' : '1em'
+        }}
+         onClick={() => setSprintModal(true)}
+
+         > 
+         <AiOutlinePlusCircle className='mr-1 font-medium' color='#505050'/>
+        Create
+        </button>
+        </CustomTooltip>
+        {IsOpen ?
         <div className='flex items-center
         border-b-[0.01em] border-[#dbdbdb]
         lg:ml-[2em] md:ml-[2em] ml-1 lg:w-[fit] 
@@ -124,31 +136,17 @@ function SprintList( props ) {
         <input 
         type='text'
         className='bg-transparent outline-none p-[0.1em] font-light'
-        placeholder='Search..'
-        value={Search}
+        placeholder='Search issues..'
+        value={SearchSptIssues}
         onChange={handleSearch}
         />  
-        </div>
-        <CustomTooltip title='Create Sprint' sx={{ zIndex: 0 }}>
-        <button className='flex items-center lg:ml-[2em] md:ml-[2em] ml-1 
-        mb-[0.35em] hover:cursor-pointer bg-neutral-200 font-light
-         p-[0.4em] rounded-lg hover:shadow-md text-[#505050]'
-         style={{
-            marginLeft: ScreenWidth < 1024 ? '0' : '1em'
-        }}
-         onClick={() => setSprintModal(true)}
-
-         > 
-         <AiOutlinePlusCircle className='mr-1 font-medium' color='#505050'/>
-        Create
-        </button>
-        </CustomTooltip>
+        </div> : null}
 
         </div>
         <ul className='h-[auto] max-h-[10em] overflow-auto transition-all'>
         
             {
-                searchResults
+                Sprints
                 .map(
                     (sprint, key) => (
                         <Accordion 
@@ -186,9 +184,10 @@ function SprintList( props ) {
                           <button className='p-1 rounded-md bg-[#00000010] 
                           hover:bg-[#304669] hover:text-[#eaeaea] '
                           onClick={(e) => {
+                            e.preventDefault();
                             e.stopPropagation();
-                            setSelectedSprint(sprint);
-                            setEditSprintModal(true)
+                            setSelectedSprintEdit(sprint);
+                            setEditSprintModal(true);
                             
                           }}
                           > 
@@ -207,7 +206,16 @@ function SprintList( props ) {
                              {
                                 SelectedSprint?._id === sprint?._id &&
                                 ShowSprint &&
-                                <SprintTable id={id} items={items} sprint={sprint}/>   
+                                <>
+                                {SearchSptIssues?.length ? 
+                                <p className='font-light flex whitespace-pre'> 
+                                {"Results for "}
+                                <p className='font-normal'>
+                                  {`"${SearchSptIssues}"`}
+                                </p> 
+                                </p> : null}
+                                <SprintTable id={id} items={items} sprint={sprint}/> 
+                                </>
                             } 
                             </AccordionDetails>
                         

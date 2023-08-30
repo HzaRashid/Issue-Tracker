@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { AiFillCheckSquare, AiFillTool, AiOutlineClose } from 'react-icons/ai'
+import { AiFillCheckSquare, AiFillDelete, AiFillTool, AiOutlineClose } from 'react-icons/ai'
 import { IssueContexts } from '../../../contexts/IssueContexts';
 import { CustomTooltip } from '../../CustomTooltip';
 import axios from 'axios';
@@ -11,6 +11,7 @@ import { SprintContexts } from '../../../contexts/SprintContexts';
 import { useLocation } from 'react-router-dom';
 import { AuthContexts } from '../../../App/Auth';
 import { ProjContexts } from '../../../contexts/ProjectContexts';
+import Delete from '../Delete/Delete';
 const data = require('../../../pages/routes.json')
 
 function FormWrapper( props ) {
@@ -42,7 +43,9 @@ function FormWrapper( props ) {
 
     const userListRef = useRef(null);
     const stageListRef = useRef(null);
-   
+
+
+
     useEffect(() => {
 
       if (SelectedIssue?.sprint) {
@@ -78,11 +81,11 @@ function FormWrapper( props ) {
       () => {
         if (!SelectedIssue?.assignedTo) setSearch('Unassigned')
         if (Users && SelectedIssue?.assignedTo?.length) {
-          console.log(SelectedIssue?.assignedTo)
+          // console.log(SelectedIssue?.assignedTo)
           const user = Users?.filter(user => 
             user._id === SelectedIssue.assignedTo
           )[0];
-          console.log(user)
+          // console.log(user)
           setSearch(user?.firstName + ' ' + user?.lastName) 
         }
       }, [Users, SelectedIssue]
@@ -132,8 +135,12 @@ function FormWrapper( props ) {
               },
               // { withCredentials: true }
             )
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
+            .then(res => {
+              console.log(res.status)
+            })
+            .catch(err => {
+              console.log(err)
+            })
           } else {
             setSummary(SelectedIssue.summary)
           }
@@ -167,7 +174,9 @@ function FormWrapper( props ) {
               modifiedBy: user?.user
             }
           )
-          .then(res => console.log(res))
+          .then(res =>{
+            //  console.log(res)
+            })
           .catch(err => console.log(err))
         }
 
@@ -183,7 +192,7 @@ function FormWrapper( props ) {
       }
     )
     .then(res => { 
-      console.log(res);
+      // console.log(res);
       if ( res.status === 200 ) {
         setSelectedIssue({
           ...SelectedIssue,
@@ -217,18 +226,24 @@ function FormWrapper( props ) {
     }
   }
 
-  const { Page, setPage, children } = props;
+  const { Page, setPage, setOpenDelModal, OpenDelModal, setPrevPage, PrevPage, children } = props;
   const activePageClass = 'bg-[#00000005] text-[#446a67] font-normal shadow-sm';
 
+  useEffect(() => {
+    if (!OpenDelModal) {
+      setPrevPage(Page)
+    }
 
+  }, [Page])
 
-
+useEffect(() => console.log(PrevPage), [Page, PrevPage])
 
 const [ShowSprints, setShowSprints] = useState(false);
 
       
   return (
     <> 
+
     <div className='flex items-center justify-center mt-1 space-x-4'>
     <div className='flex items-center'> 
   <CustomTooltip 
@@ -239,6 +254,7 @@ const [ShowSprints, setShowSprints] = useState(false);
   > 
   <input 
   type='text' 
+  id='edit-issue-summary'
   placeholder={summary?.length ? summary : 'Summary..'}
   className=' 
   focus:border-b-[#4188b4]
@@ -316,7 +332,7 @@ const [ShowSprints, setShowSprints] = useState(false);
   </CustomTooltip>
   { showTypes &&
         <ul className='bg-[#e6e6e6] text-[#505050] h-auto max-h-[6em]
-         text-[0.825em] mt-2 ml-3
+         text-[0.825em] mt-3 ml-3
         w-[7em] rounded-md shadow-md absolute overflow-auto'
         >
         {
@@ -341,7 +357,9 @@ const [ShowSprints, setShowSprints] = useState(false);
                 modifiedBy: user?.user
               }
             )
-            .then(res => console.log(res))
+            .then(res => { 
+              // console.log(res)
+            })
             .catch(err => console.log(err))
           }}
           >
@@ -359,9 +377,32 @@ const [ShowSprints, setShowSprints] = useState(false);
         </ul>
       }
       </div>
+  <div> 
+
+  <CustomTooltip title='Delete Issue' placement='top'> 
+  <button className='absolute right-4 drop-shadow-sm top-[1.26em]'
+  onClick={() => {
+    setOpenDelModal(!OpenDelModal);
+    setPage(3)
+  }}
+  > 
+
+  <AiFillDelete color='#803A3A' className='text-[1.1em] ml-[0.25em]'/>
+  {/* <p className='text-[0.6em] hover:cursor-default'>Delete</p> */}
+
+  </button>
+  </CustomTooltip>
+
+    {/* {
+    OpenDelModal ? <>
+    <div className='absolute right-4 mt-8 w-[4em]'> 
+    <ul className=' p-1 bg-[#00000010] text-[0.8em]'>
       
-
-
+    </ul>
+    </div>
+    </> : null
+  } */}
+  </div>
 
   </div>
   <div className='flex items-center justify-center mt-4'>
@@ -373,7 +414,9 @@ const [ShowSprints, setShowSprints] = useState(false);
     placement='top'
       >
     <input 
+    aria-label='edit-issue-sprint'
     type='text'
+    id='edit-issue-sprint'
     className='inline-block bg-[#00000002] 
     rounded-lg outline-none font-normal w-[14em]
     p-1 text-[#686868] placeholder:text-[#606060]
@@ -388,7 +431,7 @@ const [ShowSprints, setShowSprints] = useState(false);
       setShowSprints(false)
     }}
     >
-      </input>  
+      </input>   
     </CustomTooltip>
     <ul 
     className='bg-[#eaeaea] h-auto max-h-[6em] 
@@ -424,7 +467,7 @@ const [ShowSprints, setShowSprints] = useState(false);
         className='hover:cursor-pointer z-10
         hover:bg-slate-200 rounded-md p-1'
         onClick={() => {
-          console.log('foo')
+          // console.log('foo')
           setSprintSearch(s.title);
           return handleSprintSubmit(s._id, SelectedIssue)
         }}
@@ -454,6 +497,7 @@ const [ShowSprints, setShowSprints] = useState(false);
   
   <input 
   type='text' 
+  id='edit-issue-assignee'
   placeholder={'Select assignee'}
   value={Search}
   className='inline-block bg-[#00000009] max-w-[8em]
@@ -628,7 +672,9 @@ const [ShowSprints, setShowSprints] = useState(false);
                 modifiedBy: user?.user,
               }
             )
-            .then(res => console.log(res))
+            .then(res => {
+              // console.log(res)
+            })
             .catch(err => console.log(err))
           
           }}
@@ -653,7 +699,7 @@ const [ShowSprints, setShowSprints] = useState(false);
 
 
   <div> 
-
+    {!OpenDelModal ? 
     <div className='flex items-center 
     justify-center mt-6 space-x-2 font-light 
     text-[0.925em] text-[#404040]'>
@@ -684,7 +730,7 @@ const [ShowSprints, setShowSprints] = useState(false);
           Comments
         </p>
       </div>
-    </div>
+    </div> : null}
 
 
     <div className='h-[20vh]'> 
@@ -703,6 +749,7 @@ const [ShowSprints, setShowSprints] = useState(false);
     </button>
     </CustomTooltip>
     </div>
+
     </>
   )
 }

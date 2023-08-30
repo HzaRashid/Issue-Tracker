@@ -10,41 +10,34 @@ const {
     editSprintStageTitle,
     addSprintStage,
     editSprintStageIssueLimit,
-    deleteSprint
+    deleteSprint,
+    GeneralEdit
 } = require('../controllers/SprintCtrl')
-const { editIssueSprint, editManyIssuesStage } = require('../controllers/IssueCtrl')
+const { editIssueSprint, editManyIssuesStage } = require('../controllers/IssueCtrl');
+const { isAuthDemo } = require('./Auth/isAuth');
 
 module.exports = router;
 
 
 
 
-router.put(
-    '/update-stage-title',
-    editSprintStageTitle,
-    editManyIssuesStage
-)
+router.put('/update-stage-title',  
+                            isAuthDemo, editSprintStageTitle, editManyIssuesStage)
 
-router.put(
-    '/update-stage-issue-limit',
-    editSprintStageIssueLimit
-)
+router.put('/update-stage-issue-limit', 
+                            isAuthDemo, editSprintStageIssueLimit)
 
-router.put(
-    '/add-stage',
-    addSprintStage
-)
+router.put('/add-stage',    isAuthDemo, addSprintStage)
 
 
 router.get('/', getSprints);
 
-router.post(
-    '/', 
-    addSprint, 
-    editIssueSprint, 
-    );  
+router.post('/',            isAuthDemo, addSprint, editIssueSprint);  
 
-router.put('/title', editSprintTitle);
-router.put('/startDate', editSprintStartDate);
-router.put('/endDate', editSprintEndDate);
-router.delete('/delete', deleteSprint);
+router.put('/title',        isAuthDemo, editSprintTitle);
+router.put('/startDate',    isAuthDemo, editSprintStartDate);
+router.put('/endDate',      isAuthDemo, editSprintEndDate);
+router.put('/edit',         isAuthDemo, GeneralEdit);
+
+
+router.delete('/delete',    isAuthDemo, deleteSprint);

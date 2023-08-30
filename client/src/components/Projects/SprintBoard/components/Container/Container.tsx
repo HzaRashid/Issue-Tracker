@@ -143,11 +143,11 @@ export const Container = forwardRef<HTMLDivElement, Props>(
         }
         
         className={
-        `mx-2 bg-[#e4e4e4] mt-1
-        rounded-md text-[#505050] font-lato 
-        font-normal shadow-sm p-1  min-w-[16em] 
-        h-auto  max-h-[16em]`
-        }
+          `mx-2 bg-[#e4e4e4] p-1 mt-1
+          rounded-md text-[#505050] font-lato 
+          font-normal shadow-sm   min-w-[16em] 
+          h-auto  max-h-[16em] `
+          }
 
         onClick={onClick}
         // tabIndex={onClick ? 0 : undefined}
@@ -239,7 +239,7 @@ export const Container = forwardRef<HTMLDivElement, Props>(
             p-1 rounded-md shadow ml-1'
             onClick={() => {
 
-              // console.log('clicked')
+              console.log('clicked')
               if (
                 updateTitle && 
                 updateTitle.replace(/\s/g, '').length > 0

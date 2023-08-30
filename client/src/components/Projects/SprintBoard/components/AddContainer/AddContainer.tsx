@@ -23,6 +23,7 @@ export interface Props {
 const stopDrag = (e: any) => {
   e.stopPropagation();
   document.body.style.setProperty('cursor', '')
+  // console.log('clsoed')
 }
 
 type Sprint = Record<string, any>;
@@ -55,7 +56,7 @@ export function AddContainer(
 
 
     // const [showSubmitBtns, setShowSubmitBtns] = useState<boolean>(false);
-    const [StageTitle, setStageTitle] = useState<string | null>(null);
+    const [StageTitle, setStageTitle] = useState<string>('');
     const inputRef = useRef<HTMLElement>(null)
     // @ts-ignore
     const FocusOut = () => inputRef.current.blur()
@@ -74,6 +75,48 @@ export function AddContainer(
       FocusOut();
     }
 
+    const handleSubmit = (e: any) => {
+      console.log('clicked') // @ts-ignore
+              
+      if (
+        StageTitle && 
+        StageTitle.replace(/\s/g, '').length > 0
+        ) {
+          console.log(StageTitle)
+          axios.put(
+            data.Sprints + '/add-stage',
+            {
+              sprintID: SelectedSprint?._id,
+              stageTitle: StageTitle
+            }
+          )
+          .then(res => {
+            console.log(res);
+            if (res.status === 200) {
+              setSelectedSprint((sprint: Sprint) => {
+                const stages = sprint.stages;
+                stages.push({
+                  title: StageTitle,
+                  issue_limit: null
+                })
+                return {...sprint, stages: stages}
+              })
+
+              setAddedStage(true)
+              
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            setStageTitle('')
+            FocusIn();
+
+          })}
+
+          handleClose(e)
+
+    }
+
     
     const scrollRef = useRef<HTMLDivElement>(null);
     // const scroll = () => scrollRef.current?.scrollIntoView()
@@ -88,6 +131,7 @@ export function AddContainer(
     )
 
 
+
     return (
       
       <div
@@ -98,6 +142,7 @@ export function AddContainer(
         font-normal shadow-sm p-1  min-w-[16em] 
         h-auto  max-h-[16em]'
         id='add-stage'
+        // onBlur={handleClose}
       >
 
         <> 
@@ -113,7 +158,7 @@ export function AddContainer(
             onKeyDown={stopDrag}
             onTouchStart={stopDrag}
             onClick={stopDrag}
-            onBlur={handleClose}
+            // onBlur={handleClose}
             >
               <input 
               autoFocus
@@ -125,9 +170,9 @@ export function AddContainer(
               focus:placeholder:text-[#707070]'
               //@ts-ignore
               ref={inputRef}
-              
-              onChange={e => setStageTitle(e.target.value)}
-              value={StageTitle ? `${StageTitle}` : ''}
+              // onBlur={handleClose}
+              onChange={e => {setStageTitle(e.target.value); console.log(StageTitle)}}
+              value={StageTitle}
               />
             </h1>
 
@@ -150,45 +195,13 @@ export function AddContainer(
             {/* CONFIRM NEW STAGE */}
             <div className='bg-[#e5e5e5] hover:bg-[#e0e0e0] 
             p-1 rounded-md shadow ml-1 cursor-pointer'
-            key={'confirm'}
-            onClick={() => {
-              console.log('clicked') // @ts-ignore
-              
-              if (
-                StageTitle && 
-                StageTitle.replace(/\s/g, '').length > 0
-                ) {
-                  axios.put(
-                    data.Sprints + '/add-stage',
-                    {
-                      sprintID: SelectedSprint?._id,
-                      stageTitle: StageTitle
-                    }
-                  )
-                  .then(res => {
-                    console.log(res);
-                    if (res.status === 200) {
-                      setSelectedSprint((sprint: Sprint) => {
-                        const stages = sprint.stages;
-                        stages.push({
-                          title: StageTitle,
-                          issue_limit: null
-                        })
-                        return {...sprint, stages: stages}
-                      })
-
-                      setAddedStage(true)
-                      
-                    }
-                  })
-                  .catch(err => {
-                    console.log(err);
-                    setStageTitle(null)
-                    FocusIn();
-
-                  })}
-                  
-            }}
+            // key={'confirm'}
+            // onMouseDown={stopDrag}
+            // onPointerDown={stopDrag}
+            // onKeyDown={stopDrag}
+            // onTouchStart={stopDrag}
+            // onClick={stopDrag}
+            onClick={handleSubmit}
             > 
             <AiOutlineCheck color='#65A766' fontSize={'1.2em'}/>
             </div>

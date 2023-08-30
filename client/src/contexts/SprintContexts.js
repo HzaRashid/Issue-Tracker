@@ -31,8 +31,8 @@ export const SprintContextProvider = ({children}) => {
     const [showSprints, setShowSprints] = useState(false);
     const [EditSprintModal, setEditSprintModal] = useState(false);
     const [EditSprintStatus, setEditSprintStatus] = useState(-1);
-          
-
+    const [SelectedSprintEdit, setSelectedSprintEdit]  =  useState({});
+    const [FixedSprint, setFixedSprint] = useState({});
     return (
         <stateContext.Provider
         value={{ 
@@ -50,7 +50,9 @@ export const SprintContextProvider = ({children}) => {
             AddedStage, setAddedStage,
             showSprints, setShowSprints,
             EditSprintModal, setEditSprintModal,
-            EditSprintStatus, setEditSprintStatus
+            EditSprintStatus, setEditSprintStatus,
+            SelectedSprintEdit, setSelectedSprintEdit,
+            FixedSprint,setFixedSprint
         }}
         >
             {children}

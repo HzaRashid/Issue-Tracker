@@ -6,6 +6,9 @@ import { SprintContexts } from '../../contexts/SprintContexts';
 import { useLocation, useParams, Link } from 'react-router-dom';
 import { MultipleContainers } from '../../components/Projects/SprintBoard/MultipleContainers';
 import axios from 'axios';
+import { AiOutlinePlus } from 'react-icons/ai';
+import { IssueContexts } from '../../contexts/IssueContexts';
+import { TeamContexts } from '../../contexts/TeamContexts';
 // import { IssueContexts } from '../../contexts/IssueContexts';
 const data = require('../routes.json')
 
@@ -13,6 +16,8 @@ function SprintBoard() {
 
   const { ProjectTitle, SprintTitle } = useParams();
   
+  const { Users, setUsers } = TeamContexts();
+
   const { nav, ProjectNav, ScreenWidth } = useStateContext();
 
   const { 
@@ -20,12 +25,14 @@ function SprintBoard() {
     SelectedProj, setSelectedProj, 
   } = ProjContexts();
 
+  const { setIssueModal } = IssueContexts();
+
   const { 
     Sprints, setSprints,
     SelectedSprint, setSelectedSprint, 
     SprintIssues, setSprintIssues,
     setEditStage,
-    setSelectedStage,
+    setSelectedStage,setFixedSprint,
     // eslint-disable-next-line
     items, setItems
   } = SprintContexts();
@@ -72,13 +79,26 @@ function SprintBoard() {
   useEffect(
     () => {
       setSelectedSprint(
-        Sprints.filter(
+        Sprints.filter( // title is unique, correct sprint is returned
           (sprint: {title: string}) => sprint.title === SprintTitle
         )[0]
       )},
     // eslint-disable-next-line
     [SelectedProj, Sprints, useParams()]
   )
+
+  useEffect(() => {
+    if (!Users.length) {
+      axios.get(data.getUsers)
+      .then(res => { 
+          if (res.status === 200) setUsers(res.data); 
+          // console.log(res.data)
+        })
+        .catch(err => {
+          // console.log(err)
+        })
+    }
+  }, [])
 
 
   type Issue = {
@@ -139,7 +159,7 @@ function SprintBoard() {
   return (
     <> 
 
-<div className={`
+    <div className={`
         ${
           bothNavsClosed ? 'left-[8.75em]' :
           ProjNavOpen ? 'left-[17.75em]' : 
@@ -197,12 +217,33 @@ function SprintBoard() {
       }
     >
 
-      <div className='flex items-left justify-center mt-[5.5em] font-[Open Sans]'>
-        <h1 className={`
+      <div className='flex items-center justify-center mt-[5.5em] font-[Open Sans]'>
+        <div className={`
         ${ScreenWidth < 1200 ? 'min-w-[54vw] w-[54vw]' : 'min-w-[60vw]'}
-        text-[1.4em] font-normal`}> 
-       {SelectedSprint?.title} 
-        </h1>
+         font-normal flex items-center space-x-6`}> 
+       <p className='text-[#202020] text-[1.6em]'>{SelectedSprint?.title} </p>
+       <button className='text-[0.95em] flex items-center p-[0.3em]
+      bg-[#e2e2e2] hover:bg-[#728391] hover:text-[#e0e0e0] rounded-[0.25em] ease-in-out duration-100'
+      onClick={
+        () => {
+          setIssueModal(true)
+          setFixedSprint(SelectedSprint);
+        }
+      }
+      >
+      <AiOutlinePlus 
+      fontSize={'1em'}
+      // color='#505050'
+      className='drop-shadow-sm'
+      /> 
+      <p className='font-normal ml-1'> Create issue </p>
+      </button>
+      </div>
+
+
+
+
+
       </div>
 
     <div className='flex items-center justify-center mt-[-5em]'>
@@ -216,12 +257,14 @@ function SprintBoard() {
         SelectedSprint={SelectedSprint}
         SprintIssues={SprintIssues}
         />
+
         : null
       }
         
     </div> 
     </div> 
     </div> 
+
     </>
   
 

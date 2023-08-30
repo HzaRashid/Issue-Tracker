@@ -24,6 +24,7 @@ import axios from "axios";
 import { IssueContexts } from "../../contexts/IssueContexts";
 import { AuthContexts } from "../../App/Auth";
 
+
 const data = require('../routes.json')
 
 
@@ -35,11 +36,11 @@ function Backlog() {
     SelectedProj, setSelectedProj, 
     Backlog 
   } = ProjContexts();
-  const { Issues } = IssueContexts();
+  const { Issues, SearchSptIssues, setSearchSptIssues } = IssueContexts();
   const { user } = AuthContexts();
 
   const { SprintIssues, SelectedSprint } = SprintContexts();
-  const { Users } = TeamContexts()
+  const { Users, setUsers } = TeamContexts()
   const currLoc = useLocation();
   let { ProjectTitle } = useParams();
 
@@ -52,6 +53,19 @@ function Backlog() {
     // eslint-disable-next-line
     []
   )
+
+  useEffect(() => {
+    if (!Users.length) {
+      axios.get(data.getUsers)
+      .then(res => { 
+          if (res.status === 200) setUsers(res.data); 
+          // console.log(res.data)
+        })
+        .catch(err => {
+          // console.log(err)
+        })
+    }
+  }, [])
 
   useEffect(
     () => {
@@ -152,6 +166,7 @@ function Backlog() {
   return (
     
     <>
+
       <div className={`
       ${
         bothNavsClosed ? 'left-[8.75em]' :
@@ -173,7 +188,7 @@ function Backlog() {
     <Link to={currLoc.pathname} 
     className="p-1 text-[#4e779f] hover:bg-[#e6e6e6]"
     >
-    {currPathname}
+    {currLoc.pathname === "/projects/" + SelectedProj?.title?.replace(" ", "%20") + '/backlog/proj-nav=true' && currPathname}
     </Link>
    
     </div>
@@ -181,13 +196,13 @@ function Backlog() {
     className={`
     ${
       nav ? 'ml-[12em]' : 'ml-[4.25rem]'
-  } 
-  body-font font-lato font-light
-  subpixel-antialiased
-   
-  ease-in-out duration-[.3s]
-  max-h-[100vh] overflow-auto`
-  }
+    } 
+    body-font font-lato font-light
+    subpixel-antialiased
+    
+    ease-in-out duration-[.3s]
+    max-h-[100vh] overflow-auto`
+    }
     >
 
   <div className={`
@@ -230,6 +245,7 @@ function Backlog() {
      </DndContext>
     </div>
     </div>
+
     
     </>
  
@@ -244,7 +260,7 @@ function Backlog() {
   }
 
   function handleDragStart(event) {
-
+    setSearchSptIssues('')
     console.log(event)
     document.body.style.setProperty('cursor', 'grabbing');
     const { active } = event;

@@ -34,14 +34,14 @@ export const TeamContextProvider = ({children}) => {
     const [ EditThisUserModal, setEditThisUserModal ] = useState(false);
     const [ EditThisUserStatus, setEditThisUserStatus ] = useState(-1);
 
-    useEffect( () => { axios.get(data.getUsers)
-        .then( 
-          response =>{ 
-            setUsers(response.data); 
-            console.log(response.data)
-        }
-          // eslint-disable-next-line
-          )}, [])
+    // useEffect( () => { axios.get(data.getUsers)
+    //     .then( 
+    //       response =>{ 
+    //         setUsers(response.data); 
+    //         console.log(response.data)
+    //     }
+    //       // eslint-disable-next-line
+    //       )}, [])
 
 
     return (

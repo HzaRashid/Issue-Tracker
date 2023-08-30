@@ -6,7 +6,7 @@ import stringAvatar from '../utils/UserAvatar/StringAvatar';
 
 function UserInfo() {
     const { user, LoggedInUser, setLoggedInUser } = AuthContexts();
-    console.log(user)
+    // console.log(user)
     
     const { Users, setEditThisUserModal } = TeamContexts();
     function getUser (uID) {

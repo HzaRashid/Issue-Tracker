@@ -7,11 +7,12 @@ import { AuthContexts } from '../../../App/Auth';
 import { formatDistance } from 'date-fns';
 import { BsDot, BsArrowRightShort } from 'react-icons/bs';
 import { SprintContexts } from '../../../contexts/SprintContexts';
+import axios from 'axios';
 const data = require('../../../pages/routes.json')
 
 
 function History() {
-  const { SelectedIssue } = IssueContexts();
+  const { SelectedIssue, Issues } = IssueContexts();
   const { Sprints } = SprintContexts();
   const { Users } = TeamContexts();
   const userList = Users.slice();
@@ -19,6 +20,21 @@ function History() {
   const { user } = AuthContexts();
   const loggedInUser = Users.filter(u => u?._id === user?.user)[0];
   const [ isListen, setIsListen ] = useState(false)
+
+  useEffect(() => {
+    if (isListen && IssueVersions.length === 0) {
+      axios.get(data.IssueVersions)
+      .then(res => {
+        if (res.status === 200) setIssueVersions(res.data)
+      })
+    .catch(err => {
+      console.log(err)
+    })
+    // console.log('hehrhrhr')
+  }
+
+  }, [IssueVersions, isListen])
+
   useEffect(() => {
     if (!isListen){
       const events = new EventSource(data.IssueVersionsSSE);
@@ -28,7 +44,7 @@ function History() {
         }
         setIsListen(true);
       }  // eslint-disable-next-line
-  }, [isListen, IssueVersions])
+  }, [isListen, IssueVersions, Issues])
 
   const [ SelectedIssuer, setSelectedIssuer ] = useState({});
 
@@ -36,7 +52,9 @@ function History() {
     const checkIssuer = Users?.filter( u => u._id === SelectedIssue?.createdBy )
     if (checkIssuer.length) setSelectedIssuer(checkIssuer[0])
   }, [Users, SelectedIssue])
-
+  // console.log(SelectedIssue)
+  // console.log(SelectedIssuer)
+  // console.log(IssueVersions)
   if (!SelectedIssue) return
   return (
     <div

@@ -16,7 +16,8 @@ import { CustomTooltip } from '../CustomTooltip';
 import TeamEditUserModal from './TeamEditUserModal';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import EditIcon from '@mui/icons-material/Edit';
-
+import axios from 'axios';
+const data = require('../../pages/routes.json')
 
 function CustomToolbar() {
   return (
@@ -75,7 +76,7 @@ const theme = createTheme({
 function TeamTable() {
 
     const {
-        Users,
+        Users,setUsers,
         AddUserModal, setAddUserModal,
         // DeleteUser, setDeleteUser,
         EditUser, setEditUser,
@@ -90,11 +91,19 @@ function TeamTable() {
     
     // console.log(SelectedUsers)
 
+    useEffect(() => {
+      if (!Users.length) {
+        axios.get(data.getUsers)
+        .then(res => { 
+            if (res.status === 200) setUsers(res.data); 
+            // console.log(res.data)
+          })
+          .catch(err => {
+            // console.log(err)
+          })
+      }
+    }, [])
 
-useEffect(() => {
-  const getB = Users?.filter(u => u._id === "62a0f6fa520c2b1a7ea89a5a")[0];
-  console.log(getB?.updatedAt)
-}, [])
 
     // const [Users, setUsers] = useState([]);
     const [pageSize, setPageSize] = useState(10);
@@ -163,7 +172,6 @@ useEffect(() => {
 
 
   const ref = useGridApiRef();
-  console.log(tableRef)
 
   useEffect(() => setTableRef(ref), [])
   useEffect(() => setSelectedGridUsers([]), [])
@@ -219,7 +227,7 @@ useEffect(() => {
             setSelectedGridUsers(Users.filter(
                 (row) => selectedIDs.has(row._id)
             ));
-            console.log(SelectedGridUsers);
+            // console.log(SelectedGridUsers);
             }}
         />
         

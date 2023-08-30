@@ -38,23 +38,17 @@ const getIssues = (req, res) => {
 const addIssue = async (req, res) => {
     try { 
         const issueFields = req.body;
+        console.log(issueFields)
         const newIssue = await Issue.create(issueFields);
         req.body.IssueID = newIssue._id;
         req.body.UserID = newIssue.assignedTo;
 
-        IssueVersion.create({
-            issueID: newIssue._id,
-            modifiedField: 'created',
-            wasModified: true,
-            ...prevDoc
-        },
-        (err) => {
-            if (err) {
-                console.log(err);
-                res.status(501).send(err)
-            }
-        }
-        )
+        // await IssueVersion.create({
+        //     issueID: newIssue._id,
+        //     modifiedField: 'created',
+        //     wasModified: true,
+        //     ...issueFields
+        // })
 
         res.json(newIssue).status(200).end();
     } 

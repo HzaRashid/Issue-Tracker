@@ -20,16 +20,16 @@ function EditSprintForm() {
       setEditSprintModal, 
       setSprintModal,
       Sprints, setSprints,
-      setSprintStatus,
-      setSelectedSprint,
-      SelectedSprint
+      setEditSprintStatus,
+      setSelectedSprintEdit,
+      SelectedSprintEdit
      } = SprintContexts();
     const { SelectedProj } = ProjContexts();
     
    const { ScreenWidth } = useStateContext();
    const isMobile = ScreenWidth < 768;
 
-   useEffect(() => console.log(SelectedSprint));
+  //  useEffect(() => console.log(SelectedSprintEdit));
 
   //  const [Title, setTitle] = useState('');
   //  const handleTitle = e => setTitle(e.target.event);
@@ -56,23 +56,24 @@ function EditSprintForm() {
 
       useEffect(() => {
 
-        console.log(startDate)
-      formik.setFieldValue('EditSprintTitle', SelectedSprint?.title);
+        // console.log(startDate)
+      if (SelectedSprintEdit?.title) formik.setFieldValue(
+                                      'EditSprintTitle', 
+                                  SelectedSprintEdit?.title);
 
       }
-      , [SelectedSprint])
+      , [SelectedSprintEdit])
       
       const [startDate, endDate] = formik.values.dateRange;
       useEffect(() => {
-        if (SelectedSprint?.startDate) {
+        if (SelectedSprintEdit?.startDate) {
           formik.setFieldValue('dateRange', [
-            new Date(SelectedSprint?.startDate), 
-            new Date(SelectedSprint?.endDate)
+            new Date(SelectedSprintEdit?.startDate), 
+            new Date(SelectedSprintEdit?.endDate)
           ]);
         }
-      }, [SelectedSprint])
+      }, [SelectedSprintEdit])
 
-      // if (!SelectedSprint?.title) return
   return (
     <>
         <>
@@ -80,7 +81,7 @@ function EditSprintForm() {
     <div className='sticky top-0 bg-inherit flex items-center justify-between'>
  <h1 className='p-3 pr-[0.4em] text-[1.05em] 
    text-[#252525] break-words font-normal'>
-     New Sprint
+     Edit Sprint
      </h1>
 
  <div className='flex items-center mr-3 shadow-sm
@@ -186,7 +187,11 @@ function EditSprintForm() {
  ml-[0.25em] ease-in-out duration-100'
  onClick={() => {
   setEditSprintModal(false);
-   formik.resetForm()
+
+   setTimeout(() => {
+    formik.resetForm();
+    setSelectedSprintEdit({});
+   }, 500)
  }}
  >
    <AiOutlineClose fontSize={'1.5em'} color='#202020'/>
@@ -206,38 +211,54 @@ function EditSprintForm() {
  onClick={
    async () => {
 
-     var Sprint = {
-       title: formik.values.EditSprintTitle,
-       startDate: startDate,
-       endDate: endDate,
-       project: SelectedProj?._id,
-     }
+    //  const sprintBody = {
+    //   sprintID: SelectedSprintEdit._id,
+    //   title: formik.values.EditSprintTitle,
+    //   startDate: startDate,
+    //   endDate: endDate,
+    //  }
 
      try {
-       let response = await axios
-                               .post(
-                               data.Sprints, 
-                               Sprint
+       let response = await axios.put(
+        data.Sprints + '/edit', 
+        {
+          sprintID: SelectedSprintEdit._id,
+          title: formik.values.EditSprintTitle,
+          startDate: startDate,
+          endDate: endDate,
+        }
                                )
 
-       console.log(response);
+      //  console.log(response);
 
        if (response.status === 200) {
 
-           setSprintStatus(200);
-           setSprintModal(false);
-           formik.resetForm();
-           
-           Sprint._id = response.data?.SprintID;
-           setSprints([...Sprints, Sprint])
-           setSelectedSprint(Sprint);
+          setEditSprintStatus(200);
+          if (formik.values.EditSprintTitle !== SelectedSprintEdit?.title) {
+            setSprints(Sprints.map(s => {
+                if (s._id !== SelectedSprintEdit._id) return s
+                s.title = formik.values.EditSprintTitle
+                return s
+              }))
+          }
+
+           setTimeout(() => {
+            setEditSprintModal(false);
+           }, 1000)
+
+           setTimeout(() => {
+            formik.resetForm();
+            setSelectedSprintEdit({});
+           }, 1200)
+          
+
  
        } 
 
        } catch (error) {
          if (error) {
-           console.log(error)
-           setSprintStatus(error.response.status)
+          //  console.log(error)
+           setEditSprintStatus(error.response.status)
          }
        }
    }
@@ -250,52 +271,6 @@ function EditSprintForm() {
  }
 
  </>
-
-
-
-
-
-
-
-
-
-
-
-
-{/* <div className='text-center mt-[3.25em]'>
-
-<CustomTooltip title='Cancel' placement='top'>
-  <button 
-  className='float-left hover:bg-[#e2e2e2] rounded-lg ml-[0.25em] ease-in-out duration-100'
-  onClick={() => { 
-    setEditSprintModal(false);
-  }}
-  >
-    <AiOutlineClose fontSize={'1.75em'} color='#202020'
-    className='drop-shadow-sm p-1'
-    />
-  </button>
-  </CustomTooltip> */}
-
-  {/* {
-
-  condition?.passed  &&
-
-  <CustomTooltip title='Continue' placement='top'>
-  <button type="button"
-  className='float-right hover:bg-[#e2e2e2] hover:rounded 
-  mr-[0.25em] ease-in-out duration-100 p-1 rounded-lg'
-  onClick={() => {}}
-  >
-    <BsFillArrowRightCircleFill fontSize={'1.5em'} color='#538A58'
-    className='drop-shadow-sm'
-    />
-  </button>
-
-  </CustomTooltip>
-  } */}
-
-{/* </div> */}
     
     </>
     

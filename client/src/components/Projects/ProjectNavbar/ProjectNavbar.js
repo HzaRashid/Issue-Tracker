@@ -56,7 +56,8 @@ function ProjectNavbar( props ) {
       
       <div className='search-add'>
       <input 
-      className='search-bar' 
+      id="proj-nav-search-bar"
+      className='proj-nav-search-bar' 
       type='text'
       placeholder='Search..'
       onChange={(event) => setSearch(event.target.value)}

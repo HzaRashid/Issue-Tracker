@@ -8,13 +8,14 @@ import {
 import {  useDroppable } from "@dnd-kit/core";
 import { useStateContext } from '../../../contexts/ContextProvider';
 import Empty from './Empty';
-// import styled from '@emotion/styled';
 
 
 
 function BacklogTable( props ) {
 
-  const { id, items, Backlog, loaded } = props;
+  const { id, items, Backlog, 
+    // loaded 
+  } = props;
   const { nav, ProjectNav, ScreenWidth } = useStateContext();
   // console.log(items)
   
@@ -23,6 +24,7 @@ function BacklogTable( props ) {
 
   return (
     <>
+
     {Backlog && Backlog.length ? <> 
     
     <div className='flex body-font font-[Open Sans]'>
@@ -33,13 +35,6 @@ function BacklogTable( props ) {
       >
         Backlog
       </p>
-      <div 
-    style={{
-      visibility: loaded ? 'visible' : 'hidden',
-      opacity: loaded ? '1' : '0',
-      transition: 'all 0.7s ease-in-out'
-    }}
-    >
       <SortableContext
       id={id}
       items={items}
@@ -78,17 +73,13 @@ function BacklogTable( props ) {
 
       </div>
       </SortableContext>
-      </div> 
-      </div> </div>
+      </div>
+      </div>
+      
       </> :
-      <div 
-      style={{
-        visibility: loaded ? 'visible' : 'hidden',
-        opacity: loaded ? '1' : '0',
-        transition: 'all 0.7s ease-in-out'
-      }}
-      >
-      <Empty/> </div>
+      <div>
+      <Empty/>
+      </div>
       }
 
     </>

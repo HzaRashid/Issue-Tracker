@@ -10,9 +10,13 @@ function Login( { user } ) {
 
   if (user?.authenticated == null && currPath === '/login') return null;
 
-  if (user?.authenticated == null && currPath === '/') return <LoginComponent/>;
+  if (user?.authenticated == null && currPath === '/') return <LoginComponent/>
+
+  
 
   return (user.authenticated === true) ? <Navigate to='/home' replace/> : <LoginComponent/>
+
+    
 }
 
 

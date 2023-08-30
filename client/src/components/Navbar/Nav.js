@@ -72,12 +72,9 @@ function Nav() {
 
   
   const isMobile = ScreenWidth < 768;
-// const closeNavStyle = { color: "#4a4a4a", fontSize: "2em"};
-  const isProjPage = currLocation.pathname
-  .includes('proj-nav=true')
-// console.log(SelectedProj)
 
-  // if (!LoggedInUser?.firstName) return
+  const isProjPage = currLocation.pathname.includes('proj-nav=true')
+
   return (
   <>
   <div 
@@ -158,6 +155,7 @@ function Nav() {
               if (isMobile) setNav(false);
               return
             }
+            setShowSprints(false);
             goToPage(item.link);
             setNav(false)
             }}

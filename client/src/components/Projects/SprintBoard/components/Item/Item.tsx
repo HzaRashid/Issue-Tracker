@@ -139,7 +139,7 @@ export const Item = React.memo(
           onClick={() => {
             setSelectedIssue(issueItem)
             setEditIssueModal(true)
-            console.log(issueItem)
+            // console.log(issueItem)
           }}
         >
           <div

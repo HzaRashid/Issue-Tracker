@@ -17,7 +17,6 @@ import Issues from '../pages/Issues';
 import Team from '../pages/Team';
 import Profile from '../pages/Profile';
 import Popups from '../components/Popups';
-// import { UserContext } from '../contexts/UserContext';
 import Login from './Login/Demo/Login';
 import { AuthContexts } from './Auth';
 import UserInfo from '../components/TopBar/UserInfo';
@@ -42,14 +41,14 @@ function AppRouter() {
         .then(res => res.json())
         .then(json => { setUser({...json}) })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
           setUser(TBDAuthUser);
         })
       // eslint-disable-next-line 
     }, []
   )
 
-  console.log(user)
+  // console.log(user)
   return (
   <>
   <Routes>    
@@ -57,14 +56,14 @@ function AppRouter() {
 
     <Route path='/login' element={<Login user={user}/>}/>
 
-    <Route path='/home' element={<PrivateRoute component={<Home />} />} />
-    <Route path='/projects' element={<PrivateRoute component={<Projects />} />} />
-    <Route path='/projects/:ProjectTitle/backlog/proj-nav=true' element={<PrivateRoute component={<Backlog />} />} />
-    <Route path='/projects/:ProjectTitle/sprint-board/:SprintTitle/proj-nav=true' element={<PrivateRoute component={<SprintBoard />} />} />
-    <Route path='/projects/:ProjectTitle/team/proj-nav=true' element={<PrivateRoute component={<ProjectTeam />} />} />
-    <Route path='/issues' element={<PrivateRoute component={<Issues />}/>} />
-    <Route path='/team' element={<PrivateRoute component={<Team />}/>} />
-    <Route path='/profile' element={<PrivateRoute component={<Profile />} />} />
+    <Route exact path='/home' element={<PrivateRoute component={<Home />} />} />
+    <Route exact path='/projects' element={<PrivateRoute component={<Projects />} />} />
+    <Route exact path='/projects/:ProjectTitle/backlog/proj-nav=true' element={<PrivateRoute component={<Backlog />} />} />
+    <Route exact path='/projects/:ProjectTitle/sprint-board/:SprintTitle/proj-nav=true' element={<PrivateRoute component={<SprintBoard />} />} />
+    <Route exact path='/projects/:ProjectTitle/team/proj-nav=true' element={<PrivateRoute component={<ProjectTeam />} />} />
+    <Route exact path='/issues' element={<PrivateRoute component={<Issues />}/>} />
+    <Route exact path='/team' element={<PrivateRoute component={<Team />}/>} />
+    <Route exact path='/profile' element={<PrivateRoute component={<Profile />} />} />
 
   </Routes>
 
@@ -88,10 +87,13 @@ const PrivateRoute = ( { component } ) => {
   }
   return (
     <>
+
+    { ScreenWidth > 880 ? <UserInfo/> : null }
+
     <Nav/>
     <Popups/>
-    { ScreenWidth > 880 ? <UserInfo/> : null }
     {component}
+
     </>
     )
 };

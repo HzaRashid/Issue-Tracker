@@ -11,10 +11,30 @@ import { MdError } from 'react-icons/md';
 import stringAvatar from '../../utils/UserAvatar/StringAvatar';
 import { ProjContexts } from '../../../contexts/ProjectContexts';
 const data = require('../../../pages/routes.json')
-function List() {
-    const {  Issues, setIssues, setSelectedIssue, setEditIssueModal } = IssueContexts();
+
+function List(  ) {
+    const {  Issues, setIssues, setSelectedIssue, setEditIssueModal, setIssueVersions } = IssueContexts();
     const { Users } = TeamContexts();
-    const { Projects } = ProjContexts();
+    const { Projects, 
+      // setProjects 
+    } = ProjContexts();
+
+    useEffect(() => {
+      axios.get(
+        data.IssueVersions
+      )
+      .then(res => setIssueVersions(res.data))
+      .catch(err => console.log(err))
+      // eslint-disable-next-line
+      }, [])
+      // useEffect(() => {
+      //   axios.get(
+      //     data.Projects
+      //   )
+      //   .then(res => setProjects(res.data))
+      //   .catch(err => console.log(err))
+      //   // eslint-disable-next-line
+      //   }, [])
     // console.log(Projects)
 
     const [ HomeIssues, setHomeIssues ] = useState([]);
@@ -43,7 +63,7 @@ function List() {
       i.projectName = Projects.filter(p => p._id === projID)[0]?.title
       return i
     }
-    )}, [Issues, Users])
+    )}, [HomeIssues, Users, Projects])
 
     
     const columns = [ 
@@ -196,19 +216,7 @@ function List() {
 
       ]
 
-
-      // function getAssignee (assigneeID) {
-      //   const user = Users.filter(u => {
-      //     return u._id === assigneeID
-      //   })[0];
-      //   // console.log(user);
-      //   return user
-  
-      // }
-      // const [pageSize, setPageSize] = useState(10);
-
-
-
+  // if (!rows) return
   return (
     <>
     <ThemeProvider theme={theme}
@@ -224,6 +232,7 @@ function List() {
         text: 'bold',  
         }}
     >
+
     <DataGrid
     rows={rows}
     columns={columns}
@@ -253,13 +262,10 @@ function List() {
       color: '#588B63',
       outline: 'none',
       },
-    // '& .MuiDataGrid-cell': {
-    //     fontWeight: 'normal',
-    // },
+
     '& .MuiDataGrid-columnHeaderTitle': {
       color: '#909090',
       fontWeight: 'light'
-    //   fontFamily:`"Open Sans", sans-serif`
     },
     '& .MuiDataGrid-columnSeparator': {
         visibility: 'hidden'
@@ -290,9 +296,10 @@ function List() {
     }}
     GridLines="None"
 
-
     />
+
     </div>
+    
     </ThemeProvider>
     </>
   )
@@ -322,8 +329,7 @@ function CustomToolbar( props ) {
                     marginTop: -2, 
                     textTransform:'none',
                     color: '#7895B3',
-                    
-                  //   fontWeight: 400
+
                 }}
         />
 

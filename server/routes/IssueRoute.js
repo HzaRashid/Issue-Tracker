@@ -32,9 +32,10 @@ router.put('/type',         isAuthDemo, editIssueType);
 router.put('/sprint',       isAuthDemo, editIssueSprint);
 router.put('/assignee',     isAuthDemo, editIssueAssignee);
 router.put('/stage',        isAuthDemo, editIssueStage);
+
 router.put('/board-stage',  isAuthDemo, editIssueStage);
 
 
 router.put('/many-issues-stage', transferManyIssuesStage, deleteSprintStage);
 router.delete('/delete', deleteIssue);
-router.put('/reorder', reOrderIssues)
+router.put('/reorder', reOrderIssues);

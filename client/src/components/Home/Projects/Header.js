@@ -32,6 +32,7 @@ function Header( { isMobile } ) {
         >
         <AiOutlineSearch className='mr-1 ml-[0.4em] rotate-90' color='#929292'/>
         <input 
+        id="search-proj-home"
         type='text'
         className='bg-transparent outline-none p-[0.1em] font-light'
         placeholder='Search..'

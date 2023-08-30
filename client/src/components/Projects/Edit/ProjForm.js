@@ -62,23 +62,18 @@ function ProjForm( { showReview, setShowReview } ) {
 
     const handleProjTitle = e => setProjTitle(e.target.value);
 
-    // function getAssignee (assigneeID) {
-    //   const index = Users.map(u => u._id).indexOf(assigneeID);
-    //   return Users[index]
-    // }
     function getAssignee (assigneeID) {
       const user = Users.filter(u => {
         return u._id === assigneeID
       })[0];
-      console.log(user);
-      console.log(Users);
+      // console.log(user);
+      // console.log(Users);
       return user
-
     }
     const [InitTeam, setInitTeam] = useState([])
     useEffect(() => {
       setProjTitle(SelectedProjModal?.title);
-      console.log(SelectedProjModal)
+      // console.log(SelectedProjModal)
       // const teamIds = SelectedProjModal?.assignedTo?.slice()
       const teamIds = Users?.filter(
         u => u.projects.includes(SelectedProjModal?._id)
@@ -91,7 +86,7 @@ function ProjForm( { showReview, setShowReview } ) {
     
     , [SelectedProjModal, SelectedProjModal?.title, SelectedProjModal?.assignedTo, Users])
 
-    useEffect(() => console.log(ProjTeam), [ProjTeam])
+    // useEffect(() => console.log(ProjTeam), [ProjTeam])
     useEffect(() => setEditProj(true), [])
   if (!EditProj) return
   return (

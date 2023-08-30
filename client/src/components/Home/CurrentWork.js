@@ -7,14 +7,23 @@ import Header from './Projects/Header'
 import { useStateContext } from '../../contexts/ContextProvider'
 // import { IssueTypeData } from './Chart/IssueTypeData'
 import { IssueUpdateData } from './Chart/IssueUpdateData'
+import { motion } from 'framer-motion'
+// import axios from 'axios'
+const data = require('../../pages/routes.json')
 
-// const data = require('../../pages/routes.json')
 function CurrentWork( ) {
 
-  const { IssueVersions } = IssueContexts()
-  // const { Projects } = ProjContexts();
-  // const [ sprints, setSprints ] = useState([])
-  // const { setSprints } = SprintContexts();
+  const { IssueVersions } = IssueContexts();
+//   const [ HomeIssues, setHomeIssues ] = useState([]);
+//   useEffect(() => {
+//     axios.get(
+//         data.Issues
+//     )
+//     .then(res => { setIssues(res.data); setHomeIssues(res.data) })
+//     .catch(err => console.log(err))
+// // eslint-disable-next-line
+// }, []);
+
   const { ScreenWidth, nav, ProjectNav } = useStateContext();
 
   // var isMobile = () => ScreenWidth < 768 
@@ -33,7 +42,9 @@ function CurrentWork( ) {
     <div className=''> 
 
     <div className='overflow-hidden z-0'>
-      <List/>
+      <Transition> 
+      <List />
+      </Transition>
     </div> 
 
     <div className='items-center mt-[2em]'
@@ -50,7 +61,9 @@ function CurrentWork( ) {
               // marginRight: isMobile ? '4em' : ''
             }}
     > 
-    <IssueUpdateData IssueVersions={IssueVersions} isMobile={isMobile}/> 
+    <Transition> 
+    <IssueUpdateData IssueVersions={IssueVersions} isMobile={isMobile}/>
+    </Transition> 
     </div>
     <div className='flex w-[50vw] items-center 
     justify-center overflow-scroll'
@@ -63,7 +76,9 @@ function CurrentWork( ) {
       
     }}
     > 
+    {/* <Transition>  */}
     <Header isMobile={isMobile}/>
+    {/* </Transition> */}
     </div>
 
        
@@ -72,6 +87,20 @@ function CurrentWork( ) {
 
     </div>
   )
+}
+
+const Transition = ( { ...props } ) => {
+  return (
+    <motion.div
+    initial={{ opacity: 0,  }}
+    animate={{ opacity: 1,  }}
+    transition={{ duration: 0.4 }}
+    exit={{ opacity: 0 }}
+    >
+      { props.children }
+    </motion.div>
+  )
+
 }
 
 export default CurrentWork

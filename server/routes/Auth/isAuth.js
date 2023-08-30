@@ -11,7 +11,7 @@ const isAuthDemo = (req, res, next) => {
     return res.status(400).json({
       message: 'Demo user not authorized to make changes',
       statusText: 'Unauthorized account'
-    }).statusText('Unauthorized account')
+    })
   }
     if (!req.user) {
       return res.status(400).json({

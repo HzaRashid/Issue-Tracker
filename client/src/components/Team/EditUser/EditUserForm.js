@@ -232,6 +232,7 @@ useEffect(() => {
         Email
     </p>
     <input 
+    autoComplete="off"
     type='email'
     { ...register("Email") }
     className='w-[14em] rounded p-1 bg-[#00000010] outline-none text-[0.9em]'
@@ -276,7 +277,7 @@ useEffect(() => {
       </p>
       </div>
       </div>
-      <span className="sr-only">Enable notifications</span>
+      <span className="sr-only"></span>
       <span
         className={`${
           SwapRole ? 'translate-x-[6.7em]' : 'translate-x-[0]'

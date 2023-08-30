@@ -20,7 +20,7 @@ function ProjStatus() {
   return (
 
     <>
-    {console.log(EditProj)}
+    {/* {console.log(EditProj)} */}
     <Snackbar open={ EditProj===false && ProjStatus===200}
      onClose={() => setProjStatus(-1)} autoHideDuration={3000}
      >

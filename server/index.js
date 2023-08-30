@@ -75,16 +75,7 @@ app.use('/comments', require('./routes/CommentRoute'))
 
 app.get('/is-authenticated', (req, res) => {console.log(req.user); res.send('aye');});
 
-// const isAuthDemo = (req, res, next) => {
-//   console.log(req?.isAuthenticated())
-//     if (!req?.isAuthenticated() || req.user) {
-//       return res?.status(450).json({
-//         message: 'user not authenticated, nor authorized to make changes'
-//       })
-//     } next()
-// }
 
-// app.use(isAuthDemo)
 
 const PORT = process.env.PORT || 4050;
 

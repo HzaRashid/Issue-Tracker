@@ -9,7 +9,6 @@ import { IssueContexts } from '../../../contexts/IssueContexts';
 import { AiOutlinePlus } from 'react-icons/ai'
 import { useStateContext } from '../../../contexts/ContextProvider';
 
-
 const data  = require('../../../pages/routes.json')
 function SprintsContainer( props ) {
 
@@ -47,7 +46,10 @@ function SprintsContainer( props ) {
     <> 
 
 
-   { Sprints && Sprints.length ? <SprintList id={id} items={items}/> : <Empty/> }
+   { Sprints && Sprints.length ? 
+
+    <SprintList id={id} items={items}/>  : <Empty/> 
+    }
 
    <div className='flex body-font font-[Open Sans] subpixel-antialiased'>
       <div className='ml-auto mr-auto top-0 sticky'

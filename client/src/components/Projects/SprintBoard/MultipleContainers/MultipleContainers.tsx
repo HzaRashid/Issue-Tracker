@@ -83,6 +83,7 @@ function DroppableContainer({
     : false;
 
   return (
+
     <Container
       ref={disabled ? undefined : setNodeRef}
       style={{
@@ -101,7 +102,10 @@ function DroppableContainer({
       
     >
       {children}
+      
+      
     </Container>
+
   );
 }
 
@@ -508,7 +512,7 @@ export function MultipleContainers(
 
         }
        setSelectedIssue({...activeId, stage: overContainer})
-        axios.put(data.Issues + '/stage',
+        axios.put(data.Issues + '/board-stage',
         {
             issueID: activeId._id,
             stage: overContainer,
@@ -603,7 +607,9 @@ export function MultipleContainers(
                           );
                         })}
                       </SortableContext>
+                      
                     </DroppableContainer>
+                    
                   ))}
                   {addStage ? 
                   <AddContainer 

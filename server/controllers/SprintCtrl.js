@@ -50,6 +50,42 @@ const editSprintTitle = async (req, res) => {
         });
     };
 
+const editSprintTitleNext = async (req, res, next) => {
+    const sprintFields = req.body;
+    Sprint.findById(
+        sprintFields._id, 
+        (err, doc) => {
+        if (err) {
+            console.log(err)
+            res.status(400).send("Request failed")
+        }
+        doc.title = sprintFields.title;
+        doc.updatedAt = Date();
+        doc.save();
+        next()
+        });
+    };
+
+
+const GeneralEdit = async (req, res) => {
+    const fields = req.body;
+    Sprint.findById(
+        fields.sprintID, 
+        (err, doc) => {
+        if (err) {
+            console.log(err)
+            res.status(400).send("Request failed")
+        }
+        if (!doc) return res.status(500).send('Sprint not found')
+        if (fields.title)     doc.title       = fields.title
+        if (fields.startDate) doc.startDate   = fields.startDate;
+        if (fields.endDate)   doc.endDate     = fields.endDate;
+        doc.updatedAt = Date();
+        doc.save();
+        res.status(200).json(doc)
+        });
+};
+
 
 const editSprintStartDate = async (req, res) => {
     const sprintFields = req.body;
@@ -65,7 +101,24 @@ const editSprintStartDate = async (req, res) => {
         doc.save();
         res.status(200).send(sprintFields.startDate)
       });
-    };
+};
+
+
+const editSprintStartDateNext = async (req, res) => {
+    const sprintFields = req.body;
+    Sprint.findById(
+        sprintFields._id, 
+        (err, doc) => {
+        if (err) {
+            console.log(err)
+            res.status(400).send("Request failed")
+        }
+        doc.startDate = sprintFields.startDate;
+        doc.updatedAt = Date();
+        doc.save();
+        next()
+      });
+};
 
 
 const editSprintEndDate = async (req, res) => {
@@ -77,12 +130,15 @@ const editSprintEndDate = async (req, res) => {
             console.log(err)
             res.status(400).send("Request failed")
         }
-        doc.endDate = sprintFields.endDate;
-        doc.updatedAt = Date();
-        doc.save();
+        if (sprintFields.endDate) {
+            doc.endDate = sprintFields.endDate;
+            doc.updatedAt = Date();
+            doc.save();
+        }
         res.status(200).send(sprintFields.endDate)
         });
-    };
+};
+
 
 
 const editSprintType = async (req, res) => {
@@ -303,11 +359,14 @@ module.exports = {
     getSprints, 
     addSprint, 
     editSprintTitle,
+    editSprintTitleNext,
     editSprintStartDate, 
+    editSprintStartDateNext,
     editSprintEndDate,
     addSprintStage,
     deleteSprintStage,
     editSprintStageTitle,
     editSprintStageIssueLimit,
-    deleteSprint
+    deleteSprint,
+    GeneralEdit
 }

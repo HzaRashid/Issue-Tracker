@@ -50,9 +50,9 @@ function SprintForm() {
       })
       
       const [startDate, endDate] = formik.values.dateRange;
-      useEffect(()=> {
-        console.log(new Date(startDate))
-      }, [startDate])
+      // useEffect(()=> {
+      //   console.log(new Date(startDate))
+      // }, [startDate])
     
   return (
     <>
@@ -200,7 +200,7 @@ function SprintForm() {
                                   Sprint
                                   )
 
-          console.log(response);
+          // console.log(response);
   
           if (response.status === 200) {
   

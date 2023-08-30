@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CustomTooltip } from '../../CustomTooltip';
 import { AiOutlineClose, AiOutlineCloseCircle } from 'react-icons/ai'
 import { IssueContexts } from '../../../contexts/IssueContexts';
@@ -22,6 +22,8 @@ function IssueForm() {
     const { 
       setIssueModal, 
       setIssueStatus,
+      Issues,
+      setIssues
 
     } = IssueContexts();
 
@@ -34,7 +36,7 @@ function IssueForm() {
       Sprints,
       // SelectedSprint, setSelectedSprint,
       NewSprintIssue, setNewSprintIssue,
-      SprintIssues, setSprintIssues
+      SprintIssues, setSprintIssues, FixedSprint
     } = SprintContexts();
 
     const { Users } = TeamContexts();
@@ -45,8 +47,12 @@ function IssueForm() {
     const [ShowTypes, setShowTypes] = useState(false);
     const [ShowSprints, setShowSprints] = useState(false);
     const [SelectedSprint, setSelectedSprint] = useState({});
-    
-    
+    useEffect(() => {
+      if (FixedSprint?._id) setSelectedSprint(FixedSprint)
+    }, [FixedSprint])
+    // useEffect(() => {
+    //   console.log(SelectedSprint)
+    // }, [SelectedSprint])
 
 
     const formik = useFormik({
@@ -67,7 +73,7 @@ function IssueForm() {
   
         assignTo: Yup.array().max(1),
 
-        sprint: NewSprintIssue ? 
+        sprint: NewSprintIssue  ? 
         Yup.string().required('Required') : Yup.string()
     }),
 
@@ -181,6 +187,25 @@ function IssueForm() {
       </div> 
     }
     </li>
+    {
+      FixedSprint?.title?.length ? <>
+      <div className='color-[#00000010] mt-[2em] text-[0.925em]'> 
+      <label
+      className='block mb-[0.2em] text-[0.95em] text-[#505050]'
+      >
+      <div className='flex items-center'>
+        <p className='font-normal'>Sprint</p>
+      </div>
+      </label>
+      <div className='flex items-center bg-[#00000010] text-[#505050] 
+        p-[0.2em] w-fit hover:cursor-pointer rounded-md'>
+        <p>
+          {FixedSprint?.title}
+        </p>
+      </div>
+      </div>
+      </> : null
+    }
     {
       NewSprintIssue ? 
       
@@ -444,8 +469,8 @@ function IssueForm() {
     mr-[0.25em] ease-in-out duration-100'
     onClick={
       async () => {
-        const isSprintIssue = !isEmpty(SelectedSprint);
-        
+        const isSprintIssue = SelectedSprint?._id?.length ? true : false;
+        // console.log(isSprintIssue);
         const isAssigned = formik.values.assignTo.length 
         const Issue = {
           type: formik.values.IssueType,
@@ -470,11 +495,12 @@ function IssueForm() {
                                   data.Issues + '/add-issue', 
                                   Issue
                                   )
-          console.log(response)
+          // console.log(response)
           if (response.status === 200) {
-  
+            // console.log(response.data)
+            setIssues([...Issues, response?.data])
               if (isSprintIssue) {
-                setSprintIssues([...SprintIssues, Issue])
+                setSprintIssues([...SprintIssues, response?.data])
                 
               } 
               else setBacklog([...Backlog, Issue])
@@ -487,7 +513,7 @@ function IssueForm() {
   
           } catch (error) {
             if (error) {
-              console.log(error)
+              // console.log(error)
               setIssueStatus(error.response.status)
             }
           }

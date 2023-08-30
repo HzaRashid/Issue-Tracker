@@ -31,7 +31,7 @@ function AssignToProjForm() {
     const [InitTeam, setInitTeam] = useState([])
     useEffect(() => {
       // setProjTitle(SelectedProj?.title);
-      console.log(SelectedProj)
+      // console.log(SelectedProj)
       // const teamIds = SelectedProjModal?.assignedTo?.slice()
       const teamIds = Users?.filter(
         u => u.projects.includes(SelectedProj?._id)
@@ -202,9 +202,9 @@ function AssignToProjForm() {
                   onClick={() => {
                     var selUsers = [...SelectedGridUsers];
                     var index = selUsers.indexOf(user);
-                    console.log(index);
+                    // console.log(index);
                     selUsers.splice(index, 1);
-                    console.log(selUsers)
+                    // console.log(selUsers)
                     // setSelectedGridUsers(selUsers)
 
                     const visibleRows = gridPaginatedVisibleSortedGridRowIdsSelector(tableRef);
@@ -288,8 +288,6 @@ function AssignToProjForm() {
             className={`p-2  first:mt-0 bg-[#dbdbdb]
               text-[0.85em] font-normal text-[#505050]
               `}
-            
-            onClick={() => {}}
             >
               <div className='flex items-center space-x-2'> 
               <Avatar className=' antialiased'
@@ -306,7 +304,7 @@ function AssignToProjForm() {
                 {user.firstName?.concat(' ', user.lastName) }
               </p>
               <div className='w-[100%] flex justify-end text-[0.8em]'>
-                already included
+                Already included
               </div>
               </div>
               </div>
@@ -327,7 +325,7 @@ function AssignToProjForm() {
           `}
         
         onClick={() => {
-          console.log('clked')
+          // console.log('clked')
           
           const alreadyUser = SelectedGridUsers
                               ?.filter(
@@ -372,11 +370,7 @@ function AssignToProjForm() {
               visibleRows[idx],
               false
             );
-
-
-
             }
-            // console.log(ProjTeam)
 
         }
         }
@@ -457,9 +451,12 @@ function AssignToProjForm() {
         assignedTo: SelectedGridUsers?.map(u => u._id)
       }
       )
-      .then(res => console.log(res))
-      .catch(err => console.log(err)
-        
+      .then(res => {
+        // console.log(res)
+      })
+      .catch(err => {
+        // console.log(err)
+        }
       )
 
     }}

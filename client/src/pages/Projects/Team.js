@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { ProjContexts } from '../../contexts/ProjectContexts';
 import { SprintContexts } from '../../contexts/SprintContexts';
 import axios from 'axios';
+
 const data = require('../../pages/routes.json')
 function Team() {
     const { nav, ProjectNav } = useStateContext();
@@ -45,9 +46,11 @@ function Team() {
       )
   return (
     <>
+
     <PageMargin2>
     <List SelectedProj={SelectedProj} />
     </PageMargin2>
+
     </>
   )
 }

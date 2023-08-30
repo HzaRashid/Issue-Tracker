@@ -3,6 +3,7 @@
     background: #f0f0f0;
     /* width: 12rem; */
     position: fixed;
+    top: 0;
     height: 100vh;
     overflow-y: scroll;
     box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
@@ -35,7 +36,7 @@
 
 
 
-.search-bar {  
+.proj-nav-search-bar {  
     padding: 0.275em;
     margin-bottom: 0.5em;
     margin-left: 0.475em;
@@ -52,18 +53,18 @@
     font-weight: 300;
 }
 
-.search-bar:focus{
+.proj-nav-search-bar:focus{
     outline: none;
     background: #eaeaea; 
     box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
 }
 
-.search-bar:hover{
+.proj-nav-search-bar:hover{
     background: #e6e6e6; 
 }
 
 
-.search-bar::placeholder{
+.proj-nav-search-bar::placeholder{
     color: #505050; 
 }
 

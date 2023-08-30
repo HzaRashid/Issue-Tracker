@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   SortableContext,
   verticalListSortingStrategy,
@@ -8,7 +8,7 @@ import { SprintContexts } from '../../../contexts/SprintContexts';
 import { ProjContexts } from '../../../contexts/ProjectContexts';
 import GetSprintRow from './GetRow';
 import axios from 'axios';
-
+import { IssueContexts } from '../../../contexts/IssueContexts';
 
 const data = require('../../../pages/routes.json')
 
@@ -20,8 +20,45 @@ function SprintTable( props ) {
 
     const { 
       SelectedSprint,
-      setSprintIssues 
+      setSprintIssues,
     } = SprintContexts();
+    const { SearchSptIssues } = IssueContexts();
+    const [ SearchedIssues, setSearchedIssues ] = useState([])
+    useEffect(() => {
+      setSearchedIssues(
+        items.filter(
+          // eslint-disable-next-line
+          i => 
+          {
+
+  // [0]: ID
+  // [1]: TYPE
+  // [2]: SUMMARY
+  // [3]: ASSIGNED USER
+  // [4]: STAGE 
+  // [5]: ISSUE 
+  const assigneeName = i[3].firstName + ' ' + i[3].lastName
+
+              if (SearchSptIssues === '') return i
+    
+              else if (
+              // sprint type
+              i[1]?.toLowerCase()?.includes(SearchSptIssues?.toLowerCase()) ||
+              // sprint title/summary
+              i[2]?.toLowerCase()?.includes(SearchSptIssues?.toLowerCase()) ||
+              // assignee
+              (
+                i[3]?.firstName &&
+              assigneeName?.toLowerCase()?.includes(SearchSptIssues?.toLowerCase())
+              )
+
+              ) { return i }
+          }
+      )
+      )
+
+    }, [SearchSptIssues, items])
+    // console.log(SearchedIssues)
 
     const { SelectedProj } = ProjContexts();
 
@@ -54,7 +91,6 @@ function SprintTable( props ) {
     items={items}
     strategy={verticalListSortingStrategy}
      >
-
       <div 
       className={`
         w-[100%] lg:text-[1.2em] mt-2
@@ -64,9 +100,10 @@ function SprintTable( props ) {
         block h-auto max-h-[10em] overflow-auto font-medium`}
         ref={setNodeRef}
       >
-        {items.length ? 
+        {items.length && SearchedIssues?.length  ? 
         <> 
-        { items.map(
+        { SearchedIssues
+        .map(
           item => (
         <GetSprintRow key={item} id={item}/>
         ))}
