@@ -6,19 +6,41 @@ const User = require('../models/User')
 const { StageIssues } = require('./BoardIssues');
 const { default: mongoose } = require('mongoose');
 
-const sendIssueVersions = (req, res) => {
-    res.writeHead(
-        200, {
-        'Content-Type'  : 'text/event-stream',
-        'Cache-Control' : 'no-cache',
-        'Connection'    : 'keep-alive'
-    },
-    getIssueVersionsFeed( res ) 
-    )
+
+const sendIssueVersions = async (req, res) => {
+        res.writeHead(200, {
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive'
+        });
+
+        const id = req.params.id
+        const ObjectID = mongoose.Types.ObjectId;
+        if ( ObjectID.isValid(id) ) {
+            if ( ObjectID(id).toString() === id ) {
+                
+                writeData(res, id)
+                setInterval(() => {
+                    writeData(res, id)
+                }, 2000)
+            
+            
+            }
+        }
 }
     
-let getIssueVersionsFeed = async ( res ) => {
-    IssueVersion.find({}, 
+let writeData = async (res, id) => {
+    try { 
+        let docs = await IssueVersion.find({issueID: id})
+        res.write(`data: ${JSON.stringify(docs)}\n\n`)
+    } 
+    catch (err) {
+        console.log(err)
+    }
+}
+let getIssueVersionsFeed = async ( res, id ) => {
+    // console.log(req.body)
+    IssueVersion.find({issueID: id}, 
         (err, result) => {
             if (err) {
                 res.json(err)
@@ -26,17 +48,17 @@ let getIssueVersionsFeed = async ( res ) => {
             else {
                 res.write(
                     'data: ' + 
-                    JSON.stringify({ msg: result }) + 
+                    JSON.stringify(result) + 
                     '\n\n' 
                     ) 
             }
         })
-        setTimeout(() => getIssueVersionsFeed( res ), 2000)
+        setTimeout(() => getIssueVersionsFeed( res, id ), 2000)
     };
 
 
 const getIssueVersions = (req, res) => {
-    IssueVersion.find({}, 
+    IssueVersion.find({issueID: req.params.id}, 
         (err, result) => {
             if (err) {
                 res.json(err)

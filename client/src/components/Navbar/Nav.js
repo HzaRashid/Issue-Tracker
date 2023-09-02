@@ -71,7 +71,13 @@ function Nav() {
 
 
   
-  const isMobile = ScreenWidth < 768;
+  const [ isMobile, setIsMobile ] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(ScreenWidth < 768)
+        return () => {}
+    // eslint-disable-next-line
+  }, [ScreenWidth])
 
   const isProjPage = currLocation.pathname.includes('proj-nav=true')
 

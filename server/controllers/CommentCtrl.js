@@ -1,17 +1,55 @@
 const e = require('express');
 const Comment = require('../models/Comment');
+const mongoose = require('mongoose')
 
 
 const sendComments = (req, res) => {
+    
+
     res.writeHead(
         200, {
         'Content-Type'  : 'text/event-stream',
         'Cache-Control' : 'no-cache',
         'Connection'    : 'keep-alive'
-    },
-        getComments( res ) 
-    )
+    });
+
+    const id = req.params.id;
+    const ObjectID = mongoose.Types.ObjectId;
+    if ( ObjectID.isValid(id) ) {
+        if ( ObjectID(id).toString() === id ) {
+            
+            writeData(res, id)
+            setInterval(() => {
+                writeData(res, id)
+            }, 2000)
+        
+        
+        }
+    }
 }
+
+let writeData = async (res, id) => {
+    try {
+        let docs = await Comment.find( { issue: id } );
+        res.write(`data: ${JSON.stringify(docs)}\n\n`);
+    } 
+    catch (error) {
+       console.log(err) 
+    }
+}
+
+
+
+// const sendComments = (req, res) => {
+//     res.writeHead(
+//         200, {
+//         'Content-Type'  : 'text/event-stream',
+//         'Cache-Control' : 'no-cache',
+//         'Connection'    : 'keep-alive'
+//     },
+//         getComments( res ) 
+//     )
+// }
 
 let getComments = async ( res ) => {
     Comment.find({}, 

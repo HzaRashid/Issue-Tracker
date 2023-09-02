@@ -23,8 +23,8 @@ module.exports = router;
 
 
 router.get('/', getIssues);
-router.get('/versions/sse', sendIssueVersions)
-router.get('/versions', getIssueVersions)
+router.get('/versions/sse/:id', sendIssueVersions)
+router.get('/versions/:id', getIssueVersions)
 router.post('/add-issue', addIssue);
 
 router.put('/summary',      isAuthDemo, editIssueSummary);
@@ -37,5 +37,5 @@ router.put('/board-stage',  isAuthDemo, editIssueStage);
 
 
 router.put('/many-issues-stage', transferManyIssuesStage, deleteSprintStage);
-router.delete('/delete', deleteIssue);
+router.delete('/delete',    isAuthDemo, deleteIssue);
 router.put('/reorder', reOrderIssues);

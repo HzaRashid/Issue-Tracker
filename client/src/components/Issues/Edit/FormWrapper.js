@@ -379,7 +379,7 @@ const [ShowSprints, setShowSprints] = useState(false);
       </div>
   <div> 
 
-  <CustomTooltip title='Delete Issue' placement='top'> 
+  {/* <CustomTooltip title='Delete Issue' placement='top'> 
   <button className='absolute right-4 drop-shadow-sm top-[1.26em]'
   onClick={() => {
     setOpenDelModal(!OpenDelModal);
@@ -388,10 +388,9 @@ const [ShowSprints, setShowSprints] = useState(false);
   > 
 
   <AiFillDelete color='#803A3A' className='text-[1.1em] ml-[0.25em]'/>
-  {/* <p className='text-[0.6em] hover:cursor-default'>Delete</p> */}
 
   </button>
-  </CustomTooltip>
+  </CustomTooltip> */}
 
     {/* {
     OpenDelModal ? <>

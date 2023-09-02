@@ -1,6 +1,17 @@
 import React from 'react'
+import { IssueContexts } from '../../../contexts/IssueContexts';
+import axios from 'axios';
+const data = require('../../../pages/routes.json')
+function Delete({
+    age, 
+    setPage, 
+    setOpenDelModal, 
+    prevPage,
+    // setEditIssueModal,
+    }) {
 
-function Delete( {Page, setPage, setOpenDelModal, prevPage} ) {
+    const { Issues, setIssues, SelectedIssue, setEditIssueModal} = IssueContexts();
+ 
   return (
     <> 
 
@@ -18,6 +29,25 @@ function Delete( {Page, setPage, setOpenDelModal, prevPage} ) {
         </button>
         <button
         className='p-1 hover:bg-[#00000010] rounded'
+        onClick={() => {
+            axios.delete(data.Issues + '/delete', {
+                _id: SelectedIssue._id
+            })
+            .then(
+                res => {
+                    if (res.status === 200) {
+                        var issues = Issues.slice()
+                        issues = issues.filter(i => i._id !== SelectedIssue._id)
+                        setIssues(issues)
+            }})
+            .catch(err => console.log(err))
+
+            setTimeout(() => {
+                setEditIssueModal(false)
+            }, 700);
+
+        }}
+
         >
             Confirm
         </button>

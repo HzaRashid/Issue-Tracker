@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { IssueContexts } from '../../../contexts/IssueContexts'
+import React, { useEffect, useRef, useState } from 'react'
+import { IssueContexts } from '../../../contexts/IssueContexts';
 import { TeamContexts } from '../../../contexts/TeamContexts';
 import Avatar from '@mui/material/Avatar';
 import stringAvatar from '../../utils/UserAvatar/StringAvatar';
@@ -7,44 +7,40 @@ import { AuthContexts } from '../../../App/Auth';
 import { formatDistance } from 'date-fns';
 import { BsDot, BsArrowRightShort } from 'react-icons/bs';
 import { SprintContexts } from '../../../contexts/SprintContexts';
-import axios from 'axios';
 const data = require('../../../pages/routes.json')
 
 
-function History() {
-  const { SelectedIssue, Issues } = IssueContexts();
+function History( { IssueVersions, setIssueVersions } ) {
+  // ====> use "IV" to abbreviate "IssueVersions" <=====
+  const { SelectedIssue } = IssueContexts();
   const { Sprints } = SprintContexts();
   const { Users } = TeamContexts();
   const userList = Users.slice();
-  const [ IssueVersions, setIssueVersions ] = useState([]);
-  const { user } = AuthContexts();
-  const loggedInUser = Users.filter(u => u?._id === user?.user)[0];
-  const [ isListen, setIsListen ] = useState(false)
+  const IVSourceRef = useRef(null);
 
-  useEffect(() => {
-    if (isListen && IssueVersions.length === 0) {
-      axios.get(data.IssueVersions)
-      .then(res => {
-        if (res.status === 200) setIssueVersions(res.data)
-      })
-    .catch(err => {
-      console.log(err)
-    })
-    // console.log('hehrhrhr')
+  const setIVs = (e) => {
+    const parsedIVs = JSON.parse( e.data )
+    setIssueVersions([...parsedIVs, {
+      ...SelectedIssue,
+      dateOfUpdate: new Date(-8640000000000000),
+      issueID: SelectedIssue?._id,
+      wasModified: true
+    }]);
   }
-
-  }, [IssueVersions, isListen])
-
   useEffect(() => {
-    if (!isListen){
-      const events = new EventSource(data.IssueVersionsSSE);
-      events.onmessage = ( e ) => {
-          const parsedComments = JSON.parse( e.data )?.msg
-          setIssueVersions(parsedComments);
-        }
-        setIsListen(true);
-      }  // eslint-disable-next-line
-  }, [isListen, IssueVersions, Issues])
+    if (!SelectedIssue?._id) return;
+    IVSourceRef.current = new EventSource(
+      data.IssueVersionsSSE + `/${SelectedIssue?._id}`)
+      IVSourceRef.current.onmessage = ( e ) => setIVs(e)
+
+      IVSourceRef.current.onerror = () => {
+        IVSourceRef.current.close();
+      }
+      return () => {
+        IVSourceRef.current.close();
+      };
+  }, [SelectedIssue?._id])
+
 
   const [ SelectedIssuer, setSelectedIssuer ] = useState({});
 
@@ -52,10 +48,8 @@ function History() {
     const checkIssuer = Users?.filter( u => u._id === SelectedIssue?.createdBy )
     if (checkIssuer.length) setSelectedIssuer(checkIssuer[0])
   }, [Users, SelectedIssue])
-  // console.log(SelectedIssue)
-  // console.log(SelectedIssuer)
-  // console.log(IssueVersions)
-  if (!SelectedIssue) return
+
+
   return (
     <div
     className='flex items-center justify-center mt-3 ' 
@@ -63,16 +57,17 @@ function History() {
     <ul className='h-auto max-h-[8em] overflow-scroll'> 
       {
         IssueVersions
-        .filter(
-          iv => iv?.issueID === SelectedIssue?._id
-                   && iv.wasModified === true
+        ?.filter(
+          iv => (iv?.issueID === SelectedIssue?._id
+                    && iv?.wasModified === true)
         )
-        .sort(
+        ?.sort(
           (a,b) => (new Date(b?.dateOfUpdate) - new Date(a?.dateOfUpdate))
           )
-        .map(
-          v => 
-          <li key={v?._id}
+        ?.map(
+          (v, key) => {
+            if (v._id !== SelectedIssue?._id) return (
+          <li key={key}
           className='text-[0.7em] flex 
           items-center justify-start space-x-3
           mt-5 first:mt-0 text-[#303030] '
@@ -105,11 +100,41 @@ function History() {
 
             </div>
 
-          </li>
-          )
-        
-      }
-      <li
+          </li>)
+
+          else {
+            return (
+            <li
+            key={key}
+          className='text-[0.7em] flex 
+          items-center justify-start space-x-3
+          mt-5 first:mt-0 text-[#303030] '
+      >
+      <Avatar 
+      {...stringAvatar(
+        SelectedIssuer?.firstName + ' ' + SelectedIssuer?.lastName,
+        24, 
+        24, 
+        '0.75em'
+        )
+      }  
+      />
+      <div>
+        <div className='flex items-center justify-center '>
+          <div>
+          {v?._id && RenderCreated(v, Users) }
+          </div>
+        </div>
+        <div className='text-[#0000007e] whitespace-pre'>
+          {v?._id &&  DateToString2(v) }
+          </div>
+      </div>
+      </li> 
+          )}
+
+          }
+          )}
+      {/* <li
       className='text-[0.7em] flex 
           items-center justify-start space-x-3
           mt-5 first:mt-0 text-[#303030] '
@@ -128,14 +153,13 @@ function History() {
           <div>
           {SelectedIssue?._id && RenderCreated(SelectedIssue, Users) }
           </div>
-          {/* <BsDot color='#0000007e'/> */}
         </div>
         <div className='text-[#0000007e] whitespace-pre'>
           {SelectedIssue?._id &&  DateToString2(SelectedIssue) }
           </div>
       </div>
+      </li>  */}
 
-      </li>
       </ul>
     </div>
   )
@@ -267,11 +291,11 @@ function getUserName(userID, Users) {
 // returns both the old and the new values 
 // of the modified field as an object
 function getModFields (issueVersion, Sprints, Users) {
-  const field = issueVersion.modifiedField;
+  const field = issueVersion?.modifiedField;
   const iv = issueVersion;
   // console.log(field)
   // if (field === 'assignedTo') return getUserName(iv.newAssignee, Users)
-  switch ( field.toLowerCase() ) {
+  switch ( field?.toLowerCase() ) {
 
     case 'type':
       return ({

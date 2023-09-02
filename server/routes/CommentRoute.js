@@ -10,5 +10,5 @@ const {
 module.exports = router;
 
 
-router.get('/fetch', sendComments);
+router.get('/SSE/:id', sendComments);
 router.post('/', writeComment);

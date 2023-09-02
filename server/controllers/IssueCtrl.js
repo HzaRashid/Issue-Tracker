@@ -546,17 +546,18 @@ const moveIssueToBacklog = async (req, res) => {
 
 const deleteIssue = (req, res) => {
     const issueFields = req.body;
-    Issue.findByIdAndDelete(
-        issueFields._id,
-        (err, doc) => {
-            if (err) {
-                console.log(err);
-                res.status(500).send(err);
-            }
-            res.status(200).send(doc);
-        }
-        )
-    };
+    console.log(issueFields)
+    // Issue.findByIdAndDelete(
+    //     issueFields._id,
+    //     (err, doc) => {
+    //         if (err) {
+    //             console.log(err);
+    //             res.status(500).send(err);
+    //         }
+    //         res.status(200).send(doc);
+    //     }
+    //     )
+};
 
 
 

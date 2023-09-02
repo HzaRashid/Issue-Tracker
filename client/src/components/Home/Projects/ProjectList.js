@@ -30,7 +30,7 @@ function ProjectList( { search, Projects, isMobile } ) {
         width: !!isMobile ? '50vw' : '18.9em',
       }}
     >
-        <ul className=' max-h-[8em] overflow-auto delay-200'>
+        <ul className=' max-h-[7.4em] overflow-auto delay-200'>
         {
             SearchResults?.map((p, key) =>
                 <li key={key}

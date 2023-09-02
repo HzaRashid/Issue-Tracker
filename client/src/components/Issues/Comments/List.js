@@ -1,16 +1,39 @@
-import React, {  } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { TeamContexts } from '../../../contexts/TeamContexts'
 import { formatDistance } from 'date-fns'
 import Avatar from '@mui/material/Avatar';
 import { AuthContexts } from '../../../App/Auth';
+import { IssueContexts } from '../../../contexts/IssueContexts';
+import stringAvatar from '../../utils/UserAvatar/StringAvatar';
+const data = require('../../../pages/routes.json');
+
 
 function List( props ) {
-    const { Comments, SelectedIssue } = props
+    const { Comments, setComments } = props;
+    const { SelectedIssue } = IssueContexts();
     const { Users } = TeamContexts();
     const { user } = AuthContexts();
     const loggedInUser = Users.filter(u => u?._id === user?.user)[0]
     const youString = '(You)'
-    // console.log(Users)
+    const CommentRef = useRef(null);
+
+    const setCmnts = e => {
+      const parsedComments = JSON.parse( e.data )
+      console.log(parsedComments)
+      setComments(parsedComments)
+    }
+
+    useEffect(() => {
+      if (!SelectedIssue?._id) return;
+      CommentRef.current = new EventSource(data.CommentSSE + `/${SelectedIssue?._id}`)
+      CommentRef.current.onmessage = e => setCmnts(e)
+      CommentRef.current.onerror = () => {
+        CommentRef.current.close()
+      }
+      return () => { CommentRef.current.close() }
+
+    }, [SelectedIssue?._id])
+
   return (
     <> 
     <div 
@@ -96,39 +119,4 @@ function List( props ) {
   )
 }
 
-
-function stringToColor(string) {
-  let hash = 0;
-  let i;
-
-  /* eslint-disable no-bitwise */
-  for (i = 0; i < string.length; i += 1) {
-    hash = string.charCodeAt(i) + ((hash << 4) - hash);
-  }
-
-  let color = '#';
-
-  for (i = 0; i < 3; i += 1) {
-    const value = (hash >> (i * 12)) & 0xff;
-    color += `00${value.toString(10)}`.slice(-2);
-  }
-  /* eslint-enable no-bitwise */
-
-  return color;
-}
-
-function stringAvatar(name) {
-  return {
-    sx: {
-      bgcolor: stringToColor(name),
-      fontSize:'0.4em', 
-      color: '#f0f0f0',
-      width:20, 
-      height:20,
-      
-
-    },
-    children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
-  };
-}
 export default List

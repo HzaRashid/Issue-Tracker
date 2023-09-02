@@ -23,8 +23,8 @@ import UserInfo from '../components/TopBar/UserInfo';
 import { useStateContext } from '../contexts/ContextProvider';
 import axios from 'axios';
 const data = require('../pages/routes.json')
-axios.defaults.withCredentials = true
-
+// axios.defaults.withCredentials = true
+// window.axios.defaults.withCredentials = true
 function AppRouter() {
   const { user, setUser, TBDAuthUser } = AuthContexts();
   useEffect(
@@ -74,9 +74,8 @@ function AppRouter() {
 const PrivateRoute = ( { component } ) => {
   const location = useLocation();
   const { user } = AuthContexts();
-  const { ScreenWidth } = useStateContext();
-
-
+  const { ScreenWidth, setScreenWidth} = useStateContext();
+  // useEffect(() => setScreenWidth(window.innerWidth), [window.innerWidth])
 
   if (user?.authenticated === null) return;
 
@@ -87,7 +86,6 @@ const PrivateRoute = ( { component } ) => {
   }
   return (
     <>
-
     { ScreenWidth > 880 ? <UserInfo/> : null }
 
     <Nav/>

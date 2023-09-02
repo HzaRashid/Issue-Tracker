@@ -10,23 +10,30 @@ import { AiFillCheckSquare, AiFillTool } from 'react-icons/ai';
 import { MdError } from 'react-icons/md';
 import stringAvatar from '../../utils/UserAvatar/StringAvatar';
 import { ProjContexts } from '../../../contexts/ProjectContexts';
+import { DatagridStyle } from './DatagridStyle';
+import { theme } from './theme';
+import CustomToolbar from './CustomToolbar';
 const data = require('../../../pages/routes.json')
 
 function List(  ) {
-    const {  Issues, setIssues, setSelectedIssue, setEditIssueModal, setIssueVersions } = IssueContexts();
+    const {  
+      Issues, setIssues, setSelectedIssue, 
+      setEditIssueModal, IssueVersions, setIssueVersions } = IssueContexts();
     const { Users } = TeamContexts();
     const { Projects, 
       // setProjects 
     } = ProjContexts();
 
-    useEffect(() => {
-      axios.get(
-        data.IssueVersions
-      )
-      .then(res => setIssueVersions(res.data))
-      .catch(err => console.log(err))
-      // eslint-disable-next-line
-      }, [])
+    // useEffect(() => {
+    //   if (!IssueVersions.length) {
+    //     axios.get(
+    //       data.IssueVersions
+    //     )
+    //     .then(res => setIssueVersions(res.data))
+    //     .catch(err => console.log(err))}
+
+    //   // eslint-disable-next-line
+    //   }, [])
       // useEffect(() => {
       //   axios.get(
       //     data.Projects
@@ -37,35 +44,43 @@ function List(  ) {
       //   }, [])
     // console.log(Projects)
 
-    const [ HomeIssues, setHomeIssues ] = useState([]);
-    // cons
+    // const [ HomeIssues, setHomeIssues ] = useState([]);
+    const [LastIdx, setLastIdx] = useState([])
     useEffect(() => {
             axios.get(
                 data.Issues
             )
-            .then(res => { setIssues(res.data); setHomeIssues(res.data) })
+            .then(res => { 
+              // if (res.status === 200) {
+              setIssues(res.data); 
+              setLastIdx(res.data?.length - 1)
+              // setHomeIssues(res.data) 
+              // } 
+            })
             .catch(err => console.log(err))
     // eslint-disable-next-line
     }, []);
- 
+
+    const [loaded, setLoaded] = useState(false);
     // allow user to search issues by assignee
     const rows = useMemo(() => {
-     
-    return HomeIssues?.map(
-      ( i, key ) => {
-        i.id = key;
-        const user = Users?.filter( u => u._id === i?.assignedTo )
-        if ( user?.length ) {
-          i.assigneeName = user[0]?.firstName + ' ' + user[0]?.lastName;
-        } 
-        else i.assigneeName = 'Unassigned'
-      const projID = i.project 
-      i.projectName = Projects.filter(p => p._id === projID)[0]?.title
-      return i
-    }
-    )}, [HomeIssues, Users, Projects])
-
+      return Issues?.map(
+        ( i, key ) => {
+          i.id = key;
+          const user = Users?.filter( u => u._id === i?.assignedTo )
+          if ( user?.length ) {
+            i.assigneeName = user[0]?.firstName + ' ' + user[0]?.lastName;
+          } 
+          else i.assigneeName = 'Unassigned'
+        const projID = i.project 
+        i.projectName = Projects.filter(p => p._id === projID)[0]?.title
+        if (key === LastIdx) setLoaded(true)
+        return i
+      })  
     
+  }, [Issues, Users])
+
+  // console.log(rows)
     const columns = [ 
         {
         headerName:'Edit',
@@ -88,9 +103,6 @@ function List(  ) {
           />,
         ],
       }, 
-
-
-
 
         {
             field: 'type', 
@@ -216,10 +228,12 @@ function List(  ) {
 
       ]
 
-  // if (!rows) return
+  const Theme = createTheme(theme);
+  const [pageSize, setPageSize] = useState(5);
+  if (!rows) return
   return (
     <>
-    <ThemeProvider theme={theme}
+    <ThemeProvider theme={Theme}
     >
 
     <div 
@@ -229,7 +243,10 @@ function List(  ) {
         width: '100%', 
         top: '3rem',
         flexGrow: 0.5 ,
-        text: 'bold',  
+        text: 'bold', 
+        visibility: loaded ? 'visible' : 'hidden',
+        opacity:    loaded ? '1'       : '0',
+        transition: 'all 0.14s ease-in-out'
         }}
     >
 
@@ -244,56 +261,22 @@ function List(  ) {
       },
     }}
 
-    hideFooterPagination
+    // hideFooterPagination
     disableDensitySelector
     disableSelectionOnClick
 
-    getRowId={(row) => row?._id}
-    sx={{ 
-        overflow:'scroll',
-        borderBottom: 'none',
-        zIndex:'0',
-    mx: 4, 
-    bgcolor: 'transparent', 
-    '& .MuiDataGrid-cell:hover': {
-    color: '#588B63',
-    },
-    '& .MuiDataGrid-cell:focus': {
-      color: '#588B63',
-      outline: 'none',
-      },
-
-    '& .MuiDataGrid-columnHeaderTitle': {
-      color: '#909090',
-      fontWeight: 'light'
-    },
-    '& .MuiDataGrid-columnSeparator': {
-        visibility: 'hidden'
-    },
-    '& .MuiDataGrid-cell': {
-        overflow: 'scroll',
-        border: 'none',
-        outline: 'none',
-        fontWeight: '400'
-    },
-    
-    '& .MuiMenuItem-root': {
-        backgroundColor: '#505050'
-    },
-    '& .MuiFormControl-root': {
-        fontSize: '1.5em'
-    },
-    '& .css-o8va6p-MuiFormControl-root-MuiTextField-root-MuiDataGrid-toolbarQuickFilter .MuiSvgIcon-root': {
-        color: '#808080'
-    },
-
-    '& .MuiDataGrid-footerContainer': {
-      color: 'transparent',
-      background: 'transparent',
-      border: 'none'
+    pageSize={pageSize}
+    onPageSizeChange={
+    (newPageSize) => setPageSize(newPageSize)
     }
-
+    pagination
+    pageSizeOptions={[5, 10, 15]}
+    initialState={{
+      
+      pagination: { paginationModel: { pageSize } },
     }}
+    // getRowId={(row) => row?._id}
+    sx={DatagridStyle}
     GridLines="None"
 
     />
@@ -303,80 +286,6 @@ function List(  ) {
     </ThemeProvider>
     </>
   )
-
-
 }
-
-
-function CustomToolbar( props ) {
-    // console.log(props)
-    const issueCount = props?.issues?.length
-    // console.log(props.issueData)
-    return (
-    <div className='flex items-center font-lato'> 
-      <GridToolbarContainer sx={{m: 1.25}}>
-
-        <div className='flex items-center'> 
-        <div className='font-bold text-[2em]'>
-            Issues
-            <div className='text-[0.5em]'>
-                {issueCount + ' total'}
-            </div>
-        </div>
-        <GridToolbarQuickFilter 
-                sx={{
-                    marginLeft: 4, 
-                    marginTop: -2, 
-                    textTransform:'none',
-                    color: '#7895B3',
-
-                }}
-        />
-
-
-        </div>
-
-
-      </GridToolbarContainer>
-      </div>
-    );
-  };
-
-  const theme = createTheme({
-    typography: {
-     "fontFamily": `"Lato", sans-serif`,
-     "fontSize": 14.5,
-     "fontWeightLight": 400,
-     "fontWeightRegular": 300,
-     "fontWeightMedium": 400
-    },
-    palette: {
-      primary: {
-        main: '#7895B3',
-          },
-        role: {
-          main: '#00000020',
-          contrastText: '#000000',
-        },
-        projects: {
-            main: '#00000020',
-            contrastText: '#000000',
-          },
-      },
-  
-    components: {
-      MuiDataGrid: {
-          styleOverrides: {
-              root: {
-                  border: 'none'
-              }
-          }
-      }
-  }
-  
-  });
-  
-  
-
 
 export default List

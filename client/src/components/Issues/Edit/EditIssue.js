@@ -5,59 +5,65 @@ import FormWrapper from './FormWrapper'
 import History from '../History/History';
 import CommentsComp from '../Comments/Comments';
 import Delete from '../Delete/Delete';
+import axios from 'axios';
 const data = require('../../../pages/routes.json')
 function EditIssue() {
-    const { 
-      EditIssueModal, 
-      Comments, 
-      setComments,
-      SelectedIssue } 
-      = IssueContexts();
+    const { EditIssueModal, SelectedIssue } = IssueContexts();
       
     const [Page, setPage] = useState(0);
     const [prevPage, setPrevPage] = useState(0);
-    const [ isListen, setIsListen ] = useState(false);
-    useEffect(() => {
-      if (!isListen){
-        const events = new EventSource(data.Comments);
-        events.onmessage = ( e ) => {
-            const parsedComments = JSON.parse( e.data )?.msg
-            setComments(parsedComments);
-          }
-          setIsListen(true);
-        }  // eslint-disable-next-line
-    }, [isListen, Comments])
-    const [ OpenDelModal, setOpenDelModal] = useState(false)
+    const [ IssueVersions, setIssueVersions ] = useState([]);
+    const [ Comments, setComments ] = useState([]);
+    const [ OpenDelModal, setOpenDelModal] = useState(false);
 
-
-  return (
-    <CustomModal open={EditIssueModal}>
-        <FormWrapper PrevPage={prevPage} Page={Page} setPage={setPage} setPrevPage={setPrevPage} OpenDelModal={OpenDelModal} setOpenDelModal={setOpenDelModal}>
-          {/* <History/> */}
-          {/* {Page === 0 && ? <History/> : <CommentsComp SelectedIssue={SelectedIssue}/>} */}
-          {GetPage(
-            Page, 
-            setPage,
-            SelectedIssue,
-            OpenDelModal, 
-            setOpenDelModal, 
-            prevPage)
-            }
-        </FormWrapper>
-    </CustomModal>
-  )
-}
-
-function GetPage(
-  Page, 
-  setPage,
-  SelectedIssue,
-  OpenDelModal, 
-  setOpenDelModal, 
-  prevPage) {
-  if (Page === 0) return  <History/>
-  if (Page === 1) return  <CommentsComp SelectedIssue={SelectedIssue}/>
-  if (Page === 3) return  <Delete Page={Page} setPage={setPage} setOpenDelModal={setOpenDelModal} prevPage={prevPage}/>
-}
+    return (
+      <CustomModal open={EditIssueModal}>
+      <FormWrapper
+        PrevPage={prevPage} 
+        Page={Page} 
+        setPage={setPage} 
+        setPrevPage={setPrevPage} 
+        OpenDelModal={OpenDelModal} 
+        setOpenDelModal={setOpenDelModal}
+        >
+        {
+        GetPage(
+          Page,
+          setPage,
+          prevPage,
+          SelectedIssue,
+          setOpenDelModal, 
+          IssueVersions, 
+          setIssueVersions,
+          Comments, 
+          setComments,
+          )
+        }
+      </FormWrapper>
+      </CustomModal>
+    )
+  }
+  
+  function GetPage(
+    Page,
+    setPage,
+    prevPage,
+    SelectedIssue,
+    setOpenDelModal, 
+    IssueVersions, 
+    setIssueVersions,
+    Comments, 
+    setComments
+    
+    ) {
+    if (Page === 0) return  <History IssueVersions={IssueVersions} setIssueVersions={setIssueVersions}/>
+    if (Page === 1) return  <CommentsComp Comments={Comments} setComments={setComments}/>
+    if (Page === 3) return  <Delete 
+                            setPage={setPage} 
+                            setOpenDelModal={setOpenDelModal} 
+                            prevPage={prevPage}
+                            SelectedIssue={SelectedIssue}
+                            />
+  }
 
 export default EditIssue
