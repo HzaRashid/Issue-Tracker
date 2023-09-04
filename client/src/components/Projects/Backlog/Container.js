@@ -8,9 +8,7 @@ import { AiOutlinePlus } from 'react-icons/ai'
 // import Empty from './Empty';
 import { useStateContext } from '../../../contexts/ContextProvider';
 import { TeamContexts } from '../../../contexts/TeamContexts';
-// import GetTable from './GetTable';
-// import styled from '@emotion/styled';
-const data = require('../../../pages/routes.json')
+
 
 
 
@@ -26,12 +24,15 @@ function BacklogContainer( props ) {
       Backlog, setBacklog,
       SelectedProj 
     } = ProjContexts();
-    const { setSelectedSprint, SprintIssues } = SprintContexts();
+    const { setSelectedSprint, 
+      // SprintIssues 
+    } = SprintContexts();
     const { Users } = TeamContexts();
     
     useEffect( 
         () => {
-        axios.get(data.Issues)
+        if (!Backlog.length || Backlog[0]?.project !== SelectedProj?._id){
+        axios.get(process.env.REACT_APP_API_Issues, { withCredentials: true })
       .then( 
         response => {
           if (!Array.isArray(response.data)) {
@@ -40,14 +41,17 @@ function BacklogContainer( props ) {
           }
           setBacklog(
             response.data
-              .filter(
+              ?.filter(
                 issue => (
                   issue.project === SelectedProj._id && 
                   issue.stage.toLowerCase() === 'backlog'
                 ))
             )
           } // eslint-disable-next-line
-        )}, [SelectedProj, SprintIssues, Users])
+        )}
+      }, [SelectedProj, 
+          // SprintIssues, 
+          Users])
         // console.log(Backlog)
 
     const [loaded, setLoaded] = useState(false);

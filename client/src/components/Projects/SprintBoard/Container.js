@@ -15,7 +15,7 @@ import { SprintContexts } from '../../../contexts/SprintContexts'
 import Stage from './Stage'
 import axios from 'axios';
 import StageIssue from './StageIssue';
-import data from '../../../pages/routes.json';
+
 
 
 function Container( { items, setItems } ) {
@@ -26,7 +26,8 @@ function Container( { items, setItems } ) {
     () => {
       console.log(SelectedSprint)
         axios.get(
-          data.Sprints
+          process.env.REACT_APP_API_Sprints,
+          { withCredentials: true }
         )
         .then(
           res => setSprints(res.data)
@@ -180,14 +181,15 @@ function Container( { items, setItems } ) {
 console.log(SelectedSprint)
 
       axios.put(
-        data.Issues + '/stage',
+        process.env.REACT_APP_API_Issues + '/stage',
         {
           issueID: active.id._id,
           stage: overContainer,
           sprintID: SelectedSprint._id,
           modifiedBy: user?.user,
           
-        }
+        },
+        { withCredentials: true }
       )
       .then(res => console.log(res))
       .catch(err => console.log(err))

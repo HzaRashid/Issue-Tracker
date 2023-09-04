@@ -3,30 +3,19 @@ import { AiFillProject, AiOutlineUnorderedList } from 'react-icons/ai'
 import { CustomTooltip } from '../../CustomTooltip'
 import { Switch } from '@headlessui/react'
 import SwapProjNavVertical from './SwapProjNavVertical'
-import { ProjContexts } from '../../../contexts/ProjectContexts'
 import { useStateContext } from '../../../contexts/ContextProvider'
 
 function SwapProjNav( props ) {
-  const [enabled, setEnabled] = useState(false)
   const { SwapProjNav, setSwapProjNav } = useStateContext();
   const { ProjectNav } = props
   return (
     <>
-    {/* <div className='mt-auto'>  */}
-    {/* <div className='flex justify-center items-center'>  */}
-    {/* <div className='flex justify-center items-center'>  */}
+
 
     <li className='mt-auto ml-[2.5em] '
-    // style={{
-    //   visibility: SwapProjNav ? 'visible' : 'hidden',
-    //   opacity: SwapProjNav ? '1' : '0',
-    //   transition: SwapProjNav ? '0.1s' : '0.1s'
-    // }}
     >
     <div className='flex justify-center items-center'> 
       <Switch
-      // checked={enabled}
-      // onChange={setEnabled}
       className={` bg-gray-200 relative inline-flex h-10 w-28 items-center rounded-md `}
 
     >
@@ -67,13 +56,11 @@ function SwapProjNav( props ) {
       </span>
       </CustomTooltip>
 
-
     </div>
     </div>
     </Switch>
     </div> 
   </li>
-  {/* </div> */}
   <li className=''
   style={{
     visibility: ProjectNav ? 'hidden' : 'visible',
@@ -84,9 +71,6 @@ function SwapProjNav( props ) {
     {SwapProjNav && <SwapProjNavVertical enabled={SwapProjNav} setEnabled={setSwapProjNav} />}
     
   </li>
-  {/* </div> */}
-
-  {/* </div> */}
     </>
   )
 }

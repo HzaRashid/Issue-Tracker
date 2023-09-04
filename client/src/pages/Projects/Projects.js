@@ -3,16 +3,10 @@ import AddProjModal from '../../components/Projects/AddProjModal';
 import { useStateContext } from '../../contexts/ContextProvider';
 import { ProjContexts } from '../../contexts/ProjectContexts';
 import { useLocation } from 'react-router-dom';
-// eslint-disable-next-line
-import ProjectNavbar from '../../components/Projects/ProjectNavbar/ProjectNavbar';
-// eslint-disable-next-line
-
 
 
 function Projects() {
   const { nav, ProjectNav} = useStateContext();
-  // eslint-disable-next-line
-  const { SelectedProj, setSelectedProj } = ProjContexts();
   const currLoc = useLocation();
 
   return (

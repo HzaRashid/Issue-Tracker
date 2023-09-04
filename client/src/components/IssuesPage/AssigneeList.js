@@ -11,29 +11,39 @@ import { MdError } from 'react-icons/md';
 import stringAvatar from '../utils/UserAvatar/StringAvatar'; 
 import { ProjContexts } from '../../contexts/ProjectContexts';
 import { AuthContexts } from '../../App/Auth';
-const data = require('../../pages/routes.json')
-
-
+import { DatagridStyle } from '../Home/Issues/DatagridStyle';
+import CustomToolbar from '../Home/Issues/CustomToolbar';
+import { theme } from '../Home/Issues/theme';
 
 function AssigneeList() {
-    const { setSelectedIssue, setEditIssueModal } = IssueContexts();
+    const { 
+      setSelectedIssue, setEditIssueModal,
+      Issues,
+      AsgndIssues, setAsgndIssues,
+      // PstdIssues, setPstdIssues
+      } = IssueContexts();
     const { Users } = TeamContexts();
     const { Projects } = ProjContexts();
     const { user } = AuthContexts();
-    const [ Issues, setIssues ] = useState([])
 
     useEffect(() => {
+      const getMyIsssues = () => {
+        if (!AsgndIssues?.length) {
+          if (!Issues?.length) {
             axios.get(
-                data.Issues
-            )
+              process.env.REACT_APP_API_Issues,
+              { withCredentials: true })
             .then(res => { 
-              setIssues(
+              setAsgndIssues(
                 res.data.filter(
                   i => { return i?.assignedTo === user.user}
-                )
-                ) 
-            })
-            .catch(err => console.log(err))
+                ))}).catch(err => console.log(err))
+            } else { 
+            setAsgndIssues(Issues?.filter(
+              i => { return i?.assignedTo === user.user}
+              ))}
+        }}
+        getMyIsssues()
     // eslint-disable-next-line
     }, []);
 
@@ -147,48 +157,21 @@ function AssigneeList() {
             return (
               <>
               <div className='p-1 rounded-md bg-[#dddce8] text-[#454754]'>
-                {Projects.filter(p => p._id === params.value)[0]?.title}
+                {Projects?.filter(p => p._id === params.value)[0]?.title}
               </div>
               </>
             )
           }
-      },
-
-        { 
-            field: 'assignedTo', 
-            headerName: 'Assignee', 
-            flex: 0.5,
-            renderCell: (params) => {
-                const user = getAssignee(params.value)
-                const name = user?.firstName + ' ' + user?.lastName
-                return (
-                    <div className='flex items-center'>
-                    <Avatar 
-                  className=' antialiased mr-3'
-                  {...stringAvatar(name, 22, 22, '0.75em')} 
-                  
-                  />
-                        {name}
-                    </div>
-                )
-            }
-        },
+      }
 
       ]
 
 
-  function getAssignee (assigneeID) {
-    const user = Users.filter(u => {
-      return u._id === assigneeID
-    })[0];
-    return user
-  }
-
   const [pageSize, setPageSize] = useState(10);
-
+  const getTheme = createTheme(theme)
   return (
     <>
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={getTheme}>
     <div 
     className='relative font-bold' 
     style={{
@@ -201,14 +184,17 @@ function AssigneeList() {
         }}
     >
     <DataGrid
-    rows={Issues}
+    rows={AsgndIssues}
     columns={columns}
-    components={{Toolbar: CustomToolbar}}
-    componentsProps={{ toolbar: { issues: Issues } }}
+    slots={{ toolbar: CustomToolbar }}
+    slotProps={{
+      toolbar: {
+        issues: AsgndIssues,
+        title: 'Assigned to me',
+        titleClass: 'font-bold text-[1.75em]'
+      },
+    }}
     pageSize={pageSize}
-    // onPageSizeChange={
-    // (newPageSize) => setPageSize(newPageSize)
-    // }
 
     hideFooterPagination
     disableDensitySelector
@@ -216,49 +202,7 @@ function AssigneeList() {
 
     getRowId={(row) => row._id}
 
-    sx={{ 
-        overflow:'scroll',
-        borderBottom: 'none',
-        zIndex:'0',
-    mx: 4, 
-    bgcolor: 'transparent', 
-    '& .MuiDataGrid-cell:hover': {
-    color: '#588B63',
-    },
-    '& .MuiDataGrid-cell:focus': {
-      color: '#588B63',
-      outline: 'none',
-      },
-    '& .MuiDataGrid-columnHeaderTitle': {
-      color: '#909090',
-      fontWeight: 'light'
-    },
-    '& .MuiDataGrid-columnSeparator': {
-        visibility: 'hidden'
-    },
-    '& .MuiDataGrid-cell': {
-        overflow: 'scroll',
-        border: 'none',
-        outline: 'none',
-        fontWeight: '400'
-    },
-    
-    '& .MuiMenuItem-root': {
-        backgroundColor: '#505050'
-    },
-    '& .MuiFormControl-root': {
-        fontSize: '1.5em'
-    },
-    '& .css-o8va6p-MuiFormControl-root-MuiTextField-root-MuiDataGrid-toolbarQuickFilter .MuiSvgIcon-root': {
-        color: '#808080'
-    },
-
-    '& .MuiDataGrid-footerContainer': {
-      color: 'transparent',
-      background: 'transparent',
-      border: 'none'
-    }
-    }}
+    sx={DatagridStyle}
     GridLines="None"
     />
     </div>
@@ -268,72 +212,4 @@ function AssigneeList() {
 
 
 }
-
-
-function CustomToolbar( props ) {
-
-    const issueCount = props?.issues?.length
-
-    return (
-    <div className='flex items-center font-lato'> 
-    <GridToolbarContainer sx={{m: 1.25}}>
-      <div className='flex items-center'> 
-      <div className='font-bold text-[1.75em]'>
-          Assigned to me
-          <div className='text-[0.5em]'>
-              {issueCount + ' total'}
-          </div>
-      </div>
-      <GridToolbarQuickFilter 
-        sx={{
-            marginLeft: 4, 
-            marginTop: -2, 
-            textTransform:'none',
-            color: '#7895B3',
-        }}
-      />
-      </div>
-      </GridToolbarContainer>
-      </div>
-    );
-  };
-
-
-  const theme = createTheme({
-    typography: {
-     "fontFamily": `"Lato", sans-serif`,
-     "fontSize": 14.5,
-     "fontWeightLight": 400,
-     "fontWeightRegular": 300,
-     "fontWeightMedium": 400
-    },
-    palette: {
-      primary: {
-        main: '#7895B3',
-          },
-        role: {
-          main: '#00000020',
-          contrastText: '#000000',
-        },
-        projects: {
-            main: '#00000020',
-            contrastText: '#000000',
-          },
-      },
-  
-    components: {
-      MuiDataGrid: {
-          styleOverrides: {
-              root: {
-                  border: 'none'
-              }
-          }
-      }
-  }
-  
-  });
-  
-  
-
-
 export default AssigneeList

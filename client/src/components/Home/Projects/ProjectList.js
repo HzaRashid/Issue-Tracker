@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 function ProjectList( { search, Projects, isMobile } ) {
-
+    let goToPage = useNavigate();
 
     const SearchResults = Projects.filter(
         // eslint-disable-next-line
@@ -46,6 +47,7 @@ function ProjectList( { search, Projects, isMobile } ) {
                     transitionDelay: `${key*delay + 1}ms`
                 
                 }}
+                onClick={() => { goToPage(`/projects/${p?.title}/backlog/proj-nav=true`)}}
                 >
                     {p?.title}
                 </li>

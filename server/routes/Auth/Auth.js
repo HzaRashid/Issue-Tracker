@@ -14,14 +14,7 @@ router.get('/', (req, res) => {
         user: req.user
         })
         console.log(req.user)
-        // console.log(DemoUsers[0])
-        // console.log('fofofo')
 
-        // const newUser = { ...DemoUsers[0] }
-        // newUser._id =  mongoose.Types.ObjectId(DemoUsers[0]._id)
-        // newUser.createdAt =  new Date(DemoUsers[0].createdAt),
-        // newUser.updatedAt =   new Date(DemoUsers[0].updatedAt),
-        // User.create(newUser)
         return;
     }
     res.status(400).json({

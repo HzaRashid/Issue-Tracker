@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-// import Container from '../../components/Projects/SprintBoard/Container'
 import { useStateContext } from '../../contexts/ContextProvider'
 import { ProjContexts } from '../../contexts/ProjectContexts';
 import { SprintContexts } from '../../contexts/SprintContexts';
@@ -9,8 +8,6 @@ import axios from 'axios';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { IssueContexts } from '../../contexts/IssueContexts';
 import { TeamContexts } from '../../contexts/TeamContexts';
-// import { IssueContexts } from '../../contexts/IssueContexts';
-const data = require('../routes.json')
 
 function SprintBoard() {
 
@@ -41,37 +38,38 @@ function SprintBoard() {
 
   useEffect(
     () => {
-      axios.get(data.Projects)
-      .then(
-        res => setProjects(res.data)
-      )},
-    // eslint-disable-next-line
-    []
+      if (!Projects?.length) {
+        axios.get(process.env.REACT_APP_API_Projects as string, { withCredentials: true })
+        .then(res => setProjects(res.data))
+      }
+      }, []
   )
 
-  useEffect(
-    () => {
-      setSelectedProj(
-        Projects.filter(
-          (project: {title: string}) => project.title === ProjectTitle
-        )[0]
-      )},
+  useEffect(() => {
+    if (!SelectedProj?.title || (
+      ProjectTitle && ( SelectedProj?.title !== ProjectTitle ))) {
+        setSelectedProj(
+          Projects.filter(
+            (project: {title: string}) => project.title === ProjectTitle
+          )[0])
+        }  
+       } ,
     // eslint-disable-next-line
     [Projects, useParams()]
   )
   // console.log(SelectedProj)
 
 
-  useEffect(
-    () => {
-      axios.get(data.Sprints)
-      .then(
-        res => setSprints(
-          res.data?.filter(
-            (sprint: {project: string}) => sprint.project === SelectedProj?._id
-          )
-          )
-      )
+  useEffect(() => {
+      if (!Sprints?.length) {
+        axios.get(
+          process.env.REACT_APP_API_Sprints as string, 
+          { withCredentials: true })
+          .then(res => setSprints(res.data?.filter(
+              (sprint: {project: string}) => {
+                return sprint.project === SelectedProj?._id
+          })))
+        }
     },
     // eslint-disable-next-line
     [SelectedProj]
@@ -89,7 +87,7 @@ function SprintBoard() {
 
   useEffect(() => {
     if (!Users.length) {
-      axios.get(data.getUsers)
+      axios.get(process.env.REACT_APP_API_getUsers as string, { withCredentials: true })
       .then(res => { 
           if (res.status === 200) setUsers(res.data); 
           // console.log(res.data)
@@ -109,7 +107,7 @@ function SprintBoard() {
 
   useEffect(
     () => {
-      axios.get(data.Issues)
+      axios.get(process.env.REACT_APP_API_Issues as string, { withCredentials: true })
       .then(
         response => {
           if (response.status === 200) {

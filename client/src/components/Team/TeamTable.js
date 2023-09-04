@@ -9,15 +9,11 @@ import {
  } from '@mui/x-data-grid';
 import React, { useState, useEffect } from 'react'
 import { AiOutlineUserAdd } from "react-icons/ai";
-
-// import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import { CustomTooltip } from '../CustomTooltip';
-import TeamEditUserModal from './TeamEditUserModal';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
-const data = require('../../pages/routes.json')
 
 function CustomToolbar() {
   return (
@@ -93,7 +89,7 @@ function TeamTable() {
 
     useEffect(() => {
       if (!Users.length) {
-        axios.get(data.getUsers)
+        axios.get(process.env.REACT_APP_API_getUsers, { withCredentials: true })
         .then(res => { 
             if (res.status === 200) setUsers(res.data); 
             // console.log(res.data)
@@ -105,7 +101,6 @@ function TeamTable() {
     }, [])
 
 
-    // const [Users, setUsers] = useState([]);
     const [pageSize, setPageSize] = useState(10);
 
 

@@ -40,7 +40,6 @@ import axios from "axios";
 import { IssueContexts } from "../../../../contexts/IssueContexts";
 import { SprintContexts } from "../../../../contexts/SprintContexts";
 import { AuthContexts } from "../../../../App/Auth";
-const data = require('../../../../pages/routes.json')
 
 
 
@@ -512,13 +511,14 @@ export function MultipleContainers(
 
         }
        setSelectedIssue({...activeId, stage: overContainer})
-        axios.put(data.Issues + '/board-stage',
+        axios.put(process.env.REACT_APP_API_Issues + '/board-stage',
         {
             issueID: activeId._id,
             stage: overContainer,
             sprintID: SelectedSprint._id,
             modifiedBy: user?.user,
-        })
+        }, 
+        { withCredentials: true })
         .then(res => console.log(res)) // REMEMBER TO CHANGE STATE OF ITEMS
         .catch(err => console.log(err))
         console.log(overContainer)

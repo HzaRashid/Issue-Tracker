@@ -4,7 +4,6 @@ import { useStateContext } from '../contexts/ContextProvider';
 import { useLocation } from 'react-router-dom';
 import { TeamContexts } from '../contexts/TeamContexts';
 import axios from 'axios';
-const data = require('./routes.json')
 
 function Issues() {
   const { nav, ProjectNav } = useStateContext();
@@ -13,7 +12,8 @@ function Issues() {
 
   useEffect(() => {
     if (!Users.length) {
-      axios.get(data.getUsers)
+      axios.get(process.env.REACT_APP_API_getUsers, 
+        { withCredentials: true })
       .then(res => { 
           if (res.status === 200) setUsers(res.data); 
           // console.log(res.data)

@@ -18,10 +18,10 @@ module.exports = router;
 
 router.get('/', getProjects);
 
-router.post('/',        isAuthDemo, addProject);
-router.put('/title',    isAuthDemo, editProjectTitle);
-router.put('/edit-all', isAuthDemo, editProjectTitleNext, addProjectUserNext, deleteProjectUser);
-router.put('/add-team', isAuthDemo, addProjectUser);
+router.post('/',         addProject);
+router.put('/title',     editProjectTitle);
+router.put('/edit-all',  editProjectTitleNext, addProjectUserNext, deleteProjectUser);
+router.put('/add-team',  addProjectUser);
 
 router.put('/team', editProjectTeam);
 router.put('/key', editProjectTitle);

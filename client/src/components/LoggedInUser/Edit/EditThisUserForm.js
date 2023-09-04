@@ -11,8 +11,6 @@ import axios from 'axios';
 import { Switch } from '@headlessui/react';
 import { Divider } from '@mui/material';
 import { AuthContexts } from '../../../App/Auth';
-var _ = require('lodash')
-const routeData = require('../../../pages/routes.json')
 
 
 function EditThisUserForm() {
@@ -108,8 +106,9 @@ const submitData = (data) => {
     password:   data.Password,
   }
     axios.put(
-      routeData.Users + '/edit',
-      newDoc
+      process.env.REACT_APP_API_Users + '/edit',
+      newDoc,
+      { withCredentials: true }
     )
     .then(res => {
       console.log(res)

@@ -22,22 +22,22 @@ module.exports = router;
 
 
 router.put('/update-stage-title',  
-                            isAuthDemo, editSprintStageTitle, editManyIssuesStage)
+                             editSprintStageTitle, editManyIssuesStage)
 
 router.put('/update-stage-issue-limit', 
-                            isAuthDemo, editSprintStageIssueLimit)
+                             editSprintStageIssueLimit)
 
-router.put('/add-stage',    isAuthDemo, addSprintStage)
+router.put('/add-stage',     addSprintStage)
 
 
 router.get('/', getSprints);
 
-router.post('/',            isAuthDemo, addSprint, editIssueSprint);  
+router.post('/',             addSprint, editIssueSprint);  
 
-router.put('/title',        isAuthDemo, editSprintTitle);
-router.put('/startDate',    isAuthDemo, editSprintStartDate);
-router.put('/endDate',      isAuthDemo, editSprintEndDate);
-router.put('/edit',         isAuthDemo, GeneralEdit);
+router.put('/title',         editSprintTitle);
+router.put('/startDate',     editSprintStartDate);
+router.put('/endDate',       editSprintEndDate);
+router.put('/edit',          GeneralEdit);
 
 
-router.delete('/delete',    isAuthDemo, deleteSprint);
+router.delete('/delete',     deleteSprint);

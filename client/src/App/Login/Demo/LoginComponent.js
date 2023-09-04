@@ -3,9 +3,8 @@ import { OAuthMethods } from './OAuthMethods'
 import { Divider } from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { AuthContexts } from '../../Auth';
+import data from '../../../pages/routes.json'
 import axios from 'axios';
-const data = require('../../../pages/routes.json')
-
 const theme = createTheme({
   components: {
     MuiDivider: {
@@ -23,7 +22,7 @@ const theme = createTheme({
             }
           }
         });
-
+// console.log(process.env.REACT_APP_API_localLogin)
 function LoginComponent() {
     const { user, setUser, setLoggedInUser, TBDAuthUser } = AuthContexts();
 
@@ -63,26 +62,51 @@ function LoginComponent() {
                   hover:scale-105 duration-100 rounded-md
                   hover:text-[#799db3] bg-transparent mt-4 ' 
                   onClick={() => {
-                    // axios.get(data.localLogin, {
+                    // axios.get(REACT_APP_localLogin, {
                     //     email: "demo.admin@email.com",
-                    //     password: data.demoPwd
+                    //     password: REACT_APP_demoPwd
                     //   })
                     // .then(res => console.log(res))
                     // .catch(err => console.log(err))
-                    fetch(data.localLogin, {
-                      method: "POST",
-                      credentials: "include",
-                      body: JSON.stringify({
-                            email:      data.demoEmail,
-                            password:   data.demoPwd
-                          }),
-                      headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json",
-                        "Access-Control-Allow-Credentials": true,
+
+                    // fetch(data.localLogin, {
+                    //   method: "POST",
+                    //   credentials: "include",
+                    //   body: JSON.stringify({
+                    //         email:      data.demoEmail,
+                    //         password:   data.demoPwd
+                    //       }),
+                    //   headers: {
+                    //     Accept: "application/json",
+                    //     "Content-Type": "application/json",
+                    //     "Access-Control-Allow-Credentials": true,
+                    //   },
+                    // })
+                    // .then(res =>{ console.log(res); return res.json()})
+                    // .then(json => { 
+                    //   if (json.authenticated) {
+                    //     setUser({
+                    //       authenticated:  true,
+                    //       user:           json.user._id
+                    //     })
+                    //     setLoggedInUser(json.user);
+                    //   }
+                    //  })
+                    // .catch(err => {
+                    //   console.log(err);
+                    //   setUser(TBDAuthUser);
+                    // })
+
+                    axios.post(
+                      process.env.REACT_APP_API_localLogin,
+                      {
+                        email:      data.demoEmail,
+                        password:   data.demoPwd
                       },
-                    })
-                    .then(res =>{ console.log(res); return res.json()})
+                      {withCredentials: true,},
+             
+                    )
+                    .then(res =>{ console.log(res); return res.data})
                     .then(json => { 
                       if (json.authenticated) {
                         setUser({

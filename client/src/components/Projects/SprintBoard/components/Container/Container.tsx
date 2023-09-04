@@ -10,7 +10,6 @@ import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 import axios from 'axios';
 import { BiListMinus } from 'react-icons/bi';
 
-const data = require('../../../../../pages/routes.json')
 
 
 export interface Props {
@@ -250,14 +249,15 @@ export const Container = forwardRef<HTMLDivElement, Props>(
                 // console.log(issueIDs)
                 // console.log(updateTitle)
                 axios.put(
-                  data.Sprints + '/update-stage-title',
+                  process.env.REACT_APP_API_Sprints + '/update-stage-title',
                   {
                     sprintID: SelectedSprint?._id,
                     oldStageTitle: label,
                     newStageTitle: updateTitle,
                     issues: issueIDs
 
-                  })
+                  }, 
+                  { withCredentials: true })
                   .then(
                     res => {
                       console.log(res)

@@ -2,28 +2,20 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { ThemeProvider, createTheme } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { DataGrid, GridActionsCellItem, GridToolbarContainer, GridToolbarQuickFilter } from '@mui/x-data-grid';
-import { IssueContexts } from '../../../contexts/IssueContexts';
-// import axios from 'axios';
 import { TeamContexts } from '../../../contexts/TeamContexts';
-// import TitleCase from '../../../components/utils/TitleCase';
-// import { AiFillCheckSquare, AiFillTool } from 'react-icons/ai';
-// import { MdError } from 'react-icons/md';
-// import stringAvatar from '../../../components/utils/UserAvatar/StringAvatar';
+
 import { ProjContexts } from '../../../contexts/ProjectContexts';
 import { CustomTooltip } from '../../CustomTooltip';
-const data = require('../../../pages/routes.json')
 function List() {
-    const {  Issues, setIssues, setSelectedIssue, setEditIssueModal } = IssueContexts();
     const { Users, setSelectedUser, setEditUserModal } = TeamContexts();
-    const { Projects, SelectedProj, setSelectedProj } = ProjContexts();
+    const { SelectedProj } = ProjContexts();
     // console.log(Projects)
 
     const [ ProjTeam, setProjTeam ] = useState([]);
     // cons
-    useEffect(() =>{
+    useEffect(() => {
         const users = Users.slice().filter(u => {
             return u?.projects.includes(SelectedProj?._id)});
-
         setProjTeam(users)
         
     }, [Users, SelectedProj])
@@ -55,8 +47,6 @@ function List() {
               () => {
                 setSelectedUser(params.row) 
                 setEditUserModal(true);
-                // setEditUser(!EditUser)
-                // setModalClosed(false);
               }
             }
           />,
@@ -101,17 +91,6 @@ function List() {
         
 
       ]
-
-
-      // function getAssignee (assigneeID) {
-      //   const user = Users.filter(u => {
-      //     return u._id === assigneeID
-      //   })[0];
-      //   // console.log(user);
-      //   return user
-  
-      // }
-      // const [pageSize, setPageSize] = useState(10);
 
 
 

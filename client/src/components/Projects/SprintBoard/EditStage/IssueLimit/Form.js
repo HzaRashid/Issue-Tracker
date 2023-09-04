@@ -7,7 +7,6 @@ import * as Yup from 'yup'
 import { ProjContexts } from '../../../../../contexts/ProjectContexts';
 import { useStateContext } from '../../../../../contexts/ContextProvider';
 import axios from 'axios';
-const data = require('../../../../../pages/routes.json')
 
 function Form() {
 
@@ -125,12 +124,13 @@ function Form() {
     onClick={() => {
       console.log('here')
       axios.put(
-        data.Sprints + '/update-stage-issue-limit',
+        process.env.REACT_APP_API_Sprints + '/update-stage-issue-limit',
         {
           sprintID: SelectedSprint?._id,
           stageTitle: SelectedStage?.title,
           newLimit: formik.values.IssueLimit
-        }
+        }, 
+        { withCredentials: true }
       )
       .then(res => {
         console.log(res)

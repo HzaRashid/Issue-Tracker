@@ -1,18 +1,13 @@
 import React from 'react'
-import { BsStack } from "react-icons/bs";
-import { HiViewBoards } from "react-icons/hi";
 import { ProjContexts } from '../../../contexts/ProjectContexts';
 import { SprintContexts } from '../../../contexts/SprintContexts'
-import { AiOutlineTeam } from 'react-icons/ai';
 import { MdViewKanban } from 'react-icons/md';
 import { CgStack } from 'react-icons/cg';
 import { BiSolidGroup } from 'react-icons/bi';
+
 const iconStyle={ color: "#404040", fontSize: 22.5 };
 
-
-
 export const WhtSpace = (string) => string?.replace(' ', '%20')
-    
 
 export const NavItems = () => {
 

@@ -5,6 +5,7 @@ import Avatar from '@mui/material/Avatar';
 import { AuthContexts } from '../../../App/Auth';
 import { IssueContexts } from '../../../contexts/IssueContexts';
 import stringAvatar from '../../utils/UserAvatar/StringAvatar';
+import axios from 'axios';
 const data = require('../../../pages/routes.json');
 
 
@@ -25,7 +26,9 @@ function List( props ) {
 
     useEffect(() => {
       if (!SelectedIssue?._id) return;
-      CommentRef.current = new EventSource(data.CommentSSE + `/${SelectedIssue?._id}`)
+      CommentRef.current = new EventSource(
+        `${process.env.REACT_APP_API_CommentSSE }/${SelectedIssue?._id}`,
+      { withCredentials: true })
       CommentRef.current.onmessage = e => setCmnts(e)
       CommentRef.current.onerror = () => {
         CommentRef.current.close()

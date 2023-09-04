@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import CustomModal from '../../CustomModal'
 import { IssueContexts } from '../../../contexts/IssueContexts'
 import FormWrapper from './FormWrapper'
 import History from '../History/History';
 import CommentsComp from '../Comments/Comments';
 import Delete from '../Delete/Delete';
-import axios from 'axios';
-const data = require('../../../pages/routes.json')
+
 function EditIssue() {
     const { EditIssueModal, SelectedIssue } = IssueContexts();
       

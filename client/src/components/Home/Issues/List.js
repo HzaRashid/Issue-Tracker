@@ -3,7 +3,6 @@ import { Avatar, ThemeProvider, createTheme } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { DataGrid, GridActionsCellItem, GridToolbarContainer, GridToolbarQuickFilter } from '@mui/x-data-grid';
 import { IssueContexts } from '../../../contexts/IssueContexts';
-import axios from 'axios';
 import { TeamContexts } from '../../../contexts/TeamContexts';
 import TitleCase from '../../utils/TitleCase';
 import { AiFillCheckSquare, AiFillTool } from 'react-icons/ai';
@@ -13,9 +12,8 @@ import { ProjContexts } from '../../../contexts/ProjectContexts';
 import { DatagridStyle } from './DatagridStyle';
 import { theme } from './theme';
 import CustomToolbar from './CustomToolbar';
-const data = require('../../../pages/routes.json')
 
-function List(  ) {
+function List( ) {
     const {  
       Issues, setIssues, setSelectedIssue, 
       setEditIssueModal, IssueVersions, setIssueVersions } = IssueContexts();
@@ -23,43 +21,6 @@ function List(  ) {
     const { Projects, 
       // setProjects 
     } = ProjContexts();
-
-    // useEffect(() => {
-    //   if (!IssueVersions.length) {
-    //     axios.get(
-    //       data.IssueVersions
-    //     )
-    //     .then(res => setIssueVersions(res.data))
-    //     .catch(err => console.log(err))}
-
-    //   // eslint-disable-next-line
-    //   }, [])
-      // useEffect(() => {
-      //   axios.get(
-      //     data.Projects
-      //   )
-      //   .then(res => setProjects(res.data))
-      //   .catch(err => console.log(err))
-      //   // eslint-disable-next-line
-      //   }, [])
-    // console.log(Projects)
-
-    // const [ HomeIssues, setHomeIssues ] = useState([]);
-    const [LastIdx, setLastIdx] = useState([])
-    useEffect(() => {
-            axios.get(
-                data.Issues
-            )
-            .then(res => { 
-              // if (res.status === 200) {
-              setIssues(res.data); 
-              setLastIdx(res.data?.length - 1)
-              // setHomeIssues(res.data) 
-              // } 
-            })
-            .catch(err => console.log(err))
-    // eslint-disable-next-line
-    }, []);
 
     const [loaded, setLoaded] = useState(false);
     // allow user to search issues by assignee
@@ -74,7 +35,7 @@ function List(  ) {
           else i.assigneeName = 'Unassigned'
         const projID = i.project 
         i.projectName = Projects.filter(p => p._id === projID)[0]?.title
-        if (key === LastIdx) setLoaded(true)
+        if (key === Issues?.length - 1) setLoaded(true)
         return i
       })  
     
@@ -228,12 +189,12 @@ function List(  ) {
 
       ]
 
-  const Theme = createTheme(theme);
+  const getTheme = createTheme(theme)
   const [pageSize, setPageSize] = useState(5);
-  if (!rows) return
+  // if (!rows) return
   return (
     <>
-    <ThemeProvider theme={Theme}
+    <ThemeProvider theme={getTheme}
     >
 
     <div 
@@ -257,7 +218,9 @@ function List(  ) {
     
     slotProps={{
       toolbar: {
-        issues: Issues
+        issues: Issues,
+        title: "Issues",
+        titleClass: "font-bold text-[2em]"
       },
     }}
 

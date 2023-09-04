@@ -7,7 +7,8 @@ import { AuthContexts } from '../../../App/Auth';
 import { formatDistance } from 'date-fns';
 import { BsDot, BsArrowRightShort } from 'react-icons/bs';
 import { SprintContexts } from '../../../contexts/SprintContexts';
-const data = require('../../../pages/routes.json')
+import axios from 'axios';
+
 
 
 function History( { IssueVersions, setIssueVersions } ) {
@@ -29,8 +30,11 @@ function History( { IssueVersions, setIssueVersions } ) {
   }
   useEffect(() => {
     if (!SelectedIssue?._id) return;
+
     IVSourceRef.current = new EventSource(
-      data.IssueVersionsSSE + `/${SelectedIssue?._id}`)
+      `${process.env.REACT_APP_API_IssueVersionsSSE}/${SelectedIssue?._id}`,
+      { withCredentials: true })
+
       IVSourceRef.current.onmessage = ( e ) => setIVs(e)
 
       IVSourceRef.current.onerror = () => {

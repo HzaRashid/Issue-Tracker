@@ -11,12 +11,10 @@ import * as Yup from 'yup'
 import { BsCheck2Circle, BsChevronDown} from 'react-icons/bs'
 import axios from 'axios';
 import { Types } from './Types';
-import { isEmpty } from '../../utils/isEmptyObject';
 import { Avatar } from '@mui/material';
 import stringAvatar from '../../utils/UserAvatar/StringAvatar';
 import { AuthContexts } from '../../../App/Auth';
 
-const data = require('../../../pages/routes.json')
 
 function IssueForm() {
     const { 
@@ -490,11 +488,10 @@ function IssueForm() {
         }
 
         try {
-          let response = await axios
-                                  .post(
-                                  data.Issues + '/add-issue', 
-                                  Issue
-                                  )
+          let response = await axios.post(
+            process.env.REACT_APP_API_Issues + '/add-issue', 
+            Issue,
+            { withCredentials: true })
           // console.log(response)
           if (response.status === 200) {
             // console.log(response.data)

@@ -11,7 +11,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import '../Create/Datepicker.scss'
 import axios from 'axios';
-const data = require('../../../../pages/routes.json')
+
 
 function EditSprintForm() {
 
@@ -220,14 +220,14 @@ function EditSprintForm() {
 
      try {
        let response = await axios.put(
-        data.Sprints + '/edit', 
+        process.env.REACT_APP_API_Sprints + '/edit', 
         {
           sprintID: SelectedSprintEdit._id,
           title: formik.values.EditSprintTitle,
           startDate: startDate,
           endDate: endDate,
-        }
-                               )
+        },
+        { withCredentials: true })
 
       //  console.log(response);
 

@@ -27,15 +27,15 @@ router.get('/versions/sse/:id', sendIssueVersions)
 router.get('/versions/:id', getIssueVersions)
 router.post('/add-issue', addIssue);
 
-router.put('/summary',      isAuthDemo, editIssueSummary);
-router.put('/type',         isAuthDemo, editIssueType);
-router.put('/sprint',       isAuthDemo, editIssueSprint);
-router.put('/assignee',     isAuthDemo, editIssueAssignee);
-router.put('/stage',        isAuthDemo, editIssueStage);
+router.put('/summary',       editIssueSummary);
+router.put('/type',          editIssueType);
+router.put('/sprint',        editIssueSprint);
+router.put('/assignee',      editIssueAssignee);
+router.put('/stage',         editIssueStage);
 
-router.put('/board-stage',  isAuthDemo, editIssueStage);
+router.put('/board-stage',   editIssueStage);
 
 
 router.put('/many-issues-stage', transferManyIssuesStage, deleteSprintStage);
-router.delete('/delete',    isAuthDemo, deleteIssue);
+router.delete('/delete',     deleteIssue);
 router.put('/reorder', reOrderIssues);

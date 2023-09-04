@@ -19,7 +19,7 @@ import { Avatar, Divider } from '@mui/material';
 import { AuthContexts } from '../../App/Auth';
 import { TeamContexts } from '../../contexts/TeamContexts';
 import { BiRightArrow } from 'react-icons/bi';
-const data = require('../../pages/routes.json')
+
 
 const MenuTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -245,7 +245,7 @@ function Nav() {
             opacity:    nav ? '1'       : '0'
           }}
           onClick={() => {
-            window.open(data.index + '/auth/logout', "_self")
+            window.open(process.env.REACT_APP_API_INDEX + '/auth/logout', "_self")
             setUser({
               user: null,
               authenticated: false

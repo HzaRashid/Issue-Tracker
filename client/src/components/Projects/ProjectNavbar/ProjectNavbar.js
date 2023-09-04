@@ -37,11 +37,14 @@ function ProjectNavbar( props ) {
 
    const [Search, setSearch] = useState('');
 
-   useEffect( () => { Axios.get(data.Projects)
+   useEffect( () => { 
+    if (!Projects?.length) Axios.get(process.env.REACT_APP_API_Projects, { withCredentials: true })
     .then( 
       response => setProjects(response.data) 
       // eslint-disable-next-line
-      )}, [EditProj])
+      )}, [
+        // EditProj
+      ])
       
 
   // console.log(ProjectNav)

@@ -8,11 +8,10 @@ import { Avatar } from '@mui/material';
 import { ProjContexts } from '../../../contexts/ProjectContexts';
 import { gridPaginatedVisibleSortedGridRowIdsSelector } from '@mui/x-data-grid'
 import axios from 'axios';
-const data = require('../../../pages/routes.json')
 
 function AssignToProjForm() {
     const { 
-      AssignProjModal, setAssignProjModal, 
+      setAssignProjModal, 
       SelectedGridUsers, setSelectedGridUsers, Users, tableRef
      } = TeamContexts();
      const { Projects } = ProjContexts();
@@ -22,27 +21,13 @@ function AssignToProjForm() {
      const [ShowProj, setShowProj] = useState(false);
      const [SelectedProj, setSelectedProj] = useState({});
 
-     function getAssignee (assigneeID) {
-      const user = Users.filter(u => {
-        return u._id === assigneeID
-      })[0];
-      return user
-    }
     const [InitTeam, setInitTeam] = useState([])
     useEffect(() => {
-      // setProjTitle(SelectedProj?.title);
-      // console.log(SelectedProj)
-      // const teamIds = SelectedProjModal?.assignedTo?.slice()
-      const teamIds = Users?.filter(
-        u => u.projects.includes(SelectedProj?._id)
-      )
-      .map(u => u._id)
-      // setProjTeam(teamIds?.map(id => getAssignee(id)));
+      const teamIds = Users?.filter(u => u.projects.includes(SelectedProj?._id))
+                            .map(u => u._id)
       setInitTeam(teamIds);
-
     }
-    
-    , [SelectedProj, SelectedProj?.title, SelectedProj?.assignedTo, Users]);
+    ,[SelectedProj, SelectedProj?.title, SelectedProj?.assignedTo, Users]);
 
     const selUsersStyle = 'inline-block lg:w-[26.5em] md:w-[26.5em] w-[50vw] text-[0.75em] whitespace-nowrap ml-[-0.45em] break-normal overflow-x-auto p-1'
     
@@ -445,11 +430,12 @@ function AssignToProjForm() {
     mr-[0.25em] ease-in-out duration-100'
     onClick={() => {
 
-      axios.put(data.Projects + '/add-team',
+      axios.put(process.env.REACT_APP_API_Projects + '/add-team',
       {
         projectID: SelectedProj?._id,
         assignedTo: SelectedGridUsers?.map(u => u._id)
-      }
+      },
+      { withCredentials: true }
       )
       .then(res => {
         // console.log(res)

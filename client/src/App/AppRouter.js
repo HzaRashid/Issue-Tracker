@@ -18,18 +18,17 @@ import Team from '../pages/Team';
 import Profile from '../pages/Profile';
 import Popups from '../components/Popups';
 import Login from './Login/Demo/Login';
-import { AuthContexts } from './Auth';
 import UserInfo from '../components/TopBar/UserInfo';
+import { AuthContexts } from './Auth';
 import { useStateContext } from '../contexts/ContextProvider';
-import axios from 'axios';
-const data = require('../pages/routes.json')
+
 // axios.defaults.withCredentials = true
-// window.axios.defaults.withCredentials = true
+// console.log(axios.defaults)
 function AppRouter() {
   const { user, setUser, TBDAuthUser } = AuthContexts();
   useEffect(
     () => {
-        fetch(data.isAuth, {
+        fetch(process.env.REACT_APP_API_isAuth, {
           method: "GET",
           credentials: "include",
           headers: {
@@ -75,7 +74,7 @@ const PrivateRoute = ( { component } ) => {
   const location = useLocation();
   const { user } = AuthContexts();
   const { ScreenWidth, setScreenWidth} = useStateContext();
-  // useEffect(() => setScreenWidth(window.innerWidth), [window.innerWidth])
+  useEffect(() => setScreenWidth(window.innerWidth), [window.innerWidth])
 
   if (user?.authenticated === null) return;
 

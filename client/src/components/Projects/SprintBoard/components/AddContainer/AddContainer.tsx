@@ -88,7 +88,8 @@ export function AddContainer(
             {
               sprintID: SelectedSprint?._id,
               stageTitle: StageTitle
-            }
+            },
+            { withCredentials: true }
           )
           .then(res => {
             console.log(res);

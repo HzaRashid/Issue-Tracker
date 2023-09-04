@@ -8,8 +8,6 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   });
 
 function AddUserStatus() {
-    
-
     const { NewUserStatus, setNewUserStatus } = TeamContexts();
 
   return (

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { AuthContexts } from '../../App/Auth'
 import { TeamContexts } from '../../contexts/TeamContexts';
 import stringAvatar from '../utils/UserAvatar/StringAvatar';
+import axios from 'axios';
 
 function UserInfo() {
     const { user, LoggedInUser, setLoggedInUser } = AuthContexts();
@@ -25,6 +26,11 @@ function UserInfo() {
 
   return (
     <div className='absolute top-0 right-0 mr-[2em] mt-[0.85em]'>
+      {/* <button className=' bg-slate-200 p-2 rounded'
+      onClick={() => axios.get(process.env.REACT_APP_API_Projects, { withCredentials: true})}
+      >
+        here
+      </button> */}
     <button className='flex items-center justify-center font-lato
     bg-[#0000000b] p-[0.4em] rounded-xl whitespace-pre'
     onClick={ () => setEditThisUserModal(true) }

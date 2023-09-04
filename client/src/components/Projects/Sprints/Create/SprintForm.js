@@ -15,7 +15,7 @@ import axios from 'axios';
 import { useStateContext } from '../../../../contexts/ContextProvider';
 
 
-const data = require('../../../../pages/routes.json')
+
 
 
 function SprintForm() {
@@ -196,8 +196,9 @@ function SprintForm() {
         try {
           let response = await axios
                                   .post(
-                                  data.Sprints, 
-                                  Sprint
+                                    process.env.REACT_APP_API_Sprints, 
+                                    Sprint,
+                                    { withCredentials: true }
                                   )
 
           // console.log(response);

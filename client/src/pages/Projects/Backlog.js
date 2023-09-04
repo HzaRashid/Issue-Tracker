@@ -25,14 +25,11 @@ import { IssueContexts } from "../../contexts/IssueContexts";
 import { AuthContexts } from "../../App/Auth";
 
 
-const data = require('../routes.json')
-
-
-
 function Backlog() {
   const { nav, ProjectNav, ScreenWidth } = useStateContext();
   const { 
-    Projects, setProjects, 
+    Projects, 
+    // setProjects, 
     SelectedProj, setSelectedProj, 
     Backlog 
   } = ProjContexts();
@@ -44,33 +41,24 @@ function Backlog() {
   const currLoc = useLocation();
   let { ProjectTitle } = useParams();
 
-  useEffect(
-    () => {
-      axios.get(data.Projects)
-      .then(
-        res => setProjects(res.data)
-      )},
-    // eslint-disable-next-line
-    []
-  )
-
   useEffect(() => {
     if (!Users.length) {
-      axios.get(data.getUsers)
-      .then(res => { 
-          if (res.status === 200) setUsers(res.data); 
-          // console.log(res.data)
-        })
-        .catch(err => {
-          // console.log(err)
-        })
-    }
+      axios.get(process.env.REACT_APP_API_getUsers, 
+        { withCredentials: true })
+        .then(res => { 
+            if (res.status === 200) setUsers(res.data); 
+            // console.log(res.data)
+          })
+          .catch(err => {
+            // console.log(err)
+          })
+      }
   }, [])
 
   useEffect(
     () => {
       setSelectedProj(
-        Projects.filter(
+        Projects?.filter(
           project => project.title === ProjectTitle
         )[0]
       )},
@@ -89,56 +77,51 @@ function Backlog() {
   // [3]: ASSIGNED USER
   // [4]: STAGE 
   // [5]: ISSUE 
-  useEffect(
-    () => setItems({
-      backlog: Backlog?.map(
-        issue => {
-          const UserMatch = Users.filter(
-            user => user._id === issue.assignedTo
-          );
-          const user = UserMatch[0];
-          return ( 
-          [
-            issue._id, 
-            issue.type, 
-            issue.summary, 
-            user || null,
-            issue.stage,
-            issue
-          ]
-          )}
-        ),
-      sprint: SprintIssues?.map(
-        issue => {
-          const UserMatch = Users.filter(
-            user => user._id === issue.assignedTo
-          );
-          const user = UserMatch[0];
-          return ( 
-          [
-            issue._id, 
-            issue.type, 
-            issue.summary, 
-            user || null, 
-            issue.stage,
-            issue
-          ]
-          )}
-        ),
-  
-    }), [Backlog, SprintIssues, Users]
-  )
+  useEffect(() => {
+    if (!items?.length) {
+      setItems({
+        backlog: Backlog?.map(
+          issue => {
+            const UserMatch = Users.filter(
+              user => user._id === issue.assignedTo
+            );
+            const user = UserMatch[0];
+            return ( 
+            [
+              issue._id, 
+              issue.type, 
+              issue.summary, 
+              user || null,
+              issue.stage,
+              issue
+            ]
+            )}
+          ),
+        sprint: SprintIssues?.map(
+          issue => {
+            const UserMatch = Users.filter(
+              user => user._id === issue.assignedTo
+            );
+            const user = UserMatch[0];
+            return ( 
+            [
+              issue._id, 
+              issue.type, 
+              issue.summary, 
+              user || null, 
+              issue.stage,
+              issue
+            ]
+            )}
+          ),
+        })
+      }
+    }  
+    , [Backlog, SprintIssues, Users])
   // console.log(items)
 
   const [activeId, setActiveId] = useState();
 
-  // const sensors = useSensors(
-  //   useSensor(MouseSensor),
-  //   useSensor(PointerSensor),
-  //   useSensor(KeyboardSensor, {
-  //     coordinateGetter: sortableKeyboardCoordinates
-  //   })
-  // );
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: { distance: 0.5 }
@@ -357,7 +340,7 @@ function Backlog() {
       overContainer === ContainerIDs.sprint ) {
       
        axios.put(
-        data.Issues + '/stage',
+        process.env.REACT_APP_API_Issues + '/stage',
         {
 
             issueID: id[0],
@@ -369,7 +352,7 @@ function Backlog() {
             modifiedBy: user.user
             
 
-        }
+        }, { withCredentials: true }
        )
        .then(res => {console.log(res); id[4] = 'to do'})
        .catch(err => console.log(err))
@@ -377,18 +360,10 @@ function Backlog() {
     } 
     // move issue from sprint to backlog
     else if (
-      //  id[4]?.toLowerCase() !== ContainerIDs.backlog && 
-    overContainer === ContainerIDs.backlog ) {
-        // const overItems = items[overContainer]
-        //                   .slice(overIndex + 1)
-        //                   .map(item => item[0])
-
-        // const activeItems = items[ContainerIDs.backlog]
-        // .slice(id[5] + 1)
-        // .map(item => item[0])                
+    overContainer === ContainerIDs.backlog ) {            
         
         axios.put(
-          data.Issues + '/stage',
+          process.env.REACT_APP_API_Issues + '/stage',
           {
 
               issueID: id[0],
@@ -400,7 +375,8 @@ function Backlog() {
               modifiedBy: user.user
               
 
-          }
+          },
+          { withCredentials: true }
         )
         .then(res => {console.log(res); id[4] = 'backlog'})
         .catch(err => console.log(err))

@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { AiFillCheckSquare, AiFillDelete, AiFillTool, AiOutlineClose } from 'react-icons/ai'
+import { AiFillCheckSquare, 
+  // AiFillDelete, 
+  AiFillTool, AiOutlineClose } from 'react-icons/ai'
 import { IssueContexts } from '../../../contexts/IssueContexts';
 import { CustomTooltip } from '../../CustomTooltip';
 import axios from 'axios';
@@ -11,18 +13,19 @@ import { SprintContexts } from '../../../contexts/SprintContexts';
 import { useLocation } from 'react-router-dom';
 import { AuthContexts } from '../../../App/Auth';
 import { ProjContexts } from '../../../contexts/ProjectContexts';
-import Delete from '../Delete/Delete';
-const data = require('../../../pages/routes.json')
+// import Delete from '../Delete/Delete';
+
 
 function FormWrapper( props ) {
   const currLoc = useLocation();
   const { 
     Sprints, 
+    setSprints,
     SelectedSprint, 
     setSelectedSprint, 
     items, setItems,
-    SprintIssues,
-    setSprintIssues
+    // SprintIssues,
+    // setSprintIssues
   } = SprintContexts();
   // console.log(SelectedSprint)
   const { Backlog, setBacklog } = ProjContexts()
@@ -44,7 +47,13 @@ function FormWrapper( props ) {
     const userListRef = useRef(null);
     const stageListRef = useRef(null);
 
-
+    useEffect(() => {
+      if (!Sprints?.length) {
+        axios.get(process.env.REACT_APP_API_Sprints, { withCredentials: true })
+        .then(res => setSprints(res?.data))
+      }
+      // eslint-disable-next-line
+    }, []);
 
     useEffect(() => {
 
@@ -92,10 +101,8 @@ function FormWrapper( props ) {
      )
      useEffect(
       () => {
-
-
-          setSprintSearch(Sprints?.filter(s => s._id === SelectedIssue?.sprint)[0]?.title || 'Backlog') 
-
+          setSprintSearch(Sprints?.filter(
+            s => s._id === SelectedIssue?.sprint)[0]?.title || 'Backlog') 
       }, [SelectedIssue, Sprints]
      )
 
@@ -126,14 +133,14 @@ function FormWrapper( props ) {
                 summary: summary,
               })
             axios.put(
-              data.Issues + '/summary',
+              process.env.REACT_APP_API_Issues + '/summary',
               {
                 issueID: SelectedIssue?._id,
                 summary: summary,
                 modifiedBy: user?.user // logged-in user's _id
                 
               },
-              // { withCredentials: true }
+              { withCredentials: true }
             )
             .then(res => {
               console.log(res.status)
@@ -167,12 +174,13 @@ function FormWrapper( props ) {
             assignedTo: assignee._id
           })
           axios.put(
-            data.Issues + '/assignee',
+            process.env.REACT_APP_API_Issues + '/assignee',
             {
               issueID: SelectedIssue?._id,
               assignedTo: assignee?._id,
               modifiedBy: user?.user
-            }
+            },
+            { withCredentials: true }
           )
           .then(res =>{
             //  console.log(res)
@@ -184,12 +192,13 @@ function FormWrapper( props ) {
   const handleSprintSubmit = (sprintID, issue) => {
     const origIssue = {...issue};
     axios.put(
-      data.Issues + '/sprint',
+      process.env.REACT_APP_API_Issues + '/sprint',
       {
         issueID: issue?._id,
         sprint: sprintID,
         modifiedBy: user?.user
-      }
+      },
+      { withCredentials: true }
     )
     .then(res => { 
       // console.log(res);
@@ -226,7 +235,9 @@ function FormWrapper( props ) {
     }
   }
 
-  const { Page, setPage, setOpenDelModal, OpenDelModal, setPrevPage, PrevPage, children } = props;
+  const { Page, setPage, 
+    // etOpenDelModal, 
+    OpenDelModal, setPrevPage, PrevPage, children } = props;
   const activePageClass = 'bg-[#00000005] text-[#446a67] font-normal shadow-sm';
 
   useEffect(() => {
@@ -350,12 +361,13 @@ const [ShowSprints, setShowSprints] = useState(false);
             setShowTypes(false);
 
             axios.put(
-              data.Issues + '/type',
+              process.env.REACT_APP_API_Issues + '/type',
               {
                 issueID: SelectedIssue._id,
                 type: type.title,
                 modifiedBy: user?.user
-              }
+              },
+              { withCredentials: true }
             )
             .then(res => { 
               // console.log(res)
@@ -663,13 +675,14 @@ const [ShowSprints, setShowSprints] = useState(false);
             })})
             
             axios.put(
-              data.Issues + '/stage',
+              process.env.REACT_APP_API_Issues + '/stage',
               {
                 issueID: SelectedIssue._id,
                 sprintID: SelectedSprint._id,
                 stage: stage?.title,
                 modifiedBy: user?.user,
-              }
+              },
+              { withCredentials: true }
             )
             .then(res => {
               // console.log(res)

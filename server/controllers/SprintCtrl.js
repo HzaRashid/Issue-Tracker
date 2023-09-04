@@ -8,7 +8,7 @@ const getSprints = (req, res) => {
                 res.json(err)
             } 
             else {
-                res.json(result) 
+                res.status(200).json(result) 
             }
         })
     };

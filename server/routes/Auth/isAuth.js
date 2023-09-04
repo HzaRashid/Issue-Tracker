@@ -4,6 +4,7 @@ const User = require('../../models/User');
 var passport = require('passport')
 
 const isAuthDemo = (req, res, next) => {
+  console.log(req?.session)
   console.log(req?.isAuthenticated())
   console.log(req?.user)
   if (req.user === process.env.DEMO_USER_ID) {

@@ -120,7 +120,8 @@ function Confirm({...props}) {
     try {
         if ( !EditProj ) {
             let response = await axios.post(
-                data.Projects, newProjectReq)
+                process.env.REACT_APP_API_Projects, newProjectReq,
+                { withCredentials: true })
             console.log(response)
 
             if (response.status === 200) {
@@ -136,12 +137,12 @@ function Confirm({...props}) {
     }  
     let titleRes = await axios
                             .put(
-                            data.Projects + '/title', 
+                            process.env.REACT_APP_API_Projects + '/title', 
                             newProjectReq
                             );
     let teamRes = await axios
                             .put(
-                            data.Users + '/project-team', 
+                            process.env.REACT_APP_API_Users + '/project-team', 
                             newProjectReq
                             )
                             

@@ -8,6 +8,8 @@ const stateContext = createContext();
 
 export const IssueContextProvider = ({children}) => {
     const [Issues, setIssues] = useState([]);
+    const [AsgndIssues, setAsgndIssues] = useState([]);
+    const [PstdIssues, setPstdIssues] = useState([]);
     const [IssueVersions, setIssueVersions] = useState([]);
     const [IssueModal, setIssueModal] = useState(false)
     const [IssueStatus, setIssueStatus] = useState(-1);
@@ -27,7 +29,9 @@ export const IssueContextProvider = ({children}) => {
             SelectedIssue, setSelectedIssue,
             Comments, setComments,
             SearchBkLgIssues, setSearchBkLgIssues,
-            SearchSptIssues, setSearchSptIssues
+            SearchSptIssues, setSearchSptIssues,
+            AsgndIssues, setAsgndIssues,
+            PstdIssues, setPstdIssues,
 
             
         }}

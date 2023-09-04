@@ -10,6 +10,7 @@ import { SprintContextProvider } from './contexts/SprintContexts';
 import { AuthProvider } from './App/Auth';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+if (process.env.NODE_ENV == 'production')  window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function(){}
 root.render(
     <AuthProvider>
             <ContextProvider>

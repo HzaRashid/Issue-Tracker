@@ -8,10 +8,16 @@ const mongoose = require('mongoose');
 var MongoDBStore = require('connect-mongodb-session')(session);
 const ConnectMDB = require('./config/db');
 const cors = require('cors'); 
+const path = require('path')
+const User = require('./models/User');
+const Project = require('./models/Project');
+const Sprint = require('./models/Sprint');
+const Issue = require('./models/Issue');
 
 ConnectMDB();
 
 const app = express();
+
 
 app.use(morgan('dev'))
 app.use(express.json())
@@ -21,7 +27,7 @@ app.use(
     cors({
     origin: process.env.ORIGIN,
     credentials: true,
-    methods: 'GET,POST,PUT'
+    methods: 'GET,POST,PUT',
 }));
 
 
@@ -60,11 +66,31 @@ app.use(session({
   }));
 
 
+
 app.use(passport.initialize())
 app.use(passport.session())
 
 
+
 app.use('/auth', require('./routes/Auth/Auth'))
+app.use((req, res, next) => {
+  // console.log(req)
+  // console.log(req?.isAuthenticated())
+  // console.log(req?.user)
+  if (req.user === process.env.DEMO_USER_ID) {
+    console.log('Demo user - not permitted to make changes')
+    return res.status(400).json({
+      message: 'Demo user not authorized to make changes',
+      statusText: 'Unauthorized account'
+    })
+  }
+    if (!req.user) {
+      return res.status(400).json({
+        message: 'user not authenticated'
+      })
+    } next()
+})
+
 app.use('/users', require('./routes/UserRoute'))
 app.use('/issues', require('./routes/IssueRoute'))
 app.use('/sprints', require('./routes/SprintRoute'))
@@ -73,13 +99,15 @@ app.use('/comments', require('./routes/CommentRoute'))
 
 
 
-app.get('/is-authenticated', (req, res) => {console.log(req.user); res.send('aye');});
 
-
-
+if (process.env.NODE_ENV === 'production') {
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, 'client/build')));
+  app.get('*', ( req, res ) => res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html')))
+}
 const PORT = process.env.PORT || 4050;
-
-app.listen(
+var server =app.listen(
     PORT, 
     () => console.log( `connected to http://localhost:${PORT}` )
     )
+    server.headersTimeout = 10000

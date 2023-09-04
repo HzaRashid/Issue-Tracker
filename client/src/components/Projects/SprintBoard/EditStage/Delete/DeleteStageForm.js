@@ -183,14 +183,14 @@ function DeleteStageForm() {
 
       axios.put(
         
-        data.Issues + '/many-issues-stage',
+        process.env.REACT_APP_API_Issues + '/many-issues-stage',
         {
           sprintID: SelectedSprint?._id,
           stage: formik.values.transferStage,
           issues: issueIds,
           deleteStage: SelectedStage ? SelectedStage : null,
 
-        }
+        }, { withCredentials: true }
       )
       .then(res => {
         console.log(res)

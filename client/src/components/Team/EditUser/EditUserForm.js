@@ -10,8 +10,6 @@ import { BiHide, BiShow } from 'react-icons/bi';
 import axios from 'axios';
 import { Switch } from '@headlessui/react';
 import { Divider } from '@mui/material';
-var _ = require('lodash')
-const routeData = require('../../../pages/routes.json')
 
 
 function EditUserForm() {
@@ -50,16 +48,7 @@ function EditUserForm() {
       FirstName:        z.string().min(1, 'Must have at least 1 character'),
       LastName:         z.string().min(1, 'Must have at least 1 character'),
       Email:            z.string().email(),
-      Password:         pwdReqs
-      // Password:         z.string()
-      //                    .min(8,  'Must have at least 8 characters')
-      //                    .max(14, 'Cannot exceed 14 characters')
-      //                    .regex(/(?=.*[A-Z])+/, 'At least one uppercase letter')
-      //                    .regex(/\d/, '          At least one number')
-      //                    .regex(/(?=.*\W)+/,    'At least one special character')
-      //                    .optional()
-                         ,
-                         
+      Password:         pwdReqs,    
       ConfirmPassword:  confirmPwdReqs
 
     })
@@ -106,7 +95,7 @@ useEffect(() => {
 }, [EditUserModal, ChangePassword] )
 
 
-  const [Submitted, setSubmitted ] = useState(false);
+  const [ Submitted, setSubmitted ] = useState(false);
 
   const submitData = (data) => { 
     setSubmitted(true);
@@ -118,20 +107,10 @@ useEffect(() => {
       role:       SwapRole ? 'admin' : 'developer',
       password:   data.Password,
     }
-    // var oldDoc = {
-    //   _id:        SelectedUser?._id,
-    //   firstName:  SelectedUser.firstName,
-    //   lastName:   SelectedUser.lastName,
-    //   email:      SelectedUser.email,
-    //   role:       SelectedUser.role,
-    //   password:   SelectedUser.password,
-    // }
-
-    // console.log(_.isEqual(newDoc, oldDoc))
-    // if (!_.isEqual(newDoc, oldDoc) ) {
       axios.put(
-        routeData.Users + '/edit',
-        newDoc
+        process.env.REACT_APP_API_Users + '/edit',
+        newDoc,
+        { withCredentials: true }
       )
       .then(res => {
         console.log(res)
@@ -150,15 +129,7 @@ useEffect(() => {
         console.log(err);
         setEditUserStatus(501);
       })
-    // }
-
-    
   }
-
-
-
- 
-
 
   return (
     <>
@@ -453,7 +424,7 @@ useEffect(() => {
     </button>
     <button className='w-[8em] rounded p-1 mr-[1.9em]'
     onClick={() => {
-      // axios request
+      // api request, not needed for demo
     }}
     >
     <div className='flex rounded p-1 items-center justify-center 
@@ -473,12 +444,6 @@ useEffect(() => {
 
 
 </div>
-
-
-
-
-
-
 
 
      <div className='text-center mt-[3.25em]'>

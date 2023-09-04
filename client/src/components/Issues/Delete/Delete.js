@@ -1,7 +1,7 @@
 import React from 'react'
 import { IssueContexts } from '../../../contexts/IssueContexts';
 import axios from 'axios';
-const data = require('../../../pages/routes.json')
+
 function Delete({
     age, 
     setPage, 
@@ -30,9 +30,9 @@ function Delete({
         <button
         className='p-1 hover:bg-[#00000010] rounded'
         onClick={() => {
-            axios.delete(data.Issues + '/delete', {
-                _id: SelectedIssue._id
-            })
+            axios.delete(process.env.REACT_APP_API_Issues + '/delete', 
+            { _id: SelectedIssue._id }, 
+            { withCredentials: true })
             .then(
                 res => {
                     if (res.status === 200) {

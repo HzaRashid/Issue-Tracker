@@ -9,39 +9,17 @@ import { BsCheck2Circle } from 'react-icons/bs';
 import { BiHide, BiShow } from 'react-icons/bi';
 import axios from 'axios';
 import { Switch } from '@headlessui/react';
-const routeData = require('../../../pages/routes.json')
 
 
 function AddUserForm() {
 
     const { setAddUserModal, setNewUserStatus } = TeamContexts();
-    // const [ Name, setName ] = useState({
-    //     first: '',
-    //     last:  ''
-    // });
-    // const [ Email, setEmail ] = useState('');
-    // const [ Password, setPassword ] = useState('');
-    // const [ ConfirmPassword, setConfirmPassword ] = useState('');
     const [ ShowPassword, setShowPassword ] = useState(false);
     const [ ShowConfirmPassword, setShowConfirmPassword ] = useState(false);
     // if true (SwapRole), 
     // then user role is 'admin', 
     // otherwise 'developer'
     const [ SwapRole, setSwapRole ] = useState(false);
-
-    // const handleFirstName = e => setName({...Name, first: e.target.value});
-    // const handleLastName = e => setName({...Name, last: e.target.value});
-    // const handleEmail = e => setEmail(e.target.value);
-    // const handlePassword = e => {
-    //   setPassword(e.target.value);
-    //   console.log(checkpwd(Password))
-    // }
-    // const checkpwd = str => /^[ A-Za-z0-9_@./#&+-]*$/.test(str)
-    // const handleConfirmPassword = e => setConfirmPassword(e.target.value);
-
-
-
-
 
     const formSchema = z.object({
       FirstName:        z.string().min(1, 'Must have at least 1 character'),
@@ -70,18 +48,18 @@ function AddUserForm() {
       formState: { errors },
       handleSubmit 
     } = useForm({ resolver: zodResolver(formSchema) })
-    // console.log(formSchema)
 
   const submitData = (data) => { 
     axios.post(
-      routeData.Users + '/add',
+      process.env.REACT_APP_API_Users + '/add',
       {
         firstName:  data.FirstName,
         lastName:   data.LastName,
         email:      data.Email,
         role:       SwapRole ? 'admin' : 'developer',
         password:   data.Password,
-      }
+      },
+      { withCredentials: true }
     )
     .then(res => {
       if ( res.status === 200 ) {
@@ -150,8 +128,6 @@ function AddUserForm() {
     type='text'
     { ...register("LastName") }
     className='rounded p-1 bg-[#00000010] outline-none text-[0.9em]'
-    // value={Name?.last}
-    // onChange={handleLastName}
     >
     </input>
     { errors.LastName && 
@@ -241,12 +217,6 @@ function AddUserForm() {
     </div>
 
 
-
-
-
-
-
-
     <div className='flex items-center justify-center w-[100%] mt-8 ml-[0.98em] '>
     <div className=''>
     <p
@@ -261,8 +231,6 @@ function AddUserForm() {
     type={ShowPassword ? 'text' : 'password'}
     { ...register("Password") }
     className='flex w-[14em] rounded p-1 bg-[#00000010] outline-none text-[0.9em]'
-    // value={Password}
-    // onChange={handlePassword}
     >
     </input>
    {
@@ -286,7 +254,6 @@ function AddUserForm() {
     </div>
     </div>
 
-    {/* { !errors.Password && } */}
     <div className='flex items-center justify-center w-[100%] mt-8 ml-[0.98em]'>
     <div>
     <p
@@ -301,8 +268,6 @@ function AddUserForm() {
     type={ShowConfirmPassword ? 'text' : 'password'}
     { ...register("ConfirmPassword") }
     className='w-[14em] rounded p-1 bg-[#00000010] outline-none text-[0.9em]'
-    // value={ConfirmPassword}
-    // onChange={handleConfirmPassword}
     >
     </input>
   {
@@ -317,7 +282,6 @@ function AddUserForm() {
    />
    }
     
-    
     </div>
     { errors.ConfirmPassword && 
     <span className='text-[0.6em] text-[#9e5959]'> 
@@ -325,27 +289,12 @@ function AddUserForm() {
     </span> 
     }
 
-    
 
     </div>
     </div>
-
 
     </div>
     
-
-
-
-
-
-
-
-
-
-
-
-
-
 
      <div className='text-center mt-[3.25em]'>
       <CustomTooltip title='Cancel' placement='top'>

@@ -2,43 +2,79 @@ import React, { useEffect } from 'react'
 import { useLocation } from 'react-router-dom';
 import CurrentWork from '../components/Home/CurrentWork';
 import { useStateContext } from '../contexts/ContextProvider';
-import { SprintContexts } from '../contexts/SprintContexts';
 import axios from 'axios';
 import { IssueContexts } from '../contexts/IssueContexts';
-import { ProjContexts } from '../contexts/ProjectContexts';
 import { TeamContexts } from '../contexts/TeamContexts';
-const data = require('../pages/routes.json')
+import { SprintContexts } from '../contexts/SprintContexts';
 
 function Home() {
   const { nav, ProjectNav } = useStateContext();
-  const { setUsers } = TeamContexts();
-  const { setSprints } = SprintContexts();
-  const { setIssueVersions } = IssueContexts();
-  const { setProjects } = ProjContexts();
+  
+  const { Issues, setIssues } = IssueContexts();
+  const { setUsers, Users } = TeamContexts();
+  const { Sprints, setSprints } = SprintContexts();
   useEffect(() => {
-    axios.get(
-      data.Sprints
-    )
-    .then(res => setSprints(res.data))
-    .catch(err => console.log(err))
-    // eslint-disable-next-line
+    if (
+      !Issues?.length && 
+      !Users?.length &&
+      !Sprints?.length 
+    ) {
+      const withCreds = { withCredentials: true };
+      axios.all([
+        axios.get(process.env.REACT_APP_API_Issues, withCreds), 
+        axios.get(process.env.REACT_APP_API_getUsers, withCreds),
+        axios.get(process.env.REACT_APP_API_Sprints, withCreds)
+      ])
+      .then(axios.spread((res1, res2, res3) => {
+                setIssues(res1.data);
+                setUsers(res2.data);
+                setSprints(res3.data);
+      }));
+      }
     }, [])
 
-      useEffect(() => {
-        axios.get(
-          data.Users
-        )
-        .then(res => setUsers(res.data))
-        .catch(err => console.log(err))
-        // eslint-disable-next-line
-        }, [])
+    // useEffect(() => {
+    //   if (!Issues?.length) axios.get(
+    //       process.env.REACT_APP_API_Issues,
+    //       { withCredentials: true }
+    //   )
+    //   .then(res => { 
+    //     setIssues(res.data); 
+    //   })
+    //   .catch(err => console.log(err))
+    // // eslint-disable-next-line
+    // }, []);
+
+    // useEffect(() => {
+    //   if (!Users?.length) axios.get(
+    //       process.env.REACT_APP_API_getUsers,
+    //       { withCredentials: true }
+    //   )
+    //   .then(res => { 
+    //     setUsers(res.data); 
+    //   })
+    //   .catch(err => console.log(err))
+    // // eslint-disable-next-line
+    // }, []);
+
+
+    // useEffect(() => {
+    //   if (!Sprints?.length) axios.get(
+    //       process.env.REACT_APP_API_Sprints,
+    //       { withCredentials: true }
+    //   )
+    //   .then(res => { 
+    //     setSprints(res.data); 
+    //   })
+    //   .catch(err => console.log(err))
+    // // eslint-disable-next-line
+    // }, []);
 
   const currLoc = useLocation();
 
   return (
     <>
-    
-    
+
     <div 
     className={`
     ${

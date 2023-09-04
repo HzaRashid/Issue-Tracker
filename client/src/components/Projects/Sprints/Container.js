@@ -9,7 +9,7 @@ import { IssueContexts } from '../../../contexts/IssueContexts';
 import { AiOutlinePlus } from 'react-icons/ai'
 import { useStateContext } from '../../../contexts/ContextProvider';
 
-const data  = require('../../../pages/routes.json')
+
 function SprintsContainer( props ) {
 
   const { id, items } = props
@@ -22,25 +22,27 @@ function SprintsContainer( props ) {
     const { setIssueModal } = IssueContexts();
     const { nav, ProjectNav, ScreenWidth} = useStateContext();
 
-    useEffect( () => { axios.get(data.Sprints)
-        .then( 
-    
-            response => {
-                const resData = response.data
-                if (!Array.isArray(resData)) {
-                    console.log(resData);
-                    return;
-                }
-                setSprints(
-                    resData
-                    .filter(
-                        sprint => 
-                        (sprint.project === SelectedProj._id) 
-                    )
-                  )
-            }
-            // eslint-disable-next-line
-            )}, [SelectedProj])
+    useEffect( () => { 
+      if (!Sprints?.length || 
+        Sprints[0]?.project !== SelectedProj?._id) {
+          axios.get(process.env.REACT_APP_API_Sprints, { withCredentials: true })
+            .then( 
+                response => {
+                    const resData = response.data
+                    if (!Array.isArray(resData)) {
+                        console.log(resData);
+                        return;
+                    }
+                    setSprints(
+                        resData
+                        .filter(
+                            sprint => 
+                            (sprint.project === SelectedProj?._id) 
+                        )
+                      )
+                })
+              }
+        },[SelectedProj])
 
   return (
     <> 

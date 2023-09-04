@@ -1,14 +1,8 @@
-import axios from "axios";
 import  React, { 
     createContext, 
     useContext, 
-    useEffect, 
     useState,
-    // useEffect
 } from "react";
-// import axios from "axios";
-
-const data = require('../pages/routes.json')
 
 
 const stateContext = createContext();

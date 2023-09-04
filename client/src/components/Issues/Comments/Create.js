@@ -4,7 +4,7 @@ import { AuthContexts } from '../../../App/Auth';
 import { TeamContexts } from '../../../contexts/TeamContexts';
 import axios from 'axios';
 import { IssueContexts } from '../../../contexts/IssueContexts';
-const data = require('../../../pages/routes.json')
+
   const commentStyle = {
     class1:`font-lato tracking-wide 
     antialiased w-[23.5em] bg-[#00000006]
@@ -76,11 +76,11 @@ function Create() {
         'text-[#b6b6b6]' : 'text-[#505050]'}`}
         onClick={() => { 
           if (!IsCmntEmpty) {
-            axios.post(data.WriteComment, {
+            axios.post(process.env.REACT_APP_API_WriteComment, {
               comment:   Comment,
               createdBy: loggedInUser._id,
               issue:     SelectedIssue._id
-            })
+            }, { withCredentials: true })
             setFocus(false); 
             setComment(''); 
             setIsCmntEmpty(true)

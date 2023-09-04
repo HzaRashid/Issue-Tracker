@@ -10,7 +10,6 @@ import GetSprintRow from './GetRow';
 import axios from 'axios';
 import { IssueContexts } from '../../../contexts/IssueContexts';
 
-const data = require('../../../pages/routes.json')
 
 
 function SprintTable( props ) {
@@ -67,7 +66,7 @@ function SprintTable( props ) {
     // after drag and drop feature
     useEffect(
       () => {
-        axios.get(data.Issues)
+        axios.get(process.env.REACT_APP_API_Issues, { withCredentials: true })
         .then(
           response => {
             if (response.status === 200) {
