@@ -73,7 +73,7 @@ function AppRouter() {
 const PrivateRoute = ( { component } ) => {
   const location = useLocation();
   const { user } = AuthContexts();
-  const { ScreenWidth, setScreenWidth} = useStateContext();
+  const { ScreenWidth, setScreenWidth} = useStateContext(); // eslint-disable-next-line
   useEffect(() => setScreenWidth(window.innerWidth), [window.innerWidth])
 
   if (user?.authenticated === null) return;

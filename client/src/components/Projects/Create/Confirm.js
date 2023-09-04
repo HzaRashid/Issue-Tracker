@@ -1,25 +1,21 @@
-// eslint-disable-next-line
-import React, { useState } from 'react'
+import React from 'react'
 import '../../../index.css'
-// eslint-disable-next-line
-// eslint-disable-next-line
 import axios from 'axios';
-// eslint-disable-next-line
 import { BsFillArrowLeftCircleFill, BsCheck2Circle} from 'react-icons/bs';
 import { CustomTooltip } from '../../CustomTooltip';
 import { ProjContexts } from '../../../contexts/ProjectContexts';
-const data = require('../../../pages/routes.json');
 
 
 function Confirm({...props}) {
  
     const { 
         setProjStatus, 
-        ProjStatus,
+        // ProjStatus,
         setProjModal, 
         setEditProjModal,
         Projects, setProjects,
-        EditProj, setEditProj
+        EditProj, 
+        // setEditProj
 
      } = ProjContexts();
     //  console.log(props)

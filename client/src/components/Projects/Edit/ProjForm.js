@@ -1,23 +1,16 @@
-// eslint-disable-next-line
 import React, { useEffect, useState } from 'react'
 import '../../../index.css'
-// eslint-disable-next-line
-import { useStateContext } from '../../../contexts/ContextProvider';
 import { TeamContexts } from '../../../contexts/TeamContexts';
 import { ProjContexts } from '../../../contexts/ProjectContexts';
-import { useFormik } from 'formik'
 import * as Yup from 'yup'
-// eslint-disable-next-line
 import {
   AiFillCaretUp, 
   AiFillCaretDown,
-  AiFillCheckCircle,
   AiOutlineCloseCircle,
   AiOutlineClose
 } from 'react-icons/ai';
-import { BsFillArrowRightCircleFill, BsChevronDown, BsCheck } from 'react-icons/bs';
+import { BsFillArrowRightCircleFill, BsCheck } from 'react-icons/bs';
 import { CustomTooltip } from '../../CustomTooltip';
-import { ProjTypes } from '../Create/ProjTypes';
 import Confirm from '../Create/Confirm';
 import stringAvatar from '../../utils/UserAvatar/StringAvatar';
 import { Avatar } from '@mui/material';
@@ -54,7 +47,7 @@ function ProjForm( { showReview, setShowReview } ) {
     Yup.addMethod(Yup.string, 'uniqueTitle', uniqueTitle)
 
     // console.log(SelectedProj)
-    const getTitle = (proj) => proj?.title
+    // const getTitle = (proj) => proj?.title
 
     const [ ProjTitle , setProjTitle ] = useState('');
     const [ ProjTeam , setProjTeam ] = useState([]);
@@ -76,17 +69,23 @@ function ProjForm( { showReview, setShowReview } ) {
       // console.log(SelectedProjModal)
       // const teamIds = SelectedProjModal?.assignedTo?.slice()
       const teamIds = Users?.filter(
-        u => u.projects.includes(SelectedProjModal?._id)
+        u => { return u.projects.includes(SelectedProjModal?._id) }
       )
       .map(u => u._id)
       setProjTeam(teamIds?.map(id => getAssignee(id)));
       setInitTeam(teamIds?.map(id => getAssignee(id)));
       setProjID(SelectedProjModal?._id)
-    }
-    
-    , [SelectedProjModal, SelectedProjModal?.title, SelectedProjModal?.assignedTo, Users])
+    },
+      // eslint-disable-next-line
+      [
+        SelectedProjModal, 
+        SelectedProjModal?.title, 
+        SelectedProjModal?.assignedTo, 
+        Users
+      ])
 
-    // useEffect(() => console.log(ProjTeam), [ProjTeam])
+    // useEffect(() => console.log(ProjTeam), [ProjTeam]) 
+    // eslint-disable-next-line
     useEffect(() => setEditProj(true), [])
   if (!EditProj) return
   return (

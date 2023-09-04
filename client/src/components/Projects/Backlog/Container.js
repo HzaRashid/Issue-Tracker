@@ -47,8 +47,8 @@ function BacklogContainer( props ) {
                   issue.stage.toLowerCase() === 'backlog'
                 ))
             )
-          } // eslint-disable-next-line
-        )}
+          } 
+        )} // eslint-disable-next-line
       }, [SelectedProj, 
           // SprintIssues, 
           Users])

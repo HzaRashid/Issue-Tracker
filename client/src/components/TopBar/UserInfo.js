@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { AuthContexts } from '../../App/Auth'
 import { TeamContexts } from '../../contexts/TeamContexts';
 import stringAvatar from '../utils/UserAvatar/StringAvatar';
-import axios from 'axios';
 
 function UserInfo() {
     const { user, LoggedInUser, setLoggedInUser } = AuthContexts();

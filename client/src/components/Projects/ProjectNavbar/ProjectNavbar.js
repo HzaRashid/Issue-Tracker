@@ -2,37 +2,35 @@ import React, { useState, useEffect } from 'react'
 import "./ProjectNav.css"
 import '../../../index.css'
 import { AiOutlinePlus } from 'react-icons/ai';
-import { IoIosOpen } from "react-icons/io";
 
-import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { useStateContext } from '../../../contexts/ContextProvider';
 import { ProjContexts } from '../../../contexts/ProjectContexts';
 import { CustomTooltip } from '../../CustomTooltip';
 import Axios from 'axios'
 import { MdEdit } from 'react-icons/md';
 
-// import NavBackGd from './NavBackGd';
-const data = require('../../../pages/routes.json');
-
 
 function ProjectNavbar( props ) {
 
   // eslint-disable-next-line
   const currLoc = useLocation();
-  let goToPage = useNavigate();
-  // const { isProjPage } = props;
 
   const { 
-    setNav,
+    // setNav,
     // ProjectNav, 
     setProjectNav,
     
    } = useStateContext();
 
    const {
-    Projects, setProjects, 
-    setSelectedProjModal, EditProj, 
-    setProjModal, setEditProjModal, setEditProj
+    Projects, 
+    setProjects, 
+    setSelectedProjModal, 
+    // EditProj, 
+    setEditProj,
+    setProjModal, 
+    setEditProjModal, 
   } = ProjContexts();
 
    const [Search, setSearch] = useState('');
@@ -76,11 +74,9 @@ function ProjectNavbar( props ) {
       >
       <button 
       className='flex items-center hover:bg-[#e5e5e5] 
-      ml-[0.475em] p-1 rounded-md font-lato text-[#2a2a2a] w-[85%]' 
+      ml-[0.475em] p-1 rounded-md font-lato text-[#2a2a2a] w-[90%]' 
       onClick={
         () => {
-          // setProjectNav(false);
-          // setNav(false);
           setProjModal(true);
           setEditProj(false)
         }
@@ -91,22 +87,6 @@ function ProjectNavbar( props ) {
       </button>  
       </CustomTooltip>
 
-      <CustomTooltip title='Open Page' arrow>
-      <button 
-      className='ml-[0.75rem] drop-shadow-sm
-      transition ease-in-out delay-50 mr-4
-      hover:-translate-y-1 hover:scale-105 duration-150'
-      onClick={
-        () => {
-          setProjectNav(false);
-          setNav(false);
-          goToPage('/projects')
-        }
-      }
-      >
-        <IoIosOpen color='#505050' fontSize={'1.4em'} />
-      </button>  
-      </CustomTooltip>
     </div>
       </div>
 

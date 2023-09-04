@@ -1,16 +1,16 @@
 import { 
-    RiGoogleFill,
+    // RiGoogleFill,
     RiGithubFill,
     RiMicrosoftFill,
     RiAdminFill
    } from 'react-icons/ri'
 
 
-const data = require('../../../pages/routes.json')
 
-const GoogleLink = data.AuthGoogle
-const GithubLink = data.AuthGithub
-const MSFTLink = data.AuthMicrosoft
+
+const GoogleLink = process.env.REACT_APP_API_AuthGoogle
+const GithubLink = process.env.REACT_APP_API_AuthGithub
+const MSFTLink = process.env.REACT_APP_API_AuthMicrosoft
 
 export const OAuthMethods = [
     {

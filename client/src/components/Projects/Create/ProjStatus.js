@@ -13,7 +13,8 @@ function ProjStatus() {
   // 501: users put request failed
     const { 
       ProjStatus, setProjStatus,
-      EditProj, setEditProj
+      EditProj, 
+      // setEditProj
      } = ProjContexts();
     // console.log(ProjStatus)
 

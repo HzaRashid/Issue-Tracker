@@ -95,7 +95,9 @@ useEffect(() => {
 }, [EditUserModal, ChangePassword] )
 
 
-  const [ Submitted, setSubmitted ] = useState(false);
+  const [ 
+    // Submitted, 
+    setSubmitted ] = useState(false);
 
   const submitData = (data) => { 
     setSubmitted(true);

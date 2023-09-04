@@ -5,8 +5,6 @@ import Avatar from '@mui/material/Avatar';
 import { AuthContexts } from '../../../App/Auth';
 import { IssueContexts } from '../../../contexts/IssueContexts';
 import stringAvatar from '../../utils/UserAvatar/StringAvatar';
-import axios from 'axios';
-const data = require('../../../pages/routes.json');
 
 
 function List( props ) {
@@ -34,7 +32,7 @@ function List( props ) {
         CommentRef.current.close()
       }
       return () => { CommentRef.current.close() }
-
+      // eslint-disable-next-line
     }, [SelectedIssue?._id])
 
   return (

@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Avatar, ThemeProvider, createTheme } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import { DataGrid, GridActionsCellItem, GridToolbarContainer, GridToolbarQuickFilter } from '@mui/x-data-grid';
+import { DataGrid, GridActionsCellItem} from '@mui/x-data-grid';
 import { IssueContexts } from '../../../contexts/IssueContexts';
 import { TeamContexts } from '../../../contexts/TeamContexts';
 import TitleCase from '../../utils/TitleCase';
@@ -15,8 +15,8 @@ import CustomToolbar from './CustomToolbar';
 
 function List( ) {
     const {  
-      Issues, setIssues, setSelectedIssue, 
-      setEditIssueModal, IssueVersions, setIssueVersions } = IssueContexts();
+      Issues, setSelectedIssue, 
+      setEditIssueModal } = IssueContexts();
     const { Users } = TeamContexts();
     const { Projects, 
       // setProjects 
@@ -38,7 +38,7 @@ function List( ) {
         if (key === Issues?.length - 1) setLoaded(true)
         return i
       })  
-    
+    // eslint-disable-next-line
   }, [Issues, Users])
 
   // console.log(rows)

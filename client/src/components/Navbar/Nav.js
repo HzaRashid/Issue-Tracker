@@ -58,14 +58,14 @@ function Nav() {
 
   useEffect(() => {
     setLoggedInUser(
-      Users?.filter(u => u._id === user.user)[0]
+      Users?.filter(u => u._id === user.user)[0]  
+      // eslint-disable-next-line
     )}, [user, Users])
+    
+    // eslint-disable-next-line
+  const [ name,  setName] = useState('');   // eslint-disable-next-line
+  useEffect(() => setName(LoggedInUser?.firstName + ' ' + LoggedInUser?.lastName), [user, LoggedInUser] )
 
-  const [name, setName] = useState('');
-  useEffect(
-    () => setName(LoggedInUser?.firstName + ' ' + LoggedInUser?.lastName),
-    [user, LoggedInUser] )
-//  const { SelectedProj } = ProjContexts();
 
   const { setEditThisUserModal } = TeamContexts()
 

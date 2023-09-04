@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import AssigneeList from './AssigneeList'
 import PostedList from './PostedList'
 

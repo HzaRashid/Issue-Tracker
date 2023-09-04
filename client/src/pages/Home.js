@@ -15,9 +15,9 @@ function Home() {
   const { Sprints, setSprints } = SprintContexts();
   useEffect(() => {
     if (
-      !Issues?.length && 
-      !Users?.length &&
-      !Sprints?.length 
+      !Issues?.length ||
+      !Users?.length ||
+      !Sprints?.length
     ) {
       const withCreds = { withCredentials: true };
       axios.all([
@@ -30,45 +30,8 @@ function Home() {
                 setUsers(res2.data);
                 setSprints(res3.data);
       }));
-      }
+      } // eslint-disable-next-line
     }, [])
-
-    // useEffect(() => {
-    //   if (!Issues?.length) axios.get(
-    //       process.env.REACT_APP_API_Issues,
-    //       { withCredentials: true }
-    //   )
-    //   .then(res => { 
-    //     setIssues(res.data); 
-    //   })
-    //   .catch(err => console.log(err))
-    // // eslint-disable-next-line
-    // }, []);
-
-    // useEffect(() => {
-    //   if (!Users?.length) axios.get(
-    //       process.env.REACT_APP_API_getUsers,
-    //       { withCredentials: true }
-    //   )
-    //   .then(res => { 
-    //     setUsers(res.data); 
-    //   })
-    //   .catch(err => console.log(err))
-    // // eslint-disable-next-line
-    // }, []);
-
-
-    // useEffect(() => {
-    //   if (!Sprints?.length) axios.get(
-    //       process.env.REACT_APP_API_Sprints,
-    //       { withCredentials: true }
-    //   )
-    //   .then(res => { 
-    //     setSprints(res.data); 
-    //   })
-    //   .catch(err => console.log(err))
-    // // eslint-disable-next-line
-    // }, []);
 
   const currLoc = useLocation();
 

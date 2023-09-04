@@ -1,8 +1,6 @@
-// eslint-disable-next-line
 import React, { useState } from 'react'
 import '../../../index.css'
 // eslint-disable-next-line
-import { useStateContext } from '../../../contexts/ContextProvider';
 import { TeamContexts } from '../../../contexts/TeamContexts';
 import { ProjContexts } from '../../../contexts/ProjectContexts';
 import { useFormik } from 'formik'
@@ -11,15 +9,12 @@ import * as Yup from 'yup'
 import {
   AiFillCaretUp, 
   AiFillCaretDown,
-  AiFillCheckCircle,
   AiOutlineCloseCircle,
   AiOutlineClose
 } from 'react-icons/ai';
-import { BsFillArrowRightCircleFill, BsChevronDown, BsCheck } from 'react-icons/bs';
+import { BsFillArrowRightCircleFill, BsCheck } from 'react-icons/bs';
 import { CustomTooltip } from '../../CustomTooltip';
 import Confirm from './Confirm';
-
-import { ProjTypes } from './ProjTypes';
 import { Avatar } from '@mui/material';
 import stringAvatar from '../../utils/UserAvatar/StringAvatar';
 

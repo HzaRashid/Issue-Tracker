@@ -13,7 +13,7 @@ const getUsers = (req, res) => {
                 res.json(result) 
             }
         })
-    };
+};
 
 
 const addUser = async (req, res) => {
@@ -81,25 +81,6 @@ const deleteProjectUser = async (req, res) => {
     )
 };
 
-// const editUser = async (req, res) => {
-//     const userFields = req.body;
-//     User.findById(
-//         userFields._id, 
-//         (err, doc) => {
-//         if (err) {
-//             console.log(err)
-//             res.status(400).send("Request failed")
-//         }
-//         doc.firstName =     userFields.firstName ?? doc.firstName;
-//         doc.lastName  =     userFields.lastName  ?? doc.lastName
-//         doc.email     =     userFields.email     ?? doc.email;
-//         doc.role      =     userFields.role      ?? doc.role;
-//         doc.password  =     userFields.password  ?? doc.password;
-//         doc.updatedAt =     Date();
-//         doc.save();
-//         res.status(200).send(userFields)
-//     });
-// };
 
 const editUser = async (req, res) => {
     try { 
@@ -176,6 +157,22 @@ const deleteUser = (req, res) => {
         }
         )
     };
+
+
+
+const changePassword = async (req, res) => {
+    try {
+        const userFields = req.body
+        const hash = await bcrypt.hash(userFields.password, saltRounds);
+        const user = await User.findById(userFields.id)
+        user.password = hash;
+        await user.save()
+        res.status(200).send("Password changed successfully")
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
     
 
 module.exports = {

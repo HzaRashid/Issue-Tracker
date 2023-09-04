@@ -244,7 +244,7 @@ function FormWrapper( props ) {
     if (!OpenDelModal) {
       setPrevPage(Page)
     }
-
+    // eslint-disable-next-line
   }, [Page])
 
 useEffect(() => console.log(PrevPage), [Page, PrevPage])

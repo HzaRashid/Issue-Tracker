@@ -27,22 +27,21 @@ function SprintsContainer( props ) {
         Sprints[0]?.project !== SelectedProj?._id) {
           axios.get(process.env.REACT_APP_API_Sprints, { withCredentials: true })
             .then( 
-                response => {
-                    const resData = response.data
-                    if (!Array.isArray(resData)) {
-                        console.log(resData);
+                res => {
+                    if (!Array.isArray(res.data)) {
+                        // console.log(res.data);
                         return;
                     }
                     setSprints(
-                        resData
-                        .filter(
+                      res.data
+                        ?.filter(
                             sprint => 
                             (sprint.project === SelectedProj?._id) 
                         )
                       )
                 })
-              }
-        },[SelectedProj])
+              } // eslint-disable-next-line
+        }, [SelectedProj])
 
   return (
     <> 

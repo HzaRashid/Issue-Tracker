@@ -3,11 +3,11 @@ import { IssueContexts } from '../../../contexts/IssueContexts';
 import { TeamContexts } from '../../../contexts/TeamContexts';
 import Avatar from '@mui/material/Avatar';
 import stringAvatar from '../../utils/UserAvatar/StringAvatar';
-import { AuthContexts } from '../../../App/Auth';
+// import { AuthContexts } from '../../../App/Auth';
 import { formatDistance } from 'date-fns';
 import { BsDot, BsArrowRightShort } from 'react-icons/bs';
 import { SprintContexts } from '../../../contexts/SprintContexts';
-import axios from 'axios';
+// import axios from 'axios';
 
 
 
@@ -42,7 +42,8 @@ function History( { IssueVersions, setIssueVersions } ) {
       }
       return () => {
         IVSourceRef.current.close();
-      };
+      }; 
+      // eslint-disable-next-line
   }, [SelectedIssue?._id])
 
 

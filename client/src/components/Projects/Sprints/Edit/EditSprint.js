@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { SprintContexts } from '../../../../contexts/SprintContexts';
 import CustomModal from '../../../CustomModal';
 import EditSprintForm from './EditSprintForm';

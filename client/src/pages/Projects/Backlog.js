@@ -33,7 +33,10 @@ function Backlog() {
     SelectedProj, setSelectedProj, 
     Backlog 
   } = ProjContexts();
-  const { Issues, SearchSptIssues, setSearchSptIssues } = IssueContexts();
+  const { 
+    Issues, 
+    // SearchSptIssues, 
+    setSearchSptIssues } = IssueContexts();
   const { user } = AuthContexts();
 
   const { SprintIssues, SelectedSprint } = SprintContexts();
@@ -42,7 +45,7 @@ function Backlog() {
   let { ProjectTitle } = useParams();
 
   useEffect(() => {
-    if (!Users.length) {
+    if (!Users?.length) {
       axios.get(process.env.REACT_APP_API_getUsers, 
         { withCredentials: true })
         .then(res => { 
@@ -52,8 +55,8 @@ function Backlog() {
           .catch(err => {
             // console.log(err)
           })
-      }
-  }, [])
+      } // eslint-disable-next-line
+  }, [Users?.length])
 
   useEffect(
     () => {
@@ -116,7 +119,7 @@ function Backlog() {
           ),
         })
       }
-    }  
+    }  // eslint-disable-next-line
     , [Backlog, SprintIssues, Users])
   // console.log(items)
 

@@ -4,15 +4,10 @@ var session = require('express-session');
 var passport = require('passport');
 require('./config/passport');
 var morgan = require('morgan');
-const mongoose = require('mongoose');
 var MongoDBStore = require('connect-mongodb-session')(session);
 const ConnectMDB = require('./config/db');
 const cors = require('cors'); 
 const path = require('path')
-const User = require('./models/User');
-const Project = require('./models/Project');
-const Sprint = require('./models/Sprint');
-const Issue = require('./models/Issue');
 
 ConnectMDB();
 
@@ -74,9 +69,6 @@ app.use(passport.session())
 
 app.use('/auth', require('./routes/Auth/Auth'))
 app.use((req, res, next) => {
-  // console.log(req)
-  // console.log(req?.isAuthenticated())
-  // console.log(req?.user)
   if (req.user === process.env.DEMO_USER_ID) {
     console.log('Demo user - not permitted to make changes')
     return res.status(400).json({

@@ -8,7 +8,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { BsChevronDown, BsArrowRightShort } from 'react-icons/bs';
 import { useStateContext } from '../../../../../contexts/ContextProvider';
 import axios from 'axios';
-const data = require('../../../../../pages/routes.json')
+
 
 function DeleteStageForm() {
     const { SelectedProj } = ProjContexts();

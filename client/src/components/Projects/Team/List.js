@@ -190,14 +190,15 @@ function List() {
 function CustomToolbar( props ) {
     // console.log(props)
     const issueCount = props?.users?.length
-    // console.log(props.issueData)
+    // console.log(props.issueData)  // eslint-disable-next-line
     return (
     <div className='flex items-center font-lato'> 
       <GridToolbarContainer sx={{m: 1.25}}>
 
         <div className='flex items-center'> 
         <div className='font-bold text-[1.75em] whitespace-pre'>
-            { 'Team' + ' (' + props?.project?.title + ')'}
+            {/* { 'Team' + ' (' + props?.project?.title + ')'} */}
+            {`Team (${props?.project?.title})`}
             <div className='text-[0.5em]'>
                 {issueCount + ' total'}
             </div>

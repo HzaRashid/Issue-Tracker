@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Avatar, ThemeProvider, createTheme } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import { DataGrid, GridActionsCellItem, GridToolbarContainer, GridToolbarQuickFilter } from '@mui/x-data-grid';
+import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import { IssueContexts } from '../../contexts/IssueContexts'; 
 import axios from 'axios';
-import { TeamContexts } from '../../contexts/TeamContexts'; 
 import TitleCase from '../utils/TitleCase'; 
 import { AiFillCheckSquare, AiFillTool } from 'react-icons/ai';
 import { MdError } from 'react-icons/md';
-import stringAvatar from '../utils/UserAvatar/StringAvatar'; 
 import { ProjContexts } from '../../contexts/ProjectContexts';
 import { AuthContexts } from '../../App/Auth';
 import { DatagridStyle } from '../Home/Issues/DatagridStyle';
@@ -22,7 +20,6 @@ function AssigneeList() {
       AsgndIssues, setAsgndIssues,
       // PstdIssues, setPstdIssues
       } = IssueContexts();
-    const { Users } = TeamContexts();
     const { Projects } = ProjContexts();
     const { user } = AuthContexts();
 
@@ -167,7 +164,9 @@ function AssigneeList() {
       ]
 
 
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, 
+    // setPageSize
+  ] = useState(10);
   const getTheme = createTheme(theme)
   return (
     <>

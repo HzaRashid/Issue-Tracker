@@ -31,12 +31,13 @@ function EditThisUserForm() {
   // if true (SwapRole), 
   // then user role is 'admin', 
   // otherwise 'developer'
+
   const [ SwapRole, setSwapRole ] = useState(false);
   useEffect(() => {
-  if (SelectedUser?.role?.toLowerCase() === 'admin') setSwapRole(true);
+  if (SelectedUser?.role?.toLowerCase() === 'admin') setSwapRole(true); // eslint-disable-next-line
   }, [])
 
-  // console.log(SelectedUser)
+
   const formSchema = z.object({
     FirstName:        z.string().min(1, 'Must have at least 1 character'),
     LastName:         z.string().min(1, 'Must have at least 1 character'),

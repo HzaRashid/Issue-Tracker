@@ -2,7 +2,6 @@ import React, { SetStateAction, useEffect, useRef, useState } from 'react';
 import { SprintContexts } from '../../../../../contexts/SprintContexts';
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 import axios from 'axios';
-const data = require('../../../../../pages/routes.json')
 
 
 export interface Props {
@@ -83,8 +82,9 @@ export function AddContainer(
         StageTitle.replace(/\s/g, '').length > 0
         ) {
           console.log(StageTitle)
+          const sprintUrl : string = process.env.REACT_APP_API_Sprints as string
           axios.put(
-            data.Sprints + '/add-stage',
+            sprintUrl + '/add-stage',
             {
               sprintID: SelectedSprint?._id,
               stageTitle: StageTitle

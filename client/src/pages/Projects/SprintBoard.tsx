@@ -41,15 +41,14 @@ function SprintBoard() {
       if (!Projects?.length) {
         axios.get(process.env.REACT_APP_API_Projects as string, { withCredentials: true })
         .then(res => setProjects(res.data))
-      }
-      }, []
-  )
+      } // eslint-disable-next-line
+      }, [Projects?.length])
 
   useEffect(() => {
     if (!SelectedProj?.title || (
       ProjectTitle && ( SelectedProj?.title !== ProjectTitle ))) {
         setSelectedProj(
-          Projects.filter(
+          Projects?.filter(
             (project: {title: string}) => project.title === ProjectTitle
           )[0])
         }  
@@ -86,7 +85,7 @@ function SprintBoard() {
   )
 
   useEffect(() => {
-    if (!Users.length) {
+    if (!Users?.length) {
       axios.get(process.env.REACT_APP_API_getUsers as string, { withCredentials: true })
       .then(res => { 
           if (res.status === 200) setUsers(res.data); 
@@ -95,8 +94,8 @@ function SprintBoard() {
         .catch(err => {
           // console.log(err)
         })
-    }
-  }, [])
+    } // eslint-disable-next-line
+  }, [Users?.length])
 
 
   type Issue = {

@@ -6,7 +6,7 @@ export function CustomToolbar( props ) {
     const issueCount = props?.issues?.length
     const title = props?.title
 
-    // console.log(props.issueData)
+
     return (
     <div className='flex items-center font-lato'> 
       <GridToolbarContainer sx={{m: 1.25}}>

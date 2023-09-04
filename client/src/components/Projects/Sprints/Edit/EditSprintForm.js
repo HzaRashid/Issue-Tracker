@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { AiOutlineClose } from 'react-icons/ai';
 import { CustomTooltip } from '../../../CustomTooltip';
-import { BsCheck2Circle, BsFillArrowRightCircleFill } from 'react-icons/bs';
+import { BsCheck2Circle } from 'react-icons/bs';
 import { SprintContexts } from '../../../../contexts/SprintContexts';
 import { ProjContexts } from '../../../../contexts/ProjectContexts';
 import { useStateContext } from '../../../../contexts/ContextProvider';
@@ -18,7 +18,7 @@ function EditSprintForm() {
     // const { setEditSprintModal } = SprintContexts()
     const {
       setEditSprintModal, 
-      setSprintModal,
+      // setSprintModal,
       Sprints, setSprints,
       setEditSprintStatus,
       setSelectedSprintEdit,
@@ -61,7 +61,7 @@ function EditSprintForm() {
                                       'EditSprintTitle', 
                                   SelectedSprintEdit?.title);
 
-      }
+      } // eslint-disable-next-line
       , [SelectedSprintEdit])
       
       const [startDate, endDate] = formik.values.dateRange;
@@ -71,7 +71,7 @@ function EditSprintForm() {
             new Date(SelectedSprintEdit?.startDate), 
             new Date(SelectedSprintEdit?.endDate)
           ]);
-        }
+        } // eslint-disable-next-line
       }, [SelectedSprintEdit])
 
   return (

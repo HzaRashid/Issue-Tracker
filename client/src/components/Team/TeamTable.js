@@ -73,11 +73,12 @@ function TeamTable() {
 
     const {
         Users,setUsers,
-        AddUserModal, setAddUserModal,
+        setAddUserModal,
         // DeleteUser, setDeleteUser,
-        EditUser, setEditUser,
-        ModalClosed, setModalClosed,
-        AssignProjModal, setAssignProjModal,
+        // EditUser, setEditUser,
+        // ModalClosed, setModalClosed,
+        // AssignProjModal, 
+        setAssignProjModal,
         SelectedGridUsers, setSelectedGridUsers,
         tableRef, setTableRef, 
         setEditUserModal,
@@ -97,7 +98,7 @@ function TeamTable() {
           .catch(err => {
             // console.log(err)
           })
-      }
+      } // eslint-disable-next-line
     }, [])
 
 
@@ -166,10 +167,9 @@ function TeamTable() {
       ]
 
 
-  const ref = useGridApiRef();
-
-  useEffect(() => setTableRef(ref), [])
-  useEffect(() => setSelectedGridUsers([]), [])
+  const ref = useGridApiRef();                    // eslint-disable-next-line
+  useEffect(() => setTableRef(ref), [])           // eslint-disable-next-line
+  useEffect(() => setSelectedGridUsers([]), [])   
 
   if (tableRef.current === null) return
 

@@ -1,7 +1,6 @@
 import React from 'react'
 import AddProjModal from '../../components/Projects/AddProjModal';
 import { useStateContext } from '../../contexts/ContextProvider';
-import { ProjContexts } from '../../contexts/ProjectContexts';
 import { useLocation } from 'react-router-dom';
 
 
