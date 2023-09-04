@@ -100,8 +100,8 @@ function LoginComponent() {
                     axios.post(
                       process.env.REACT_APP_API_localLogin,
                       {
-                        email:      data.demoEmail,
-                        password:   data.demoPwd
+                        email:      process.env.REACT_APP_API_demoEmail,
+                        password:   process.env.REACT_APP_API_demoPwd
                       },
                       {withCredentials: true,},
              
