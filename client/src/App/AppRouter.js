@@ -38,7 +38,7 @@ function AppRouter() {
           },
         })
         .then(res => res.json())
-        .then(json => { setUser({...json}) })
+        .then(json => { setUser({...json}); })
         .catch(err => {
           // console.log(err);
           setUser(TBDAuthUser);
@@ -47,7 +47,7 @@ function AppRouter() {
     }, []
   )
 
-  // console.log(user)
+  console.log(user)
   return (
   <>
   <Routes>    
