@@ -12,14 +12,14 @@ const {
     deleteUser
 } = require('../controllers/UserCtrl')
 
-const { isAuthDemo } = require('./Auth/isAuth')
+const { isAuthDemo, isAuth } = require('./Auth/isAuth')
 
-router.get('/', getUsers);
-router.post('/add',          addUser);
-router.put('/project',       addProjectUser);
-router.put('/project-team',  addProjectUserNext, deleteProjectUser);
-router.put('/edit-role/',    editUserRole);
-router.put('/edit',          editUser);
-router.delete('/:id',        deleteUser);
+router.get('/', isAuth, getUsers);
+router.post('/add',          isAuthDemo, addUser);
+router.put('/project',       isAuthDemo, addProjectUser);
+router.put('/project-team',  isAuthDemo, addProjectUserNext, deleteProjectUser);
+router.put('/edit-role/',    isAuthDemo, editUserRole);
+router.put('/edit',          isAuthDemo, editUser);
+router.delete('/:id',        isAuthDemo, deleteUser);
 
 module.exports = router;

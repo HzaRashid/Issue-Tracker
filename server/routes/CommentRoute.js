@@ -7,8 +7,11 @@ const {
     writeComment
     
 } = require('../controllers/CommentCtrl')
+const { isAuthDemo, isAuth } = require('../routes/Auth/isAuth')
+
+
+router.get('/SSE/:id', isAuth, sendComments);
+router.post('/', isAuthDemo, writeComment);
+
+
 module.exports = router;
-
-
-router.get('/SSE/:id', sendComments);
-router.post('/', writeComment);

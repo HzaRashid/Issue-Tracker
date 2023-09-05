@@ -4,9 +4,9 @@ const User = require('../../models/User');
 var passport = require('passport')
 
 const isAuthDemo = (req, res, next) => {
-  console.log(req?.session)
-  console.log(req?.isAuthenticated())
-  console.log(req?.user)
+  // console.log(req?.session)
+  // console.log(req?.isAuthenticated())
+  // console.log(req?.user)
   if (req.user === process.env.DEMO_USER_ID) {
     console.log('Demo user - not permitted to make changes')
     return res.status(400).json({
@@ -28,6 +28,13 @@ const isAuth = (req, res, next) => {
       message: 'user not authenticated, nor authorized to make changes'
     })
   } next()
+}
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated())
+    return next();
+  else
+    res.redirect('/login')
 }
 
   module.exports = { isAuthDemo, isAuth }

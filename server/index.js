@@ -68,20 +68,20 @@ app.use(passport.session())
 
 
 app.use('/auth', require('./routes/Auth/Auth'))
-app.use((req, res, next) => {
-  if (req.user === process.env.DEMO_USER_ID) {
-    console.log('Demo user - not permitted to make changes')
-    return res.status(400).json({
-      message: 'Demo user not authorized to make changes',
-      statusText: 'Unauthorized account'
-    })
-  }
-    if (!req.user) {
-      return res.status(400).json({
-        message: 'user not authenticated'
-      })
-    } next()
-})
+// app.use((req, res, next) => {
+//   if (req.user === process.env.DEMO_USER_ID) {
+//     console.log('Demo user - not permitted to make changes')
+//     return res.status(400).json({
+//       message: 'Demo user not authorized to make changes',
+//       statusText: 'Unauthorized account'
+//     })
+//   }
+//     if (!req.user) {
+//       return res.status(400).json({
+//         message: 'user not authenticated'
+//       })
+//     } next()
+// })
 
 app.use('/users', require('./routes/UserRoute.js'))
 app.use('/issues', require('./routes/IssueRoute'))

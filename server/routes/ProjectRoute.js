@@ -13,19 +13,19 @@ const {
     deleteProject 
 } = require('../controllers/ProjectCtrl')
 const { addProjectUser,addProjectUserNext, deleteProjectUser } = require('../controllers/UserCtrl')
-const { isAuthDemo } = require('../routes/Auth/isAuth')
+const { isAuthDemo, isAuth } = require('../routes/Auth/isAuth')
 module.exports = router;
 
-router.get('/', getProjects);
+router.get('/', isAuth, getProjects);
 
-router.post('/',         addProject);
-router.put('/title',     editProjectTitle);
-router.put('/edit-all',  editProjectTitleNext, addProjectUserNext, deleteProjectUser);
-router.put('/add-team',  addProjectUser);
+router.post('/',         isAuthDemo, addProject);
+router.put('/title',     isAuthDemo, editProjectTitle);
+router.put('/edit-all',  isAuthDemo, editProjectTitleNext, addProjectUserNext, deleteProjectUser);
+router.put('/add-team',  isAuthDemo, addProjectUser);
 
-router.put('/team', editProjectTeam);
-router.put('/key', editProjectTitle);
-router.put('/startDate', editProjectStartDate);
-router.put('/endDate', editProjectEndDate);
-router.put('/description', editProjectDesc);
-router.delete('/delete', deleteProject);
+router.put('/team',         isAuthDemo, editProjectTeam);
+router.put('/key',          isAuthDemo, editProjectTitle);
+router.put('/startDate',    isAuthDemo, editProjectStartDate);
+router.put('/endDate',      isAuthDemo, editProjectEndDate);
+router.put('/description',  isAuthDemo, editProjectDesc);
+router.delete('/delete',    isAuthDemo, deleteProject);
