@@ -11,7 +11,7 @@ const {
     editUser,
     deleteUser
 } = require('../controllers/UserCtrl')
-module.exports = router;
+
 const { isAuthDemo } = require('./Auth/isAuth')
 
 router.get('/', getUsers);
@@ -21,3 +21,5 @@ router.put('/project-team',  addProjectUserNext, deleteProjectUser);
 router.put('/edit-role/',    editUserRole);
 router.put('/edit',          editUser);
 router.delete('/:id',        deleteUser);
+
+module.exports = router;

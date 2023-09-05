@@ -2,10 +2,10 @@ const dotenv = require('dotenv').config();
 var express = require('express');
 var session = require('express-session');
 var passport = require('passport');
-require('./config/passport');
+require('./passport.js');
 var morgan = require('morgan');
 var MongoDBStore = require('connect-mongodb-session')(session);
-const ConnectMDB = require('./config/db');
+const ConnectMDB = require('./db.js');
 const cors = require('cors'); 
 const path = require('path')
 
