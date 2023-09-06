@@ -2,16 +2,20 @@ const dotenv = require('dotenv').config();
 var express = require('express');
 var session = require('express-session');
 var passport = require('passport');
-require('./passportConfig.js');
+require('./config/passportConfig.js');
 var Redis = require('redis')
-const RedisStore = require("connect-redis").default
-const ConnectMDB = require('./db.js');
+const SessionStore = require("connect-redis").default
+const RedisStore = require('rate-limit-redis').default
+const ConnectMDB = require('./config/db.js');
 const cors = require('cors'); 
 var compression = require('compression')
 var morgan = require('morgan');
+const { rateLimit } = require('express-rate-limit')
 
 ConnectMDB();
 const app = express();
+app.set('trust proxy', 1)
+app.get('/ip', (request, response) => response.send(request.ip))
 
 app.use(morgan('dev'))
 app.use(express.json())
@@ -39,10 +43,22 @@ RedisClient.on('error', err => console.log('Redis Client Error', err));
 RedisClient.connect()
 RedisClient.ping('')
 
-let redisStore = new RedisStore({
+let redisStore = new SessionStore({
   client: RedisClient,
   prefix: "myapp:",
 })
+
+
+const limiter = rateLimit({
+	windowMs: 10 * 60 * 1000,     // 10 minutes
+	max: 100,                     // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+	standardHeaders: 'draft-7',   // draft-6: RateLimit-* headers; draft-7: combined RateLimit header
+	legacyHeaders: false,         // X-RateLimit-* headers
+	store: new RedisStore({
+    sendCommand: (...args) => RedisClient.sendCommand(args),
+  }) , // Use an external store for more precise rate limiting
+})
+app.use(limiter)
 
 app.use(session({
     secret: 'This is a secret',
