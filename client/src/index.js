@@ -9,9 +9,9 @@ import { IssueContextProvider } from './contexts/IssueContexts';
 import { SprintContextProvider } from './contexts/SprintContexts';
 import { AuthProvider } from './App/Auth';
 
-// eslint-disable-next-line
+
+const root = ReactDOM.createRoot(document.getElementById('root'));  // eslint-disable-next-line
 if (process.env.NODE_ENV == 'production')  window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function(){}
-const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <AuthProvider>
             <ContextProvider>

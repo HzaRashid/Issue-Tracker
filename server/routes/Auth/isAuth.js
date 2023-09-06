@@ -23,8 +23,8 @@ const isAuthDemo = (req, res, next) => {
 
 
 const isAuth = (req, res, next) => {
-  if (!req.user) {
-    return res.status(413).json({
+  if (!req.isAuthenticated()) {
+    return res.status(400).json({
       message: 'user not authenticated, nor authorized to make changes'
     })
   } next()

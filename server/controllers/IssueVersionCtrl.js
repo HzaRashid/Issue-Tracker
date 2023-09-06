@@ -20,12 +20,13 @@ const sendIssueVersions = async (req, res) => {
             if ( ObjectID(id).toString() === id ) {
                 
                 writeData(res, id)
-                setInterval(() => {
+                var timer = setInterval(() => {
                     writeData(res, id)
                 }, 2000)
-            
-            
             }
+            res.on('close', function() {
+                clearInterval(timer)
+            })
         }
 }
     
@@ -33,6 +34,7 @@ let writeData = async (res, id) => {
     try { 
         let docs = await IssueVersion.find({issueID: id})
         res.write(`data: ${JSON.stringify(docs)}\n\n`)
+        res.flush()
     } 
     catch (err) {
         console.log(err)

@@ -2,20 +2,21 @@ const dotenv = require('dotenv').config();
 var express = require('express');
 var session = require('express-session');
 var passport = require('passport');
-require('./passport.js');
-var morgan = require('morgan');
-var MongoDBStore = require('connect-mongodb-session')(session);
+require('./passportConfig.js');
+var Redis = require('redis')
+const RedisStore = require("connect-redis").default
 const ConnectMDB = require('./db.js');
 const cors = require('cors'); 
-const path = require('path')
+var compression = require('compression')
+var morgan = require('morgan');
 
 ConnectMDB();
-
 const app = express();
-
 
 app.use(morgan('dev'))
 app.use(express.json())
+app.use(compression())
+
 app.use(express.urlencoded({ extended: false }))
 
 app.use(
@@ -26,36 +27,30 @@ app.use(
 }));
 
 
-var store = new MongoDBStore(
-    {
-    uri: process.env.MDB_URI,
-    databaseName: process.env.MDB_DB_NAME,
-    collection: process.env.MDB_SESSION_COLLECTION,
-    connectionOptions: {
-      serverSelectionTimeoutMS: 10000
-      }
-},
-
-  function(error) {
-    if (error) {
-      console.log('MDB new store Error:');
-      console.log(error);
-    }
-  });
-
-// Catch errors
-store.on('error', (error) =>  { 
-    console.log('MDB store.on Error:');
-    console.log(error);
+const RedisClient = Redis.createClient({
+  password: process.env.REDIS_PWD,
+  socket: {
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT
+  }
 });
 
+RedisClient.on('error', err => console.log('Redis Client Error', err));
+RedisClient.connect()
+RedisClient.ping('')
+
+let redisStore = new RedisStore({
+  client: RedisClient,
+  prefix: "myapp:",
+})
 
 app.use(session({
     secret: 'This is a secret',
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+      httpOnly: false
     },
-    store: store,
+    store: redisStore,
     resave: false,
     saveUninitialized: false,
   }));
@@ -68,28 +63,11 @@ app.use(passport.session())
 
 
 app.use('/auth', require('./routes/Auth/Auth'))
-// app.use((req, res, next) => {
-//   if (req.user === process.env.DEMO_USER_ID) {
-//     console.log('Demo user - not permitted to make changes')
-//     return res.status(400).json({
-//       message: 'Demo user not authorized to make changes',
-//       statusText: 'Unauthorized account'
-//     })
-//   }
-//     if (!req.user) {
-//       return res.status(400).json({
-//         message: 'user not authenticated'
-//       })
-//     } next()
-// })
-
 app.use('/users', require('./routes/UserRoute.js'))
 app.use('/issues', require('./routes/IssueRoute'))
 app.use('/sprints', require('./routes/SprintRoute'))
 app.use('/projects', require('./routes/ProjectRoute'))
 app.use('/comments', require('./routes/CommentRoute'))
-
-
 
 
 // if (process.env.NODE_ENV === 'production') {
@@ -99,7 +77,5 @@ app.use('/comments', require('./routes/CommentRoute'))
 //    });
 // }
 const PORT = process.env.PORT || 4050;
-app.listen(
-    PORT, 
-    () => console.log( `connected to http://localhost:${PORT}` )
-    )
+app.listen(PORT, 
+    () => console.log( `connected to http://localhost:${PORT}` ))

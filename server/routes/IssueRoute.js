@@ -23,7 +23,7 @@ module.exports = router;
 
 
 router.get('/', isAuth, getIssues);
-router.get('/versions/sse/:id', isAuth, isAuthDemo, sendIssueVersions)
+router.get('/versions/sse/:id', isAuth, sendIssueVersions)
 router.get('/versions/:id',     isAuth, getIssueVersions)
 router.post('/add-issue',   isAuthDemo, addIssue);
 

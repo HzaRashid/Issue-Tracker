@@ -19,9 +19,13 @@ const sendComments = (req, res) => {
         if ( ObjectID(id).toString() === id ) {
             
             writeData(res, id)
-            setInterval(() => {
+            var timer = setInterval(() => {
                 writeData(res, id)
             }, 2000)
+
+            res.on('close', function() {
+                clearInterval(timer)
+            })
         
         
         }
@@ -32,6 +36,7 @@ let writeData = async (res, id) => {
     try {
         let docs = await Comment.find( { issue: id } );
         res.write(`data: ${JSON.stringify(docs)}\n\n`);
+        res.flush()
     } 
     catch (error) {
        console.log(err) 
