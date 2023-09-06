@@ -31,12 +31,13 @@ app.use(
 }));
 
 
-const RedisClient = Redis.createClient({
-  password: process.env.REDIS_PWD,
-  socket: {
-      host: process.env.REDIS_HOST,
-      port: process.env.REDIS_PORT
-  }
+const RedisClient = Redis.createClient({  
+  url: process.env.REDIS_URL
+  // password: process.env.REDIS_PWD,
+  // socket: {
+  //     host: process.env.REDIS_HOST,
+  //     port: process.env.REDIS_PORT
+  // }
 });
 
 RedisClient.on('error', err => console.log('Redis Client Error', err));
@@ -56,7 +57,7 @@ const limiter = rateLimit({
 	legacyHeaders: false,         // X-RateLimit-* headers
 	store: new RedisStore({
     sendCommand: (...args) => RedisClient.sendCommand(args),
-  }) , // Use an external store for more precise rate limiting
+  }),
 })
 app.use(limiter)
 
@@ -75,7 +76,6 @@ app.use(session({
 
 app.use(passport.initialize())
 app.use(passport.session())
-
 
 
 app.use('/auth', require('./routes/Auth/Auth'))
