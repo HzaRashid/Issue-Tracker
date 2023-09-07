@@ -3,7 +3,7 @@ import AppRouter from './App/AppRouter';
 
 function App() {
   return (
-    <Router basename='https://flow-issue-tracker-production.up.railway.app'>
+    <Router basename='/'>
       <AppRouter/> 
     </Router>
   );
