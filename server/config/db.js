@@ -8,7 +8,7 @@ const ConnectDB = async () => {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
             });
-        console.log('connected to database');
+        console.log('connected to mongodb');
         } 
     catch (err) {
         console.log(err);
