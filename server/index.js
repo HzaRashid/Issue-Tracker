@@ -17,7 +17,7 @@ const app = express();
 app.set('trust proxy', 1)
 app.get('/ip', (request, response) => response.send(request.ip))
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV == "development") {
   var morgan = require('morgan');
   app.use(morgan('dev'))
 }
@@ -80,7 +80,11 @@ app.use(session({
 
 app.use(passport.initialize())
 app.use(passport.session())
-
+app.use(function(req, res, next) {  
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+}); 
 
 app.use('/auth', require('./routes/Auth/Auth'))
 app.use('/users', require('./routes/UserRoute.js'))
@@ -92,7 +96,6 @@ app.use('/comments', require('./routes/CommentRoute'))
 if (process.env.NODE_ENV == "production") {
   var path = require('path');
   app.use(express.static(path.join(__dirname, 'build')));
-
   app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
   });
