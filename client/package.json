@@ -81,5 +81,5 @@
     "postcss-nesting": "^10.1.10",
     "tailwindcss": "^3.0.24"
   },
-  "homepage": "https://flow-issue-tracker-production.up.railway.app/"
+  "homepage": "https://flow-issue-tracker-production.up.railway.app"
 }
