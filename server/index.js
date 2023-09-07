@@ -45,7 +45,7 @@ const RedisClient = Redis.createClient({
 });
 
 RedisClient.on('error', err => console.log('Redis Client Error', err));
-RedisClient.on('connect', () => console.log('redis connected'))
+RedisClient.on('connect', () => console.log('connected to Redis'))
 RedisClient.connect()
 RedisClient.ping('')
 
@@ -70,7 +70,8 @@ app.use(session({
     secret: 'This is a secret',
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
-      httpOnly: false
+      httpOnly: false,
+      secure: true
     },
     store: redisStore,
     resave: false,
