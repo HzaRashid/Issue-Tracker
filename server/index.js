@@ -37,11 +37,6 @@ app.use(
 
 const RedisClient = Redis.createClient({  
   url: process.env.REDIS_URL
-  // password: process.env.REDIS_PWD,
-  // socket: {
-  //     host: process.env.REDIS_HOST,
-  //     port: process.env.REDIS_PORT
-  // }
 });
 
 RedisClient.on('error', err => console.log('Redis Client Error', err));
@@ -71,7 +66,6 @@ app.use(session({
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
       httpOnly: false,
-      secure: true
     },
     store: redisStore,
     resave: false,
@@ -82,11 +76,6 @@ app.use(session({
 
 app.use(passport.initialize())
 app.use(passport.session())
-app.use(function(req, res, next) {  
-  res.header('Access-Control-Allow-Origin', req.headers.origin);
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-}); 
 
 app.use('/auth', require('./routes/Auth/Auth'))
 app.use('/users', require('./routes/UserRoute.js'))

@@ -2,7 +2,8 @@ const mongoose = require('mongoose')
 
 
 const ConnectDB = async () => {
-    try {mongoose.set('strictQuery', false)
+    try {
+        mongoose.set('strictQuery', false)
         const Connection = await mongoose.connect(process.env.MDB_URI,
             {
                 useNewUrlParser: true,
