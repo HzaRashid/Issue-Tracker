@@ -9,7 +9,7 @@ const RedisStore = require('rate-limit-redis').default
 const ConnectMDB = require('./config/db.js');
 const cors = require('cors'); 
 var compression = require('compression')
-var morgan = require('morgan');
+
 const { rateLimit } = require('express-rate-limit')
 
 ConnectMDB();
@@ -17,7 +17,11 @@ const app = express();
 app.set('trust proxy', 1)
 app.get('/ip', (request, response) => response.send(request.ip))
 
-app.use(morgan('dev'))
+if (process.env.NODE_ENV === "production") {
+  var morgan = require('morgan');
+  app.use(morgan('dev'))
+}
+
 app.use(express.json())
 app.use(compression())
 
@@ -86,12 +90,7 @@ app.use('/projects', require('./routes/ProjectRoute'))
 app.use('/comments', require('./routes/CommentRoute'))
 
 
-// if (process.env.NODE_ENV === 'production') {
-//   app.use(express.static(path.join(__dirname, 'build')));
-//   app.get('/*', function (req, res) {
-//      res.sendFile(path.join(__dirname, 'build', 'index.html'));
-//    });
-// }
+
 const PORT = process.env.PORT || 4050;
 app.listen(PORT, 
     () => console.log( `connected to http://localhost:${PORT}` ))
