@@ -22,7 +22,7 @@ function SprintBoard() {
     SelectedProj, setSelectedProj, 
   } = ProjContexts();
 
-  const { setIssueModal } = IssueContexts();
+  const { setIssueModal, Issues, setIssues } = IssueContexts();
 
   const { 
     Sprints, setSprints,
@@ -33,16 +33,29 @@ function SprintBoard() {
     // eslint-disable-next-line
     items, setItems
   } = SprintContexts();
-  // const { SelectedIssue } = IssueContexts();
-  // console.log(SelectedSprint)
 
-  useEffect(
-    () => {
-      if (!Projects?.length) {
-        axios.get(process.env.REACT_APP_API_Projects as string, { withCredentials: true })
-        .then(res => setProjects(res.data))
-      } // eslint-disable-next-line
-      }, [Projects?.length])
+      useEffect(() => {
+        if (
+          !Issues?.length ||
+          !Users?.length ||
+          !Projects?.length||
+          !Sprints?.length 
+        ) {
+          const withCreds = { withCredentials: true };
+          axios.all([
+            axios.get(process.env.REACT_APP_API_Issues as string, withCreds), 
+            axios.get(process.env.REACT_APP_API_getUsers as string, withCreds),
+            axios.get(process.env.REACT_APP_API_Projects as string, withCreds),
+            axios.get(process.env.REACT_APP_API_Sprints as string, withCreds)
+          ])
+          .then(axios.spread((res1, res2, res3, res4) => {
+                    setIssues(res1.data);
+                    setUsers(res2.data);
+                    setProjects(res3.data);
+                    setSprints(res4.data);
+          }));
+          } // eslint-disable-next-line
+        }, [])
 
   useEffect(() => {
     if (!SelectedProj?.title || (
@@ -58,21 +71,7 @@ function SprintBoard() {
   )
   // console.log(SelectedProj)
 
-
-  useEffect(() => {
-      if (!Sprints?.length) {
-        axios.get(
-          process.env.REACT_APP_API_Sprints as string, 
-          { withCredentials: true })
-          .then(res => setSprints(res.data?.filter(
-              (sprint: {project: string}) => {
-                return sprint.project === SelectedProj?._id
-          })))
-        }
-    },
-    // eslint-disable-next-line
-    [SelectedProj]
-  )
+  console.log(useParams())
   useEffect(
     () => {
       setSelectedSprint(
@@ -84,18 +83,6 @@ function SprintBoard() {
     [SelectedProj, Sprints, useParams()]
   )
 
-  useEffect(() => {
-    if (!Users?.length) {
-      axios.get(process.env.REACT_APP_API_getUsers as string, { withCredentials: true })
-      .then(res => { 
-          if (res.status === 200) setUsers(res.data); 
-          // console.log(res.data)
-        })
-        .catch(err => {
-          // console.log(err)
-        })
-    } // eslint-disable-next-line
-  }, [Users?.length])
 
 
   type Issue = {
@@ -106,7 +93,18 @@ function SprintBoard() {
 
   useEffect(
     () => {
-      axios.get(process.env.REACT_APP_API_Issues as string, { withCredentials: true })
+      if (Issues?.length) {
+        setSprintIssues(
+          Issues
+          .filter(
+            (issue: Issue) => (
+              issue.project === SelectedProj?._id && 
+              issue.sprint === SelectedSprint?._id &&
+              issue.stage.toLowerCase() !== 'backlog'
+              ))
+            )
+      } else axios
+      .get(process.env.REACT_APP_API_Issues as string, { withCredentials: true })
       .then(
         response => {
           if (response.status === 200) {
@@ -147,7 +145,7 @@ function SprintBoard() {
 
   
   const currLoc = useLocation();
-  const currPathname = `${SelectedSprint?.title} - Board`;
+  const currPathname = `${useParams().SprintTitle} - Board`;
   // ${ScreenWidth < 1200 ? 'ml-[3.5em]' : 'ml-[1.5em]'}
   const bothNavsClosed = !ProjectNav && !nav
   const ProjNavOpen  = ProjectNav && !nav

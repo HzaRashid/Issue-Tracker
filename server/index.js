@@ -59,7 +59,7 @@ const limiter = rateLimit({
     sendCommand: (...args) => RedisClient.sendCommand(args),
   }),
 })
-app.use(limiter)
+// app.use(limiter)
 
 app.use(session({
     secret: 'This is a secret',
