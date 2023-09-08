@@ -8,6 +8,7 @@ import { ProjContexts } from '../../../contexts/ProjectContexts';
 import { CustomTooltip } from '../../CustomTooltip';
 import Axios from 'axios'
 import { MdEdit } from 'react-icons/md';
+import { SprintContexts } from '../../../contexts/SprintContexts';
 
 
 function ProjectNavbar( props ) {
@@ -30,10 +31,9 @@ function ProjectNavbar( props ) {
     setEditProj,
     setProjModal, 
     setEditProjModal, 
-
   } = ProjContexts();
-
-
+  const { setShowSprints } = SprintContexts();
+  
    const [Search, setSearch] = useState('');
 
    useEffect( () => { 
@@ -121,6 +121,7 @@ function ProjectNavbar( props ) {
             onClick={
               () => {
                 setProjectNav(false);
+                setShowSprints(false);
 
               }}
               id={

@@ -220,7 +220,7 @@ function SprintBoard() {
          font-normal flex items-center space-x-6`}> 
        <p className='text-[#202020] text-[1.6em]'>{SelectedSprint?.title} </p>
        <button className='text-[0.95em] flex items-center p-[0.3em]
-      bg-[#e2e2e2] hover:bg-[#728391] hover:text-[#e0e0e0] rounded-[0.25em] ease-in-out duration-100'
+      bg-[#e2e2e2] hover:bg-[#375271] hover:text-[#e0e0e0] rounded-[0.25em] ease-in-out duration-100'
       onClick={
         () => {
           setIssueModal(true)

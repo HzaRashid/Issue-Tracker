@@ -56,9 +56,9 @@ function NavBackGdDefault( props ) {
       </div> */}
     <div
     style={{
-        visibility: ProjectNav  ? 'visible' : 'hidden',
-        opacity:    ProjectNav ? '1'       : '0',
-        transition: ProjectNav ? '0.4s' : '0.1s'
+        // visibility: ProjectNav  ? 'visible' : 'hidden',
+        // opacity:    ProjectNav ? '1'       : '0',
+        // transition: ProjectNav ? '0.4s' : '0.1s'
     }}
     > 
     <ProjectNavbar/>

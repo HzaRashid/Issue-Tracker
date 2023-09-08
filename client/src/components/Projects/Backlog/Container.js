@@ -1,60 +1,36 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { ProjContexts } from '../../../contexts/ProjectContexts';
 import { IssueContexts } from '../../../contexts/IssueContexts';
 import { SprintContexts } from '../../../contexts/SprintContexts';
-import { AiOutlinePlus } from 'react-icons/ai'
-import { useStateContext } from '../../../contexts/ContextProvider';
 import BacklogTable from './BacklogTable';
+import { AiOutlinePlus } from 'react-icons/ai'
+// import Empty from './Empty';
+import { useStateContext } from '../../../contexts/ContextProvider';
+import { TeamContexts } from '../../../contexts/TeamContexts';
+
+
+
 
 function BacklogContainer( props ) {
 
    const { id, items } = props;
    const { nav, ProjectNav, ScreenWidth } = useStateContext();
-    const { setIssueModal, Issues } = IssueContexts();
+    const { setIssueModal } = IssueContexts();
     const {
-      Backlog, setBacklog,
-      SelectedProj 
+      Backlog, 
+      // setBacklog,
+      // SelectedProj 
     } = ProjContexts();
     const { setSelectedSprint, 
       // SprintIssues 
     } = SprintContexts();
 
 
-
-    useEffect(() => {
-      if (!Backlog.length || Backlog[0]?.project !== SelectedProj?._id) {
-        if (Issues?.length) {
-          setBacklog(
-            Issues?.filter(issue => (
-                  issue.project === SelectedProj._id && 
-                  issue.stage.toLowerCase() === 'backlog'
-                )))
-        } else axios.get(process.env.REACT_APP_API_Issues, 
-          { withCredentials: true })
-          .then(res => {
-            if (Array.isArray(res.data)) {
-            setBacklog(
-              res.data?.filter(issue => (
-                    issue.project === SelectedProj._id && 
-                    issue.stage.toLowerCase() === 'backlog'
-                  )))
-                }})
-                .catch(err => console.log(err))
-              } 
-        // eslint-disable-next-line
-    }, [SelectedProj])
-        // SprintIssues, 
-
   return (
-    <>
-
-  <div className='flex body-font font-[Open Sans]'>
-  <div className='ml-auto mr-auto mt-[4em] '> 
+    <> 
   <BacklogTable id={id} items={items} Backlog={Backlog}/> 
-  </div>
-  </div>
-  
+
    <div className='flex body-font font-[Open Sans]'>
       <div className='ml-auto mr-auto'
         style={{
