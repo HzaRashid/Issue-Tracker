@@ -1,7 +1,7 @@
 const e = require('express');
 const Sprint = require('../models/Sprint')
 
-const getSprints = (req, res) => {
+const getSprints = async (req, res) => {
     Sprint.find({}, 
         (err, result) => {
             if (err) {

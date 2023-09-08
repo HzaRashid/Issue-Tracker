@@ -9,13 +9,13 @@ import { IssueContexts } from '../../../contexts/IssueContexts';
 import { AiOutlinePlus } from 'react-icons/ai'
 import { useStateContext } from '../../../contexts/ContextProvider';
 
-
 function SprintsContainer( props ) {
 
   const { id, items } = props
 
     const { 
-        Sprints, setSprints,
+        Sprints, 
+        setSprints,
         setNewSprintIssue 
     } = SprintContexts();
     const { SelectedProj } = ProjContexts();
@@ -43,14 +43,13 @@ function SprintsContainer( props ) {
               } // eslint-disable-next-line
         }, [SelectedProj])
 
+
   return (
-    <> 
-
-
-   { Sprints && Sprints.length ? 
-
-    <SprintList id={id} items={items}/>  : <Empty/> 
-    }
+  <> 
+  {
+  Sprints?.length ?
+  <SprintList id={id} items={items}/>  : <Empty/>
+  }
 
    <div className='flex body-font font-[Open Sans] subpixel-antialiased'>
       <div className='ml-auto mr-auto top-0 sticky'

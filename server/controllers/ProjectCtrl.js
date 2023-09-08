@@ -3,7 +3,7 @@ const e = require('express');
 const Project = require('../models/Project');
 var mongoose = require('mongoose');
 
-const getProjects = (req, res) => {
+const getProjects = async  (req, res) => {
     Project.find({}, 
         (err, result) => {
             if (err) {

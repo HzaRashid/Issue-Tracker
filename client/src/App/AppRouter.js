@@ -3,7 +3,6 @@ import '../App.css';
 import Nav from '../components/Navbar/Nav';
 import { 
     Navigate, 
-    // Outlet, 
     Route, 
     Routes, 
     useLocation
@@ -15,7 +14,6 @@ import SprintBoard from '../pages/Projects/SprintBoard';
 import ProjectTeam from '../pages/Projects/Team';
 import Issues from '../pages/Issues';
 import Team from '../pages/Team';
-import Profile from '../pages/Profile';
 import Popups from '../components/Popups';
 import Login from './Login/Demo/Login';
 import UserInfo from '../components/TopBar/UserInfo';
@@ -48,29 +46,29 @@ function AppRouter() {
   )
 
   console.log(user)
+
   return (
   <>
-  <Routes>    
+  
+  <Routes>  
+    
     <Route index element={<Login user={user}/>}/>
-
     <Route path='/login' element={<Login user={user}/>}/>
-
-    <Route exact path='/home' element={<PrivateRoute component={<Home />} />} />
+    <Route exact path='/home' element={<PrivateRoute component={<Home/>} />} />
     <Route exact path='/projects' element={<PrivateRoute component={<Projects />} />} />
-    <Route exact path='/projects/:ProjectTitle/backlog/proj-nav=true' element={<PrivateRoute component={<Backlog />} />} />
-    <Route exact path='/projects/:ProjectTitle/sprint-board/:SprintTitle/proj-nav=true' element={<PrivateRoute component={<SprintBoard />} />} />
+    <Route exact path='/projects/:ProjectTitle/backlog/proj-nav=true' element={<PrivateRoute component={<Backlog/>}/>} />
+    <Route exact path='/projects/:ProjectTitle/sprint-board/:SprintTitle/:SprintID/proj-nav=true' element={<PrivateRoute component={<SprintBoard />} />} />
     <Route exact path='/projects/:ProjectTitle/team/proj-nav=true' element={<PrivateRoute component={<ProjectTeam />} />} />
     <Route exact path='/issues' element={<PrivateRoute component={<Issues />}/>} />
     <Route exact path='/team' element={<PrivateRoute component={<Team />}/>} />
-    <Route exact path='/profile' element={<PrivateRoute component={<Profile />} />} />
-
+    
   </Routes>
-
   </>
   );
 }
 
 const PrivateRoute = ( { component } ) => {
+
   const location = useLocation();
   const { user } = AuthContexts();
   const { ScreenWidth, setScreenWidth} = useStateContext(); // eslint-disable-next-line
@@ -83,13 +81,17 @@ const PrivateRoute = ( { component } ) => {
       <Navigate to='/login' replace state={{ path: location.pathname }}/>
     )
   }
+
   return (
     <>
     { ScreenWidth > 880 ? <UserInfo/> : null }
 
     <Nav/>
     <Popups/>
+
     {component}
+
+
 
     </>
     )

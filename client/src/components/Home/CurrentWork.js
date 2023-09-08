@@ -3,14 +3,14 @@ import List from './Issues/List'
 import { IssueContexts } from '../../contexts/IssueContexts'
 import Header from './Projects/Header'
 import { useStateContext } from '../../contexts/ContextProvider'
-import { IssueUpdateData } from './Chart/IssueUpdateData'
-import axios from 'axios'
+import IssueUpdateData from './Chart/IssueUpdateData'
+
 
 
 
 function CurrentWork( ) {
 
-  const { IssueVersions, Issues, setIssues } = IssueContexts();
+  const { IssueVersions } = IssueContexts();
 
   const { ScreenWidth, nav, ProjectNav } = useStateContext();
 
@@ -25,13 +25,6 @@ function CurrentWork( ) {
         return () => {}
     // eslint-disable-next-line
   }, [ScreenWidth])
-  useEffect(() => {
-    if (!Issues?.length) {
-      axios.get(process.env.REACT_APP_API_Issues, { withCredentials: true})
-      .then(res => setIssues(res?.data))
-    }
-    // eslint-disable-next-line
-    }, [])
 
   return (
     <div className=''> 

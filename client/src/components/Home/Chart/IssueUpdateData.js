@@ -112,7 +112,7 @@ function getDay(index) {
 }
 
 
-export function IssueUpdateData( { IssueVersions, isMobile } ) {
+export default function IssueUpdateData( { IssueVersions, isMobile } ) {
 
   const data = {
     labels: labels.map(item => item.day),

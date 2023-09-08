@@ -5,7 +5,6 @@ import {
 } from "@dnd-kit/sortable";
 import {  useDroppable } from "@dnd-kit/core";
 import { SprintContexts } from '../../../contexts/SprintContexts';
-import { ProjContexts } from '../../../contexts/ProjectContexts';
 import GetSprintRow from './GetRow';
 import axios from 'axios';
 import { IssueContexts } from '../../../contexts/IssueContexts';
@@ -21,7 +20,7 @@ function SprintTable( props ) {
       SelectedSprint,
       setSprintIssues,
     } = SprintContexts();
-    const { SearchSptIssues } = IssueContexts();
+    const { SearchSptIssues, Issues } = IssueContexts();
     const [ SearchedIssues, setSearchedIssues ] = useState([])
     useEffect(() => {
       setSearchedIssues(
@@ -59,13 +58,14 @@ function SprintTable( props ) {
     }, [SearchSptIssues, items])
     // console.log(SearchedIssues)
 
-    const { SelectedProj } = ProjContexts();
+    // const { SelectedProj } = ProjContexts();
 
     // get directly from server
     // to display latest data 
     // after drag and drop feature
     useEffect(
       () => {
+        if (!Issues.length) {
         axios.get(process.env.REACT_APP_API_Issues, { withCredentials: true })
         .then(
           response => {
@@ -74,12 +74,23 @@ function SprintTable( props ) {
                 response.data
                 .filter(
                   issue => (
-                    issue.project === SelectedProj._id && 
+                    // issue.project === SelectedProj._id && 
                     issue.sprint === SelectedSprint._id &&
                     issue.stage.toLowerCase() !== 'backlog'
                     ))
                   )}
-                }) // eslint-disable-next-line
+                }) 
+              }
+              setSprintIssues(
+                Issues
+                .filter(
+                  issue => (
+                    issue.sprint === SelectedSprint._id &&
+                    issue.stage.toLowerCase() !== 'backlog'
+                    ))
+                  )
+
+                // eslint-disable-next-line
               }, [])
 
  

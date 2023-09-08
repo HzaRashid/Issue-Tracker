@@ -24,6 +24,7 @@ function EditIssue() {
         setPrevPage={setPrevPage} 
         OpenDelModal={OpenDelModal} 
         setOpenDelModal={setOpenDelModal}
+        EditIssueModal={EditIssueModal}
         >
         {
         GetPage(

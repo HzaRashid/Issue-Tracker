@@ -6,33 +6,46 @@ const User = require('../models/User')
 const { StageIssues } = require('./BoardIssues');
 const { default: mongoose } = require('mongoose');
 
-const getIssues = (req, res) => {
+const getIssues = async (req, res) => {
     Issue.find({}, 
         (err, result) => {
             if (err) {
                 res.json(err)
             } 
             else {
-                res.json(result) 
+                res.status(200).json(result) 
+            }
+        })
+};
+
+const getIssuesByProject = async (req, res) => {
+    let filter = req.body?.backlog ? {
+        project: req.body.projectID,
+        stage:   'backlog'
+    } : { project: req.body.projectID }
+    // console.log(filter)
+    Issue.find(filter, 
+        (err, result) => {
+            if (err) {
+                res.json(err)
+            } 
+            else {
+                res.status(200).json(result) 
+            }
+        })
+};
+
+const getIssuesBySprint = async (req, res) => {
+    Issue.find({ sprint: req.body.sprintID }, 
+        (err, result) => {
+            if (err) {
+                res.json(err)
+            } 
+            else {
+                res.status(200).json(result) 
             }
         })
     };
-
-// const getIssueVersions = (req, res) => {
-//     IssueVersion.find({}, 
-//         (err, result) => {
-//             if (err) {
-//                 res.json(err)
-//             } 
-//             else {
-//                 res.json(result) 
-//             }
-//         })
-//     };
-
-
-
-
 
 
 const addIssue = async (req, res) => {
@@ -415,107 +428,6 @@ const editManyIssuesStage = async (req, res) => {
 }
 
 
-// move issue from backlog to sprint
-// const moveIssueToSprint = async (req, res) => {
-//     const Fields = req.body;
-
-//     try {
-//     // update issue
-
-//     const doc = await Issue.findById(Fields.issueID)
-//     let prevDoc = {...doc._doc};
-
-//     const sprint = await Sprint.findById(Fields.sprintID);
-
-//     if (!sprint) {
-//         res.status(501).json({
-//             message: 'could not find sprint'
-//         })
-//     }
-
-//     const stageExists = sprint?.stages?.filter(stage => 
-//         stage.title?.toLowerCase() === Fields.stage?.toLowerCase()
-//         )?.length
-        
-//     if (!stageExists) {
-//         res.status(502).json({
-//             message: 'stage does not exist'
-//         })
-//     }
-
-//     doc.stage = 'to do';
-//     await doc.save()
-
-//     const versions = await IssueVersion.find({});
-//     // unique _id created by mongodb
-//     const prevUID = prevDoc?._id  
-
-//     // create version id 
-//     const VersionID = versions.filter(ver => 
-//         ver.Version?.issueID?.toString() === prevUID?.toString()
-//     ).length + 1
-
-
-//     delete prevDoc._id
-
-//     const userOfMod = await User.findById(Fields.modifiedBy)
-//     // [insert user name] updated the Stage
-//     const ModSummary = `${
-//         userOfMod.firstName 
-//         + ' ' + userOfMod.lastName 
-//         + ' updated the Stage'}`
-
-//     // create issue version
-//     IssueVersion.create({
-//         Version: {
-//             issueID: prevUID,
-//             ID: VersionID,
-//             ModSummary: ModSummary,
-//             NewStage: 'to do',  
-//             NewSprint: Fields.sprint,
-//             modifiedBy: Fields.modifiedBy,
-//             modifiedField: 'sprint',
-//         },
-//         ...prevDoc
-//     },
-//     (err) => {
-//         if (err) {
-//             console.log(err);
-//             res.status(501).send(err)
-//         }
-//     }
-//     )
-
-//     res.status(200).send(doc)
-
-//     } catch (err) {
-//         res.status(500).send(err)
-//     }
-// }
-// const moveIssueToSprint = async (req, res) => {
-//     const Fields = req.body;
-
-//     const {
-//         draggedIssue,
-//     } = Fields
-
-//     Issue.findOneAndUpdate(
-//         { '_id': draggedIssue._id }, 
-//         { $set: { 
-//             'sprint': draggedIssue.sprint, 
-//             'stage': 'To Do',
-//         }})
-//          .exec(function(err, doc) {
-//         if (err) {
-//             console.log(err);
-//             res.status(500).send(err);
-//         } else {
-//             res.status(200).send(doc)
-//         }
-//      });
-
-// }
-
 // move issue from sprint to backlog
 
 const moveIssueToBacklog = async (req, res) => {
@@ -580,7 +492,6 @@ const moveMultiIssuestoBacklog = async (req, res, next) => {
             }
         }
     )
-
 }
 
 
@@ -621,11 +532,12 @@ const reOrderIssues = async (req, res) => {
 
 module.exports = {
     getIssues, 
+    getIssuesByProject,
+    getIssuesBySprint,
     addIssue, 
     editIssueSummary,
     editIssueType,
     editIssueSprint,
-    
     editIssueStage,
     updateIssueStage,
     transferManyIssuesStage,

@@ -24,7 +24,7 @@ export const NavItems = () => {
         {
             title: 'Boards',
             icon: <MdViewKanban style={iconStyle}/>,
-            link: `/projects/${WhtSpace(SelectedProj?.title)}/${WhtSpace(SelectedSprint?.title)}/proj-nav=true`
+            // link: `/projects/${WhtSpace(SelectedProj?.title)}/${WhtSpace(SelectedSprint?.title)}/proj-nav=true`
         },
         {
             title: 'Team',

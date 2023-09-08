@@ -1,11 +1,7 @@
 import React from 'react'
-import { IssueContexts } from '../../../contexts/IssueContexts';
 
 
 function Empty() {
-  // eslint-disable-next-line
-    const { Backlog, setBacklog } = IssueContexts();
-   
   return (
     <> 
     <div className='flex body-font font-lato'>

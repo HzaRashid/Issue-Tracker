@@ -31,7 +31,7 @@ function Backlog() {
     Projects, 
     // setProjects, 
     SelectedProj, setSelectedProj, 
-    Backlog 
+    Backlog, setBacklog
   } = ProjContexts();
   const { 
     Issues, 
@@ -39,24 +39,10 @@ function Backlog() {
     setSearchSptIssues } = IssueContexts();
   const { user } = AuthContexts();
 
-  const { SprintIssues, SelectedSprint } = SprintContexts();
+  const { SprintIssues, setSprints, SelectedSprint } = SprintContexts();
   const { Users, setUsers } = TeamContexts()
   const currLoc = useLocation();
   let { ProjectTitle } = useParams();
-
-  useEffect(() => {
-    if (!Users?.length) {
-      axios.get(process.env.REACT_APP_API_getUsers, 
-        { withCredentials: true })
-        .then(res => { 
-            if (res.status === 200) setUsers(res.data); 
-            // console.log(res.data)
-          })
-          .catch(err => {
-            // console.log(err)
-          })
-      } // eslint-disable-next-line
-  }, [Users?.length])
 
   useEffect(
     () => {
@@ -66,8 +52,28 @@ function Backlog() {
         )[0]
       )},
     // eslint-disable-next-line
-    [Projects, useParams()]
-  )
+    [Projects, useParams()]);
+
+    useEffect(() => {
+      if (!SelectedProj?._id) return 
+      const withCreds = { withCredentials: true }
+      axios.all([
+        axios.post(
+          process.env.REACT_APP_API_ProjectIssues, {
+            projectID: SelectedProj._id,
+            backlog: true 
+          }, withCreds),
+
+        axios.get(process.env.REACT_APP_API_Sprints, withCreds),
+        axios.get(process.env.REACT_APP_API_getUsers, withCreds)
+      ])
+      .then(axios.spread((res1, res2, res3) => {
+        setBacklog(res1.data);
+        setSprints(res2.data?.filter(s => s.project === SelectedProj?._id));
+        setUsers(res3.data)
+      }))
+      // eslint-disable-next-line
+    }, [SelectedProj?._id])
 
   const currPathname = `${SelectedProj?.title} - Backlog`;
 
@@ -148,7 +154,6 @@ function Backlog() {
   const ProjNavOpen  = ProjectNav && !nav
   const NavOpen = !ProjectNav && nav
 
-
   return (
     
     <>
@@ -213,8 +218,9 @@ function Backlog() {
 
       {SelectedProj && items.backlog && items.sprint && 
       <>
+
         <BacklogContainer id={ContainerIDs.backlog} items={items.backlog}/>
-        <SprintsContainer id={ContainerIDs.sprint} items={items.sprint}/>
+        <SprintsContainer id={ContainerIDs.sprint} items={items.sprint} /> 
 
         <DragOverlay className="lg:text-[1.2em] md:text-[1.15em]
         sm:text-[1.15em] xs:text-[1em] text-[1em]"
@@ -222,7 +228,7 @@ function Backlog() {
             {
             !activeId ? null : 
             activeId[4].toLowerCase() === 'backlog' ?
-            <GetBacklogRow id={activeId} /> : <GetSprintRow id={activeId} />
+            <GetBacklogRow id={activeId} /> : <GetSprintRow id={activeId}  />
             }
         </DragOverlay>
 

@@ -7,7 +7,6 @@ import IssueStatus from './Issues/Create/IssueStatus'
 import IsMobile from '../components/utils/isMobile'
 import DeleteStage from './Projects/SprintBoard/EditStage/Delete/DeleteStage'
 import SetIssueLimit from './Projects/SprintBoard/EditStage/IssueLimit/SetIssueLimit'
-import EditIssue from './Issues/Edit/EditIssue'
 import EditProj from './Projects/Edit/EditProj'
 import AssignToProj from './Team/AssignToProject/AssignToProj'
 import AddUser from './Team/AddUser/AddUser'
@@ -23,6 +22,7 @@ import EditSprintStatus from './Projects/Sprints/Edit/EditSprintStatus'
 
 
 function Popups() {
+  const EditIssue = React.lazy(() => import('../components/Issues/Edit/EditIssue'))
   return (
     <>
     <IsMobile/>
@@ -35,7 +35,9 @@ function Popups() {
     <SprintStatus/>
     <DeleteStage/>
     <SetIssueLimit/>
+    <React.Suspense fallback={null}> 
     <EditIssue/>
+    </React.Suspense>
     <AssignToProj/>
     <AddUser/>
     <AddUserStatus/>

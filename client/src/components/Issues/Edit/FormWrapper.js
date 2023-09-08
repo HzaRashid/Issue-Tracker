@@ -48,7 +48,7 @@ function FormWrapper( props ) {
     const stageListRef = useRef(null);
 
     useEffect(() => {
-      if (!Sprints?.length) {
+      if (!Sprints?.length && props.EditIssueModal === true) {
         axios.get(process.env.REACT_APP_API_Sprints, { withCredentials: true })
         .then(res => setSprints(res?.data))
       }

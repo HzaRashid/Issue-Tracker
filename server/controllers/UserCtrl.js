@@ -3,7 +3,7 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-const getUsers = (req, res) => {
+const getUsers = async (req, res) => {
     User.find({}, 
         (err, result) => {
             if (err) {

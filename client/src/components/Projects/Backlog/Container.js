@@ -1,25 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import axios from 'axios'
 import { ProjContexts } from '../../../contexts/ProjectContexts';
 import { IssueContexts } from '../../../contexts/IssueContexts';
 import { SprintContexts } from '../../../contexts/SprintContexts';
-import BacklogTable from './BacklogTable';
 import { AiOutlinePlus } from 'react-icons/ai'
-// import Empty from './Empty';
 import { useStateContext } from '../../../contexts/ContextProvider';
-import { TeamContexts } from '../../../contexts/TeamContexts';
-
-
-
+import BacklogTable from './BacklogTable';
 
 function BacklogContainer( props ) {
 
    const { id, items } = props;
-   const { nav, ProjectNav, ScreenWidth, 
-  
-          } = useStateContext();
-  //  const [doneLoad, setDoneLoad] = useState(false)
-    const { setIssueModal } = IssueContexts();
+   const { nav, ProjectNav, ScreenWidth } = useStateContext();
+    const { setIssueModal, Issues } = IssueContexts();
     const {
       Backlog, setBacklog,
       SelectedProj 
@@ -27,48 +19,42 @@ function BacklogContainer( props ) {
     const { setSelectedSprint, 
       // SprintIssues 
     } = SprintContexts();
-    const { Users } = TeamContexts();
-    
-    useEffect( 
-        () => {
-        if (!Backlog.length || Backlog[0]?.project !== SelectedProj?._id){
-        axios.get(process.env.REACT_APP_API_Issues, { withCredentials: true })
-      .then( 
-        response => {
-          if (!Array.isArray(response.data)) {
-            console.log(response.data)
-            return;
-          }
+
+
+
+    useEffect(() => {
+      if (!Backlog.length || Backlog[0]?.project !== SelectedProj?._id) {
+        if (Issues?.length) {
           setBacklog(
-            response.data
-              ?.filter(
-                issue => (
+            Issues?.filter(issue => (
                   issue.project === SelectedProj._id && 
                   issue.stage.toLowerCase() === 'backlog'
-                ))
-            )
-          } 
-        )} // eslint-disable-next-line
-      }, [SelectedProj, 
-          // SprintIssues, 
-          Users])
-        // console.log(Backlog)
-
-    const [loaded, setLoaded] = useState(false);
-    useEffect( () => { setTimeout( () => setLoaded(true), 50 ) }, [] )
-
-
-  // console.log('ayeeyeey')
-
+                )))
+        } else axios.get(process.env.REACT_APP_API_Issues, 
+          { withCredentials: true })
+          .then(res => {
+            if (Array.isArray(res.data)) {
+            setBacklog(
+              res.data?.filter(issue => (
+                    issue.project === SelectedProj._id && 
+                    issue.stage.toLowerCase() === 'backlog'
+                  )))
+                }})
+                .catch(err => console.log(err))
+              } 
+        // eslint-disable-next-line
+    }, [SelectedProj])
+        // SprintIssues, 
 
   return (
-    <> 
+    <>
 
-
-
-  <BacklogTable id={id} items={items} Backlog={Backlog} loaded={loaded}/> 
-
-
+  <div className='flex body-font font-[Open Sans]'>
+  <div className='ml-auto mr-auto mt-[4em] '> 
+  <BacklogTable id={id} items={items} Backlog={Backlog}/> 
+  </div>
+  </div>
+  
    <div className='flex body-font font-[Open Sans]'>
       <div className='ml-auto mr-auto'
         style={{

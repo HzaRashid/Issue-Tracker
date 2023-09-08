@@ -19,7 +19,7 @@ const { isAuthDemo, isAuth,  } = require('./Auth/isAuth');
 module.exports = router;
 
 
-router.get('/', isAuth, getSprints);
+router.get('/get', isAuth, getSprints);
 
 router.post('/',             isAuthDemo, addSprint, editIssueSprint);  
 

@@ -49,7 +49,7 @@ let redisStore = new SessionStore({
   prefix: "myapp:",
 })
 
-
+if (process.env.NODE_ENV == 'production') {
 const limiter = rateLimit({
 	windowMs: 10 * 60 * 1000,     // 10 minutes
 	max: 100,                     // Limit each IP to 100 requests per `window` (here, per 15 minutes)
@@ -60,6 +60,7 @@ const limiter = rateLimit({
   }),
 })
 app.use(limiter)
+}
 
 app.use(session({
     secret: 'This is a secret',

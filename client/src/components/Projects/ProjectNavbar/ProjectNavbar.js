@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import "./ProjectNav.css"
 import '../../../index.css'
 import { AiOutlinePlus } from 'react-icons/ai';
-
 import { useLocation, Link } from 'react-router-dom';
 import { useStateContext } from '../../../contexts/ContextProvider';
 import { ProjContexts } from '../../../contexts/ProjectContexts';
@@ -31,7 +30,9 @@ function ProjectNavbar( props ) {
     setEditProj,
     setProjModal, 
     setEditProjModal, 
+
   } = ProjContexts();
+
 
    const [Search, setSearch] = useState('');
 
@@ -43,7 +44,7 @@ function ProjectNavbar( props ) {
       )}, [
         // EditProj
       ])
-      
+
 
   // console.log(ProjectNav)
   return (
@@ -120,7 +121,6 @@ function ProjectNavbar( props ) {
             onClick={
               () => {
                 setProjectNav(false);
-                setSelectedProjModal(item);
 
               }}
               id={
@@ -173,45 +173,3 @@ function ProjectNavbar( props ) {
 }
 
 export default ProjectNavbar
-
-
-// {
-//   "_id": {
-//     "$oid": "62bcbc84f356c127c05c1708"
-//   },
-//   "key": "PRO-1",
-//   "title": "Project 1",
-//   "type": "Scrum",
-//   "assignedTo": [
-//     "all"
-//   ],
-//   "sprints": [
-//     {
-//       "$oid": "62d2e7af32f4e69c0b0d0360"
-//     },
-//     {
-//       "$oid": "62d3182d2791577eb46f660c"
-//     }
-//   ],
-//   "startDate": {
-//     "$date": "2022-07-07T00:00:00.000Z"
-//   },
-//   "endDate": {
-//     "$date": "2022-08-07T00:00:00.000Z"
-//   },
-//   "createdAt": {
-//     "$date": "2022-06-29T20:56:36.000Z"
-//   },
-//   "__v": 0,
-//   "backlog": [
-//     {
-//       "$oid": "62db18b556554478b77e2c3a"
-//     },
-//     "62d1d7bfe6bde173799fd497",
-//     "62d218c47b614e5221809f2f",
-//     "62d219177b614e5221809f32",
-//     "62d2c692663259ff3eae8f4d",
-//     "62d2c756663259ff3eae8f50",
-//     "62d73d921393f573f1fa6722"
-//   ]
-// }

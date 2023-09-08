@@ -11,7 +11,7 @@ import { TeamContexts } from '../../contexts/TeamContexts';
 
 function SprintBoard() {
 
-  const { ProjectTitle, SprintTitle } = useParams();
+  const { ProjectTitle, SprintTitle, SprintID } = useParams();
   
   const { Users, setUsers } = TeamContexts();
 
@@ -55,7 +55,7 @@ function SprintBoard() {
                     setSprints(res4.data);
           }));
           } // eslint-disable-next-line
-        }, [])
+        }, [useParams()])
 
   useEffect(() => {
     if (!SelectedProj?.title || (
@@ -71,60 +71,62 @@ function SprintBoard() {
   )
   // console.log(SelectedProj)
 
-  console.log(useParams())
+  // console.log(useParams())
   useEffect(
     () => {
       setSelectedSprint(
         Sprints.filter( // title is unique, correct sprint is returned
-          (sprint: {title: string}) => sprint.title === SprintTitle
+          (sprint: any) => sprint._id === SprintID
         )[0]
       )},
     // eslint-disable-next-line
     [SelectedProj, Sprints, useParams()]
   )
 
-
-
   type Issue = {
     project: string,
     sprint: string,
     stage: string
   }
-
+  // console.log(items)
   useEffect(
     () => {
-      if (Issues?.length) {
-        setSprintIssues(
-          Issues
-          .filter(
-            (issue: Issue) => (
-              issue.project === SelectedProj?._id && 
-              issue.sprint === SelectedSprint?._id &&
-              issue.stage.toLowerCase() !== 'backlog'
-              ))
-            )
-      } else axios
-      .get(process.env.REACT_APP_API_Issues as string, { withCredentials: true })
-      .then(
-        response => {
-          if (response.status === 200) {
-            setSprintIssues(
-              response.data
-              .filter(
-                (issue: Issue) => (
-                  issue.project === SelectedProj?._id && 
-                  issue.sprint === SelectedSprint?._id &&
-                  issue.stage.toLowerCase() !== 'backlog'
-                  ))
-                )}
-              }) // eslint-disable-next-line
-            }, [SelectedProj, SelectedSprint])
+      if (!SprintIssues?.length ||
+        SprintIssues?.length && SprintIssues[0].sprint !== SprintID) {
+        if (!Issues?.length) {
+        axios.get(
+          process.env.REACT_APP_API_Issues as string, 
+          { withCredentials: true })
+        .then(response => {
+            if (response.status === 200) {
+              setSprintIssues(
+                response.data
+                .filter(
+                  (issue: Issue) => (
+                    // issue.project === SelectedProj?._id && 
+                    issue.sprint === SelectedSprint?._id &&
+                    issue.stage.toLowerCase() !== 'backlog'
+                    ))
+                  )}
+                }) 
+              }
+          setSprintIssues(
+            Issues.filter(
+              (issue: Issue) => (
+                // issue.project === SelectedProj?._id && 
+                issue.sprint === SelectedSprint?._id &&
+                issue.stage.toLowerCase() !== 'backlog'
+                )))
+      }
+            // eslint-disable-next-line
+            }, [SelectedSprint, SprintIssues?.length, useParams()])
 
 
   
   // const [items, setItems] = useState({})
   useEffect(
     () => {
+      // const selectedSprint = Sprints.filter((s:any) => s.title === useParams().SprintTitle)[0]
       setItems(
         SelectedSprint?.stages?.map(
           (stage: {title:string}) => stage.title)
@@ -140,7 +142,7 @@ function SprintBoard() {
 
       )
     }, // eslint-disable-next-line
-    [SelectedSprint, SprintIssues]
+    [SelectedSprint?._id, SprintIssues]
   )
 
   
