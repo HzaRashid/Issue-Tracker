@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import React from 'react'
 import { ProjContexts } from '../../../contexts/ProjectContexts';
 import { IssueContexts } from '../../../contexts/IssueContexts';
 import { SprintContexts } from '../../../contexts/SprintContexts';
@@ -7,7 +6,6 @@ import BacklogTable from './BacklogTable';
 import { AiOutlinePlus } from 'react-icons/ai'
 // import Empty from './Empty';
 import { useStateContext } from '../../../contexts/ContextProvider';
-import { TeamContexts } from '../../../contexts/TeamContexts';
 
 
 

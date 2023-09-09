@@ -47,7 +47,7 @@ function ProjectList( { search, Projects, isMobile } ) {
                     transitionDelay: `${key*delay + 1}ms`
                 
                 }}
-                onClick={() => { goToPage(`/projects/${p?.title}/backlog/proj-nav=true`)}}
+                onClick={() => { goToPage(`/project-page/${p?.title}/backlog/`)}}
                 >
                     {p?.title}
                 </li>

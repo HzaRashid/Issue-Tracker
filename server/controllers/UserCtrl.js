@@ -1,25 +1,36 @@
 const e = require('express');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
+let { RedisClient } = require('../config/redisClient')
+
 
 const getUsers = async (req, res) => {
-    User.find({}, 
-        (err, result) => {
-            if (err) {
-                res.json(err)
-            } 
-            else {
-                res.json(result) 
-            }
-        })
+    let results;
+    try {
+        const redisUsers = await RedisClient.get("User");
+        if (redisUsers) {
+            console.log("hit")
+            results = JSON.parse(redisUsers);
+        } 
+        else { 
+            console.log("miss")
+            results = await User.find({});
+            await RedisClient.set("User", JSON.stringify(results))
+        }
+        res.send(results)
+
+    } catch (err) {
+        console.log(err)
+    }
+    
+
 };
 
 
 const addUser = async (req, res) => {
     try { 
         const userFields = req.body
-        const hash = await bcrypt.hash(userFields.password, saltRounds);
+        const hash = await bcrypt.hash(userFields.password, process.env.SALT_ROUNDS);
         userFields.password = hash;
         const newUser = await User.create(userFields);
         res.status(200).json( { ...newUser, password: undefined } );
@@ -92,7 +103,7 @@ const editUser = async (req, res) => {
     doc.role      =     userFields.role      ?? doc.role;
 
     if (userFields?.password) {
-    const hash    =     await bcrypt.hash(userFields.password, saltRounds);
+    const hash    =     await bcrypt.hash(userFields.password, process.env.SALT_ROUNDS);
     doc.password  =     hash;
     }
     doc.updatedAt =     Date();
@@ -163,7 +174,7 @@ const deleteUser = (req, res) => {
 const changePassword = async (req, res) => {
     try {
         const userFields = req.body
-        const hash = await bcrypt.hash(userFields.password, saltRounds);
+        const hash = await bcrypt.hash(userFields.password, process.env.SALT_ROUNDS);
         const user = await User.findById(userFields.id)
         user.password = hash;
         await user.save()

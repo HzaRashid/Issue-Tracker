@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
+var isEmail = require('validator/lib/isEmail')
 
-// for email and password
 const specs = {
     type: String,
     required: true
@@ -9,11 +9,14 @@ const specs = {
 const UserSchema = new mongoose.Schema({
     firstName: specs,
     lastName: specs,
-    email: { 
+    email: {
         type: String,
-        required: true,
-        unique: true,
+        trim: true,
         lowercase: true,
+        unique: true,
+        required: 'Email address is required',
+        validate: [isEmail, 'invalid email'],
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'invalid email']
     },
     emailId: String,
     password: specs,
@@ -34,8 +37,8 @@ const UserSchema = new mongoose.Schema({
     projects:  [{
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'projects'  
-        }]
-
+        }],
+    
 });
 
 module.exports = mongoose.model('users', UserSchema)

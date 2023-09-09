@@ -21,7 +21,7 @@ function NavBackGd( props ) {
   const { showSprints, setShowSprints } = SprintContexts();
 
   const isProjPage = currLocation.pathname
-  .includes('proj-nav=true')
+  .includes('project-page')
 
     const { 
         nav,

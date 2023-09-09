@@ -176,10 +176,10 @@ function SprintList( props ) {
                                 }
                             }}
                         >
-                          <div className='flex items-center'>
+                          <div className='flex items-center w-[100%]'>
 
                           <p className='flex justify-start font-medium text-[1.1em]'>{sprint.title}</p>
-                          <div className='absolute right-8'> 
+                          <div className='ml-auto mr-0'> 
                           <CustomTooltip title='Edit'> 
                           <button className='p-1 rounded-md bg-[#00000010] 
                           hover:bg-[#304669] hover:text-[#eaeaea] '

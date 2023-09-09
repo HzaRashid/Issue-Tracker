@@ -44,36 +44,59 @@ function Backlog() {
   const currLoc = useLocation();
   let { ProjectTitle } = useParams();
 
-  useEffect(
-    () => {
-      setSelectedProj(
-        Projects?.filter(
-          project => project.title === ProjectTitle
-        )[0]
-      )},
-    // eslint-disable-next-line
-    [Projects, useParams()]);
+  // useEffect(
+  //   () => {
+  //     setSelectedProj(
+  //       Projects?.filter(
+  //         project => project.title === ProjectTitle
+  //       )[0]
+  //     )},
+  //   // eslint-disable-next-line
+  //   [Projects, useParams()]);
 
     useEffect(() => {
-      if (!SelectedProj?._id) return 
+      
       const withCreds = { withCredentials: true }
-      axios.all([
-        axios.post(
-          process.env.REACT_APP_API_ProjectIssues, {
-            projectID: SelectedProj._id,
-            backlog: true 
-          }, withCreds),
-
-        axios.get(process.env.REACT_APP_API_Sprints, withCreds),
-        axios.get(process.env.REACT_APP_API_getUsers, withCreds)
-      ])
-      .then(axios.spread((res1, res2, res3) => {
-        setBacklog(res1.data);
-        setSprints(res2.data?.filter(s => s.project === SelectedProj?._id));
-        setUsers(res3.data)
-      }))
+      if (
+        !Projects?.length ||
+        !Issues?.length   ||
+        // !Sprints?.length  ||
+        !Users?.length     
+        ) {
+          axios.all([
+            axios.get(process.env.REACT_APP_API_Projects, withCreds),
+            axios.get(process.env.REACT_APP_API_Issues,   withCreds),
+            axios.get(process.env.REACT_APP_API_Sprints,  withCreds),
+            axios.get(process.env.REACT_APP_API_getUsers, withCreds)
+          ])
+          .then(axios.spread((res1, res2, res3, res4) => {
+            var project = res1.data?.filter(p => p.title === ProjectTitle)[0]
+            setSelectedProj(project)
+            setBacklog(res2.data?.filter(i => (
+              i.project === project._id
+              && i.stage?.toLowerCase() === 'backlog' 
+            )))
+            setSprints(res3.data?.filter(s => s.project === project._id));
+            setUsers(res4.data)
+          }))
+          return () => {}
+        }
+        var project = Projects.filter(p => p.title === ProjectTitle)[0]
+        setSelectedProj(project);
+        setBacklog(Issues?.filter(i => (
+          i.project === project._id
+          && i.stage?.toLowerCase() === 'backlog' 
+        )))
+        axios.get(process.env.REACT_APP_API_Sprints,  withCreds)
+        .then(res => setSprints(res.data?.filter(s => s.project === project._id)))
+        
       // eslint-disable-next-line
-    }, [SelectedProj?._id])
+    },[
+      ProjectTitle, 
+      // eslint-disable-next-line
+      ProjectTitle === SelectedProj?.title, 
+      Issues
+    ])
 
   const currPathname = `${SelectedProj?.title} - Backlog`;
 
@@ -179,7 +202,7 @@ function Backlog() {
     <Link to={currLoc.pathname} 
     className="p-1 text-[#4e779f] hover:bg-[#e6e6e6]"
     >
-    {currLoc.pathname === "/projects/" + SelectedProj?.title?.replace(" ", "%20") + '/backlog/proj-nav=true' && currPathname}
+    {currLoc.pathname === "/project-page/" + SelectedProj?.title?.replace(" ", "%20") + '/backlog/' && currPathname}
     </Link>
    
     </div>

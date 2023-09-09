@@ -16,43 +16,35 @@ function Team() {
     let { ProjectTitle } = useParams();
     const { setSprints } = SprintContexts();
     const { Users, setUsers } = TeamContexts();
-    useEffect(() => {
-      if (!SelectedProj?.title || (
-        ProjectTitle && ( SelectedProj?.title !== ProjectTitle ))) {
-          setSelectedProj(
-            Projects.filter(
-              p => p.title === ProjectTitle
-            )[0])
-          }  
-         } ,
-      // eslint-disable-next-line
-      [Projects, useParams()]
-    )
-      useEffect(
-        () => {
-          axios.get(process.env.REACT_APP_API_Sprints, 
-            { withCredentials: true })
-          .then(
-            res => setSprints(
-              res.data?.filter(
-                s => s.project === SelectedProj?._id
-              )
-              )
-          )
-        },
-        // eslint-disable-next-line
-        [SelectedProj]
-      )
 
-      useEffect(() => {
-        if (!Users?.length) axios.get(
-          process.env.REACT_APP_API_Users,
-          { withCredentials: true }
-        )
-        .then(res => setUsers(res.data))
-        .catch(err => console.log(err))
-        // eslint-disable-next-line
-        }, [])
+
+    useEffect(() => {
+      const withCreds = { withCredentials: true }
+      if (
+        !Projects?.length ||
+        !Users?.length     
+        ) {
+          axios.all([
+            axios.get(process.env.REACT_APP_API_Projects, withCreds),
+            axios.get(process.env.REACT_APP_API_getUsers, withCreds),
+            axios.get(process.env.REACT_APP_API_Sprints, withCreds),
+          ])
+          .then(axios.spread((res1, res2, res3, res4) => {
+            var project = res1.data?.filter(p => p.title === ProjectTitle)[0]
+            setSelectedProj({...project})
+            setUsers(res2.data)
+            setSprints(res3.data.filter(s => s.project === project._id))
+
+          return () => {}
+        }))
+      } else {
+      var project = Projects?.filter(p => p.title === ProjectTitle)[0]
+      setSelectedProj({...project})
+      axios.get(process.env.REACT_APP_API_Sprints, withCreds)
+      .then(res => setSprints(res.data.filter(s => s.project === project?._id)))
+    }
+    // eslint-disable-next-line
+    }, [ProjectTitle, Projects])
   return (
     <>
 

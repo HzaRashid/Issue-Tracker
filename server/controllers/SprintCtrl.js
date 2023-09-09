@@ -1,17 +1,26 @@
 const e = require('express');
 const Sprint = require('../models/Sprint')
+let { RedisClient } = require('../config/redisClient')
+
 
 const getSprints = async (req, res) => {
-    Sprint.find({}, 
-        (err, result) => {
-            if (err) {
-                res.json(err)
-            } 
-            else {
-                res.status(200).json(result) 
-            }
-        })
-    };
+    let results;
+    try {
+        const redisSprints = await RedisClient.get("Sprint");
+        if (redisSprints) {
+            console.log("hit")
+            results = JSON.parse(redisSprints);
+        } 
+        else { 
+            results = await Sprint.find({});
+            await RedisClient.set("Sprint", JSON.stringify(results))
+        }
+        res.status(200).send(results)
+
+    } catch (err) {
+        console.log(err)
+    }
+};
 
 
 const addSprint = async (req, res, next) => {

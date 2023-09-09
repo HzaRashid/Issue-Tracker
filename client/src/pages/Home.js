@@ -6,30 +6,34 @@ import axios from 'axios';
 import { IssueContexts } from '../contexts/IssueContexts';
 import { TeamContexts } from '../contexts/TeamContexts';
 import { SprintContexts } from '../contexts/SprintContexts';
+import { ProjContexts } from '../contexts/ProjectContexts';
 
 function Home() {
   const { nav, ProjectNav } = useStateContext();
-  
-  const { Issues, setIssues } = IssueContexts();
   const { setUsers, Users } = TeamContexts();
+  const { Issues, setIssues } = IssueContexts();
+  const { Projects, setProjects } = ProjContexts();
   const { Sprints, setSprints } = SprintContexts();
 
   useEffect(() => {
     if (
       !Issues?.length ||
       !Users?.length ||
+      !Projects?.length ||
       !Sprints?.length
     ) {
       const withCreds = { withCredentials: true };
       axios.all([
         axios.get(process.env.REACT_APP_API_Issues, withCreds), 
         axios.get(process.env.REACT_APP_API_getUsers, withCreds),
+        axios.get(process.env.REACT_APP_API_Projects, withCreds),
         axios.get(process.env.REACT_APP_API_Sprints, withCreds)
       ])
-      .then(axios.spread((res1, res2, res3) => {
+      .then(axios.spread((res1, res2, res3, res4) => {
                 setIssues(res1.data);
                 setUsers(res2.data);
-                setSprints(res3.data);
+                setProjects(res3.data);
+                setSprints(res4.data);
       }));
       } // eslint-disable-next-line
     }, [])

@@ -31,7 +31,7 @@ function SprintList( props ) {
         {
             Sprints?.map(
                 (sprint, key) => {
-                    let sprintLink = `/projects/${WhtSpace(SelectedProj?.title)}/sprint-board/${WhtSpace(sprint?.title)}/${sprint?._id}/proj-nav=true`
+                    let sprintLink = `/project-page/${WhtSpace(SelectedProj?.title)}/sprint-board/${WhtSpace(sprint?.title)}/`
 
                     return (
                     <li key={key} 

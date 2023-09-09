@@ -54,22 +54,6 @@ const IssueSchema = new mongoose.Schema({
 
     listIndex: Number,
     
-}, 
-// { discriminatorKey: 'kind' }
-)
-;
-
-// const Issue = mongoose.model('issues', IssueSchema)
-
-// const backlogIssue = Issue.discriminator('backlogIssue', new mongoose.Schema({
-//     sprint: String
-// }))
-
-// const sprintIssue = Issue.discriminator('sprintIssue', new mongoose.Schema({
-//     sprint: {
-//         type: mongoose.Schema.Types.ObjectId, 
-//         ref: 'sprint'
-//     },
-// }))
+});
 
 module.exports = mongoose.model('issues', IssueSchema);

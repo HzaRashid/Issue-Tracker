@@ -1,8 +1,6 @@
 
-import React, { useEffect } from 'react'
-import axios from 'axios'
+import React from 'react'
 import { SprintContexts } from '../../../contexts/SprintContexts'
-import { ProjContexts } from '../../../contexts/ProjectContexts';
 import Empty from './Empty';
 import SprintList from './SprintList';
 import { IssueContexts } from '../../../contexts/IssueContexts';
@@ -15,33 +13,33 @@ function SprintsContainer( props ) {
 
     const { 
         Sprints, 
-        setSprints,
+        // setSprints,
         setNewSprintIssue 
     } = SprintContexts();
-    const { SelectedProj } = ProjContexts();
+    // const { SelectedProj } = ProjContexts();
     const { setIssueModal } = IssueContexts();
     const { nav, ProjectNav, ScreenWidth} = useStateContext();
 
-    useEffect( () => { 
-      if (!Sprints?.length || 
-        Sprints[0]?.project !== SelectedProj?._id) {
-          axios.get(process.env.REACT_APP_API_Sprints, { withCredentials: true })
-            .then( 
-                res => {
-                    if (!Array.isArray(res.data)) {
-                        // console.log(res.data);
-                        return;
-                    }
-                    setSprints(
-                      res.data
-                        ?.filter(
-                            sprint => 
-                            (sprint.project === SelectedProj?._id) 
-                        )
-                      )
-                })
-              } // eslint-disable-next-line
-        }, [SelectedProj])
+    // useEffect( () => { 
+    //   if (!Sprints?.length || 
+    //     Sprints[0]?.project !== SelectedProj?._id) {
+    //       axios.get(process.env.REACT_APP_API_Sprints, { withCredentials: true })
+    //         .then( 
+    //             res => {
+    //                 if (!Array.isArray(res.data)) {
+    //                     // console.log(res.data);
+    //                     return;
+    //                 }
+    //                 setSprints(
+    //                   res.data
+    //                     ?.filter(
+    //                         sprint => 
+    //                         (sprint.project === SelectedProj?._id) 
+    //                     )
+    //                   )
+    //             })
+    //           } // eslint-disable-next-line
+    //     }, [SelectedProj])
 
 
   return (

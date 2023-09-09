@@ -12,7 +12,7 @@ function NavBackGdDefault( props ) {
   const currLocation = useLocation();
   // let goToPage = useNavigate();
   const isProjPage = currLocation.pathname
-  .includes('proj-nav=true')
+  .includes('project-page')
 
 
     const { 

@@ -5,47 +5,27 @@ const Sprint = require('../models/Sprint')
 const User = require('../models/User')
 const { StageIssues } = require('./BoardIssues');
 const { default: mongoose } = require('mongoose');
+let { RedisClient } = require('../config/redisClient')
+
 
 const getIssues = async (req, res) => {
-    Issue.find({}, 
-        (err, result) => {
-            if (err) {
-                res.json(err)
-            } 
-            else {
-                res.status(200).json(result) 
-            }
-        })
-};
+    let results;
+    try {
+        const redisIssues = await RedisClient.get("Issue");
+        if (redisIssues) {
+            console.log("hit")
+            results = JSON.parse(redisIssues);
+        } 
+        else { 
+            results = await Issue.find({});
+            await RedisClient.set("Issue", JSON.stringify(results))
+        }
+        res.status(200).send(results)
 
-const getIssuesByProject = async (req, res) => {
-    let filter = req.body?.backlog ? {
-        project: req.body.projectID,
-        stage:   'backlog'
-    } : { project: req.body.projectID }
-    // console.log(filter)
-    Issue.find(filter, 
-        (err, result) => {
-            if (err) {
-                res.json(err)
-            } 
-            else {
-                res.status(200).json(result) 
-            }
-        })
+    } catch (err) {
+        console.log(err)
+    }
 };
-
-const getIssuesBySprint = async (req, res) => {
-    Issue.find({ sprint: req.body.sprintID }, 
-        (err, result) => {
-            if (err) {
-                res.json(err)
-            } 
-            else {
-                res.status(200).json(result) 
-            }
-        })
-    };
 
 
 const addIssue = async (req, res) => {
@@ -278,44 +258,6 @@ const editIssueSprint = async (req, res) => {
 }
 
 
-// const editIssueType = async (req, res) => {
-//     const issueFields = req.body;
-//     Issue.findById(
-//         issueFields._id, 
-//         (err, doc) => {
-//         if (err) {
-//             console.log(err)
-//             res.status(500).send(err)
-//         }
-//         doc.type = issueFields.type;
-//         doc.updatedAt = Date();
-//         doc.save();
-//         res.status(200).send(issueFields.type)
-//         });
-//     };
-
-
-// const editIssueSprint = async (req, res, next) => {
-//     const Fields = req.body;
-//     Issue.updateMany(
-//         { _id: {$in: Fields.issues} },
-//         { sprint: Fields.SprintID },
-//         { multi: true },
-
-//             (err, docs) =>  {
-//             if (err){
-//                 console.log(err)
-//                 res.status(501).send(err);
-//             }
-//             else {
-//                 next();
-//             }
-//         }
-//     )
-
-// }
-
-
 
 
 const editIssueStage = async (req, res) => {
@@ -532,8 +474,6 @@ const reOrderIssues = async (req, res) => {
 
 module.exports = {
     getIssues, 
-    getIssuesByProject,
-    getIssuesBySprint,
     addIssue, 
     editIssueSummary,
     editIssueType,

@@ -3,8 +3,6 @@ const router = express.Router();
 router.use(express.json());
 const {     
     getIssues, 
-    getIssuesByProject,
-    getIssuesBySprint,
     addIssue, 
     editIssueSummary,
     editIssueType,
@@ -25,8 +23,6 @@ module.exports = router;
 
 
 router.get('/', isAuth, getIssues);
-router.post('/by-project', isAuth, getIssuesByProject);
-router.post('/by-sprint', isAuth, getIssuesBySprint);
 router.get('/versions/sse/:id', isAuth, sendIssueVersions)
 router.get('/versions/:id',     isAuth, getIssueVersions)
 router.post('/add-issue',   isAuthDemo, addIssue);

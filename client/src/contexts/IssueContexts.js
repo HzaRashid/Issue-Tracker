@@ -32,8 +32,6 @@ export const IssueContextProvider = ({children}) => {
             SearchSptIssues, setSearchSptIssues,
             AsgndIssues, setAsgndIssues,
             PstdIssues, setPstdIssues,
-
-            
         }}
         >
             {children}

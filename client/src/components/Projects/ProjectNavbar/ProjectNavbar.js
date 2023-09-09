@@ -6,7 +6,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { useStateContext } from '../../../contexts/ContextProvider';
 import { ProjContexts } from '../../../contexts/ProjectContexts';
 import { CustomTooltip } from '../../CustomTooltip';
-import Axios from 'axios'
+import axios from 'axios'
 import { MdEdit } from 'react-icons/md';
 import { SprintContexts } from '../../../contexts/SprintContexts';
 
@@ -18,8 +18,9 @@ function ProjectNavbar( props ) {
 
   const { 
     // setNav,
-    // ProjectNav, 
+    ProjectNav, 
     setProjectNav,
+    setSwapProjNav
     
    } = useStateContext();
 
@@ -27,7 +28,7 @@ function ProjectNavbar( props ) {
     Projects, 
     setProjects, 
     setSelectedProjModal, 
-    // EditProj, 
+    ProjStatus, 
     setEditProj,
     setProjModal, 
     setEditProjModal, 
@@ -37,13 +38,13 @@ function ProjectNavbar( props ) {
    const [Search, setSearch] = useState('');
 
    useEffect( () => { 
-    if (!Projects?.length) Axios.get(process.env.REACT_APP_API_Projects, { withCredentials: true })
-    .then( 
-      response => setProjects(response.data) 
-      // eslint-disable-next-line
-      )}, [
-        // EditProj
-      ])
+    const shouldUpdate = (!Projects?.length && ProjectNav && currLoc.pathname !== '/home') || ProjStatus > 0
+    if (shouldUpdate) {
+      axios.get(process.env.REACT_APP_API_Projects, { withCredentials: true })
+      .then( response => setProjects(response.data))
+    }
+    // eslint-disable-next-line
+    }, [ProjStatus, ProjectNav])
 
 
   // console.log(ProjectNav)
@@ -115,17 +116,18 @@ function ProjectNavbar( props ) {
 
             <div key={key} >
             <Link
-            to={`/projects/${item.title}/backlog/proj-nav=true`}
+            to={`/project-page/${item.title}/backlog/`}
             key={key} 
             className='project-row'
             onClick={
               () => {
                 setProjectNav(false);
                 setShowSprints(false);
+                setSwapProjNav(false)
 
               }}
               id={
-                (currLoc.pathname.replace('%20', ' ') === `/projects/${item.title}/backlog/proj-nav=true`)
+                (currLoc.pathname.replace('%20', ' ') === `/project-page/${item.title}/backlog/`)
                 ?
                 'ProjOn' : 'ProjOff'
             }

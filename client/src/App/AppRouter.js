@@ -45,7 +45,7 @@ function AppRouter() {
     }, []
   )
 
-  console.log(user)
+  // console.log(user)
 
   return (
   <>
@@ -56,9 +56,9 @@ function AppRouter() {
     <Route path='/login' element={<Login user={user}/>}/>
     <Route exact path='/home' element={<PrivateRoute component={<Home/>} />} />
     <Route exact path='/projects' element={<PrivateRoute component={<Projects />} />} />
-    <Route exact path='/projects/:ProjectTitle/backlog/proj-nav=true' element={<PrivateRoute component={<Backlog/>}/>} />
-    <Route exact path='/projects/:ProjectTitle/sprint-board/:SprintTitle/:SprintID/proj-nav=true' element={<PrivateRoute component={<SprintBoard />} />} />
-    <Route exact path='/projects/:ProjectTitle/team/proj-nav=true' element={<PrivateRoute component={<ProjectTeam />} />} />
+    <Route exact path='/project-page/:ProjectTitle/backlog/' element={<PrivateRoute component={<Backlog/>}/>} />
+    <Route exact path='/project-page/:ProjectTitle/sprint-board/:SprintTitle/' element={<PrivateRoute component={<SprintBoard />} />} />
+    <Route exact path='/project-page/:ProjectTitle/team/' element={<PrivateRoute component={<ProjectTeam />} />} />
     <Route exact path='/issues' element={<PrivateRoute component={<Issues />}/>} />
     <Route exact path='/team' element={<PrivateRoute component={<Team />}/>} />
     

@@ -47,7 +47,7 @@ function Nav() {
     ProjectNav, setProjectNav,
     ScreenWidth, 
     // SwapProjNav, 
-    // setSwapProjNav
+    setSwapProjNav
    } = useStateContext();
   const { Users } = TeamContexts()
   const { setShowSprints } = SprintContexts();
@@ -79,7 +79,7 @@ function Nav() {
     // eslint-disable-next-line
   }, [ScreenWidth])
 
-  const isProjPage = currLocation.pathname.includes('proj-nav=true')
+  const isProjPage = currLocation.pathname.includes('project-page')
 
   return (
   <>
@@ -148,7 +148,7 @@ function Nav() {
                 ( 
                 currLocation
                 .pathname
-                .includes('/projects') && 
+                .includes('/project-page') && 
                 item.title === 'Projects'
                 ) 
               ) ? 
@@ -158,6 +158,9 @@ function Nav() {
             if (item.title==='Projects') {
               setProjectNav(!ProjectNav);
               setShowSprints(false);
+              if (currLocation.pathname.includes('project-page')) {
+                setTimeout(() => setSwapProjNav(false), 300)
+              }
               if (isMobile) setNav(false);
               return
             }

@@ -3,7 +3,7 @@ const Comment = require('../models/Comment');
 const mongoose = require('mongoose')
 
 
-const sendComments = async  (req, res) => {
+const sendComments = async (req, res) => {
     
 
     res.writeHead(

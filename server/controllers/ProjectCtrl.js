@@ -2,18 +2,27 @@ const { nextDay } = require('date-fns');
 const e = require('express');
 const Project = require('../models/Project');
 var mongoose = require('mongoose');
+let { RedisClient } = require('../config/redisClient')
 
-const getProjects = async  (req, res) => {
-    Project.find({}, 
-        (err, result) => {
-            if (err) {
-                res.json(err)
-            } 
-            else {
-                res.status(200).json(result) 
-            }
-        })
-    };
+
+const getProjects = async (req, res) => {
+    let results;
+    try {
+        const redisProjects = await RedisClient.get("Project");
+        if (redisProjects) {
+            console.log("hit")
+            results = JSON.parse(redisProjects);
+        } 
+        else { 
+            results = await Project.find({});
+            await RedisClient.set("Project", JSON.stringify(results))
+        }
+        res.status(200).send(results)
+
+    } catch (err) {
+        console.log(err)
+    }
+};
 
 
 const addProject = async (req, res) => {

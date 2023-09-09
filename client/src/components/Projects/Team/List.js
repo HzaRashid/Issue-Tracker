@@ -1,35 +1,23 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import { ThemeProvider, createTheme } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { DataGrid, GridActionsCellItem, GridToolbarContainer, GridToolbarQuickFilter } from '@mui/x-data-grid';
 import { TeamContexts } from '../../../contexts/TeamContexts';
-
 import { ProjContexts } from '../../../contexts/ProjectContexts';
 import { CustomTooltip } from '../../CustomTooltip';
+import { DatagridStyle } from '../../Home/Issues/DatagridStyle';
+import { theme } from '../../Home/Issues/theme';
 function List() {
     const { Users, setSelectedUser, setEditUserModal } = TeamContexts();
     const { SelectedProj } = ProjContexts();
-    // console.log(Projects)
 
-    const [ ProjTeam, setProjTeam ] = useState([]);
-    // cons
-    useEffect(() => {
-        const users = Users.slice().filter(u => {
-            return u?.projects.includes(SelectedProj?._id)});
-        setProjTeam(users)
-        
-    }, [Users, SelectedProj])
-    // console.log(SelectedProj)
-    // allow user to search issues by assignee
     const rows = useMemo(() => {
-     
-    return ProjTeam?.map(
-      ( u, key ) => {
-        u.id = key
-        return u
-    }
-    )
-}, [ProjTeam])
+      return Users?.filter(u => u?.projects.includes(SelectedProj?._id))
+      ?.map((u, key) => {
+           u.id = key
+           return u
+          })
+        }, [Users, SelectedProj])
 
     
     const columns = [ 
@@ -93,10 +81,10 @@ function List() {
       ]
 
 
-
+  const Theme = createTheme(theme)
   return (
     <>
-    <ThemeProvider theme={theme}
+    <ThemeProvider theme={Theme}
     >
 
     <div 
@@ -117,7 +105,7 @@ function List() {
     
     slotProps={{
       toolbar: {
-        users: ProjTeam,
+        users: rows,
         project: SelectedProj
       },
     }}
@@ -127,54 +115,7 @@ function List() {
     disableSelectionOnClick
 
     // getRowId={(row) => row?._id}
-    sx={{ 
-        overflow:'scroll',
-        borderBottom: 'none',
-        zIndex:'0',
-    mx: 4, 
-    bgcolor: 'transparent', 
-    '& .MuiDataGrid-cell:hover': {
-    color: '#588B63',
-    },
-    '& .MuiDataGrid-cell:focus': {
-      color: '#588B63',
-      outline: 'none',
-      },
-    // '& .MuiDataGrid-cell': {
-    //     fontWeight: 'normal',
-    // },
-    '& .MuiDataGrid-columnHeaderTitle': {
-      color: '#909090',
-      fontWeight: 'light'
-    //   fontFamily:`"Open Sans", sans-serif`
-    },
-    '& .MuiDataGrid-columnSeparator': {
-        visibility: 'hidden'
-    },
-    '& .MuiDataGrid-cell': {
-        overflow: 'scroll',
-        border: 'none',
-        outline: 'none',
-        fontWeight: '400'
-    },
-    
-    '& .MuiMenuItem-root': {
-        backgroundColor: '#505050'
-    },
-    '& .MuiFormControl-root': {
-        fontSize: '1.5em'
-    },
-    '& .css-o8va6p-MuiFormControl-root-MuiTextField-root-MuiDataGrid-toolbarQuickFilter .MuiSvgIcon-root': {
-        color: '#808080'
-    },
-
-    '& .MuiDataGrid-footerContainer': {
-      color: 'transparent',
-      background: 'transparent',
-      border: 'none'
-    }
-
-    }}
+    sx={DatagridStyle}
     GridLines="None"
     />
     
@@ -189,7 +130,7 @@ function List() {
 
 function CustomToolbar( props ) {
     // console.log(props)
-    const issueCount = props?.users?.length
+    const numUsers = props?.users?.length
     // console.log(props.issueData)  // eslint-disable-next-line
     return (
     <div className='flex items-center font-lato'> 
@@ -200,7 +141,7 @@ function CustomToolbar( props ) {
             {/* { 'Team' + ' (' + props?.project?.title + ')'} */}
             {`Team (${props?.project?.title})`}
             <div className='text-[0.5em]'>
-                {issueCount + ' total'}
+                {numUsers + ' total'}
             </div>
         </div>
         <GridToolbarQuickFilter 
@@ -222,40 +163,6 @@ function CustomToolbar( props ) {
       </div>
     );
   };
-
-  const theme = createTheme({
-    typography: {
-     "fontFamily": `"Lato", sans-serif`,
-     "fontSize": 14.5,
-     "fontWeightLight": 400,
-     "fontWeightRegular": 300,
-     "fontWeightMedium": 400
-    },
-    palette: {
-      primary: {
-        main: '#7895B3',
-          },
-        role: {
-          main: '#00000020',
-          contrastText: '#000000',
-        },
-        projects: {
-            main: '#00000020',
-            contrastText: '#000000',
-          },
-      },
-  
-    components: {
-      MuiDataGrid: {
-          styleOverrides: {
-              root: {
-                  border: 'none'
-              }
-          }
-      }
-  }
-  
-  });
   
   
 
