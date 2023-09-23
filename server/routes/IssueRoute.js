@@ -31,9 +31,9 @@ router.put('/summary',       isAuthDemo, editIssueSummary);
 router.put('/type',          isAuthDemo, editIssueType);
 router.put('/sprint',        isAuthDemo, editIssueSprint);
 router.put('/assignee',      isAuthDemo, editIssueAssignee);
-router.put('/stage',         isAuthDemo, editIssueStage);
+router.put('/stage',        isAuthDemo,  editIssueStage);
 
-router.put('/board-stage',   isAuthDemo, editIssueStage);
+router.put('/board-stage', isAuthDemo, editIssueStage);
 
 
 router.put('/many-issues-stage', transferManyIssuesStage, deleteSprintStage);

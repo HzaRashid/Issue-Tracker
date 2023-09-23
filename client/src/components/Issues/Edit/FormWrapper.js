@@ -673,6 +673,13 @@ const [ShowSprints, setShowSprints] = useState(false);
               [prevStage]: prevStageIssues
 
             })})
+            console.log(Object.keys(items))
+            // if (currLoc.pathname.includes('sprint-board') ) {
+            //   setSelectedSprint(prev => ({
+            //     ...prev,
+            //     stages: Object.keys(items)
+            //     }))
+            // }
             
             axios.put(
               process.env.REACT_APP_API_Issues + '/stage',

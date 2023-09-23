@@ -2,6 +2,7 @@ import React from 'react'
 import { SprintContexts } from '../../../contexts/SprintContexts'
 // import { useNavigate } from 'react-router-dom';
 import { WhtSpace } from './NavItems';
+import { useStateContext } from '../../../contexts/ContextProvider';
 
 
 function SprintList( props ) {
@@ -12,7 +13,7 @@ function SprintList( props ) {
         // SelectedSprint, 
         setSelectedSprint 
     } = SprintContexts();
-
+    const { setIsLoading } = useStateContext()
     // const goToPage = useNavigate();
 
   return (
@@ -39,6 +40,7 @@ function SprintList( props ) {
                     onClick={() => {
                         setSelectedSprint(sprint)
                         goToPage(sprintLink)
+                        setIsLoading(true);
                     }}
                     >
                         <div className='ml-[1em] p-1'>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useState, useTransition } from 'react'
 import { useStateContext } from '../../contexts/ContextProvider'
 import { ProjContexts } from '../../contexts/ProjectContexts';
 import { SprintContexts } from '../../contexts/SprintContexts';
@@ -8,14 +8,19 @@ import axios from 'axios';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { IssueContexts } from '../../contexts/IssueContexts';
 import { TeamContexts } from '../../contexts/TeamContexts';
+import _ from 'lodash'
+import { ErrorBoundary } from 'react-error-boundary'
+
 
 function SprintBoard() {
+
+  const [isPending, startTransition] = useTransition()
 
   const { ProjectTitle, SprintTitle,  SprintID} = useParams();
   
   const { Users, setUsers } = TeamContexts();
 
-  const { nav, ProjectNav, ScreenWidth } = useStateContext();
+  const { nav, ProjectNav, ScreenWidth, isLoading, setIsLoading } = useStateContext();
 
   const { 
     Projects, setProjects, 
@@ -34,16 +39,72 @@ function SprintBoard() {
     // eslint-disable-next-line
     items, setItems
   } = SprintContexts();
-
+  const issuesCopy = React.useRef();
   useEffect(() => {
-
     const withCreds = { withCredentials: true }
-    if (
-      !Projects?.length ||
-      !Issues?.length   ||
-      // !Sprints?.length  ||
-      !Users?.length 
-      ) {
+    startTransition(() => {
+      axios.all([
+        axios.get(process.env.REACT_APP_API_Projects as string, withCreds),
+        axios.get(process.env.REACT_APP_API_Issues   as string, withCreds),
+        axios.get(process.env.REACT_APP_API_Sprints  as string, withCreds),
+        axios.get(process.env.REACT_APP_API_getUsers as string, withCreds),
+      ])
+      .then(axios.spread((res1, res2, res3, res4) => {
+        setProjects(res1.data);
+        var project = res1.data?.filter((p : {title: string}) => p.title === ProjectTitle)[0];
+        setSelectedProj({...project})
+
+        setIssues(res2.data.filter((i : {project: string}) => i.project === project._id));
+
+        var allSprints = res3.data.filter((s : {project : string}) => s.project = project._id)
+        setSprints([...allSprints])
+        var sprint = res3.data.filter((s : { title : string, project: string }) => (s.project === project._id && s.title === SprintTitle))[0]
+        setSelectedSprint({...sprint})
+
+        setUsers(res4.data);
+
+        var sprintIssues = res2.data.filter(
+          (i: Issue) => (
+            i.sprint === sprint?._id &&
+            i.stage?.toLowerCase() !== 'backlog'
+            ))
+        setSprintIssues([...sprintIssues])
+
+        setItems(
+          sprint?.stages?.map(
+            (stage: {title:string}) => stage.title)
+          .reduce((accumulator: any, value: any) => {
+          return {
+            ...accumulator, 
+            [value]: sprintIssues.filter(
+              (issue: Issue) => 
+              issue?.stage.toLowerCase() === value?.toLowerCase()
+              )
+          };
+        }, {}))
+
+        issuesCopy.current = sprint?.stages?.map(
+          (stage: {title:string}) => stage.title)
+        .reduce((accumulator: any, value: any) => {
+        return {
+          ...accumulator, 
+          [value]: sprintIssues.filter(
+            (issue: Issue) => 
+            issue?.stage.toLowerCase() === value?.toLowerCase()
+            )
+        };
+      }, {})
+    }))
+    })
+    // const withCreds = { withCredentials: true }
+    // if (
+    //   !Projects?.length ||
+    //   !Issues?.length   ||
+    //   // !Sprints?.length  ||
+    //   !Users?.length 
+    //   ) {
+
+    // ==> RIGHT HERE <==
         axios.all([
           axios.get(process.env.REACT_APP_API_Projects as string, withCreds),
           axios.get(process.env.REACT_APP_API_Issues   as string, withCreds),
@@ -83,36 +144,54 @@ function SprintBoard() {
                 )
             };
           }, {}))
+
+          issuesCopy.current = sprint?.stages?.map(
+            (stage: {title:string}) => stage.title)
+          .reduce((accumulator: any, value: any) => {
+          return {
+            ...accumulator, 
+            [value]: sprintIssues.filter(
+              (issue: Issue) => 
+              issue?.stage.toLowerCase() === value?.toLowerCase()
+              )
+          };
+        }, {})
       }))
-    } else {
-      var project = Projects?.filter((p : {title: string}) => p.title === ProjectTitle)[0];
-      setSelectedProj({...project})
-      axios.get(process.env.REACT_APP_API_Sprints  as string, withCreds)
-      .then(res => {
-        setSprints(res.data.filter((s : {project : string}) => s.project = project._id))
-        let sprint = res.data?.filter((s : { title : string, project: string }) => (s.project === project._id && s.title === SprintTitle))[0]
-        setSelectedSprint(sprint)
-        var sprintIssues = Issues.filter(
-          (i: Issue) => (
-            i.sprint === sprint?._id &&
-            i.stage?.toLowerCase() !== 'backlog'
-            ))
-        setSprintIssues(sprintIssues)
-            setItems(
-              sprint?.stages?.map(
-                (stage: {title:string}) => stage.title)
-              .reduce((accumulator: any, value: any) => {
-              return {
-                ...accumulator, 
-                [value]: sprintIssues.filter(
-                  (issue: Issue) => 
-                  issue?.stage.toLowerCase() === value?.toLowerCase()
-                  )
-              };
-            }, {}))})
-          }
+
+      // ==> RIGHT HERE <==
+
+
+    }
+    // } 
+    // else {
+    //   var project = Projects?.filter((p : {title: string}) => p.title === ProjectTitle)[0];
+    //   setSelectedProj({...project})
+    //   axios.get(process.env.REACT_APP_API_Sprints  as string, withCreds)
+    //   .then(res => {
+    //     setSprints(res.data.filter((s : {project : string}) => s.project = project._id))
+    //     let sprint = res.data?.filter((s : { title : string, project: string }) => (s.project === project._id && s.title === SprintTitle))[0]
+    //     setSelectedSprint(sprint)
+    //     var sprintIssues = Issues.filter(
+    //       (i: Issue) => (
+    //         i.sprint === sprint?._id &&
+    //         i.stage?.toLowerCase() !== 'backlog'
+    //         ))
+    //     setSprintIssues(sprintIssues)
+    //         setItems(
+    //           sprint?.stages?.map(
+    //             (stage: {title:string}) => stage.title)
+    //           .reduce((accumulator: any, value: any) => {
+    //           return {
+    //             ...accumulator, 
+    //             [value]: sprintIssues.filter(
+    //               (issue: Issue) => 
+    //               issue?.stage.toLowerCase() === value?.toLowerCase()
+    //               )
+    //           };
+    //         }, {}))})
+    //       }
     // eslint-disable-next-line
-    },[
+    ,[
       ProjectTitle, 
       // eslint-disable-next-line
       ProjectTitle === SelectedProj?._id,
@@ -211,7 +290,7 @@ function SprintBoard() {
   //   }, // eslint-disable-next-line
   //   [SelectedSprint?._id, SprintIssues]
   // )
-
+  
   
   const currLoc = useLocation();
   const currPathname = `${useParams().SprintTitle} - Board`;
@@ -219,6 +298,26 @@ function SprintBoard() {
   const bothNavsClosed = !ProjectNav && !nav
   const ProjNavOpen  = ProjectNav && !nav
   const NavOpen = !ProjectNav && nav
+  // if (!issuesCopy.current) return 
+
+  // if (!_.isEqual(issuesCopy.current, items)) return 
+  console.log('PENDING STATE: ', isPending)
+  useEffect(() => {
+    if (Object.keys(items)?.length) {
+      Object.keys(items).map(key => {
+      if (items[key]?.length) {
+        if (items[key][0]?.sprint !== SelectedSprint._id) {
+          setIsLoading(true)
+        }
+        else setIsLoading(false)
+      }
+      })}
+  }, [SelectedSprint, items])
+  // if (!isPending) console.log('DONE')
+
+  if (isLoading) return <div></div>
+
+
   
   return (
     <> 
@@ -313,15 +412,18 @@ function SprintBoard() {
     <div className='flex items-center justify-center mt-[-5em]'>
         {/* <Container items={items} setItems={setItems}/> */}
         {
-        items ? 
+        items && issuesCopy.current ? 
+        <ErrorBoundary fallback={<div></div>}> 
         <MultipleContainers 
         issues={items} 
         setIssues={setItems} 
         ScreenWidth={ScreenWidth} 
         SelectedSprint={SelectedSprint}
         SprintIssues={SprintIssues}
+        issuesCopy={issuesCopy}
         />
-
+        </ErrorBoundary>
+        
         : null
       }
         

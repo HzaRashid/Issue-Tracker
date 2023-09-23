@@ -1,6 +1,7 @@
 // @ts-nocheck
-import React, { SetStateAction, useCallback, useEffect, useRef, useState} from "react";
+import React, { RefObject, SetStateAction, useCallback, useEffect, useRef, useState} from "react";
 import { createPortal, unstable_batchedUpdates } from "react-dom";
+import _ from 'lodash'
 import {
   CancelDrop,
   closestCenter,
@@ -40,8 +41,14 @@ import axios from "axios";
 import { IssueContexts } from "../../../../contexts/IssueContexts";
 import { SprintContexts } from "../../../../contexts/SprintContexts";
 import { AuthContexts } from "../../../../App/Auth";
+// const data = require('../../../../pages/routes.json')
 
-
+// function useForceUpdate(){
+//   const [value, setValue] = useState(0); // integer state
+//   return () => setValue(value => value + 1); // update state to force render
+//   // A function that increment 👆🏻 the previous state like here 
+//   // is better than directly setting `setValue(value + 1)`
+// }
 
 const animateLayoutChanges: AnimateLayoutChanges = (args) =>
   args.isSorting || args.wasDragging ? defaultAnimateLayoutChanges(args) : true;
@@ -82,7 +89,6 @@ function DroppableContainer({
     : false;
 
   return (
-
     <Container
       ref={disabled ? undefined : setNodeRef}
       style={{
@@ -101,10 +107,7 @@ function DroppableContainer({
       
     >
       {children}
-      
-      
     </Container>
-
   );
 }
 
@@ -154,6 +157,7 @@ interface Props {
   SelectedSprint?: Sprint,
   SprintIssues?: Issue[],
   ScreenWidth?: number;
+  issuesCopy?: MutableRefObject<any>
 }
 
 export const TRASH_ID = "void";
@@ -181,17 +185,77 @@ export function MultipleContainers(
   SelectedSprint,
   SprintIssues,
   ScreenWidth,
+  issuesCopy
   }: Props ) {
 
   const { setSelectedSprint, AddedStage, setAddedStage } = SprintContexts();
   const { setSelectedIssue } = IssueContexts();
   const { user } = AuthContexts();
-  
-  const [items, setItems] = useState<Issues>()
+
+
+  // useEffect(() => issuesCopy.current = issues, [issues])
+  const [items, setItems] = useState<Issues>(() => issuesCopy.current ?? null);
+  const [ copy, setCopy ] = useState<Issues>();
+  const [ isInit, setIsInit ] = useState<Boolean>(false);
   useEffect(
-    () => setItems(issues), [issues]
+    () => {
+      // if (!items?.length) setItems(issues)
+
+      if (Object.keys(issues)?.length) {
+        Object.keys(issues).map(key => {
+        if (issues[key]?.length) {
+          if (issues[key][0]?.sprint !== SelectedSprint._id) {
+            setItems(issues)
+            setIsInit(true)
+          }
+        }
+        })}
+
+      // else setItems(issuesCopy.current)
+    }, [SelectedSprint, issues]
   )
+console.log(issues)
+console.log(isInit)
+  // useEffect(() => {
+  //   // setItems(copy)
+  //     if (!_.isEqual(issuesCopy.current, issues)) {
+  //       console.log('a')
+  //     issuesCopy.current = issues
+  //     setItems(issues)
+      
+  //   }
+
+  //   if (!_.isEqual(issuesCopy.current, items)) {
+  //     console.log('b')
+  //     issuesCopy.current = items
+  //     setIssues(items)
+  //   }
+
+  //   // if (!items?.length) setItems(issues)
+  //   console.log('REF')
+  // }, [items, issues, SelectedSprint._id])
+
+//  const keepsync = useCallback(() => {
+//     if (!_.isEqual(issuesCopy.current, issues)) {
+//       issuesCopy.current = items
+//       setItems(issues)
+      
+//     }
+
+//     if (!_.isEqual(issuesCopy.current, items)) {
+//       issuesCopy.current = items
+//       setIssues(items)
+//     }
+
+//     console.log('REF')
+  
+    
+//   }, [])
+
+// useEffect(() => keepsync(), [items, issues])
+
   const [containers, setContainers] = useState<string[]>([]);
+  
   useEffect(
     () => {
       if (issues) {
@@ -199,6 +263,10 @@ export function MultipleContainers(
       }
     }, [issues]
   )
+// console.log(issues)
+
+
+
 
 
   
@@ -331,8 +399,8 @@ export function MultipleContainers(
   }, [items]);
 
 
-
-  return (
+  if (!containers) return null
+  else return (
     <> 
     <DndContext
       sensors={sensors}
@@ -369,7 +437,8 @@ export function MultipleContainers(
             const overItems = items[overContainer];// @ts-ignore
             const overIndex = overItems.indexOf(overId);// @ts-ignore
             const activeIndex = activeItems.indexOf(active.id);
-
+            console.log('active: ', activeId)
+            console.log('over ', overId)
             let newIndex: number;
 
             if (overId in items) {
@@ -408,7 +477,7 @@ export function MultipleContainers(
       }}
       onDragEnd={({ active, over }) => {
         document.body.style.setProperty('cursor', '')
-
+        console.log(items)
         // dragging container
         if (active.id in items && over?.id) {
           const activeIndex = containers.indexOf(active.id); // @ts-ignore
@@ -418,13 +487,13 @@ export function MultipleContainers(
           setContainers(reOrderedContainers);
 
           // console.log(reOrderedContainers)
-          
-          setSelectedSprint(prev => {
-            const stages = prev.stages
-            // console.log(arrayToSort)
-            stages.sort((a, b) => reOrderedContainers.indexOf(a.title) - reOrderedContainers.indexOf(b.title));
-            return {...prev, stages: stages }
-          })
+          console.log()
+          // setSelectedSprint(prev => {
+          //   const stages = prev.stages
+          //   // console.log(arrayToSort)
+          //   stages.sort((a, b) => reOrderedContainers.indexOf(a.title) - reOrderedContainers.indexOf(b.title));
+          //   return {...prev, stages: stages }
+          // })
           
 
           // console.log(SelectedSprint)
@@ -491,36 +560,35 @@ export function MultipleContainers(
           }
 
           // update original items, initiated in SprintBoard.tsx
-          if (activeId.stage !== overContainer) {
-            let updatedItems = issues[overContainer]?.slice()
-            updatedItems.splice(overIndex, 0, 
-              {...activeId, stage: overContainer})
-              const prevStage = containers?.filter(stage => 
-                stage?.toLowerCase() === activeId?.stage?.toLowerCase()
-                )[0]
-              if (prevStage) {
-                setIssues(issues => ({
-                  ...issues,
-                  [overContainer]: updatedItems,
-                  [prevStage]: issues[prevStage].filter(
-                    issue => issue._id !== activeId._id
-                  )
-                }))
-            }
-          }
+          // if (activeId.stage !== overContainer) {
+          //   let updatedItems = issues[overContainer]?.slice()
+          //   updatedItems.splice(overIndex, 0, 
+          //     {...activeId, stage: overContainer})
+          //     const prevStage = containers?.filter(stage => 
+          //       stage?.toLowerCase() === activeId?.stage?.toLowerCase()
+          //       )[0]
+          //     if (prevStage) {
+          //       setIssues(issues => ({
+          //         ...issues,
+          //         [overContainer]: updatedItems,
+          //         [prevStage]: issues[prevStage].filter(
+          //           issue => issue._id !== activeId._id
+          //         )
+          //       }))
+          //   }
+          // }
 
         }
-       setSelectedIssue({...activeId, stage: overContainer})
-        axios.put(process.env.REACT_APP_API_Issues + '/board-stage',
-        {
-            issueID: activeId._id,
-            stage: overContainer,
-            sprintID: SelectedSprint._id,
-            modifiedBy: user?.user,
-        }, 
-        { withCredentials: true })
-        .then(res => console.log(res)) // REMEMBER TO CHANGE STATE OF ITEMS
-        .catch(err => console.log(err))
+      //  setSelectedIssue({...activeId, stage: overContainer})
+      //   axios.put(process.env.REACT_APP_API_Issues + '/board-stage',
+      //   {
+      //       issueID: activeId._id,
+      //       stage: overContainer,
+      //       sprintID: SelectedSprint._id,
+      //       modifiedBy: user?.user,
+      //   })
+      //   .then(res => console.log(res)) // REMEMBER TO CHANGE STATE OF ITEMS
+      //   .catch(err => console.log(err))
         console.log(overContainer)
 
         // console.log(containers)
@@ -537,7 +605,7 @@ export function MultipleContainers(
       onDragCancel={onDragCancel}
       modifiers={modifiers}
     >
-      {containers && SelectedSprint ? 
+      {containers !== undefined && containers?.length && SelectedSprint ? 
             <div 
 
             className={
@@ -607,9 +675,7 @@ export function MultipleContainers(
                           );
                         })}
                       </SortableContext>
-                      
                     </DroppableContainer>
-                    
                   ))}
                   {addStage ? 
                   <AddContainer 

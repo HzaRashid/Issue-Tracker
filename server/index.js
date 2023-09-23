@@ -42,7 +42,7 @@ let redisStore = new sessionStore({
 if (process.env.NODE_ENV == 'production') {
   const limiter = rateLimit({
     windowMs: 10 * 60 * 1000,     // 10 minutes
-    max: 100,                     // Limit each IP to 100 requests per `window` (here, per 10 minutes)
+    max: 500,                     // Limit each IP to 100 requests per `window` (here, per 10 minutes)
     standardHeaders: 'draft-7',   // draft-6: RateLimit-* headers; draft-7: combined RateLimit header
     legacyHeaders: false,         // X-RateLimit-* headers
     store: new limitStore({
