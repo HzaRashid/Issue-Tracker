@@ -156,7 +156,7 @@ export const Item = React.memo(
             data-cypress="draggable-item"
             {...(!handle ? listeners : undefined)}
             {...props}
-            // tabIndex={!handle ? 0 : undefined}
+            tabIndex={!handle ? 0 : undefined}
           >
             
             <div className='flex items-center'>

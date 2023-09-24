@@ -5,11 +5,13 @@ import _ from 'lodash'
 import {
   CancelDrop,
   closestCenter,
+  pointerWithin,
   rectIntersection,
   CollisionDetection,
   DndContext,
   DragOverlay,
   DropAnimation,
+  getFirstCollision,
   defaultDropAnimation,
   KeyboardSensor,
   MouseSensor,
@@ -194,75 +196,59 @@ export function MultipleContainers(
 
 
   // useEffect(() => issuesCopy.current = issues, [issues])
-  const [items, setItems] = useState<Issues>(() => issuesCopy.current ?? null);
-  const [ copy, setCopy ] = useState<Issues>();
-  const [ isInit, setIsInit ] = useState<Boolean>(false);
-  useEffect(
-    () => {
-      // if (!items?.length) setItems(issues)
+  const [items, setItems] = useState<Issues>(() => issues ?? null);
 
-      if (Object.keys(issues)?.length) {
-        Object.keys(issues).map(key => {
-        if (issues[key]?.length) {
-          if (issues[key][0]?.sprint !== SelectedSprint._id) {
-            setItems(issues)
-            setIsInit(true)
-          }
-        }
-        })}
-
-      // else setItems(issuesCopy.current)
-    }, [SelectedSprint, issues]
-  )
-console.log(issues)
-console.log(isInit)
-  // useEffect(() => {
-  //   // setItems(copy)
-  //     if (!_.isEqual(issuesCopy.current, issues)) {
-  //       console.log('a')
-  //     issuesCopy.current = issues
-  //     setItems(issues)
+  //   useEffect(() => {
+  //   console.log(_.isEqual(issuesCopy.current, issues))
+  //   console.log(_.isEqual(issuesCopy.current, items))
+  //   //   if (!_.isEqual(issuesCopy.current, issues)) {
+  //   //     console.log('a')
+  //   //   issuesCopy.current = issues
+  //   //   setItems(issues)
       
-  //   }
-
-  //   if (!_.isEqual(issuesCopy.current, items)) {
-  //     console.log('b')
-  //     issuesCopy.current = items
-  //     setIssues(items)
-  //   }
+  //   // }
+    
+  //   // if (!_.isEqual(issuesCopy.current, items)) {
+  //   //   console.log('b')
+  //   //   issuesCopy.current = items
+  //   //   setIssues(items)
+  //   // }
 
   //   // if (!items?.length) setItems(issues)
   //   console.log('REF')
   // }, [items, issues, SelectedSprint._id])
 
-//  const keepsync = useCallback(() => {
-//     if (!_.isEqual(issuesCopy.current, issues)) {
-//       issuesCopy.current = items
-//       setItems(issues)
-      
-//     }
+  // useEffect(
+  //   () => {
+  //     // if (!items?.length) setItems(issues)
 
-//     if (!_.isEqual(issuesCopy.current, items)) {
-//       issuesCopy.current = items
-//       setIssues(items)
-//     }
+  //     if (Object.keys(issues)?.length) {
+  //       Object.keys(issues).map(key => {
+  //       if (issues[key]?.length) {
+  //         if (issues[key][0]?.sprint !== SelectedSprint._id) {
+  //           setItems(issues)
+  //           setIsInit(true)
+  //         }
+  //       }
+  //       })}
 
-//     console.log('REF')
+  //     // else setItems(issuesCopy.current)
+  //   }, [SelectedSprint, issues]
+  // )
+console.log(issues)
+
+
+  const [containers, setContainers] = useState<string[]>(
+    Object.keys(items) as UniqueIdentifier[]
+  );
   
-    
-//   }, [])
-
-// useEffect(() => keepsync(), [items, issues])
-
-  const [containers, setContainers] = useState<string[]>([]);
-  
-  useEffect(
-    () => {
-      if (issues) {
-        setContainers(Object.keys(issues))
-      }
-    }, [issues]
-  )
+  // useEffect(
+  //   () => {
+  //     if (issues) {
+  //       setContainers(Object.keys(issues))
+  //     }
+  //   }, [issues]
+  // )
 // console.log(issues)
 
 
@@ -270,8 +256,10 @@ console.log(isInit)
 
 
   
-  const [activeId, setActiveId] = useState<string | null>(null);
+
   const [addStage, setAddStage] = useState<boolean>(false)
+
+  const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
   const lastOverId = useRef<UniqueIdentifier | null>(null);
   const recentlyMovedToNewContainer = useRef(false);
   const isSortingContainer = activeId ? containers.includes(activeId) : false;
@@ -280,7 +268,6 @@ console.log(isInit)
   
   const scrollRef = useRef<HTMLDivElement>(null);
   const scroll = (offset) => { scrollRef.current.scrollLeft += offset };
-
   useEffect(() => {
     if (AddedStage) {
       console.log('foo')
@@ -290,22 +277,34 @@ console.log(isInit)
     // eslint-disable-next-line
   }, [AddedStage])
 
+  
   // Custom collision detection strategy optimized for multiple containers
   const collisionDetectionStrategy: CollisionDetection = useCallback(
     (args) => {
-      // Start by finding any intersecting droppable
-      let overId = rectIntersection(args);
-
       if (activeId && activeId in items) {
         return closestCenter({
           ...args,
           droppableContainers: args.droppableContainers.filter(
             (container) => container.id in items
-          )
+          ),
         });
       }
 
+      // Start by finding any intersecting droppable
+      const pointerIntersections = pointerWithin(args);
+      const intersections =
+        pointerIntersections.length > 0
+          ? // If there are droppables intersecting with the pointer, return those
+            pointerIntersections
+          : rectIntersection(args);
+      let overId = getFirstCollision(intersections, 'id');
+
       if (overId != null) {
+        if (overId === TRASH_ID) {
+          // If the intersecting droppable is the trash, return early
+          // Remove this if you're not using trashable functionality in your app
+          return intersections;
+        }
 
         if (overId in items) {
           const containerItems = items[overId];
@@ -319,14 +318,14 @@ console.log(isInit)
                 (container) =>
                   container.id !== overId &&
                   containerItems.includes(container.id)
-              )
-            });
+              ),
+            })[0]?.id;
           }
         }
 
         lastOverId.current = overId;
 
-        return overId;
+        return [{id: overId}];
       }
 
       // When a draggable item moves to a new container, the layout may shift
@@ -338,10 +337,11 @@ console.log(isInit)
       }
 
       // If no droppable is matched, return the last match
-      return lastOverId.current;
+      return lastOverId.current ? [{id: lastOverId.current}] : [];
     },
     [activeId, items]
   );
+  
   const [clonedItems, setClonedItems] = useState<Items | null>(null);
 
 
@@ -361,7 +361,7 @@ console.log(isInit)
   
 
 
-  const findContainer = (id: string) => {
+  const findContainer = (id: UniqueIdentifier) => {
     if (id in items) {
       return id;
     }
@@ -369,7 +369,7 @@ console.log(isInit)
     return Object.keys(items).find((key) => items[key].includes(id));
   };
 
-  const getIndex = (id: string) => {
+  const getIndex = (id: UniqueIdentifier) => {
     const container = findContainer(id);
 
     if (!container) {
@@ -399,8 +399,8 @@ console.log(isInit)
   }, [items]);
 
 
-  if (!containers) return null
-  else return (
+
+  return (
     <> 
     <DndContext
       sensors={sensors}
@@ -413,18 +413,17 @@ console.log(isInit)
       onDragStart={({ active }) => {
         document.body.style.setProperty('cursor', 'grabbing')
         setActiveId(active.id);
-        // setSelectedIssue(active.id)
-        // console.log(active.id)
         setClonedItems(items);
       }}
-      onDragOver={({ active, over }) => {
+
+      onDragOver={({active, over}) => {
         const overId = over?.id;
 
-        if (!overId || overId === TRASH_ID || active.id in items) {
+        if (overId == null || overId === TRASH_ID || active.id in items) {
           return;
         }
 
-        const overContainer = findContainer(overId);// @ts-ignore
+        const overContainer = findContainer(overId);
         const activeContainer = findContainer(active.id);
 
         if (!overContainer || !activeContainer) {
@@ -434,11 +433,10 @@ console.log(isInit)
         if (activeContainer !== overContainer) {
           setItems((items) => {
             const activeItems = items[activeContainer];
-            const overItems = items[overContainer];// @ts-ignore
-            const overIndex = overItems.indexOf(overId);// @ts-ignore
+            const overItems = items[overContainer];
+            const overIndex = overItems.indexOf(overId);
             const activeIndex = activeItems.indexOf(active.id);
-            console.log('active: ', activeId)
-            console.log('over ', overId)
+
             let newIndex: number;
 
             if (overId in items) {
@@ -446,9 +444,9 @@ console.log(isInit)
             } else {
               const isBelowOverItem =
                 over &&
-                active.rect.current.translated &&// @ts-ignore
-                active.rect.current.translated?.offsetTop >// @ts-ignore
-                  over.rect?.offsetTop + over.rect.height;
+                active.rect.current.translated &&
+                active.rect.current.translated.top >
+                  over.rect.top + over.rect.height;
 
               const modifier = isBelowOverItem ? 1 : 0;
 
@@ -469,37 +467,23 @@ console.log(isInit)
                 ...items[overContainer].slice(
                   newIndex,
                   items[overContainer].length
-                )
-              ]
+                ),
+              ],
             };
           });
         }
       }}
-      onDragEnd={({ active, over }) => {
-        document.body.style.setProperty('cursor', '')
-        console.log(items)
-        // dragging container
+
+      onDragEnd={({active, over}) => {
         if (active.id in items && over?.id) {
-          const activeIndex = containers.indexOf(active.id); // @ts-ignore
-          const overIndex = containers.indexOf(over.id);
+          setContainers((containers) => {
+            const activeIndex = containers.indexOf(active.id);
+            const overIndex = containers.indexOf(over.id);
 
-          const reOrderedContainers = arrayMove(containers, activeIndex, overIndex)
-          setContainers(reOrderedContainers);
-
-          // console.log(reOrderedContainers)
-          console.log()
-          // setSelectedSprint(prev => {
-          //   const stages = prev.stages
-          //   // console.log(arrayToSort)
-          //   stages.sort((a, b) => reOrderedContainers.indexOf(a.title) - reOrderedContainers.indexOf(b.title));
-          //   return {...prev, stages: stages }
-          // })
-          
-
-          // console.log(SelectedSprint)
+            return arrayMove(containers, activeIndex, overIndex);
+          });
         }
 
-        // @ts-ignore
         const activeContainer = findContainer(active.id);
 
         if (!activeContainer) {
@@ -509,7 +493,7 @@ console.log(isInit)
 
         const overId = over?.id;
 
-        if (!overId) {
+        if (overId == null) {
           setActiveId(null);
           return;
         }
@@ -519,7 +503,7 @@ console.log(isInit)
             ...items,
             [activeContainer]: items[activeContainer].filter(
               (id) => id !== activeId
-            )
+            ),
           }));
           setActiveId(null);
           return;
@@ -529,23 +513,23 @@ console.log(isInit)
           const newContainerId = getNextContainerId();
 
           unstable_batchedUpdates(() => {
-            setContainers((containers) => [...containers, newContainerId]);// @ts-ignore
+            setContainers((containers) => [...containers, newContainerId]);
             setItems((items) => ({
               ...items,
               [activeContainer]: items[activeContainer].filter(
                 (id) => id !== activeId
               ),
-              [newContainerId]: [active.id]
+              [newContainerId]: [active.id],
             }));
             setActiveId(null);
           });
           return;
         }
-        // @ts-ignore
+
         const overContainer = findContainer(overId);
 
-        if (overContainer) {// @ts-ignore
-          const activeIndex = items[activeContainer].indexOf(active.id);// @ts-ignore
+        if (overContainer) {
+          const activeIndex = items[activeContainer].indexOf(active.id);
           const overIndex = items[overContainer].indexOf(overId);
 
           if (activeIndex !== overIndex) {
@@ -555,50 +539,11 @@ console.log(isInit)
                 items[overContainer],
                 activeIndex,
                 overIndex
-              )
+              ),
             }));
           }
-
-          // update original items, initiated in SprintBoard.tsx
-          // if (activeId.stage !== overContainer) {
-          //   let updatedItems = issues[overContainer]?.slice()
-          //   updatedItems.splice(overIndex, 0, 
-          //     {...activeId, stage: overContainer})
-          //     const prevStage = containers?.filter(stage => 
-          //       stage?.toLowerCase() === activeId?.stage?.toLowerCase()
-          //       )[0]
-          //     if (prevStage) {
-          //       setIssues(issues => ({
-          //         ...issues,
-          //         [overContainer]: updatedItems,
-          //         [prevStage]: issues[prevStage].filter(
-          //           issue => issue._id !== activeId._id
-          //         )
-          //       }))
-          //   }
-          // }
-
         }
-      //  setSelectedIssue({...activeId, stage: overContainer})
-      //   axios.put(process.env.REACT_APP_API_Issues + '/board-stage',
-      //   {
-      //       issueID: activeId._id,
-      //       stage: overContainer,
-      //       sprintID: SelectedSprint._id,
-      //       modifiedBy: user?.user,
-      //   })
-      //   .then(res => console.log(res)) // REMEMBER TO CHANGE STATE OF ITEMS
-      //   .catch(err => console.log(err))
-        console.log(overContainer)
 
-        // console.log(containers)
-          
-        // const arrayToSort = SelectedSprint.stages
-        // console.log(arrayToSort)
-        // arrayToSort.sort((a, b) => containers.indexOf(a.title) - containers.indexOf(b.title))
-        // console.log(arrayToSort)
-
-        
         setActiveId(null);
       }}
       cancelDrop={cancelDrop}
@@ -725,7 +670,7 @@ console.log(isInit)
 
         
 
-  function renderSortableItemDragOverlay(id: Issue) {
+  function renderSortableItemDragOverlay(id: UniqueIdentifier) {
     return (
       <Item
         value={id}
