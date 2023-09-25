@@ -19,6 +19,7 @@ export interface Props {
   dragging?: boolean;
   handle?: boolean;
   height?: number;
+  handleProps?: any;
   index?: number;
   fadeIn?: boolean;
   transform?: Transform | null;
@@ -54,6 +55,7 @@ export const Item = React.memo(
         disabled,
         fadeIn,
         handle,
+        handleProps,
         height,
         index,
         listeners,
@@ -115,6 +117,7 @@ export const Item = React.memo(
           className={`first:mt-0 mt-1 ${dragging ? 'opacity-0' : '' }`}
           style={
             {
+              fontWeight: 'normal',
               display: 'flex',
               transform: 'translate3d(var(--translate-x, 0), var(--translate-y, 0), 0) scaleX(var(--scale-x, 1)) scaleY(var(--scale-y, 1))',
               transition,
@@ -200,7 +203,7 @@ export const Item = React.memo(
             </div>
             </CustomTooltip>
         </div>
-        <div className='ml-2 text-[#303030]'>
+        <div className='ml-2 text-[#303030] font-normal'>
             {issueItem?.summary}
         </div>
         </div>

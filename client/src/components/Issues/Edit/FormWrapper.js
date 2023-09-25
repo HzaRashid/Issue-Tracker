@@ -29,7 +29,12 @@ function FormWrapper( props ) {
   } = SprintContexts();
   // console.log(SelectedSprint)
   const { Backlog, setBacklog } = ProjContexts()
-  const { setEditIssueModal, SelectedIssue, setSelectedIssue } = IssueContexts();
+  const { 
+    setEditIssueModal,
+    SelectedIssue, 
+    setSelectedIssue, 
+    setIssueModified 
+  } = IssueContexts();
 
     const { Users } = TeamContexts();
     const { user } = AuthContexts();  // get _id of logged-in user
@@ -233,6 +238,7 @@ function FormWrapper( props ) {
         [stage]: prevIssues
       })})
     }
+    setIssueModified(true)
   }
 
   const { Page, setPage, 
@@ -674,6 +680,8 @@ const [ShowSprints, setShowSprints] = useState(false);
 
             })})
             console.log(Object.keys(items))
+            setIssueModified(true);
+
             // if (currLoc.pathname.includes('sprint-board') ) {
             //   setSelectedSprint(prev => ({
             //     ...prev,

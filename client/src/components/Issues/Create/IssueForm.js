@@ -331,7 +331,8 @@ function IssueForm() {
         </button>
         </CustomTooltip>
         </div>
-  
+  {console.log(SelectedProj)}
+  {console.log(Users)}
         {
           showUsers && 
           <ul className='bg-[#eaeaea] h-[6em] font-normal text-[0.9em] text-[#303030]
@@ -339,7 +340,9 @@ function IssueForm() {
           >
   
         {
+          
         Users
+        .filter(u => u.projects.includes(SelectedProj._id))
         .filter(// eslint-disable-next-line
           user => {
             const Name = user.firstName + ' ' + user.lastName;

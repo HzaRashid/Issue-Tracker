@@ -18,6 +18,7 @@ export const IssueContextProvider = ({children}) => {
     const [Comments, setComments] = useState([]);
     const [SearchBkLgIssues, setSearchBkLgIssues] = useState('');
     const [SearchSptIssues, setSearchSptIssues] = useState('');
+    const [IssueModified, setIssueModified] = useState(false);
     return (
         <stateContext.Provider
         value={{ 
@@ -32,6 +33,7 @@ export const IssueContextProvider = ({children}) => {
             SearchSptIssues, setSearchSptIssues,
             AsgndIssues, setAsgndIssues,
             PstdIssues, setPstdIssues,
+            IssueModified, setIssueModified
         }}
         >
             {children}

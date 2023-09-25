@@ -42,7 +42,7 @@ function BacklogContainer( props ) {
       onClick={
         () => {
           setIssueModal(true)
-          setSelectedSprint({})
+          // setSelectedSprint({})
         }
       }
       >

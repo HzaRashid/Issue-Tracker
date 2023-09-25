@@ -40,7 +40,7 @@ function SprintBoard() {
     items, setItems
   } = SprintContexts();
 
-  const issuesCopy = React.useRef();
+  // const issuesCopy = React.useRef();
 
   useEffect(() => {
     const withCreds = { withCredentials: true }
@@ -86,17 +86,17 @@ function SprintBoard() {
             };
           }, {}))
 
-          issuesCopy.current = sprint?.stages?.map(
-            (stage: {title:string}) => stage.title)
-          .reduce((accumulator: any, value: any) => {
-          return {
-            ...accumulator, 
-            [value]: sprintIssues.filter(
-              (issue: Issue) => 
-              issue?.stage.toLowerCase() === value?.toLowerCase()
-              )
-          };
-        }, {})
+        //   issuesCopy.current = sprint?.stages?.map(
+        //     (stage: {title:string}) => stage.title)
+        //   .reduce((accumulator: any, value: any) => {
+        //   return {
+        //     ...accumulator, 
+        //     [value]: sprintIssues.filter(
+        //       (issue: Issue) => 
+        //       issue?.stage.toLowerCase() === value?.toLowerCase()
+        //       )
+        //   };
+        // }, {})
       }))
 
       // ==> END (of fetch data) <==
@@ -238,15 +238,16 @@ function SprintBoard() {
     <div className='flex items-center justify-center mt-[-5em]'>
         {/* <Container items={items} setItems={setItems}/> */}
         {
-        items && issuesCopy.current ? 
+        items ? 
         <ErrorBoundary fallback={<div></div>}> 
         <MultipleContainers 
         issues={items} 
         setIssues={setItems} 
         ScreenWidth={ScreenWidth} 
         SelectedSprint={SelectedSprint}
+        setSelectedSprint={setSelectedSprint}
         SprintIssues={SprintIssues}
-        issuesCopy={issuesCopy}
+        // issuesCopy={issuesCopy}
         />
         </ErrorBoundary>
         
