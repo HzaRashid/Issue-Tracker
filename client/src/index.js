@@ -12,7 +12,12 @@ import  MonoCtxProvider from './contexts/MonoCtxProvider'
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));  // eslint-disable-next-line
-if (process.env.NODE_ENV == 'production')  window.__REACT_DEVTOOLS_GLOBAL_HOOK__?.inject = function(){}
+if (process.env.NODE_ENV == 'production')  {
+    if (window?.__REACT_DEVTOOLS_GLOBAL_HOOK__?.inject) {
+        window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function(){}
+    }
+}
+
 root.render(
     <MonoCtxProvider
     components = {[
