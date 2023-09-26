@@ -154,24 +154,28 @@ function SprintBoard() {
           ProjNavOpen ? 'left-[17.75em]' : 
           NavOpen ? 'left-[16em]' : 'left-[25em]'
         }
-        absolute font-lato font-light 
+        absolute font-lato font-light flex
         mt-[1em] font-[Open Sans] whitespace-nowrap`}
         style={{
           transition: 'all 0.2s ease-in-out'
         }}
         >
-        <Link to='/projects' 
+        <Link to={'/home'}
         className='p-1 text-[#4e779f] hover:bg-[#e6e6e6]'
         >
-        projects
+        home
         </Link>
+        <p className='p-1'> 
         {' / '}
-        <Link to={`/projects/${SelectedProj?.title}/backlog`} 
+        </p>
+        <Link to={`/project-page/${SelectedProj?.title}/backlog`} 
         className="p-1 text-[#4e779f] hover:bg-[#e6e6e6]"
         >
         {SelectedProj?.title}
         </Link>
+        <p className='p-1'> 
         {' / '}
+        </p>
         <Link to={currLoc.pathname} 
         className="p-1 text-[#4e779f] hover:bg-[#e6e6e6]"
         >

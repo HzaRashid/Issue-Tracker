@@ -193,16 +193,16 @@ function Backlog() {
       transition: 'all 0.2s ease-in-out'
     }}
     >
-    <Link to='/projects' 
+    <Link to='/home' 
     className='p-1 text-[#4e779f] hover:bg-[#e6e6e6]'
     >
-    projects
+    home
     </Link>
     {' / '}
     <Link to={currLoc.pathname} 
     className="p-1 text-[#4e779f] hover:bg-[#e6e6e6]"
     >
-    {currLoc.pathname === "/project-page/" + SelectedProj?.title?.replace(" ", "%20") + '/backlog/' && currPathname}
+    {currPathname}
     </Link>
    
     </div>
