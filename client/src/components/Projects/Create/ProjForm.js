@@ -187,8 +187,8 @@ function ProjForm( {showReview, setShowReview} ) {
       </div>
     {
     showUsers && 
-    <ul className='bg-[#eaeaea] h-[6em] overflow-y-auto
-    lg:w-[20em] md:w-[20em] w-[50vw] text-[0.9em]' 
+    <ul className='bg-[#eaeaea] h-[6em] overflow-y-auto mt-1
+    lg:w-[20em] md:w-[20em] w-[50vw] text-[0.9em] text-[#505050] font-normal' 
     >
     {
       Users
@@ -219,7 +219,7 @@ function ProjForm( {showReview, setShowReview} ) {
           .length > 0 ? 
           'bg-[#dbdbdb]' : 'bg-auto hover:bg-slate-200'
         } 
-          hover:cursor-pointer rounded-md p-1
+          hover:cursor-pointer rounded-md p-[0.4em]
           `}
         
         onClick={() => {
@@ -252,17 +252,17 @@ function ProjForm( {showReview, setShowReview} ) {
         }
         >
 
-<div className='flex items-center space-x-2'> 
+    <div className='flex items-center space-x-2'> 
           <Avatar className='antialiased'
             {...stringAvatar(
               user.firstName + ' ' + user.lastName,
               22, 
               22, 
-              '0.675em'
+              '0.64em'
               )
             } 
           />
-          <div className='flex items-center justify-between'>
+          <div className='flex items-center justify-between text-[0.95em]'>
             {user.firstName + ' ' + user.lastName}
           
           <div className=' ml-[0.5em] mt-[0.15em]'>

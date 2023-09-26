@@ -335,8 +335,8 @@ function IssueForm() {
   {console.log(Users)}
         {
           showUsers && 
-          <ul className='bg-[#eaeaea] h-[6em] font-normal text-[0.9em] text-[#303030]
-          overflow-y-auto lg:w-[20em] md:w-[20em] w-[50vw]' 
+          <ul className='bg-[#eaeaea] h-[6em] overflow-y-auto mt-1
+          lg:w-[20em] md:w-[20em] w-[50vw] text-[0.9em] text-[#505050] font-normal' 
           >
   
         {
@@ -363,7 +363,7 @@ function IssueForm() {
           (user, key) =>
           <li key={key}
           className='hover:cursor-pointer flex items-center
-          hover:bg-slate-200 rounded-md p-1 space-x-2'
+          hover:bg-slate-200 rounded-md p-[0.35em] space-x-4'
           onClick={
             () => {
               formik.setFieldValue('assignTo', [user]);
@@ -372,18 +372,21 @@ function IssueForm() {
             }
           }
           >
-                      <Avatar className=' antialiased'
+    <div className='flex items-center space-x-2'> 
+          <Avatar className='antialiased'
             {...stringAvatar(
               user.firstName + ' ' + user.lastName,
               22, 
               22, 
-              '0.65em'
+              '0.64em'
               )
             } 
           />
-            <div>
-              {user.firstName + ' ' + user.lastName}
-            </div>
+          <div className='flex items-center justify-between text-[0.95em]'>
+            {user.firstName + ' ' + user.lastName}
+
+          </div>
+          </div>
 
 
           </li>

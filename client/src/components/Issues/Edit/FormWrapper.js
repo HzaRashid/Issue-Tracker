@@ -33,7 +33,7 @@ function FormWrapper( props ) {
     setEditIssueModal,
     SelectedIssue, 
     setSelectedIssue, 
-    setIssueModified 
+    setIssueModified
   } = IssueContexts();
 
     const { Users } = TeamContexts();
@@ -257,7 +257,7 @@ useEffect(() => console.log(PrevPage), [Page, PrevPage])
 
 const [ShowSprints, setShowSprints] = useState(false);
 
-      
+  
   return (
     <> 
 
@@ -463,6 +463,7 @@ const [ShowSprints, setShowSprints] = useState(false);
   
       {
       Sprints
+      .filter(s => s.project === SelectedIssue?.project)
       .filter(// eslint-disable-next-line
         sprint => {
           const title = sprint.title;
