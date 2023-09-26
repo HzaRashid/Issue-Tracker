@@ -31,7 +31,8 @@ function Backlog() {
     Projects, 
     // setProjects, 
     SelectedProj, setSelectedProj, 
-    Backlog, setBacklog
+    Backlog, setBacklog,
+    setSwitchedProj, switchedProj 
   } = ProjContexts();
   const { 
     Issues, 
@@ -53,7 +54,7 @@ function Backlog() {
   //     )},
   //   // eslint-disable-next-line
   //   [Projects, useParams()]);
-
+console.log(switchedProj)
     useEffect(() => {
       
       const withCreds = { withCredentials: true }
@@ -61,7 +62,8 @@ function Backlog() {
         !Projects?.length ||
         !Issues?.length   ||
         // !Sprints?.length  ||
-        !Users?.length     
+        !Users?.length   ||
+        switchedProj === true
         ) {
           axios.all([
             axios.get(process.env.REACT_APP_API_Projects, withCreds),
@@ -79,6 +81,7 @@ function Backlog() {
             setSprints(res3.data?.filter(s => s.project === project._id));
             setUsers(res4.data)
           }))
+          setSwitchedProj(false)
           return () => {}
         }
         var project = Projects.filter(p => p.title === ProjectTitle)[0]
@@ -89,13 +92,14 @@ function Backlog() {
         )))
         axios.get(process.env.REACT_APP_API_Sprints,  withCreds)
         .then(res => setSprints(res.data?.filter(s => s.project === project._id)))
-        
+        setSwitchedProj(false)
       // eslint-disable-next-line
     },[
       ProjectTitle, 
       // eslint-disable-next-line
       ProjectTitle === SelectedProj?.title, 
-      Issues
+      Issues,
+      switchedProj
     ])
 
   const currPathname = `${SelectedProj?.title} - Backlog`;

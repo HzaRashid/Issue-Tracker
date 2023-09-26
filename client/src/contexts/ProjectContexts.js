@@ -18,6 +18,7 @@ export const ProjContextProvider = ({children}) => {
     const [Backlog, setBacklog] = useState([]);
     const [EditProjModal, setEditProjModal] = useState(false);
     const [SelectedProjModal, setSelectedProjModal] = useState({});
+    const [ switchedProj, setSwitchedProj ] = useState(false)
 
     return (
         <stateContext.Provider
@@ -30,6 +31,7 @@ export const ProjContextProvider = ({children}) => {
             Backlog, setBacklog,
             EditProjModal, setEditProjModal,
             SelectedProjModal, setSelectedProjModal, 
+            switchedProj, setSwitchedProj
         }}
         >
             {children}

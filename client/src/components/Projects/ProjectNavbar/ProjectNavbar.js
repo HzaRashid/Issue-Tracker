@@ -31,7 +31,9 @@ function ProjectNavbar( props ) {
     ProjStatus, 
     setEditProj,
     setProjModal, 
-    setEditProjModal, 
+    setEditProjModal,
+    setSwitchedProj,
+    SelectedProj
   } = ProjContexts();
   const { setShowSprints } = SprintContexts();
   
@@ -123,7 +125,8 @@ function ProjectNavbar( props ) {
               () => {
                 setProjectNav(false);
                 setShowSprints(false);
-                setSwapProjNav(false)
+                setSwapProjNav(false);
+                if (SelectedProj?._id) setSwitchedProj(true);
 
               }}
               id={
