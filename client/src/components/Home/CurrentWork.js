@@ -16,7 +16,7 @@ function CurrentWork( ) {
 
   // var isMobile = () => ScreenWidth < 768 
   const [ isMobile, setIsMobile ] = useState(false);
-console.log(ScreenWidth)
+// console.log(ScreenWidth)
   useEffect(() => {
         if (nav && ProjectNav)  setIsMobile(ScreenWidth < 1340)
         else if (nav) setIsMobile(ScreenWidth < 981)

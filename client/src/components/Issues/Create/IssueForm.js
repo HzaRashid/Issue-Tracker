@@ -331,8 +331,6 @@ function IssueForm() {
         </button>
         </CustomTooltip>
         </div>
-  {console.log(SelectedProj)}
-  {console.log(Users)}
         {
           showUsers && 
           <ul className='bg-[#eaeaea] h-[6em] overflow-y-auto mt-1
