@@ -48,11 +48,12 @@ if (process.env.NODE_ENV == 'production') {
     store: new limitStore({
       sendCommand: (...args) => RedisClient.sendCommand(args),
     })})
+    // limiter.on('connection', () => console.log('rate-limiter on'))
     app.use(limiter)
 }
 
 app.use(session({
-    secret: 'This is a secret',
+    secret: process.env.SESSION_SECRET,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
       httpOnly: false,
