@@ -253,7 +253,7 @@ function FormWrapper( props ) {
     // eslint-disable-next-line
   }, [Page])
 
-useEffect(() => console.log(PrevPage), [Page, PrevPage])
+// useEffect(() => console.log(PrevPage), [Page, PrevPage])
 
 const [ShowSprints, setShowSprints] = useState(false);
 

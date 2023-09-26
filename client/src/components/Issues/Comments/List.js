@@ -18,7 +18,7 @@ function List( props ) {
 
     const setCmnts = e => {
       const parsedComments = JSON.parse( e.data )
-      console.log(parsedComments)
+      // console.log(parsedComments)
       setComments(parsedComments)
     }
 
