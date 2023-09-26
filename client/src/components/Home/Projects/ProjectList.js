@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-function ProjectList( { search, Projects, isMobile } ) {
+function ProjectList( { search, Projects, isMobile, setSwitchedProj } ) {
     let goToPage = useNavigate();
 
     const SearchResults = Projects.filter(
@@ -47,7 +47,10 @@ function ProjectList( { search, Projects, isMobile } ) {
                     transitionDelay: `${key*delay + 1}ms`
                 
                 }}
-                onClick={() => { goToPage(`/project-page/${p?.title}/backlog/`)}}
+                onClick={() => { 
+                    goToPage(`/project-page/${p?.title}/backlog/`)
+                    setSwitchedProj(true)
+                }}
                 >
                     {p?.title}
                 </li>

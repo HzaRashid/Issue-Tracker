@@ -83,7 +83,7 @@ function LoginComponent() {
                       }
                      })
                     .catch(err => {
-                      console.log(err);
+                      // console.log(err);
                       setUser(TBDAuthUser);
                     })
                   }}

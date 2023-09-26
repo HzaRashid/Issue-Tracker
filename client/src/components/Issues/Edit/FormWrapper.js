@@ -151,7 +151,7 @@ function FormWrapper( props ) {
               console.log(res.status)
             })
             .catch(err => {
-              console.log(err)
+              // console.log(err)
             })
           } else {
             setSummary(SelectedIssue.summary)
@@ -190,7 +190,7 @@ function FormWrapper( props ) {
           .then(res =>{
             //  console.log(res)
             })
-          .catch(err => console.log(err))
+          .catch(err => {console.log(err)})
         }
 
 

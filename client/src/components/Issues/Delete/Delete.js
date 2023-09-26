@@ -40,7 +40,9 @@ function Delete({
                         issues = issues.filter(i => i._id !== SelectedIssue._id)
                         setIssues(issues)
             }})
-            .catch(err => console.log(err))
+            .catch(err => {
+                // console.log(err)
+            })
 
             setTimeout(() => {
                 setEditIssueModal(false)

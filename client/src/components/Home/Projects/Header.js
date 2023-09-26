@@ -4,7 +4,7 @@ import { ProjContexts } from '../../../contexts/ProjectContexts'
 import ProjectList from './ProjectList';
 
 function Header( { isMobile } ) {
-    const { Projects } = ProjContexts();
+    const { Projects, setSwitchedProj } = ProjContexts();
     const [search, setSearch] = useState('');
     const handleSearch = e => setSearch(e.target.value)
 
