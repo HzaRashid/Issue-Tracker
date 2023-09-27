@@ -12,8 +12,9 @@ function CustomModal({ ...props }) {
         w-[100%] h-[100%] bg-[#0000002a] 
         flex items-center justify-center`}
         style={{
-          WebkitTransformStyle: 'preserve-3d',
-          WebkitBackfaceVisibility: 'hidden',
+          // WebkitTransformStyle: 'preserve-3d',
+          // WebkitBackfaceVisibility: 'hidden',
+          // WebkitTransform:'translate3d(0, 0, 0)',
           visibility:  props.open ? 'visible' : 'hidden',
           opacity:  props.open ? '1' : '0',
           transition: 'all 0.25s'
