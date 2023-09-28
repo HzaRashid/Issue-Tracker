@@ -41,7 +41,7 @@ function Header( { isMobile } ) {
         />  
         </div>
 
-        <ProjectList search={search} Projects={Projects} isMobile={isMobile}/>
+        <ProjectList search={search} Projects={Projects} isMobile={isMobile} setSwitchedProj={setSwitchedProj}/>
         </div>
     </>
   )
