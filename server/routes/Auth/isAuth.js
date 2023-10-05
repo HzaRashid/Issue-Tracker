@@ -14,7 +14,7 @@ const isAuthDemo = (req, res, next) => {
       statusText: 'Unauthorized account'
     })
   }
-    if (!req.user) {
+    if (!req.isAuthenticated()) {
       return res.status(400).json({
         message: 'user not authenticated'
       })
