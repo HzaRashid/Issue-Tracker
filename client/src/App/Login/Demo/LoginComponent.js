@@ -72,7 +72,10 @@ function LoginComponent() {
                       { withCredentials: true },
              
                     )
-                    .then(res =>{ console.log(res); return res.data})
+                    .then(res =>{ 
+                      // console.log(res); 
+                      return res.data}
+                      )
                     .then(json => { 
                       if (json.authenticated) {
                         setUser({
