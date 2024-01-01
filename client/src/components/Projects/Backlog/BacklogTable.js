@@ -47,7 +47,7 @@ function BacklogTable( props ) {
         md:text-[1.15em] sm:text-[1.15em] 
         xs:text-[1em] text-[1em] bg-transparent 
         hover:cursor-pointer rounded-lg
-        block max-h-[10em] overflow-auto `}
+        block max-h-[40vh] overflow-auto `}
         style={{
           width: !nav && !ProjectNav ? '70vw' : (nav && ProjectNav && ScreenWidth<1024) ? '42.5vw' : '60vw',
           transition: 'width 0.3s'

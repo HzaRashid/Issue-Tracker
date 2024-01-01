@@ -183,7 +183,7 @@ function TeamTable() {
         <div 
         className='relative' 
         style={{
-            height: 500, 
+            height: '70vh', 
             width: '100%', 
             top: '4rem',
             flexGrow: 1 

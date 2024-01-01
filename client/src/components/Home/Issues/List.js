@@ -200,7 +200,7 @@ function List( ) {
     <div 
     className='relative font-bold' 
     style={{
-        height: 390, 
+        height: '60vh', 
         width: '100%', 
         top: '3rem',
         flexGrow: 0.5 ,

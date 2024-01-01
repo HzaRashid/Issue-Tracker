@@ -208,11 +208,12 @@ function PostedList() {
     className='relative font-bold' 
     style={{
         // height: 'auto', 
-        height: 350,
+        height: '50vh',
         width: '100%', 
         top: '3rem',
         flexGrow: 0.5 ,
         text: 'bold',  
+        
         
         }}
     >

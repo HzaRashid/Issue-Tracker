@@ -50,6 +50,9 @@ import { IssueContexts } from "../../../../contexts/IssueContexts";
 // import { SprintContexts } from "../../../../contexts/SprintContexts";
 // import { AuthContexts } from "../../../../App/Auth";
 import _ from 'lodash'
+import { CustomTooltip } from "../../../CustomTooltip";
+import { AiOutlinePlus } from "react-icons/ai";
+import { AddContainer } from "../components/AddContainer";
 // const data = require('../../../../pages/routes.json')
 
 
@@ -205,6 +208,7 @@ export function MultipleContainers({
     () =>
       issues ?? null
   );
+  const [addStage, setAddStage] = useState<boolean>(false)
   const [containers, setContainers] = useState(
     Object.keys(items) as UniqueIdentifier[]
   );
@@ -565,7 +569,7 @@ export function MultipleContainers({
               </SortableContext>
             </DroppableContainer>
           ))}
-          {minimal ? undefined : (
+          {/* {minimal ? undefined : (
             <DroppableContainer
               id={PLACEHOLDER_ID}
               disabled={isSortingContainer}
@@ -575,7 +579,29 @@ export function MultipleContainers({
             >
               + Add column
             </DroppableContainer>
-          )}
+          )} */}
+                  {addStage ? 
+                  <AddContainer
+                  addStage={addStage}
+                  setAddStage={setAddStage}
+                  />
+                  : null
+
+                  }
+                  {!addStage && 
+                  <CustomTooltip title={'Add Column'} placement='top' arrow> 
+                    <div
+                    className="h-fit items-top"
+                    onClick={() => setAddStage(true)}
+                    >
+                      <AiOutlinePlus fontSize={'1.65em'}
+                      className='bg-[#e4e4e4] rounded-md
+                      ml-1 hover:cursor-pointer transition ease-in-out 
+                      hover:scale-[1.15] duration-150'
+                      />
+                    </div>
+                    </CustomTooltip>}
+
         </SortableContext>
       </div>
       {createPortal(
