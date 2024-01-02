@@ -652,7 +652,7 @@ const [ShowSprints, setShowSprints] = useState(false);
             const prevStage = Object.keys(items)?.filter(key => 
               key?.toLowerCase() === SelectedIssue?.stage?.toLowerCase()
               )[0]
-            console.log(prevStage)
+            // console.log(prevStage)
             const newStage = stage?.title;
             // make a copy to avoid mutating state
             let prevStageIssues = items[prevStage].slice();
@@ -670,10 +670,10 @@ const [ShowSprints, setShowSprints] = useState(false);
               newStageIssues.push({...SelectedIssue, stage: newStage})
             }
 
-            console.log('OLD:')
-            console.log(prevStageIssues)
-            console.log('NEW:')
-            console.log(newStageIssues)
+            // console.log('OLD:')
+            // console.log(prevStageIssues)
+            // console.log('NEW:')
+            // console.log(newStageIssues)
             // console.log(newStageIssues)
 
             setItems(oldState => {

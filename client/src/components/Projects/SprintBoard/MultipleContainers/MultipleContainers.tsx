@@ -235,8 +235,6 @@ export function MultipleContainers({
     )})
   }, [containers])
 
-  const [newStage, setNewStage] = useState<String>()
-  const [ID, setID] = useState<String>()
 
   React.useEffect(() => {
     console.log('Issue modified')
@@ -248,17 +246,6 @@ export function MultipleContainers({
   // console.log(issues)
   console.log(items)
 
-  // React.useEffect(() => {
-  // console.log('CONTAINER MOVED')
-  //           setSelectedSprint(prev => {
-  //           const stages = prev.stages
-  //           // console.log(arrayToSort)
-  //           stages.sort((a, b) => containers.indexOf(a.title) - containers.indexOf(b.title));
-  //           return {...prev, stages: stages }
-  //         })
-  // }, [containers])
-
-// console.log(items)
 
   /**
    * Custom collision detection strategy optimized for multiple containers
@@ -519,13 +506,7 @@ export function MultipleContainers({
 
           }
 
-          // if (activeId?._id) {
-          //   if (activeId?.stage?.toLowerCase() !== overContainer?.toLowerCase()) {
-          //     setIssueModified(true)
-          //     setNewStage(overContainer)
-          //     setID(activeId?._id)
-          // }
-          // }
+
           if (activeId?._id && activeId?._id?.toLowerCase() !== overContainer?.toLowerCase()) {
             setItems(prev => {
 
@@ -540,10 +521,9 @@ export function MultipleContainers({
                 
               }
             })
-            // setIssueModified(true)
-            console.log('HERE:')
-            console.log(overContainer)
-            console.log(activeId)
+            // console.log('HERE:')
+            // console.log(overContainer)
+            // console.log(activeId)
             // console.log(items)
           }
         
@@ -604,17 +584,6 @@ export function MultipleContainers({
               </SortableContext>
             </DroppableContainer>
           ))}
-          {/* {minimal ? undefined : (
-            <DroppableContainer
-              id={PLACEHOLDER_ID}
-              disabled={isSortingContainer}
-              items={empty}
-              onClick={handleAddColumn}
-              placeholder
-            >
-              + Add column
-            </DroppableContainer>
-          )} */}
                   {addStage ? 
                   <AddContainer
                   addStage={addStage}
