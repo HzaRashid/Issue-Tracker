@@ -219,21 +219,21 @@ export function MultipleContainers({
   
   const { IssueModified, setIssueModified } = IssueContexts();
   React.useEffect(() => setIssues(items), [items]);
-  React.useEffect(() => {
-    console.log('Container moved')
-    setIssues(prev => {
-      return (
-        containers
-        .reduce((accumulator: any, value: any) => {
-          var stage = Object.keys(issues).filter(stg => stg.toLowerCase() === value.toLowerCase())[0]
-          return {
-          ...accumulator, 
-          [value]: prev[stage],
-        };
-      }, {})
+  // React.useEffect(() => {
+  //   console.log('Container moved')
+  //   setIssues(prev => {
+  //     return (
+  //       containers
+  //       .reduce((accumulator: any, value: any) => {
+  //         var stage = Object.keys(issues).filter(stg => stg.toLowerCase() === value.toLowerCase())[0]
+  //         return {
+  //         ...accumulator, 
+  //         [value]: prev[stage],
+  //       };
+  //     }, {})
     
-    )})
-  }, [containers])
+  //   )})
+  // }, [containers])
 
 
   React.useEffect(() => {
@@ -510,16 +510,15 @@ export function MultipleContainers({
           if (activeId?._id && activeId?._id?.toLowerCase() !== overContainer?.toLowerCase()) {
             setItems(prev => {
 
-              prev[overContainer]?.forEach(i => {
-                if (i?._id === activeId?._id) {
-                  if (i?.stage) i.stage = overContainer
-                }
-              })
+              var idx = prev[overContainer]?.findIndex(i => i._id === activeId._id)
+              prev[overContainer][idx].stage = overContainer
+              // prev[overContainer]?.forEach(i => {
+              //   if (i?._id === activeId?._id) {
+              //     if (i?.stage) i.stage = overContainer
+              //   }
+              // })
 
-              return {
-                ...prev
-                
-              }
+              return {...prev}
             })
             // console.log('HERE:')
             // console.log(overContainer)
@@ -569,7 +568,7 @@ export function MultipleContainers({
                   return (
                     <SortableItem
                       disabled={isSortingContainer}
-                      key={value?._id ?? index+1}  // 
+                      key={value._id}  // 
                       id={value}
                       index={index}
                       handle={handle}
@@ -584,32 +583,32 @@ export function MultipleContainers({
               </SortableContext>
             </DroppableContainer>
           ))}
-                  {addStage ? 
-                  <AddContainer
-                  addStage={addStage}
-                  setAddStage={setAddStage}
-                  />
-                  : null
+          {addStage ? 
+              <AddContainer
+              addStage={addStage}
+              setAddStage={setAddStage}
+              />
+              : null
 
-                  }
-                  {!addStage && 
-                  <CustomTooltip title={'Add Column'} placement='top' arrow> 
-                    <div
-                    className="h-fit items-top"
-                    onClick={() => setAddStage(true)}
-                    >
-                      <AiOutlinePlus fontSize={'1.65em'}
-                      className='bg-[#e4e4e4] rounded-md
-                      ml-1 hover:cursor-pointer transition ease-in-out 
-                      hover:scale-[1.15] duration-150'
-                      />
-                    </div>
-                    </CustomTooltip>}
+              }
+              {!addStage && 
+              <CustomTooltip title={'Add Column'} placement='top' arrow> 
+                <div
+                className="h-fit items-top"
+                onClick={() => setAddStage(true)}
+                >
+                  <AiOutlinePlus fontSize={'1.65em'}
+                  className='bg-[#e4e4e4] rounded-md
+                  ml-1 hover:cursor-pointer transition ease-in-out 
+                  hover:scale-[1.15] duration-150'
+                  />
+                </div>
+                </CustomTooltip>}
 
         </SortableContext>
       </div>
       {createPortal(
-        <DragOverlay key={'foo'} adjustScale={adjustScale} dropAnimation={dropAnimation} className="font-lato">
+        <DragOverlay adjustScale={adjustScale} dropAnimation={dropAnimation} className="font-lato">
           {activeId
             ? containers.includes(activeId)
               ? renderContainerDragOverlay(activeId)
@@ -659,7 +658,7 @@ export function MultipleContainers({
       >
         {items[containerId].map((item, index) => (
           <Item
-            key={item?._id}
+            key={item._id}
             value={item}
             handle={handle}
             style={getItemStyles({

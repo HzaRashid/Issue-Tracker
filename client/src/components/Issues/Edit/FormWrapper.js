@@ -654,59 +654,61 @@ const [ShowSprints, setShowSprints] = useState(false);
               )[0]
             // console.log(prevStage)
             const newStage = stage?.title;
-            // make a copy to avoid mutating state
-            let prevStageIssues = items[prevStage].slice();
-            prevStageIssues = prevStageIssues.filter(
-              issue => issue._id !== SelectedIssue._id
-            )
-            // console.log(prevStageIssues)
+            if (newStage !== prevStage) {
+              // make a copy to avoid mutating state
+              let prevStageIssues = items[prevStage].slice();
+              prevStageIssues = prevStageIssues.filter(
+                issue => issue._id !== SelectedIssue._id
+              )
+              // console.log(prevStageIssues)
 
-            let newStageIssues = items[newStage].slice()
-            const isDuplicated = newStageIssues.filter(issue => 
-              issue._id === SelectedIssue?._id
-            )?.length
+              let newStageIssues = items[newStage].slice()
+              const isDuplicated = newStageIssues.filter(issue => 
+                issue._id === SelectedIssue?._id
+              )?.length
 
-            if (!isDuplicated) {
-              newStageIssues.push({...SelectedIssue, stage: newStage})
-            }
+              if (!isDuplicated) {
+                newStageIssues.push({...SelectedIssue, stage: newStage})
+              }
 
-            // console.log('OLD:')
-            // console.log(prevStageIssues)
-            // console.log('NEW:')
-            // console.log(newStageIssues)
-            // console.log(newStageIssues)
+              // console.log('OLD:')
+              // console.log(prevStageIssues)
+              // console.log('NEW:')
+              // console.log(newStageIssues)
+              // console.log(newStageIssues)
 
-            setItems(oldState => {
-              return ({
-              ...oldState,
-              [newStage]: newStageIssues,
-              [prevStage]: prevStageIssues
+              setItems(oldState => {
+                return ({
+                ...oldState,
+                [newStage]: newStageIssues,
+                [prevStage]: prevStageIssues
 
-            })})
-            console.log(Object.keys(items))
-            setIssueModified(true);
+              })})
+              console.log(Object.keys(items))
+              setIssueModified(true);
 
-            // if (currLoc.pathname.includes('sprint-board') ) {
-            //   setSelectedSprint(prev => ({
-            //     ...prev,
-            //     stages: Object.keys(items)
-            //     }))
-            // }
-            
-            axios.put(
-              process.env.REACT_APP_API_Issues + '/stage',
-              {
-                issueID: SelectedIssue._id,
-                sprintID: SelectedSprint._id,
-                stage: stage?.title,
-                modifiedBy: user?.user,
-              },
-              { withCredentials: true }
-            )
-            .then(res => {
-              // console.log(res)
-            })
-            .catch(err => console.log(err))
+              // if (currLoc.pathname.includes('sprint-board') ) {
+              //   setSelectedSprint(prev => ({
+              //     ...prev,
+              //     stages: Object.keys(items)
+              //     }))
+              // }
+              
+              axios.put(
+                process.env.REACT_APP_API_Issues + '/stage',
+                {
+                  issueID: SelectedIssue._id,
+                  sprintID: SelectedSprint._id,
+                  stage: stage?.title,
+                  modifiedBy: user?.user,
+                },
+                { withCredentials: true }
+              )
+              .then(res => {
+                // console.log(res)
+              })
+              .catch(err => console.log(err))
+          }
           
           }}
           
