@@ -89,7 +89,7 @@ export const Item = React.memo(
         if (
           SelectedIssue && 
           !isEmpty(SelectedIssue) &&
-          value._id === SelectedIssue._id
+          value?._id === SelectedIssue?._id
          ) {
           setIssueItem(SelectedIssue)
         }

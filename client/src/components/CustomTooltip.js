@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 
 
 export const CustomTooltip = styled(({ className, ...props }) => (
-    <Tooltip {...props} classes={{ popper: className }} />
+    <Tooltip {...props} classes={{ popper: className }} title={props?.title ? props?.title : ''}/>
   ))(({ theme }) => ({
     [`& .${tooltipClasses.tooltip}`]: {
       backgroundColor: '#303030',

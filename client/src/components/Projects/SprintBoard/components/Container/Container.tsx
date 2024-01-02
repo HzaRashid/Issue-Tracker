@@ -145,7 +145,7 @@ export const Container = forwardRef<HTMLDivElement, Props>(
           `mx-2 bg-[#e4e4e4] p-1 mt-1
           rounded-md text-[#505050] font-lato 
           font-normal shadow-sm   min-w-[16em] 
-          h-auto  max-h-[16em] `
+          h-auto  max-h-[50vh] `
           }
 
         onClick={onClick}

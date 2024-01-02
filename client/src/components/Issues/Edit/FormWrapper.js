@@ -649,7 +649,7 @@ const [ShowSprints, setShowSprints] = useState(false);
             const prevStage = Object.keys(items)?.filter(key => 
               key?.toLowerCase() === SelectedIssue?.stage?.toLowerCase()
               )[0]
-
+            console.log(prevStage)
             const newStage = stage?.title;
             // make a copy to avoid mutating state
             let prevStageIssues = items[prevStage].slice();

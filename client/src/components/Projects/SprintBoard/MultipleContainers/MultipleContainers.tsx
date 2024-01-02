@@ -426,7 +426,7 @@ export function MultipleContainers({
             }
 
             recentlyMovedToNewContainer.current = true;
-
+            
             return {
               ...items,
               [activeContainer]: items[activeContainer].filter(
@@ -511,7 +511,32 @@ export function MultipleContainers({
                 overIndex
               ),
             }));
+
           }
+
+          if (activeId?._id?.toLowerCase() !== overContainer?.toLowerCase()) {
+            setItems(prev => {
+              prev[overContainer]?.forEach(i => {
+                if (i?._id === activeId?._id) {
+                  if (i?.stage) i.stage = overContainer
+                }
+              })
+              return {
+                ...prev,
+                [overContainer]: arrayMove(
+                  items[overContainer],
+                  activeIndex,
+                  overIndex
+                ),
+              }
+            }
+            )
+            console.log('HERE:')
+            console.log(overContainer)
+            console.log(activeId)
+            console.log(items)
+          }
+        
         }
         // console.log(items)
         // console.log(containers)
@@ -554,7 +579,7 @@ export function MultipleContainers({
                   return (
                     <SortableItem
                       disabled={isSortingContainer}
-                      key={value._id}  // 
+                      key={value?._id ? value._id : index}  // 
                       id={value}
                       index={index}
                       handle={handle}
@@ -655,7 +680,7 @@ export function MultipleContainers({
       >
         {items[containerId].map((item, index) => (
           <Item
-            key={item._id}
+            key={item?._id}
             value={item}
             handle={handle}
             style={getItemStyles({
