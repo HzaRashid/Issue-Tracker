@@ -44,7 +44,6 @@ function SprintBoard() {
 
   useEffect(() => {
     const withCreds = { withCredentials: true }
-
     // ==> START (fetch data) <==
         axios.all([
           axios.get(process.env.REACT_APP_API_Projects as string, withCreds),
@@ -63,7 +62,7 @@ function SprintBoard() {
           setSprints([...allSprints])
           var sprint = res3.data.filter((s : { title : string, project: string }) => (s.project === project._id && s.title === SprintTitle))[0]
           setSelectedSprint({...sprint})
-
+          console.log(sprint?.title)
           setUsers(res4.data);
 
           var sprintIssues = res2.data.filter(
@@ -86,17 +85,6 @@ function SprintBoard() {
             };
           }, {}))
 
-        //   issuesCopy.current = sprint?.stages?.map(
-        //     (stage: {title:string}) => stage.title)
-        //   .reduce((accumulator: any, value: any) => {
-        //   return {
-        //     ...accumulator, 
-        //     [value]: sprintIssues.filter(
-        //       (issue: Issue) => 
-        //       issue?.stage.toLowerCase() === value?.toLowerCase()
-        //       )
-        //   };
-        // }, {})
       }))
 
       // ==> END (of fetch data) <==
@@ -108,8 +96,8 @@ function SprintBoard() {
       ProjectTitle === SelectedProj?._id,
       SprintTitle, 
       // eslint-disable-next-line
-      SprintTitle === SelectedSprint?._id,
-      SprintID
+      // SprintTitle === SelectedSprint?.title,
+      // SprintID,
     ])
 
   type Issue = {
@@ -132,13 +120,24 @@ function SprintBoard() {
     if (Object.keys(items)?.length) {
       Object.keys(items).map(key => {
       if (items[key]?.length) {
-        if (items[key][0]?.sprint !== SelectedSprint._id) {
+        if (items[key][0]?.sprint !== SelectedSprint?._id) {
           setIsLoading(true)
         }
         else setIsLoading(false)
       }
       })}
-  }, [SelectedSprint, items])
+
+      if (SelectedSprint?.title?.toLowerCase() !== SprintTitle?.toLowerCase()) {
+        setIsLoading(true);
+        // setSelectedSprint({})
+
+      }
+      // else {
+      //   setIsLoading(false)
+      // }
+  }, [items, SprintTitle])
+
+
 
 
   if (isLoading) return <div></div>

@@ -235,6 +235,9 @@ export function MultipleContainers({
     )})
   }, [containers])
 
+  const [newStage, setNewStage] = useState<String>()
+  const [ID, setID] = useState<String>()
+
   React.useEffect(() => {
     console.log('Issue modified')
     if (IssueModified) {
@@ -242,6 +245,8 @@ export function MultipleContainers({
       setIssueModified(false);
     }
   }, [IssueModified])
+  // console.log(issues)
+  console.log(items)
 
   // React.useEffect(() => {
   // console.log('CONTAINER MOVED')
@@ -514,27 +519,32 @@ export function MultipleContainers({
 
           }
 
-          if (activeId?._id?.toLowerCase() !== overContainer?.toLowerCase()) {
+          // if (activeId?._id) {
+          //   if (activeId?.stage?.toLowerCase() !== overContainer?.toLowerCase()) {
+          //     setIssueModified(true)
+          //     setNewStage(overContainer)
+          //     setID(activeId?._id)
+          // }
+          // }
+          if (activeId?._id && activeId?._id?.toLowerCase() !== overContainer?.toLowerCase()) {
             setItems(prev => {
+
               prev[overContainer]?.forEach(i => {
                 if (i?._id === activeId?._id) {
                   if (i?.stage) i.stage = overContainer
                 }
               })
+
               return {
-                ...prev,
-                [overContainer]: arrayMove(
-                  items[overContainer],
-                  activeIndex,
-                  overIndex
-                ),
+                ...prev
+                
               }
-            }
-            )
+            })
+            // setIssueModified(true)
             console.log('HERE:')
             console.log(overContainer)
             console.log(activeId)
-            console.log(items)
+            // console.log(items)
           }
         
         }
@@ -579,7 +589,7 @@ export function MultipleContainers({
                   return (
                     <SortableItem
                       disabled={isSortingContainer}
-                      key={value?._id ? value._id : index}  // 
+                      key={value?._id ?? index+1}  // 
                       id={value}
                       index={index}
                       handle={handle}
@@ -630,7 +640,7 @@ export function MultipleContainers({
         </SortableContext>
       </div>
       {createPortal(
-        <DragOverlay adjustScale={adjustScale} dropAnimation={dropAnimation} className="font-lato">
+        <DragOverlay key={'foo'} adjustScale={adjustScale} dropAnimation={dropAnimation} className="font-lato">
           {activeId
             ? containers.includes(activeId)
               ? renderContainerDragOverlay(activeId)

@@ -175,7 +175,7 @@ function AssigneeList() {
     className='relative font-bold' 
     style={{
         // height: 'auto', 
-        height: '40vh',
+        height: '42.5vh',
         width: '100%', 
         top: '3rem',
         flexGrow: 0.5 ,

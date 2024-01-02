@@ -153,6 +153,9 @@ function FormWrapper( props ) {
             .catch(err => {
               // console.log(err)
             })
+            // setItems(prev => {
+            //   prev
+            // })
           } else {
             setSummary(SelectedIssue.summary)
           }
@@ -667,10 +670,10 @@ const [ShowSprints, setShowSprints] = useState(false);
               newStageIssues.push({...SelectedIssue, stage: newStage})
             }
 
-            // console.log('OLD:')
-            // console.log(prevStageIssues)
-            // console.log('NEW:')
-            // console.log(newStageIssues)
+            console.log('OLD:')
+            console.log(prevStageIssues)
+            console.log('NEW:')
+            console.log(newStageIssues)
             // console.log(newStageIssues)
 
             setItems(oldState => {
