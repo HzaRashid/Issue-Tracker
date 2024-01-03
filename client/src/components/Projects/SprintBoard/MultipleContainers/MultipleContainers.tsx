@@ -219,21 +219,21 @@ export function MultipleContainers({
   
   const { IssueModified, setIssueModified } = IssueContexts();
   React.useEffect(() => setIssues(items), [items]);
-  // React.useEffect(() => {
-  //   console.log('Container moved')
-  //   setIssues(prev => {
-  //     return (
-  //       containers
-  //       .reduce((accumulator: any, value: any) => {
-  //         var stage = Object.keys(issues).filter(stg => stg.toLowerCase() === value.toLowerCase())[0]
-  //         return {
-  //         ...accumulator, 
-  //         [value]: prev[stage],
-  //       };
-  //     }, {})
+  React.useEffect(() => {
+    console.log('Container moved')
+    setIssues(prev => {
+      return (
+        containers
+        .reduce((accumulator: any, value: any) => {
+          var stage = Object.keys(issues).filter(stg => stg.toLowerCase() === value.toLowerCase())[0]
+          return {
+          ...accumulator, 
+          [value]: prev[stage],
+        };
+      }, {})
     
-  //   )})
-  // }, [containers])
+    )})
+  }, [containers])
 
 
   React.useEffect(() => {
