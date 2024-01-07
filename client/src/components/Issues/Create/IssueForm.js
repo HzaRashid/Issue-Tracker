@@ -449,7 +449,7 @@ function IssueForm() {
       setTimeout(
         () => {
           setNewSprintIssue(false);
-        }, 1000
+        }, 200
       )
 
 

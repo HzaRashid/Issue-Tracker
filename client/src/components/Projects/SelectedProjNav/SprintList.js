@@ -10,7 +10,7 @@ function SprintList( props ) {
 
     const { 
         Sprints,
-        // SelectedSprint, 
+        SelectedSprint, 
         setSelectedSprint 
     } = SprintContexts();
     const { setIsLoading } = useStateContext()
@@ -38,9 +38,11 @@ function SprintList( props ) {
                     <li key={key} 
                     className='hover:bg-[#c8e2f487] rounded-md hover:cursor-pointer'
                     onClick={() => {
-                        setSelectedSprint(sprint)
-                        goToPage(sprintLink)
-                        setIsLoading(true);
+                        if (SelectedSprint?._id !== sprint?._id) {
+                            setSelectedSprint(sprint)
+                            goToPage(sprintLink)
+                            setIsLoading(true);
+                        }
                     }}
                     >
                         <div className='ml-[1em] p-1'>
