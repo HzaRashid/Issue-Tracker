@@ -3,6 +3,7 @@ import { SprintContexts } from '../../../contexts/SprintContexts'
 // import { useNavigate } from 'react-router-dom';
 import { WhtSpace } from './NavItems';
 import { useStateContext } from '../../../contexts/ContextProvider';
+import { useLocation } from 'react-router-dom';
 
 
 function SprintList( props ) {
@@ -15,7 +16,7 @@ function SprintList( props ) {
     } = SprintContexts();
     const { setIsLoading } = useStateContext()
     // const goToPage = useNavigate();
-
+    const currLoc = useLocation();
   return (
     <ul 
     className='bg-[#ececec] overflow-auto font-lato
@@ -38,7 +39,7 @@ function SprintList( props ) {
                     <li key={key} 
                     className='hover:bg-[#c8e2f487] rounded-md hover:cursor-pointer'
                     onClick={() => {
-                        if (SelectedSprint?._id !== sprint?._id) {
+                        if (sprintLink !== currLoc?.pathname) {
                             setSelectedSprint(sprint)
                             goToPage(sprintLink)
                             setIsLoading(true);
