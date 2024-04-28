@@ -75,8 +75,8 @@
     transition: all 0.1s;
 }
 
-.sidebar #active.row{
-    color: #c0ecffee;
+.sidebar #active.row .icon{
+    color: #b7e5ff;
 }
 
 .sidebar #active:hover{
@@ -99,13 +99,14 @@
 
 .row:hover{
     cursor: pointer;
+    background-color: #ffffff0e;
     /* color: #cdecff; */
-    color: #d0ebff;
+    /* color: #d0ebff; */
  
 }
 
 .row:hover .icon {
-    color: #d0ebff;
+    color: #b7e9ff;
 }
 
 
