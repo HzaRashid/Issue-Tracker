@@ -34,7 +34,7 @@ function NavBackGdDefault( props ) {
     ${
       nav ? 'ml-[12rem]' : 'ml-[4.5rem]'
   } 
-     ease duration-[0.3s]`
+     ease duration-[0.15s]`
   }
     >
     <div>
@@ -43,7 +43,7 @@ function NavBackGdDefault( props ) {
     className={`project-sidebar`}
     style={{
       width: ProjectNav ? '12em' : '0em',
-      transition: 'width 0.2s ease-in-out'
+      transition: 'width 0.1s ease-in-out'
     }}
     >
 
@@ -66,10 +66,11 @@ function NavBackGdDefault( props ) {
 
       </div>
 
-      <CustomTooltip title={ProjectNav ? 'Close' : 'Open'} placement='right' arrow>
       <button 
       className='hover:bg-[#7895B3] bg-[#f0f0f0] hover:text-[#e2e2e2] text-[#404040]' 
-      onClick={() => setProjectNav(!ProjectNav)}
+      onClick={() => {
+        setProjectNav(!ProjectNav)
+      }}
       style={{
         marginLeft: ProjectNav ? '11.15em' : '-2em',
         position: 'fixed',
@@ -77,7 +78,7 @@ function NavBackGdDefault( props ) {
         borderRadius: '1em',
         border: '0.05em solid #0000001a',
         padding: '0.1em',
-        transition: 'all 0.2s ease-in-out',
+        transition: 'width 0.1s ease-in-out',
         zIndex: 5
         
       }}
@@ -86,7 +87,6 @@ function NavBackGdDefault( props ) {
        <BiChevronLeft fontSize={'1.4em'}/> : <BiChevronRight fontSize={'1.4em'}/>
       }
       </button>      
-      </CustomTooltip>
       
       </div>
       

@@ -65,7 +65,7 @@ function SwapProjNav( props ) {
   style={{
     visibility: ProjectNav ? 'hidden' : 'visible',
     opacity: ProjectNav ? '0' : '1',
-    transition: ProjectNav ? '0.1s' : '0.4s'
+    transition: ProjectNav ? '0.1s' : '0.2s'
   }}
   >
     {SwapProjNav && <SwapProjNavVertical enabled={SwapProjNav} setEnabled={setSwapProjNav} />}

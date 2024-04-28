@@ -15,7 +15,7 @@ function Projects() {
     ${
       nav ? 'ml-[12rem]' : 'ml-[4.25rem]'
   } 
-  body-font font-lato ease-in-out duration-[.3s] w-[10]`
+  body-font font-lato ease-in-out duration-[.15s] w-[10]`
   }
     >
 
@@ -24,7 +24,7 @@ function Projects() {
     ProjectNav ? 
     'ml-[12rem]' : 'ml-[0]'
   }
-  ease-in-out duration-[.2s] `
+  ease-in-out duration-[.1s] `
     }
   >
     <AddProjModal/>

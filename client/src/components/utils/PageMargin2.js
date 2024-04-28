@@ -10,7 +10,7 @@ function PageMargin2( {...props} ) {
     ${
       nav ? 'ml-[14rem]' : 'ml-[6.25rem]'
   } 
-  body-font font-lato ease-in-out duration-[.3s]`
+  body-font font-lato ease-in-out duration-[.15s]`
   }
     >
 
@@ -19,7 +19,7 @@ function PageMargin2( {...props} ) {
           ProjectNav ? 
           'ml-[10rem]' : 'ml-[2rem]'
         }
-        ease-in-out duration-[0.2s] `
+        ease-in-out duration-[0.1s] `
           }
         >
             { props.children }

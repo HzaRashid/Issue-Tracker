@@ -194,7 +194,7 @@ console.log(switchedProj)
     mt-[1rem] text-left absolute font-lato font-light
     text-[1rem] whitespace-pre rounded-md`} 
     style={{
-      transition: 'all 0.2s ease-in-out'
+      transition: 'all 0.15s ease-in-out'
     }}
     >
     <Link to='/home' 
@@ -218,7 +218,7 @@ console.log(switchedProj)
     body-font font-lato font-light
     subpixel-antialiased
     
-    ease-in-out duration-[.3s]
+    ease-in-out duration-[0.15s]
     max-h-[100vh] overflow-auto`
     }
     >
@@ -231,7 +231,7 @@ console.log(switchedProj)
      (!ProjectNav && ScreenWidth<1024) ? 'ml-[2em]' : null
  
     }
-    ease-in-out duration-[.2s] `
+    ease-in-out duration-[.1s] `
       }
     >
 

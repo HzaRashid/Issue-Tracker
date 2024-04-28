@@ -207,7 +207,7 @@ function List( ) {
         text: 'bold', 
         visibility: loaded ? 'visible' : 'hidden',
         opacity:    loaded ? '1'       : '0',
-        transition: 'all 0.14s ease-in-out'
+        transition: 'all 0.1s ease-in-out'
         }}
     >
 

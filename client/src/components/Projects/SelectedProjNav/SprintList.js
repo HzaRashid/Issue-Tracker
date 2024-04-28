@@ -26,7 +26,7 @@ function SprintList( props ) {
     style={{
         height: 'auto',
         maxHeight: showSprints ? '6em' : '0em',
-        transition: 'max-height 0.2s ease-in-out'
+        transition: 'max-height 0.15s ease-in-out'
     }}
 
     >

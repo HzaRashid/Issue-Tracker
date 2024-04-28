@@ -156,7 +156,7 @@ function SprintBoard() {
         absolute font-lato font-light flex
         mt-[1em] font-[Open Sans] whitespace-nowrap`}
         style={{
-          transition: 'all 0.2s ease-in-out'
+          transition: 'all 0.15s ease-in-out'
         }}
         >
         <Link to={'/home'}
@@ -188,7 +188,7 @@ function SprintBoard() {
   } 
   body-font font-lato font-light
   subpixel-antialiased 
-  ease-in-out duration-[.3s]
+  ease-in-out duration-[.15s]
   max-h-[100vh] overflow-auto`
   }
   onClick={() => {
@@ -205,7 +205,7 @@ function SprintBoard() {
     (!ProjectNav && ScreenWidth>1024) ? 'ml-[0]':
     (!ProjectNav && ScreenWidth<1024) ? 'ml-[2em]' : 'ml-[0em]'}
     
-    ease-in-out duration-[.2s] `
+    ease-in-out duration-[.1s] `
       }
     >
 

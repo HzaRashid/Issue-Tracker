@@ -37,7 +37,7 @@ function SelectedProjNav( props ) {
         position: 'absolute',
         visibility: ProjectNav ? 'visible' : 'hidden',
         opacity: ProjectNav ? '1' : '0',
-        transition: 'all 0.2s ease-in-out',
+        transition: 'all 0.1s ease-in-out',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap'
@@ -74,7 +74,7 @@ function SelectedProjNav( props ) {
               text-[#404040] font-lato font-normal 
               hover:bg-[#c8e0f048] rounded-md hover:cursor-pointer'
               style={{
-                transition: 'all 0.2s ease-in-out',
+                transition: 'all 0.1s ease-in-out',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap'
               }}

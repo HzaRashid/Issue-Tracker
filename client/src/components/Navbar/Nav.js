@@ -112,9 +112,6 @@ function Nav() {
       </h1>
       </button>
 
-
-
-      <CustomTooltip title={nav ? 'Close' : 'Open'}>
       <button 
       className='menuIcon' 
       onClick={() => setNav(!nav)}
@@ -129,7 +126,6 @@ function Nav() {
       }
       
       </button>      
-      </CustomTooltip>
 
     </div>
 
@@ -139,7 +135,6 @@ function Nav() {
           
           if (item.title.toLowerCase() !== 'profile') return (
           <div key={key}>
-          <MenuTooltip title={nav ? '' : item.title} placement='right' arrow>
           <li
           className='row'
           id={
@@ -196,7 +191,6 @@ function Nav() {
           </div> 
 
           </li>
-          </MenuTooltip>
 
           </div>
           
