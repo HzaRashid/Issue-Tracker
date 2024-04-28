@@ -91,7 +91,7 @@ function SprintList( props ) {
         style={{
             width: !nav && !ProjectNav ? '70vw' : 
             (nav && ProjectNav && ScreenWidth<1024) ? '42.5vw' : '60vw',
-            transition: '0.3s',
+            transition: '0.1s',
             }}
       >
 

@@ -50,7 +50,7 @@ function BacklogTable( props ) {
         block max-h-[40vh] overflow-auto `}
         style={{
           width: !nav && !ProjectNav ? '70vw' : (nav && ProjectNav && ScreenWidth<1024) ? '42.5vw' : '60vw',
-          transition: 'width 0.3s'
+          transition: 'width 0.1s'
           }}
       
         ref={setNodeRef}

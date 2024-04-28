@@ -68,17 +68,16 @@
 
 
 .sidebar #active{
-    background-color: #ffffff15;
+    /* background-color: #ffffff15; */
     /* border-left: 0.3em solid #c8c8c8; */
     border-radius: 1.75em;
     cursor: pointer;
     transition: all 0.1s;
-    
-
-
-
 }
 
+.sidebar #active.row{
+    color: #c0ecffee;
+}
 
 .sidebar #active:hover{
     cursor: pointer;
@@ -87,7 +86,7 @@
 
 
 .sidebar #idle:hover{
-    background-color: #ffffff1a;
+    /* background-color: #ffffff1a; */
     cursor: pointer;
     border-radius: 1.5em;
     
@@ -101,8 +100,12 @@
 .row:hover{
     cursor: pointer;
     /* color: #cdecff; */
-    color: #cdecff;
+    color: #d0ebff;
+ 
+}
 
+.row:hover .icon {
+    color: #d0ebff;
 }
 
 
@@ -116,5 +119,5 @@
 
 /* .icon {
     font-size: 1.4rem;
-    color: #e2e2e2;
+    color: palegreen;
 } */

@@ -166,7 +166,8 @@ function Nav() {
           > 
           <div className='icon' 
           style={{
-            color: currLocation.pathname === item.link ? '#fff' : '#f0f0f0',
+            // color: currLocation.pathname === item.link ? '#fff' : '#f0f0f0',
+            // color: 'pink'
             
           }}
           >
@@ -175,7 +176,7 @@ function Nav() {
           {
           item.title.toLowerCase() === 'projects' && ProjectNav &&
           <div className={`${nav ? 'ml-[8em]' : 'ml-[1.7em]'} 
-          absolute z-50 text-[#d48c98] transition-all duration-200 ease-in-out`}
+          absolute z-50 text-[#de9fa9] transition-all duration-200 ease-in-out`}
           >  
           <BiRightArrow className='text-[1em]' />
           </div>  
