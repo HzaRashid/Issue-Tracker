@@ -14,7 +14,6 @@ function Home() {
   const { Issues, setIssues } = IssueContexts();
   const { Projects, setProjects } = ProjContexts();
   const { Sprints, setSprints } = SprintContexts();
-
   useEffect(() => {
     if (
       !Issues?.length ||
