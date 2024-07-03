@@ -19,7 +19,8 @@ router.get('/', (req, res) => {
     }
     res.status(400).json({
         authenticated: false,
-        message: 'user not authenticated'
+        message: 'user not authenticated',
+        req
     })
     
 })
