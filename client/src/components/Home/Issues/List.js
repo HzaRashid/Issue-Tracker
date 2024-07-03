@@ -55,8 +55,8 @@ function List( ) {
             label="Edit"
             onClick={
               () => {
-                console.log(params.row._id);
-                console.log(Issues)
+                // console.log(params.row._id);
+                // console.log(Issues)
                 setSelectedIssue(params.row); 
                 setEditIssueModal(true)
               }

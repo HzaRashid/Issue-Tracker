@@ -75,13 +75,14 @@ export function AddContainer(
     }
 
     const handleSubmit = (e: any) => {
-      console.log('clicked') // @ts-ignore
+      // console.log('clicked') 
+      // @ts-ignore
               
       if (
         StageTitle && 
         StageTitle.replace(/\s/g, '').length > 0
         ) {
-          console.log(StageTitle)
+          // console.log(StageTitle)
           const sprintUrl : string = process.env.REACT_APP_API_Sprints as string
           axios.put(
             sprintUrl + '/add-stage',

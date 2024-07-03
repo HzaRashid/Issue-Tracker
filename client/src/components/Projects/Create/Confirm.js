@@ -28,8 +28,8 @@ function Confirm({...props}) {
                 return !props?.Team.map(u => u._id).includes(initID)
             })
     }
-    console.log(EditProj)
-    console.log(newProjectReq)
+    // console.log(EditProj)
+    // console.log(newProjectReq)
   return (
     <>
     <div>

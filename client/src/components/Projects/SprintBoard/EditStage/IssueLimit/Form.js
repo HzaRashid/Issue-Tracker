@@ -122,7 +122,7 @@ function Form() {
      p-1 rounded-lg hover:cursor-pointer drop-shadow-sm hover:bg-[#4f745f0a]
     transition ease-in-out delay-50 hover:scale-105 duration-150'
     onClick={() => {
-      console.log('here')
+      // console.log('here')
       axios.put(
         process.env.REACT_APP_API_Sprints + '/update-stage-issue-limit',
         {

@@ -238,7 +238,7 @@ export const Container = forwardRef<HTMLDivElement, Props>(
             p-1 rounded-md shadow ml-1'
             onClick={() => {
 
-              console.log('clicked')
+              // console.log('clicked')
               if (
                 updateTitle && 
                 updateTitle.replace(/\s/g, '').length > 0

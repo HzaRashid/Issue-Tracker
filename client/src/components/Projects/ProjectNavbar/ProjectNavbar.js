@@ -145,7 +145,7 @@ function ProjectNavbar( props ) {
               setEditProjModal(true); 
               setEditProj(true);
               setSelectedProjModal(item);
-              console.log('flog')
+              // console.log('flog')
               }}
               > 
               <MdEdit 

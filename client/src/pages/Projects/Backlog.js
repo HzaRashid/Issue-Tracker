@@ -54,7 +54,7 @@ function Backlog() {
   //     )},
   //   // eslint-disable-next-line
   //   [Projects, useParams()]);
-console.log(switchedProj)
+// console.log(switchedProj)
     useEffect(() => {
       
       const withCreds = { withCredentials: true }
@@ -369,7 +369,7 @@ console.log(switchedProj)
     const activeIndex = items[activeContainer].indexOf(active.id);
     const overIndex = items[overContainer].indexOf(overId);
     // console.log(id)
-    console.log(activeContainer)
+    // console.log(activeContainer)
     // move issue from backlog to sprint
     if ( 
       // id[4]?.toLowerCase() === ContainerIDs.backlog && 

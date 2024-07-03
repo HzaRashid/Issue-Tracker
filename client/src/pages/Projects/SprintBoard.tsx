@@ -62,7 +62,7 @@ function SprintBoard() {
           setSprints([...allSprints])
           var sprint = res3.data.filter((s : { title : string, project: string }) => (s.project === project._id && s.title === SprintTitle))[0]
           setSelectedSprint({...sprint})
-          console.log(sprint?.title)
+          // console.log(sprint?.title)
           setUsers(res4.data);
 
           var sprintIssues = res2.data.filter(

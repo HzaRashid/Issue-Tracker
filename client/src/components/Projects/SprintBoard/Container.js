@@ -24,7 +24,7 @@ function Container( { items, setItems } ) {
   // console.log(SelectedSprint)
   useEffect(
     () => {
-      console.log(SelectedSprint)
+      // console.log(SelectedSprint)
         axios.get(
           process.env.REACT_APP_API_Sprints,
           { withCredentials: true }
@@ -178,7 +178,7 @@ function Container( { items, setItems } ) {
     ) {
       return;
     }
-console.log(SelectedSprint)
+// console.log(SelectedSprint)
 
       axios.put(
         process.env.REACT_APP_API_Issues + '/stage',
