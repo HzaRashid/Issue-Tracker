@@ -17,9 +17,9 @@ ConnectMDB();
 const app = express();
 // app.set('trust proxy', 1)
 app.set('trust proxy', (req, _) => { 
-  console.log('ahahaha', req.headers)
+  return req.headers['cf-connecting-ip']
 })
-app.get('/ip', (request, response) => response.send(request.ip))
+app.get('/ip', (req, res) => res.send(req.headers['cf-connecting-ip']))
 
 if (process.env.NODE_ENV == "development") {
   var morgan = require('morgan');
