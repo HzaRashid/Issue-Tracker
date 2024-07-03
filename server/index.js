@@ -57,11 +57,11 @@ app.use(session({
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
       httpOnly: false,
+      secure: true
     },
     store: redisStore,
     resave: false,
     saveUninitialized: false,
-    secure: true
   }));
 
 app.use(passport.initialize())
