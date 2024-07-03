@@ -8,6 +8,7 @@ router.use('/google', require('./GoogleAuth'))
 
 
 router.get('/', (req, res) => {
+    req.ip = req.headers['cf-connecting-ip']
     if (req.user) {
         res.status(200).json({
         authenticated: true,
