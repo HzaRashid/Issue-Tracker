@@ -15,10 +15,6 @@ const cors = require('cors');
 ConnectMDB();
 
 const app = express();
-// app.use((req, res, next) => {
-//   req.headers.origin = req.headers['cf-connecting-ip'];
-//   next();
-// });
 app.set('trust proxy', 1)
 app.get('/ip', (request, response) => response.send(request.ip))
 
@@ -37,7 +33,6 @@ app.use(
     credentials: true,
     methods: 'GET,POST,PUT,OPTIONS',
 }));
-
 
 let redisStore = new sessionStore({
   client: RedisClient,
@@ -62,12 +57,10 @@ app.use(session({
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
       httpOnly: false,
-      domain: process.env.ORIGIN
     },
     store: redisStore,
     resave: false,
     saveUninitialized: false,
-    
   }));
 
 app.use(passport.initialize())
