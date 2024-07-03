@@ -220,7 +220,7 @@ export function MultipleContainers({
   const { IssueModified, setIssueModified } = IssueContexts();
   React.useEffect(() => setIssues(items), [items]);
   React.useEffect(() => {
-    console.log('Container moved')
+    // console.log('Container moved')
     setIssues(prev => {
       return (
         containers
@@ -237,14 +237,14 @@ export function MultipleContainers({
 
 
   React.useEffect(() => {
-    console.log('Issue modified')
+    // console.log('Issue modified')
     if (IssueModified) {
       setItems(issues);
       setIssueModified(false);
     }
   }, [IssueModified])
   // console.log(issues)
-  console.log(items)
+  // console.log(items)
 
 
   /**
