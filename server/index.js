@@ -15,8 +15,8 @@ const cors = require('cors');
 ConnectMDB();
 
 const app = express();
-app.set('trust proxy', 2)
-app.get('/ip', (request, response) => response.send(request.headers['cf-connecting-ip']))
+app.set('trust proxy', 1)
+app.get('/ip', (request, response) => response.send(request.ip))
 
 if (process.env.NODE_ENV == "development") {
   var morgan = require('morgan');
@@ -61,6 +61,7 @@ app.use(session({
     store: redisStore,
     resave: false,
     saveUninitialized: false,
+    proxy: true
   }));
 
 app.use(passport.initialize())
