@@ -19,7 +19,7 @@ const app = express();
 //   req.headers.origin = req.headers['cf-connecting-ip'];
 //   next();
 // });
-app.set('trust proxy', 100)
+app.set('trust proxy', 1)
 app.get('/ip', (request, response) => response.send(request.ip))
 
 if (process.env.NODE_ENV == "development") {
