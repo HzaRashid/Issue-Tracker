@@ -52,13 +52,12 @@ if (process.env.NODE_ENV == 'production') {
     app.use(limiter)
 }
 
-app.use( (req, res) => session({
+app.use( session({
     secret: process.env.SESSION_SECRET,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
       httpOnly: false,
       sameSite: 'none',
-      domain: req.originalUrl
     },
     store: redisStore,
     resave: false,
