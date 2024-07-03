@@ -64,6 +64,36 @@ app.use(session({
     saveUninitialized: false,
   }));
 
+
+app.use(handle)
+async function handle(request, _) {
+  // Check for cookie.
+  let cookies = request.headers.get('Cookie') || ""
+  if (cookies.includes("returning=true")) {
+    // User has been here before. Just pass request through.
+    return fetch(request)
+  }
+
+  // Forward request to origin, get response.
+  let response = await fetch(request)
+
+  // Copy Response object so that we can edit headers.
+  response = new Response(response.body, response)
+
+  // Add headers.
+  response.headers.append("Link",
+      "</path/to/file.css>; rel=preload; as=style; nopush")
+  response.headers.append("Link",
+      "</path/to/script.js>; rel=preload; as=script; nopush")
+
+  // Set cookie so that we don't add the headers
+  // next time.
+  response.headers.set("Set-Cookie", "returning=true")
+
+  // Return on to client.
+  return response
+}
+
 app.use(passport.initialize())
 app.use(passport.session())
 
