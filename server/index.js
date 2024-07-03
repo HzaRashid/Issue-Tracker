@@ -52,47 +52,18 @@ if (process.env.NODE_ENV == 'production') {
     app.use(limiter)
 }
 
-app.use(session({
+app.use( (req, res) => session({
     secret: process.env.SESSION_SECRET,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
       httpOnly: false,
-      sameSite: 'none'
+      sameSite: 'none',
+      domain: req.originalUrl
     },
     store: redisStore,
     resave: false,
     saveUninitialized: false,
   }));
-
-
-app.use(handle)
-async function handle(request, _) {
-  // Check for cookie.
-  let cookies = request.headers.get('Cookie') || ""
-  if (cookies.includes("returning=true")) {
-    // User has been here before. Just pass request through.
-    return fetch(request)
-  }
-
-  // Forward request to origin, get response.
-  let response = await fetch(request)
-
-  // Copy Response object so that we can edit headers.
-  response = new Response(response.body, response)
-
-  // Add headers.
-  response.headers.append("Link",
-      "</path/to/file.css>; rel=preload; as=style; nopush")
-  response.headers.append("Link",
-      "</path/to/script.js>; rel=preload; as=script; nopush")
-
-  // Set cookie so that we don't add the headers
-  // next time.
-  response.headers.set("Set-Cookie", "returning=true")
-
-  // Return on to client.
-  return response
-}
 
 app.use(passport.initialize())
 app.use(passport.session())
