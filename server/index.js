@@ -52,25 +52,17 @@ if (process.env.NODE_ENV == 'production') {
     app.use(limiter)
 }
 
-app.use( session({
+app.use(session({
     secret: process.env.SESSION_SECRET,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
       httpOnly: false,
-      sameSite: 'none',
-      domain: process.env.ORIGIN
     },
     store: redisStore,
     resave: false,
     saveUninitialized: false,
-    proxy: true
   }));
 
-app.use(function(req, res, next) {  
-    res.header('Access-Control-Allow-Origin', req.headers.origin);
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});  
 app.use(passport.initialize())
 app.use(passport.session())
 
