@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
         authenticated: true,
         user: req.user
         })
-        console.log(req.user)
+        console.log(req)
 
         return;
     }
