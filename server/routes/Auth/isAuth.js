@@ -26,7 +26,7 @@ const isAuth = (req, res, next) => {
   if (!req.isAuthenticated()) {
     return res.status(400).json({
       message: 'user not authenticated, nor authorized to make changes',
-      req
+      reqq: req
     })
   } next()
 }
