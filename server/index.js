@@ -15,6 +15,7 @@ const cors = require('cors');
 ConnectMDB();
 
 const app = express();
+
 app.set('trust proxy', 1)
 app.get('/ip', (request, response) => response.send(request.ip))
 
@@ -33,6 +34,11 @@ app.use(
     credentials: true,
     methods: 'GET,POST,PUT,OPTIONS',
 }));
+
+app.use((req, res, next) => {
+  req.headers.origin = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'];
+  next();
+});
 
 let redisStore = new sessionStore({
   client: RedisClient,
