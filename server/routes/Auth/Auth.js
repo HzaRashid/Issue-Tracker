@@ -13,14 +13,13 @@ router.get('/', (req, res) => {
         authenticated: true,
         user: req.user
         })
-        console.log(req)
+        console.log(req.user)
 
         return;
     }
     res.status(400).json({
         authenticated: false,
-        message: 'user not authenticated',
-        req
+        message: 'user not authenticated'
     })
     
 })
