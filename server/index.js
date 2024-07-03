@@ -15,11 +15,8 @@ const cors = require('cors');
 ConnectMDB();
 
 const app = express();
-// app.set('trust proxy', 1)
-app.set('trust proxy', (req, _) => { 
-  return req.headers['cf-connecting-ip']
-})
-app.get('/ip', (req, res) => res.send(req.headers['cf-connecting-ip']))
+app.set('trust proxy', 2)
+app.get('/ip', (request, response) => response.send(request.ip))
 
 if (process.env.NODE_ENV == "development") {
   var morgan = require('morgan');
