@@ -57,7 +57,6 @@ app.use(session({
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
       httpOnly: false,
-      domain: '.' + process.env.ORIGIN
     },
     store: redisStore,
     resave: false,
