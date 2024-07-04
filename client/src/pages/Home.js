@@ -11,9 +11,13 @@ import { ProjContexts } from '../contexts/ProjectContexts';
 function Home() {
   const { nav, ProjectNav } = useStateContext();
   const { setUsers, Users } = TeamContexts();
-  const { Issues, setIssues } = IssueContexts();
+  const { Issues, setIssues, TableIssues, setTableIssues } = IssueContexts();
   const { Projects, setProjects } = ProjContexts();
   const { Sprints, setSprints } = SprintContexts();
+  useEffect(() => {
+    axios.get('http://localhost:4000/issues/table', { withCredentials: true })
+    .then(res => {console.log(res); setTableIssues(res?.data)})
+  }, [])
   useEffect(() => {
     if (
       !Issues?.length ||
@@ -38,7 +42,7 @@ function Home() {
     }, [])
 
   const currLoc = useLocation();
-
+  // console.log(TableIssues)
   return (
     <>
 

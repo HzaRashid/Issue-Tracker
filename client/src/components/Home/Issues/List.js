@@ -15,7 +15,7 @@ import CustomToolbar from './CustomToolbar';
 
 function List( ) {
     const {  
-      Issues, setSelectedIssue, 
+      Issues, setSelectedIssue, TableIssues,
       setEditIssueModal } = IssueContexts();
     const { Users } = TeamContexts();
     const { Projects, 
@@ -24,24 +24,34 @@ function List( ) {
 
     const [loaded, setLoaded] = useState(false);
     // allow user to search issues by assignee
-    const rows = useMemo(() => {
-      return Issues?.map(
-        ( i, key ) => {
-          i.id = key;
-          const user = Users?.filter( u => u._id === i?.assignedTo )
-          if ( user?.length ) {
-            i.assigneeName = user[0]?.firstName + ' ' + user[0]?.lastName;
-          } 
-          else i.assigneeName = 'Unassigned'
-        const projID = i.project 
-        i.projectName = Projects.filter(p => p._id === projID)[0]?.title
-        if (key === Issues?.length - 1) setLoaded(true)
-        return i
-      })  
+    // const rows = useMemo(() => {
+    //   return Issues?.map(
+    //     ( i, key ) => {
+    //       i.id = key;
+    //       const user = Users?.filter( u => u._id === i?.assignedTo )
+    //       if ( user?.length ) {
+    //         i.assigneeName = user[0]?.firstName + ' ' + user[0]?.lastName;
+    //       } 
+    //       else i.assigneeName = 'Unassigned'
+    //     const projID = i.project 
+    //     i.projectName = Projects.filter(p => p._id === projID)[0]?.title
+    //     if (key === Issues?.length - 1) setLoaded(true)
+    //     return i
+    //   })  
     // eslint-disable-next-line
-  }, [Issues, Users])
+  // }, [Issues, Users])
 
-  // console.log(rows)
+  const rows = useMemo(() => {
+    return TableIssues?.map((i, key) => {
+      i.id = key;
+      i.assigneeName = i?.assignedTo ? i.assignedTo.firstName + ' ' + i.assignedTo.lastName : 'Unassigned'
+      i.projectName = i?.project?.title
+      if (key === Issues?.length - 1) setLoaded(true)
+      return i
+    })
+  }, [TableIssues])
+
+  console.log(rows)
     const columns = [ 
         {
         headerName:'Edit',
@@ -57,7 +67,10 @@ function List( ) {
               () => {
                 // console.log(params.row._id);
                 // console.log(Issues)
-                setSelectedIssue(params.row); 
+                setSelectedIssue({...params.row, 
+                  assignedTo: params.row.assignedTo._id,
+                  project: params.row.project._id
+                }); 
                 setEditIssueModal(true)
               }
             }
