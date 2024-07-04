@@ -15,7 +15,7 @@ const cors = require('cors');
 ConnectMDB();
 
 const app = express();
-app.set('trust proxy', true)
+app.set('trust proxy', 1)
 app.get('/ip', (request, response) => response.send(request.ip))
 
 if (process.env.NODE_ENV == "development") {
@@ -57,11 +57,14 @@ app.use(session({
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
       httpOnly: false,
+      secure: true,
+      sameSite: 'none'
     },
     store: redisStore,
     resave: false,
     saveUninitialized: false,
-    secureProxy: true
+    secureProxy: true,
+    proxy: true
   }));
 
 app.use(passport.initialize())
