@@ -35,7 +35,7 @@ function List( ) {
     })
   }, [TableIssues])
 
-  console.log(rows)
+  // console.log(rows)
     const columns = [ 
         {
         headerName:'Edit',

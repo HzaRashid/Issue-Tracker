@@ -15,6 +15,10 @@ function Home() {
   const { Projects, setProjects } = ProjContexts();
   const { Sprints, setSprints } = SprintContexts();
 
+  // useEffect(() => {
+  //   axios.get(process.env.REACT_APP_API_IssuesTable, {withCredentials: true})
+  //   .then(res => setTableIssues(res.data))}, [])
+
   useEffect(() => {
     if (
       !Issues?.length ||
@@ -24,18 +28,22 @@ function Home() {
     ) {
       const withCreds = { withCredentials: true };
       axios.all([
-        axios.get(process.env.REACT_APP_API_Issues, withCreds), 
+        axios.get(process.env.REACT_APP_API_IssuesTable, withCreds),
         axios.get(process.env.REACT_APP_API_getUsers, withCreds),
         axios.get(process.env.REACT_APP_API_Projects, withCreds),
         axios.get(process.env.REACT_APP_API_Sprints, withCreds),
-        axios.get(process.env.REACT_APP_API_IssuesTable, withCreds), 
       ])
-      .then(axios.spread((res1, res2, res3, res4, res5) => {
-                setIssues(res1.data);
+      .then(axios.spread((res1, res2, res3, res4) => {
+                setTableIssues(res1.data)
+                setIssues(
+                  res1.data.map(i => ({...i, assignedTo: i.assignedTo._id, project: i.project._id}))
+                )
+                
+              
                 setUsers(res2.data);
                 setProjects(res3.data);
                 setSprints(res4.data);
-                setTableIssues(res5.data)
+                // 
       }));
       } // eslint-disable-next-line
     }, [])
