@@ -57,14 +57,14 @@ app.use(session({
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
       httpOnly: false,
-      // secure: true,
-      // sameSite: 'none'
+      secure: true,
+      sameSite: 'none'
     },
     store: redisStore,
     resave: false,
     saveUninitialized: false,
-    // secureProxy: true,
-    // proxy: true,
+    secureProxy: true,
+    proxy: true,
     
   }));
 
