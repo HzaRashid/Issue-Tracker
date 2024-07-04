@@ -28,7 +28,7 @@ function List( ) {
   const rows = useMemo(() => {
     return TableIssues?.map((i, key) => {
       i.id = key;
-      i.assigneeName = i?.assignedTo?_id ? i.assignedTo.firstName + ' ' + i.assignedTo.lastName : 'Unassigned'
+      i.assigneeName = i?.assignedTo?._id ? i.assignedTo.firstName + ' ' + i.assignedTo.lastName : 'Unassigned'
       i.projectName = i?.project?.title
       if (key === Issues?.length - 1) setLoaded(true)
       return i
