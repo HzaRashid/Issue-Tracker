@@ -25,13 +25,7 @@ const isAuthDemo = (req, res, next) => {
 const isAuth = (req, res, next) => {
   if (!req.isAuthenticated()) {
     return res.status(400).json({
-      message: 'user not authenticated, nor authorized to make changes',
-      foo: req.hostname,
-      bar: req.get('origin'),
-      cookie: req.get('cookie'),
-      cf: req.get('cf-connecting-ip'),
-      xforward: req.get('x-forwarded-for')
-
+      message: 'user not authenticated, nor authorized to make changes'
     })
   } next()
 }

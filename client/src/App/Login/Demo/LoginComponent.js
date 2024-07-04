@@ -40,7 +40,7 @@ function LoginComponent() {
             className='font-qsand text-[1em] mt-2
             text-center font-normal tracking-wide text-[#4a4a4a]'
             >
-                Bug-Tracker App Demo
+                Issue Tracker Demo
             </h2>
           </div>
     
@@ -73,7 +73,7 @@ function LoginComponent() {
              
                     )
                     .then(res =>{ 
-                      console.log(res); 
+                      // console.log(res); 
                       return res.data}
                       )
                     .then(json => { 
