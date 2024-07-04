@@ -61,7 +61,7 @@ app.use(session({
       sameSite: 'none'
     },
     store: redisStore,
-    resave: true,
+    resave: false,
     saveUninitialized: false,
     secureProxy: true,
     proxy: true,
