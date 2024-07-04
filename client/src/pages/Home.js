@@ -14,10 +14,7 @@ function Home() {
   const { Issues, setIssues, TableIssues, setTableIssues } = IssueContexts();
   const { Projects, setProjects } = ProjContexts();
   const { Sprints, setSprints } = SprintContexts();
-  useEffect(() => {
-    axios.get(process.env.REACT_APP_API_IssuesTable, { withCredentials: true })
-    .then(res => {console.log(res); setTableIssues(res?.data)})
-  }, [])
+
   useEffect(() => {
     if (
       !Issues?.length ||
@@ -30,13 +27,15 @@ function Home() {
         axios.get(process.env.REACT_APP_API_Issues, withCreds), 
         axios.get(process.env.REACT_APP_API_getUsers, withCreds),
         axios.get(process.env.REACT_APP_API_Projects, withCreds),
-        axios.get(process.env.REACT_APP_API_Sprints, withCreds)
+        axios.get(process.env.REACT_APP_API_Sprints, withCreds),
+        axios.get(process.env.REACT_APP_API_IssuesTable, withCreds), 
       ])
-      .then(axios.spread((res1, res2, res3, res4) => {
+      .then(axios.spread((res1, res2, res3, res4, res5) => {
                 setIssues(res1.data);
                 setUsers(res2.data);
                 setProjects(res3.data);
                 setSprints(res4.data);
+                setTableIssues(res5.data)
       }));
       } // eslint-disable-next-line
     }, [])
