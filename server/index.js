@@ -31,7 +31,7 @@ app.use(
     cors({
     origin: process.env.ORIGIN,
     credentials: true,
-    methods: 'GET,POST,PUT,OPTIONS',
+    methods: 'GET,POST,PUT,OPTIONS,HEAD',
 }));
 
 let redisStore = new sessionStore({
