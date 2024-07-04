@@ -24,27 +24,11 @@ function List( ) {
 
     const [loaded, setLoaded] = useState(false);
     // allow user to search issues by assignee
-    // const rows = useMemo(() => {
-    //   return Issues?.map(
-    //     ( i, key ) => {
-    //       i.id = key;
-    //       const user = Users?.filter( u => u._id === i?.assignedTo )
-    //       if ( user?.length ) {
-    //         i.assigneeName = user[0]?.firstName + ' ' + user[0]?.lastName;
-    //       } 
-    //       else i.assigneeName = 'Unassigned'
-    //     const projID = i.project 
-    //     i.projectName = Projects.filter(p => p._id === projID)[0]?.title
-    //     if (key === Issues?.length - 1) setLoaded(true)
-    //     return i
-    //   })  
-    // eslint-disable-next-line
-  // }, [Issues, Users])
 
   const rows = useMemo(() => {
     return TableIssues?.map((i, key) => {
       i.id = key;
-      i.assigneeName = i?.assignedTo ? i.assignedTo.firstName + ' ' + i.assignedTo.lastName : 'Unassigned'
+      i.assigneeName = i?.assignedTo?_id ? i.assignedTo.firstName + ' ' + i.assignedTo.lastName : 'Unassigned'
       i.projectName = i?.project?.title
       if (key === Issues?.length - 1) setLoaded(true)
       return i
