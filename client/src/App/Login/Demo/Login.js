@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom'
 function Login( { user } ) {
   const location = useLocation();
   const currPath = location.pathname;
+  console.log(user)
 
   if (user?.authenticated == null && currPath === '/login') return null;
 
