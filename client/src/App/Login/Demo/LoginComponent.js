@@ -74,6 +74,7 @@ function LoginComponent() {
                     )
                     .then(res =>{ 
                       console.log(res); 
+                      console.log(res.headers())
                       return res.data}
                       )
                     .then(json => { 

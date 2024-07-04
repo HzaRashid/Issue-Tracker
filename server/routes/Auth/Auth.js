@@ -35,7 +35,6 @@ router.post('/login', function(req, res, next) {
       )
     req.login(user, lgnErr => {
       if (lgnErr) return next(lgnErr);
-      res.set('x-timestamp', Date.now())
       return res.status(200).send({
         authenticated: true,
         user: user
