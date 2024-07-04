@@ -73,7 +73,7 @@ function LoginComponent() {
              
                     )
                     .then(res =>{ 
-                      // console.log(res); 
+                      console.log(res); 
                       return res.data}
                       )
                     .then(json => { 
