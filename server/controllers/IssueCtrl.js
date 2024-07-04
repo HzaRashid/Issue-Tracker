@@ -13,11 +13,11 @@ const getIssues = async (req, res) => {
     try {
         const redisIssues = await RedisClient.get("Issue");
         if (redisIssues) {
-            console.log("hit")
+            // console.log("hit")
             results = JSON.parse(redisIssues);
         } 
         else { 
-            results = await Issue.find({});
+            results = await Issue.find({}).lean();
             await RedisClient.set("Issue", JSON.stringify(results))
         }
         res.status(200).send(results)
@@ -169,7 +169,7 @@ const editIssueType = async (req, res) => {
     const doc = await Issue.findById(Fields.issueID)
     let prevDoc = {...doc._doc};
 
-    const Users = await User.find({})
+    // const Users = await User.find({})
 
 
 

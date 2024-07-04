@@ -68,7 +68,7 @@ const getIssueVersions = (req, res) => {
             else {
                 res.json(result) 
             }
-        })
+        }).lean()
 };
 
 

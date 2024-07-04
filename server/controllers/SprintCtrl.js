@@ -12,7 +12,7 @@ const getSprints = async (req, res) => {
             results = JSON.parse(redisSprints);
         } 
         else { 
-            results = await Sprint.find({});
+            results = await Sprint.find({}).lean();
             await RedisClient.set("Sprint", JSON.stringify(results))
         }
         res.status(200).send(results)

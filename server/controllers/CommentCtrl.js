@@ -34,7 +34,7 @@ const sendComments = async (req, res) => {
 
 let writeData = async (res, id) => {
     try {
-        let docs = await Comment.find( { issue: id } );
+        let docs = await Comment.find( { issue: id } ).lean();
         res.write(`data: ${JSON.stringify(docs)}\n\n`);
         res.flush()
     } 

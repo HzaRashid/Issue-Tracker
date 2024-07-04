@@ -14,7 +14,7 @@ const getProjects = async (req, res) => {
             results = JSON.parse(redisProjects);
         } 
         else { 
-            results = await Project.find({});
+            results = await Project.find({}).lean();
             await RedisClient.set("Project", JSON.stringify(results))
         }
         res.status(200).send(results)
