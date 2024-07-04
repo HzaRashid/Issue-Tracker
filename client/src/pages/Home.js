@@ -15,7 +15,7 @@ function Home() {
   const { Projects, setProjects } = ProjContexts();
   const { Sprints, setSprints } = SprintContexts();
   useEffect(() => {
-    axios.get('http://localhost:4000/issues/table', { withCredentials: true })
+    axios.get(process.env.REACT_APP_API_IssuesTable, { withCredentials: true })
     .then(res => {console.log(res); setTableIssues(res?.data)})
   }, [])
   useEffect(() => {
