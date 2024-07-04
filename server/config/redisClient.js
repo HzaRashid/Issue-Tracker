@@ -34,8 +34,10 @@ const watchActions = ['create', 'delete', 'drop', 'update']
     try {
       if (watchActions.includes(data.operationType)) {
         console.log('Issue doc was updated')
-        const Issues = await Issue.find({})
+        const Issues = await Issue.find({}).lean()
+        const IssuesTable = Issue.find({}).lean().populate('assignedTo', 'firstName lastName').populate('project', 'title').lean();
         RedisClient.set("Issue", JSON.stringify(Issues))
+        RedisClient.set("IssuesTable", JSON.stringify(IssuesTable))
         }
     } catch (error) {
       console.log(error)

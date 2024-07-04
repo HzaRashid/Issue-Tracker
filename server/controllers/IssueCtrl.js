@@ -29,21 +29,21 @@ const getIssues = async (req, res) => {
 
 const getIssuesTable = async (req, res) => {
     let results;
-    // try {
-    //     const redisIssues = await RedisClient.get("Issue");
-    //     if (redisIssues) {
-    //         // console.log("hit")
-    //         results = JSON.parse(redisIssues);
-    //     } 
-        // else { 
+    try {
+        const redisIssues = await RedisClient.get("IssuesTable");
+        if (redisIssues) {
+            console.log("hit issues table")
+            results = JSON.parse(redisIssues);
+        } 
+        else { 
         results = await Issue.find({}).lean().populate('assignedTo', 'firstName lastName').populate('project', 'title').lean();
-        // await RedisClient.set("Issue", JSON.stringify(results))
-        // }
+        await RedisClient.set("IssuesTable", JSON.stringify(results))
+        }
         res.status(200).send(results)
 
-    // } catch (err) {
-    //     console.log(err)
-    // }
+    } catch (err) {
+        console.log(err)
+    }
 };
 
 const addIssue = async (req, res) => {
