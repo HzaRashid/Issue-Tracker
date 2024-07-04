@@ -36,7 +36,7 @@ const getIssuesTable = async (req, res) => {
     //         results = JSON.parse(redisIssues);
     //     } 
         // else { 
-        results = await Issue.find({}).populate('assignedTo', 'firstName lastName').populate('project', 'title').lean();
+        results = await Issue.find({}).lean().populate('assignedTo', 'firstName lastName').populate('project', 'title').lean();
         // await RedisClient.set("Issue", JSON.stringify(results))
         // }
         res.status(200).send(results)

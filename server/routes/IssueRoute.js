@@ -24,7 +24,7 @@ module.exports = router;
 
 
 router.get('/', isAuth, getIssues);
-router.get('/table', isAuth, getIssuesTable);
+router.get('/table', getIssuesTable);
 router.get('/versions/sse/:id', isAuth, sendIssueVersions)
 router.get('/versions/:id',     isAuth, getIssueVersions)
 router.post('/add-issue',   isAuthDemo, addIssue);
