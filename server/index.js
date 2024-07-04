@@ -62,9 +62,10 @@ app.use(session({
     },
     store: redisStore,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     secureProxy: true,
-    proxy: true
+    proxy: true,
+    
   }));
 
 app.use(passport.initialize())
