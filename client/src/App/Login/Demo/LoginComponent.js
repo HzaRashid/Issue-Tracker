@@ -77,7 +77,7 @@ function LoginComponent() {
                       return res.data}
                       )
                     .then(json => { 
-                      console.log(json)
+                      // console.log(json)
                       if (json.authenticated) {
                         setUser({
                           authenticated:  true,
