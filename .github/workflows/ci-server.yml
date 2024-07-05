@@ -16,7 +16,6 @@ jobs:
     - uses: actions/checkout@v4
     
     - name: Login Dockerhub
-      working-directory: ./server
       env:
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
@@ -24,11 +23,11 @@ jobs:
       
     - name: Build the Docker image
       working-directory: ./server
-      run: docker build -t issue-tracker .
+      run: docker build -t flow-issue-tracker .
 
     - name: Push to Dockerhub
       working-directory: ./server
       env: 
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-      run: docker push $DOCKER_USERNAME/issue-tracker:latest
+      run: docker push $DOCKER_USERNAME/flow-issue-tracker:latest
     
