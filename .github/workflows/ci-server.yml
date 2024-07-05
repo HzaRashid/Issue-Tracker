@@ -23,7 +23,13 @@ jobs:
       
     - name: Build the Docker image
       working-directory: ./server
-      run: docker build -t flow-issue-tracker .
+      run: docker build -t flow-issue-tracker
+      
+    # - name: Tag image
+    #   working-directory: ./server
+    #   env: 
+    #     DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+    #   run: docker tag flow-issue-tracker $DOCKER_USERNAME/flow-issue-tracker
 
     - name: Push to Dockerhub
       env: 
