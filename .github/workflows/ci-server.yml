@@ -29,10 +29,10 @@ jobs:
       working-directory: ./server
       env: 
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-      run: docker tag server $DOCKER_USERNAME/flow-issue-tracker
+      run: docker tag flow-issue-tracker $DOCKER_USERNAME/flow-issue-tracker
 
     - name: Push to Dockerhub
       env: 
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-      run: docker push $DOCKER_USERNAME/flow-issue-tracker:server
+      run: docker push $DOCKER_USERNAME/flow-issue-tracker:latest
     
