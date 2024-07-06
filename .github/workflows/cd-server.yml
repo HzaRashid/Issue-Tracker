@@ -22,12 +22,14 @@ jobs:
     - name: Delete Old Container
       run: sudo docker rm -f server-container || true
     
-    # - name: Create .env file
-    #   run: sudo touch .env && sudo echo ${{secrets.DOTENV_KEY_SERVER}} < .env
+    - name: Create .env file
+      run: sudo touch .env && sudo echo ${{secrets.DOTENV_KEY_SERVER}} < .env 
 
     - name: Run Container w/ Latest Image
       run: >
-        sudo docker run -d -p 8080:8080 
+        sudo docker run 
+        --env-file ./.env
+        -d -p 8080:8080 
         --name server-container 
         ${{secrets.DOCKER_USERNAME}}/flow-issue-tracker:server
         
