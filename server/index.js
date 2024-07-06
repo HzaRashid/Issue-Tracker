@@ -12,9 +12,9 @@ var compression = require('compression')
 const cors = require('cors'); 
 
 
-ConnectMDB();
+ConnectMDB(); 
 
-const app = express(); // 
+const app = express(); // foo
 app.set('trust proxy', 1)
 app.get('/ip', (request, response) => response.send(request.ip))
 
