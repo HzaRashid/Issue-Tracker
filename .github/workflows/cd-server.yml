@@ -24,6 +24,9 @@ jobs:
     
     - name: Create .env file
       run: sudo touch .env && sudo echo ${{secrets.DOTENV_KEY_SERVER}} < .env 
+    
+    - name: Verify
+      run: sudo cat .env
 
     - name: Run Container w/ Latest Image
       run: >
