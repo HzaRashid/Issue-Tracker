@@ -28,6 +28,7 @@ jobs:
     - name: Create .env file
       run: |
         sudo touch .env 
+        sudo chmod u+w .env
         sudo echo ${{secrets.DOTENV_KEY_SERVER}} > .env 
     
     - name: Verify
