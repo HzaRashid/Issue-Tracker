@@ -25,3 +25,4 @@ jobs:
       env:
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
       run: sudo docker run -d -p 8080:8080 --name server-container $DOCKER_USERNAME/flow-issue-tracker:server
+    
