@@ -23,7 +23,7 @@ jobs:
       run: sudo docker rm -f server-container || true
     
     - name: Create .env file
-      run: sudo touch .env && sudoecho ${{secrets.DOTENV_KEY_SERVER}} < .env
+      run: sudo touch .env && sudo echo ${{secrets.DOTENV_KEY_SERVER}} < .env
 
     - name: Run Container w/ Latest Image
       run: >
