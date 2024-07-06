@@ -28,7 +28,7 @@ jobs:
         sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env'
 
     - name: Run Container w/ Latest Image
-      run: |
+      run: >
         sudo docker run 
         --env-file ./.env
         -d -p 8080:8080 
