@@ -17,12 +17,12 @@ jobs:
     - name: Pull Docker Image
       env:
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-      run: sudo docker pull $DOCKER_USERNAME/flow-issue-tracker:latest
+      run: sudo docker pull $DOCKER_USERNAME/flow-issue-tracker:server
       
     - name: Delete Old Container
-      run: sudo docker rm -f flow-issue-tracker-container || true
+      run: sudo docker rm -f server-container || true
     - name: Run Container w/ Latest Image
       env:
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-      run: sudo docker run -d -p 8080:8080 --name flow-issue-tracker-container $DOCKER_USERNAME/flow-issue-tracker
+      run: sudo docker run -d -p 8080:8080 --name server-container $DOCKER_USERNAME/flow-issue-tracker:server
     
