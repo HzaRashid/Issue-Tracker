@@ -12,9 +12,6 @@ jobs:
 
     runs-on: self-hosted
 
-    permissions:
-      contents: write
-
     steps:
     
     - name: Pull Docker Image
@@ -29,9 +26,6 @@ jobs:
       run: |
         sudo touch .env 
         sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env'
-    
-    - name: Verify
-      run: sudo cat .env
 
     - name: Run Container w/ Latest Image
       run: |
