@@ -24,5 +24,10 @@ jobs:
     - name: Run Container w/ Latest Image
       env:
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-      run: sudo docker run -d -p 8080:8080 --name server-container $DOCKER_USERNAME/flow-issue-tracker:server
-    
+        ENV: ${{secrets.SERVER_ENV}}
+      run: >
+        sudo docker run -d -p 8080:8080 
+        --name server-container 
+        -- env-file $ENV
+        $DOCKER_USERNAME/flow-issue-tracker:server
+        
