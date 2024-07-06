@@ -36,9 +36,3 @@ jobs:
     - name: Push to Dockerhub
       env: 
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-<<<<<<< HEAD
-      run: docker push $DOCKER_USERNAME/flow-issue-tracker:server
-=======
-      run: docker push $DOCKER_USERNAME/flow-issue-tracker:server
-    
->>>>>>> refs/remotes/origin/aws
