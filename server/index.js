@@ -29,10 +29,17 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use(
     cors({
-    origin: process.env.ORIGIN,
-    credentials: true,
+    // origin: process.env.ORIGIN,
+    // credentials: true,
     methods: 'GET,POST,PUT,OPTIONS',
 }));
+
+app.get('/', (req, res) => {
+  res.json({
+      status: 200,
+      message: "hello world"
+  })
+})
 
 let redisStore = new sessionStore({
   client: RedisClient,
