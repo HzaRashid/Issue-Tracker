@@ -17,17 +17,17 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Pull Docker Image
-      env:
-        DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-      run: sudo docker pull $DOCKER_USERNAME/flow-issue-tracker:server
+    # - name: Pull Docker Image
+    #   env:
+        # DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+    #   run: sudo docker pull $DOCKER_USERNAME/flow-issue-tracker:server
 
       
-    - name: Delete Old Containers
-      run: |
-        sudo docker rm -f api-server || true
-        sudo docker rm -f reverse-proxy || true
-        sudo docker rm -f certbot || true
+    # - name: Delete Old Containers
+    #   run: |
+    #     sudo docker rm -f api-server || true
+    #     sudo docker rm -f reverse-proxy || true
+    #     sudo docker rm -f certbot || true
 
 
     - name: Fetch Dummy SSL Cert
@@ -35,9 +35,7 @@ jobs:
         API_DOMAIN: ${{vars.API_DOMAIN}}
         EMAIL: ${{secrets.EMAIL}}
         COMPOSE_FNAME: docker-compose-server.yml
-      run: |
-        chmod +x init-encrypt-server.sh
-        sudo bash init-encrypt-server.sh
+      run: ./init-encrypt-server.sh
       
 
     

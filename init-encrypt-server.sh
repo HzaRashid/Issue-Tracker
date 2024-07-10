@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # if ! [ -x "$(command -v docker compose)" ]; then
 #   # Install Compose plugin for Ubuntu via Docker's Repository:
