@@ -25,19 +25,23 @@ jobs:
       
     - name: Delete Old Containers
       run: |
-        echo "COMPOSE_FNAME=docker-compose-server.yml" >> $GITHUB_ENV
-        echo "API_DOMAIN=${{vars.API_DOMAIN}}" >> $GITHUB_ENV
-        echo "EMAIL=docker-${{secrets.EMAIL}}" >> $GITHUB_ENV
         sudo docker rm -f api-server || true
         sudo docker rm -f reverse-proxy || true
         sudo docker rm -f certbot || true
 
 
     - name: Fetch Dummy SSL Cert
-      run: |
-        chmod +x init-encrypt-server.sh
-        sudo sh ./init-encrypt-server.sh
+      env:
+        API_DOMAIN: ${{vars.API_DOMAIN}}
+        EMAIL: ${{secrets.EMAIL}}
+        COMPOSE_FNAME: docker-compose-server.yml
       shell: bash
+      run: |
+        touch foofofo.sh
+        cp init-encrypt-server.sh foofofo.sh
+        chmod +x foofofo.sh
+        sudo sh ./foofofo.sh
+      
 
     
     - name: Load Server Environment Variables
