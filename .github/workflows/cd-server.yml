@@ -18,20 +18,32 @@ jobs:
       env:
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
       run: sudo docker pull $DOCKER_USERNAME/flow-issue-tracker:server
-      
-    - name: Delete Old Container
-      run: sudo docker rm -f server-container || true
-    
-    - name: Create .env file
-      run: |
-        sudo touch .env 
-        sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env'
 
-    - name: Run Container w/ Latest Image
-      run: >
-        sudo docker run 
-        --env-file ./.env
-        -d -p 8080:8080 
-        --name server-container 
-        ${{secrets.DOCKER_USERNAME}}/flow-issue-tracker:server
+      
+    - name: Delete Old Containers
+      run: |
+        sudo docker rm -f api-server || true
+        sudo docker rm -f reverse-proxy || true
+        sudo docker rm -f certbot || true
+
+
+    - name: Fetch Dummy SSL Cert
+      env:
+        COMPOSE_FNAME: docker-compose-server.yml
+        API_DOMAIN: ${{vars.API_DOMAIN}}
+        EMAIL: ${{secrets.EMAIL}}
+      run: |
+        chmod +x init-encrypt-server.sh
+        sudo ./init-encrypt-server.sh
+
+    
+    - name: Load Server Environment Variables
+      run: |
+        sudo touch .env.server
+        sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
+        
+
+    - name: Run Containers
+      run: docker-compose -f docker-compose-server.yml up -d
+  
         
