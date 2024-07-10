@@ -3,7 +3,8 @@ services:
     image: hzadocker/flow-issue-tracker:server
     container_name: api-server
     restart: unless-stopped
-    ports: "8080:8080"
+    ports: 
+      - "8080:8080"
     env_file: .env.server
     
 
