@@ -34,6 +34,7 @@ jobs:
         API_DOMAIN: ${{vars.API_DOMAIN}}
         EMAIL: ${{secrets.EMAIL}}
       run: |
+        ls
         chmod +x init-encrypt-server.sh
         sudo ./init-encrypt-server.sh
 
