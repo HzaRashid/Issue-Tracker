@@ -40,7 +40,7 @@ jobs:
         echo "API_DOMAIN=${{vars.API_DOMAIN}}" >> $GITHUB_ENV
         echo "EMAIL=docker-${{secrets.EMAIL}}" >> $GITHUB_ENV
         chmod +x init-encrypt-server.sh
-        sudo sh./init-encrypt-server.sh
+        sudo sh ./init-encrypt-server.sh
       shell: bash
 
     
