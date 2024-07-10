@@ -6,11 +6,6 @@ on:
     types:
       - completed
 
-env:
-  COMPOSE_FNAME: docker-compose-server.yml
-  API_DOMAIN: ${{vars.API_DOMAIN}}
-  EMAIL: ${{secrets.EMAIL}}
-
 jobs:
 
   build:
@@ -40,10 +35,16 @@ jobs:
 
     
     - name: Load Server Environment Variables
-      shell: bash
+      env:
+        COMPOSE_FNAME: docker-compose-server.yml
+        API_DOMAIN: ${{vars.API_DOMAIN}}
+        EMAIL: ${{secrets.EMAIL}}
       run: |
+        sudo echo $COMPOSE_FNAME
+        sudo echo $API_DOMAIN
         sudo touch .env.server
         sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
+      shell: bash
 
         
 
