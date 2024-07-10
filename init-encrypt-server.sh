@@ -7,6 +7,8 @@
 #     -out '$path/fullchain.pem' \
 #     -subj '/CN=localhost'" certbot
 #
+
+
 if ! [ -x "$(command -v docker compose)" ]; then
   # -- Install docker compose plugin for Ubuntu using Docker's Repository: --
   # Add Docker's official GPG key:
