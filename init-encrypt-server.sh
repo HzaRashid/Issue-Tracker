@@ -28,8 +28,8 @@
 # data_path="./server-configs/certbot"
 # email="$EMAIL" # Adding a valid address is strongly recommended
 # staging=1 # Set to 1 if you're testing your setup to avoid hitting request limits
-echo "$API_DOMAIN" # test  
-echo "$COMPOSE_FNAME"
+echo "$API_DOMAIN" >> "$GITHUB_OUTPUT" # test  
+echo "$COMPOSE_FNAME" >> "$GITHUB_OUTPUT"
 
 
 # if [ -d "$data_path" ]; then
