@@ -31,13 +31,16 @@ jobs:
 
 
     - name: Fetch Dummy SSL Cert
-      env:
-        compose_fname: docker-compose-server.yml
-        api_domain: ${{vars.API_DOMAIN}}
-        email: ${{secrets.EMAIL}}
+      # env:
+      #   COMPOSE_FNAME: docker-compose-server.yml
+      #   API_DOMAIN: ${{vars.API_DOMAIN}}
+      #   EMAIL: ${{secrets.EMAIL}}
       run: |
+        sudo bash -c 'echo "COMPOSE_FNAME=docker-compose-server.yml" >> $GITHUB_ENV'
+        sudo bash -c 'echo "API_DOMAIN=${{vars.API_DOMAIN}}" >> $GITHUB_ENV'
+        sudo bash -c 'echo "EMAIL=docker-${{secrets.EMAIL}}" >> $GITHUB_ENV'
         chmod +x init-encrypt-server.sh
-        sudo sh ./init-encrypt-server.sh
+        sudo sh./init-encrypt-server.sh
       shell: bash
 
     

@@ -29,8 +29,8 @@
 # email="$EMAIL" # Adding a valid address is strongly recommended
 # staging=1 # Set to 1 if you're testing your setup to avoid hitting request limits
 echo rrororor
-echo "$api_domain" # test   
-echo "$compose_fname"
+echo "$API_DOMAIN" # test   
+echo "$COMPOSE_FNAME"
 echo yeryeryeryyryeyryryr
 
 
