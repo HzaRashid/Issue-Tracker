@@ -6,7 +6,11 @@ on:
     types:
       - completed
 
-
+env:
+  COMPOSE_FNAME: docker-compose-server.yml
+  API_DOMAIN: ${{vars.API_DOMAIN}}
+  EMAIL: ${{secrets.EMAIL}}
+  
 jobs:
 
   build:
@@ -30,10 +34,6 @@ jobs:
 
 
     - name: Fetch Dummy SSL Cert
-      env:
-        COMPOSE_FNAME: docker-compose-server.yml
-        API_DOMAIN: ${{vars.API_DOMAIN}}
-        EMAIL: ${{secrets.EMAIL}}
       run: |
         chmod +x init-encrypt-server.sh
         sudo ./init-encrypt-server.sh
