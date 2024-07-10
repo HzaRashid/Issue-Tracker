@@ -65,7 +65,7 @@ docker compose -f $COMPOSE_FNAME up --force-recreate -d reverse-proxy
 echo
 
 echo "### Deleting dummy certificate for $domains ..."
-docker-compose -f $COMPOSE_FNAME run --rm --entrypoint "\
+docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
   rm -Rf /etc/letsencrypt/live/$domains && \
   rm -Rf /etc/letsencrypt/archive/$domains && \
   rm -Rf /etc/letsencrypt/renewal/$domains.conf" certbot
@@ -88,7 +88,7 @@ esac
 # Enable staging mode if needed
 if [ $staging != "0" ]; then staging_arg="--staging"; fi
 
-docker-compose -f $COMPOSE_FNAME run --rm --entrypoint "\
+docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
   certbot certonly --webroot -w /var/www/certbot \
     $staging_arg \
     $email_arg \
@@ -99,4 +99,4 @@ docker-compose -f $COMPOSE_FNAME run --rm --entrypoint "\
 echo
 
 echo "### Reloading nginx reverse-proxy ..."
-docker-compose -f $COMPOSE_FNAME exec reverse-proxy reverse-proxy -s reload
+docker compose -f $COMPOSE_FNAME exec reverse-proxy reverse-proxy -s reload
