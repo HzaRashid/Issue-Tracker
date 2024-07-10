@@ -48,5 +48,13 @@ jobs:
 
     - name: Run Containers
       run: docker-compose -f docker-compose-server.yml up -d
+      
+
+    - name: 'Cleanup Build Folder'
+      run: |
+        ls -la ./
+        rm -rf ./* || true
+        rm -rf ./.??* || true
+        ls -la ./
   
         
