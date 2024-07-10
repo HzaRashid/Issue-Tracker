@@ -1,6 +1,6 @@
 services:
   api-server:
-    image: ${{secrets.DOCKER_USERNAME}}/flow-issue-tracker:server
+    image: hzadocker/flow-issue-tracker:server
     container_name: api-server
     restart: unless-stopped
     ports: "8080:8080"
