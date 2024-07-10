@@ -35,12 +35,9 @@ jobs:
         API_DOMAIN: ${{vars.API_DOMAIN}}
         EMAIL: ${{secrets.EMAIL}}
         COMPOSE_FNAME: docker-compose-server.yml
-      shell: bash
       run: |
-        touch foofofo.sh
-        cp init-encrypt-server.sh foofofo.sh
-        chmod +x foofofo.sh
-        sudo sh ./foofofo.sh
+        chmod +x init-encrypt-server.sh
+        sudo bash init-encrypt-server.sh
       
 
     
