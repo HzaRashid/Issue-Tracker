@@ -1,22 +1,25 @@
 #!/bin/bash
 
-if ! [ -x "$(command -v docker-compose)" ]; then
+if ! [ -x "$(command -v docker compose)" ]; then
+  # -- Install docker compose plugin for Ubuntu using Docker's Repository: --
   # Add Docker's official GPG key:
   sudo apt-get update
   sudo apt-get install ca-certificates curl
   sudo install -m 0755 -d /etc/apt/keyrings
   sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
   sudo chmod a+r /etc/apt/keyrings/docker.asc
-
   # Add the repository to Apt sources:
   echo \
     "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
     $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
   sudo apt-get update
+  # install the latest version
   sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  # Update the package index, and install the latest version of Docker Compose
   sudo apt-get update
   sudo apt-get install docker-compose-plugin
+  # Verify that Docker Compose is installed correctly by checking the version.
   docker compose version
 fi
 
@@ -49,7 +52,7 @@ fi
 echo "### Creating dummy certificate for $domains ..."
 path="/etc/letsencrypt/live/$domains"
 mkdir -p "$data_path/conf/live/$domains"
-docker-compose -f $COMPOSE_FNAME run --rm --entrypoint "\
+docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:$rsa_key_size -days 1\
     -keyout '$path/privkey.pem' \
     -out '$path/fullchain.pem' \
@@ -58,7 +61,7 @@ echo
 
 
 echo "### Starting nginx reverse-proxy ..."
-docker-compose -f $COMPOSE_FNAME up --force-recreate -d reverse-proxy
+docker compose -f $COMPOSE_FNAME up --force-recreate -d reverse-proxy
 echo
 
 echo "### Deleting dummy certificate for $domains ..."
