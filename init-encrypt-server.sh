@@ -16,11 +16,11 @@ if ! [ -x "$(command -v docker-compose)" ]; then
   sudo apt-get update
   # install the latest version
   sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-  # Update the package index, and install the latest version of Docker Compose
+  # Update the package index, and install the latest version of docker compose
   sudo apt-get update
   sudo apt-get install docker-compose-plugin
-  # Verify that Docker Compose is installed correctly by checking the version.
-  docker compose version
+  # Verify that docker compose is installed correctly by checking the version.
+  sudo docker compose version
 fi
 
 domains=($API_DOMAIN)
@@ -52,7 +52,7 @@ fi
 echo "### Creating dummy certificate for $domains ..."
 path="/etc/letsencrypt/live/$domains"
 mkdir -p "$data_path/conf/live/$domains"
-docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
+sudo docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:$rsa_key_size -days 1\
     -keyout '$path/privkey.pem' \
     -out '$path/fullchain.pem' \
@@ -61,11 +61,11 @@ echo
 
 
 echo "### Starting nginx reverse-proxy ..."
-docker compose -f $COMPOSE_FNAME up --force-recreate -d reverse-proxy
+sudo docker compose -f $COMPOSE_FNAME up --force-recreate -d reverse-proxy
 echo
 
 echo "### Deleting dummy certificate for $domains ..."
-docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
+sudo docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
   rm -Rf /etc/letsencrypt/live/$domains && \
   rm -Rf /etc/letsencrypt/archive/$domains && \
   rm -Rf /etc/letsencrypt/renewal/$domains.conf" certbot
@@ -88,7 +88,7 @@ esac
 # Enable staging mode if needed
 if [ $staging != "0" ]; then staging_arg="--staging"; fi
 
-docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
+sudo docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
   certbot certonly --webroot -w /var/www/certbot \
     $staging_arg \
     $email_arg \
@@ -99,4 +99,4 @@ docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
 echo
 
 echo "### Reloading nginx reverse-proxy ..."
-docker compose -f $COMPOSE_FNAME exec reverse-proxy reverse-proxy -s reload
+sudo docker compose -f $COMPOSE_FNAME exec reverse-proxy reverse-proxy -s reload
