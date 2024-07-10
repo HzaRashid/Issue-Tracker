@@ -28,8 +28,10 @@
 # data_path="./server-configs/certbot"
 # email="$EMAIL" # Adding a valid address is strongly recommended
 # staging=1 # Set to 1 if you're testing your setup to avoid hitting request limits
+sudeo echo rrororor
 sudo echo "$API_DOMAIN" # test  
 sudo echo "$COMPOSE_FNAME"
+sudeo echo yeryeryeryyryeyryryr
 
 
 # if [ -d "$data_path" ]; then
