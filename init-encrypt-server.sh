@@ -29,7 +29,7 @@
 # email="$EMAIL" # Adding a valid address is strongly recommended
 # staging=1 # Set to 1 if you're testing your setup to avoid hitting request limits
 sudo echo rrororor
-sudo echo "$API_DOMAIN" # test  
+sudo echo "$API_DOMAIN" # test   
 sudo echo "$COMPOSE_FNAME"
 sudo echo yeryeryeryyryeyryryr
 
