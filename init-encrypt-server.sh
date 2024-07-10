@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if ! [ -x "$(command -v docker compose)" ]; then
+if ! [ -x "$(command -v docker-compose)" ]; then
   # -- Install docker compose plugin for Ubuntu using Docker's Repository: --
   # Add Docker's official GPG key:
   sudo apt-get update
