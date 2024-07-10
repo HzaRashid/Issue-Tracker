@@ -41,7 +41,7 @@ jobs:
         EMAIL="${{secrets.EMAIL}}"
 
         chmod +x init-encrypt-server.sh
-        sudo ./init-encrypt-server.sh
+        sudo sh ./init-encrypt-server.sh
       shell: bash
 
     
