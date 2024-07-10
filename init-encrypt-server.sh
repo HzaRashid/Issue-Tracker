@@ -28,7 +28,7 @@
 # data_path="./server-configs/certbot"
 # email="$EMAIL" # Adding a valid address is strongly recommended
 # staging=1 # Set to 1 if you're testing your setup to avoid hitting request limits
-echo "$API_DOMAIN" # test
+echo "$API_DOMAIN" # test  
 echo "$COMPOSE_FNAME"
 
 
