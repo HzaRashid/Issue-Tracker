@@ -35,7 +35,9 @@ jobs:
         API_DOMAIN: ${{vars.API_DOMAIN}}
         EMAIL: ${{secrets.EMAIL}}
         COMPOSE_FNAME: docker-compose-server.yml
-      run: ./init-encrypt-server.sh
+      run: |
+        chmod +x init-encrypt-server.sh
+        ./init-encrypt-server.sh
       
 
     
