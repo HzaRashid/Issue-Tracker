@@ -36,8 +36,9 @@ jobs:
         EMAIL: ${{secrets.EMAIL}}
         COMPOSE_FNAME: docker-compose-server.yml
       run: |
+        touch .env.server 
         chmod +x init-encrypt-server.sh
-        ./init-encrypt-server.sh
+        sudo init-encrypt-server.sh
       
 
     
