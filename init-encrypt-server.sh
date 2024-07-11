@@ -38,7 +38,7 @@ if  [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || \
     [ ! -e "$data_path/conf/ssl-dhparams.pem" ]
 then
   echo "### Downloading recommended TLS parameters ..."
-  mkdir -p "$data_path/conf"
+  sudo mkdir -p "$data_path/conf"
   curl -s https://raw.githubusercontent.com/certbot/certbot/master/\
   certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf > "$data_path/conf/options-ssl-nginx.conf"
   curl -s https://raw.githubusercontent.com/certbot/certbot/master/\
@@ -56,43 +56,43 @@ docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
     -subj '/CN=localhost'" certbot
 echo
 
-echo "### Starting nginx reverse-proxy ..."
-docker compose -f $COMPOSE_FNAME up --force-recreate -d reverse-proxy
-echo
+# echo "### Starting nginx reverse-proxy ..."
+# docker compose -f $COMPOSE_FNAME up --force-recreate -d reverse-proxy
+# echo
 
-echo "### Deleting dummy certificate for $domains ..."
-docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
-  rm -Rf /etc/letsencrypt/live/$domains && \
-  rm -Rf /etc/letsencrypt/archive/$domains && \
-  rm -Rf /etc/letsencrypt/renewal/$domains.conf" certbot
-echo
+# echo "### Deleting dummy certificate for $domains ..."
+# docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
+#   rm -Rf /etc/letsencrypt/live/$domains && \
+#   rm -Rf /etc/letsencrypt/archive/$domains && \
+#   rm -Rf /etc/letsencrypt/renewal/$domains.conf" certbot
+# echo
 
-echo "### Requesting Let's Encrypt certificate for $domains ..."
-#Join $domains to -d args
-domain_args=""
-for domain in "${domains[@]}"; do
-  domain_args="$domain_args -d $domain"
-done
+# echo "### Requesting Let's Encrypt certificate for $domains ..."
+# #Join $domains to -d args
+# domain_args=""
+# for domain in "${domains[@]}"; do
+#   domain_args="$domain_args -d $domain"
+# done
 
 
-# Select appropriate email arg
-case "$email" in
-  "") email_arg="--register-unsafely-without-email" ;;
-  *) email_arg="--email $email" ;;
-esac
+# # Select appropriate email arg
+# case "$email" in
+#   "") email_arg="--register-unsafely-without-email" ;;
+#   *) email_arg="--email $email" ;;
+# esac
 
-# Enable staging mode if needed
-if [ $staging != "0" ]; then staging_arg="--staging"; fi
+# # Enable staging mode if needed
+# if [ $staging != "0" ]; then staging_arg="--staging"; fi
 
-docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
-  certbot certonly --webroot -w /var/www/certbot \
-    $staging_arg \
-    $email_arg \
-    $domain_args \
-    --rsa-key-size $rsa_key_size \
-    --agree-tos \
-    --force-renewal" certbot
-echo
+# docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
+#   certbot certonly --webroot -w /var/www/certbot \
+#     $staging_arg \
+#     $email_arg \
+#     $domain_args \
+#     --rsa-key-size $rsa_key_size \
+#     --agree-tos \
+#     --force-renewal" certbot
+# echo
 
-echo "### Reloading nginx reverse-proxy ..."
-docker compose -f $COMPOSE_FNAME exec reverse-proxy reverse-proxy -s reload
+# echo "### Reloading nginx reverse-proxy ..."
+# docker compose -f $COMPOSE_FNAME exec reverse-proxy reverse-proxy -s reload
