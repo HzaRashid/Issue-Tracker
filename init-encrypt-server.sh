@@ -113,4 +113,4 @@ echo
 
 echo "### Reloading nginx reverse-proxy ..."
 sudo docker compose -f $COMPOSE_FNAME exec reverse-proxy nginx -s reload 
-sudo docker compose -f $COMPOSE_FNAME run --rm api-server -v ./server-configs/post-cert:/etc/nginx/conf.d
+sudo docker compose -f $COMPOSE_FNAME --force-recreate -d api-server -v ./server-configs/post-cert:/etc/nginx/conf.d
