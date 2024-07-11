@@ -37,6 +37,8 @@ staging=1         # Set to 1 if you're testing your setup to avoid hitting reque
 echo "shshsh $API_DOMAIN"
 echo "shshsh $COMPOSE_FNAME"
 
+
+
 if [ -d "$data_path" ]; then exit; fi
 
 if  [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || \ 
@@ -54,19 +56,26 @@ then
   echo
 fi
 
+
 echo "### Creating dummy certificate for $domains ..."
+
 path="/etc/letsencrypt/live/$domains"
+
 sudo mkdir -p "$data_path/conf/live/$domains"
+
 sudo docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:$rsa_key_size -days 1\
     -keyout '$path/privkey.pem' \
     -out '$path/fullchain.pem' \
     -subj '/CN=localhost'" certbot
+
 echo
+
 
 echo "### Starting nginx reverse-proxy ..."
 sudo docker compose -f $COMPOSE_FNAME up --force-recreate -d reverse-proxy
 echo
+
 
 echo "### Deleting dummy certificate for $domains ..."
 sudo docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
@@ -74,6 +83,7 @@ sudo docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
   rm -Rf /etc/letsencrypt/archive/$domains && \
   rm -Rf /etc/letsencrypt/renewal/$domains.conf" certbot
 echo
+
 
 echo "### Requesting Let's Encrypt certificate for $domains ..."
 #Join $domains to -d args
