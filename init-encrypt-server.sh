@@ -5,7 +5,7 @@ docker compose &>/dev/null # sending output to /dev/null because we don't want i
 if [ $? -eq 0 ]; then
     echo "INSTALLED"
 else
-    # Install Compose plugin for Ubuntu via Docker's Repository:
+    # Install Compose plugin for Ubuntu via Docker's Repository: 
     # Add Docker's official GPG key:
     apt-get update
     apt-get install ca-certificates curl
