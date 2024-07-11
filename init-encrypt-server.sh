@@ -44,10 +44,13 @@ if  [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || \
 then
   echo "### Downloading recommended TLS parameters ..."
   sudo mkdir -p "$data_path/conf"
-  sudo curl -s https://raw.githubusercontent.com/certbot/certbot/master/\
-  certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf > "$data_path/conf/options-ssl-nginx.conf"
-  sudo curl -s https://raw.githubusercontent.com/certbot/certbot/master/\
-  certbot/certbot/ssl-dhparams.pem > "$data_path/conf/ssl-dhparams.pem"
+
+  sudo bash -c 'curl -s https://raw.githubusercontent.com/certbot/certbot/master/\
+  certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf > "$data_path/conf/options-ssl-nginx.conf"'
+  
+  sudo bash -c 'curl -s https://raw.githubusercontent.com/certbot/certbot/master/\
+  certbot/certbot/ssl-dhparams.pem > "$data_path/conf/ssl-dhparams.pem"'
+
   echo
 fi
 

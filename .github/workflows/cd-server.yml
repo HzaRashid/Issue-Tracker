@@ -1,12 +1,8 @@
 name: API CD Pipeline
 
 on:
-  workflow_run:
-    workflows: ["API CI Pipeline"]
-    types:
-      - completed
-
-
+  push:
+    branches: [ "aws" ]
 
 jobs:
 
