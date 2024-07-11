@@ -13,14 +13,14 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    
+
       
     - name: Delete Old Containers
       run: |
         sudo docker rm -f api-server || true
         sudo docker rm -f reverse-proxy || true 
         sudo docker rm -f certbot || true
-        echo y | docker system prune
+        sudo bash -c 'echo y | docker system prune'
 
 
     - name: Fetch Dummy SSL Cert
