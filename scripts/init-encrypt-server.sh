@@ -112,9 +112,13 @@ sudo docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
 echo
 
 echo "### Reloading nginx reverse-proxy ..."
-sudo bash -c 'docker compose -f $COMPOSE_FNAME cp $(pwd)/server-configs/post-cert/config.conf reverse-proxy:/etc/nginx/conf.d/config.conf > /dev/null 2>&1'
+sudo docker rm -f reverse-proxy || true 
+sudo bash -c 'echo y | docker system prune'
+
+sudo docker compose -f $COMPOSE_FNAME up
+sudo bash -c 'docker compose -f "$COMPOSE_FNAME" cp $(pwd)/server-configs/post-cert/config.conf reverse-proxy:/etc/nginx/conf.d/config.conf > /dev/null 2>&1'
 
 sudo docker compose -f $COMPOSE_FNAME exec reverse-proxy nginx -s reload 
 
 
-sudo docker compose -f $COMPOSE_FNAME run --name api-server -d -v $(pwd)/.env.server:/.env api-server
+# sudo docker compose -f $COMPOSE_FNAME run --name api-server -d -v $(pwd)/.env.server:/.env api-server
