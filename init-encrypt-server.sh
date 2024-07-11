@@ -1,27 +1,27 @@
 #!/usr/bin/env bash
 
-if ! [ -x "$(command -v docker compose)" ]; then
-  # Install Compose plugin for Ubuntu via Docker's Repository:
-  # Add Docker's official GPG key:
-  apt-get update
-  apt-get install ca-certificates curl
-  install -m 0755 -d /etc/apt/keyrings
-  curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-  chmod a+r /etc/apt/keyrings/docker.asc
-  # Add the repository to Apt sources:
-  echo \
-    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-    tee /etc/apt/sources.list.d/docker.list > /dev/null
-  apt-get update
-  # install the latest version
-  apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-  # Update the package index, and install the latest version of docker compose
-  apt-get update
-  apt-get install docker-compose-plugin
-  # Verify that docker compose is installed correctly by checking the version.
-  docker compose version
-fi
+# if ! [ -x "$(command -v docker compose)" ]; then
+#   # Install Compose plugin for Ubuntu via Docker's Repository:
+#   # Add Docker's official GPG key:
+#   apt-get update
+#   apt-get install ca-certificates curl
+#   install -m 0755 -d /etc/apt/keyrings
+#   curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+#   chmod a+r /etc/apt/keyrings/docker.asc
+#   # Add the repository to Apt sources:
+#   echo \
+#     "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+#     $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+#     tee /etc/apt/sources.list.d/docker.list > /dev/null
+#   apt-get update
+#   # install the latest version
+#   apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+#   # Update the package index, and install the latest version of docker compose
+#   apt-get update
+#   apt-get install docker-compose-plugin
+#   # Verify that docker compose is installed correctly by checking the version.
+#   docker compose version
+# fi
 
 
 domains=($API_DOMAIN)
@@ -32,29 +32,29 @@ staging=1 # Set to 1 if you're testing your setup to avoid hitting request limit
 echo "shshsh $API_DOMAIN "
 echo "shshsh $COMPOSE_FNAME"
 
-if [ -d "$data_path" ]; then exit; fi
+# if [ -d "$data_path" ]; then exit; fi
 
-if  [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || \ 
-    [ ! -e "$data_path/conf/ssl-dhparams.pem" ]
-then
-  echo "### Downloading recommended TLS parameters ..."
-  sudo mkdir -p "$data_path/conf"
-  curl -s https://raw.githubusercontent.com/certbot/certbot/master/\
-  certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf > "$data_path/conf/options-ssl-nginx.conf"
-  curl -s https://raw.githubusercontent.com/certbot/certbot/master/\
-  certbot/certbot/ssl-dhparams.pem > "$data_path/conf/ssl-dhparams.pem"
-  echo
-fi
+# if  [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || \ 
+#     [ ! -e "$data_path/conf/ssl-dhparams.pem" ]
+# then
+#   echo "### Downloading recommended TLS parameters ..."
+#   sudo mkdir -p "$data_path/conf"
+#   curl -s https://raw.githubusercontent.com/certbot/certbot/master/\
+#   certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf > "$data_path/conf/options-ssl-nginx.conf"
+#   curl -s https://raw.githubusercontent.com/certbot/certbot/master/\
+#   certbot/certbot/ssl-dhparams.pem > "$data_path/conf/ssl-dhparams.pem"
+#   echo
+# fi
 
-echo "### Creating dummy certificate for $domains ..."
-path="/etc/letsencrypt/live/$domains"
-mkdir -p "$data_path/conf/live/$domains"
-docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
-  openssl req -x509 -nodes -newkey rsa:$rsa_key_size -days 1\
-    -keyout '$path/privkey.pem' \
-    -out '$path/fullchain.pem' \
-    -subj '/CN=localhost'" certbot
-echo
+# echo "### Creating dummy certificate for $domains ..."
+# path="/etc/letsencrypt/live/$domains"
+# mkdir -p "$data_path/conf/live/$domains"
+# docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
+#   openssl req -x509 -nodes -newkey rsa:$rsa_key_size -days 1\
+#     -keyout '$path/privkey.pem' \
+#     -out '$path/fullchain.pem' \
+#     -subj '/CN=localhost'" certbot
+# echo
 
 # echo "### Starting nginx reverse-proxy ..."
 # docker compose -f $COMPOSE_FNAME up --force-recreate -d reverse-proxy

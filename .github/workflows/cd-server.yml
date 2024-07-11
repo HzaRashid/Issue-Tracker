@@ -17,12 +17,17 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
+    # - name: Pull Docker Image
+    #   env:
+        # DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+    #   run: sudo docker pull $DOCKER_USERNAME/flow-issue-tracker:server
 
-    - name: Delete Old Containers
-      run: |
-        sudo docker rm -f api-server || true
-        sudo docker rm -f reverse-proxy || true
-        sudo docker rm -f certbot || true
+      
+    # - name: Delete Old Containers
+    #   run: |
+    #     sudo docker rm -f api-server || true
+    #     sudo docker rm -f reverse-proxy || true
+    #     sudo docker rm -f certbot || true
 
 
     - name: Fetch Dummy SSL Cert
@@ -32,23 +37,25 @@ jobs:
         COMPOSE_FNAME: docker-compose-server.yml
       run: |
         chmod +x init-encrypt-server.sh
-        sudo bash init-encrypt-server.sh
+        ./init-encrypt-server.sh
+      
 
     
-    - name: Load Server Environment Variables
-      run: |
-        sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
+    # - name: Load Server Environment Variables
+    #   run: |
+    #     sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
+
+        
+
+    # - name: Run Containers
+    #   run: docker compose -f docker-compose-server.yml up -d
 
 
-    - name: Run Containers
-      run: docker compose -f docker-compose-server.yml up -d
-
-
-    - name: 'Cleanup Build Folder'
-      run: |
-        ls -la ./
-        rm -rf ./* || true
-        rm -rf ./.??* || true
-        ls -la ./
+    # - name: 'Cleanup Build Folder'
+    #   run: |
+    #     ls -la ./
+    #     rm -rf ./* || true
+    #     rm -rf ./.??* || true
+    #     ls -la ./
   
         
