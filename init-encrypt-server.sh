@@ -92,7 +92,6 @@ for domain in "${domains[@]}"; do
   domain_args="$domain_args -d $domain"
 done
 
-
 # Select appropriate email arg
 case "$email" in
   "") email_arg="--register-unsafely-without-email" ;;
@@ -108,6 +107,8 @@ sudo docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
     $email_arg \
     $domain_args \
     --rsa-key-size $rsa_key_size \
+    -v \
+    --non-interactive \
     --agree-tos \
     --force-renewal" certbot
 echo
