@@ -133,4 +133,4 @@ echo "### Reloading nginx reverse-proxy ..."
 sudo docker cp $post_cert_conf_path reverse-proxy:$proxy_ctr_conf_path
 sudo docker exec reverse-proxy nginx -s reload 
 
-sudo docker compose -f $COMPOSE_FNAME up --no-recreate -d
+# sudo docker compose -f $COMPOSE_FNAME up --no-recreate -d
