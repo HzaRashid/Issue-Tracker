@@ -19,12 +19,13 @@ jobs:
 
     - name: SSL Check
       run: |
-        echo "$GITHUB_ENV"
-        # if [ -d ./server-configs/certbot ]; then
-        #     sudo bash -c 'echo "need_ssl=false" >> $GITHUB_ENV'
-        # else
-        #     sudo bash -c 'echo "need_ssl=true" >> $GITHUB_ENV'
-        # fi
+        sudo su
+        if [ -d ./server-configs/certbot ]; then
+            echo "need_ssl=false" >> $GITHUB_ENV
+        else
+            echo "need_ssl=true" >> $GITHUB_ENV
+        fi
+        
 
 
       
