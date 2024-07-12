@@ -29,8 +29,8 @@ else
 fi
 
 
-post_cert_conf_path=$(pwd)/server-configs/proxy/post-cert.conf
-pre_cert_conf_path=$(pwd)/server-configs/pre-cert/config.conf
+post_cert_conf_path=./server-configs/proxy/post-cert.conf
+pre_cert_conf_path=./server-configs/pre-cert/config.conf
 proxy_ctr_conf_path=/etc/nginx/conf.d/config.conf 
 data_path="./server-configs/certbot"
 
@@ -144,15 +144,19 @@ echo CHECK DELETED
 
 cp $post_cert_conf_path $pre_cert_conf_path
 
-echo CHECK DELETED 
-cat $data_path/conf/options-ssl-nginx.conf
-echo CHECK DELETED 
+# echo CHECK DELETED 
+# cat $data_path/conf/options-ssl-nginx.conf
+# echo CHECK DELETED 
+
+sudo cat $pre_cert_conf_path
 
 sudo docker compose -f $COMPOSE_FNAME up -d
 
-echo CHECK DELETED 
-cat $data_path/conf/options-ssl-nginx.conf
-echo CHECK DELETED 
+sudo cat $pre_cert_conf_path
+
+# echo CHECK DELETED 
+# cat $data_path/conf/options-ssl-nginx.conf
+# echo CHECK DELETED 
 
 # echo rororo
 # sudo docker compose -f $COMPOSE_FNAME exec reverse-proxy nginx -s reload
