@@ -14,7 +14,8 @@ else
     chmod a+r /etc/apt/keyrings/docker.asc
     # Add the repository to Apt sources:
     echo \
-      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+      "deb [arch=$(dpkg --print-architecture) \
+      signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
       $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
       tee /etc/apt/sources.list.d/docker.list > /dev/null
     apt-get update
@@ -28,7 +29,7 @@ else
 fi
 
 
-post_cert_conf_path=$(pwd)/server-configs/post-cert/config.conf
+post_cert_conf_path=$(pwd)/server-configs/proxy/post-cert.conf
 proxy_ctr_conf_path=/etc/nginx/conf.d/config.conf 
 data_path="./server-configs/certbot"
 
@@ -51,10 +52,12 @@ then
   echo foo 1
 
   sudo curl -o "$data_path/conf/options-ssl-nginx.conf" \
-  https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf
+  https://raw.githubusercontent.com/certbot/certbot/master\
+  /certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf
 
   sudo curl -o  "$data_path/conf/ssl-dhparams.pem" \
-  https://raw.githubusercontent.com/certbot/certbot/master/certbot/certbot/ssl-dhparams.pem
+  https://raw.githubusercontent.com/certbot/certbot/master\
+  /certbot/certbot/ssl-dhparams.pem
 
   sslconf=$(ls "$data_path/conf")
   echo $sslconf
@@ -131,15 +134,10 @@ echo $cert
 # echo CHECK DELETED 
 
 
-echo "### Reloading nginx reverse-proxy ..."
-# sudo docker compose -f $COMPOSE_FNAME exec reverse-proxy nginx -s reload 
+echo "### Clean Up ..."
 
 sudo docker rm -f reverse-proxy || true 
 sudo bash -c 'echo y | docker system prune'
 sudo docker compose -f $COMPOSE_FNAME up -d
 sudo docker cp $post_cert_conf_path reverse-proxy:$proxy_ctr_conf_path
 sudo docker compose -f $COMPOSE_FNAME exec reverse-proxy nginx -s reload
-
-# # sudo docker exec reverse-proxy nginx -s reload 
-
-# # sudo docker compose -f $COMPOSE_FNAME up --no-recreate -d
