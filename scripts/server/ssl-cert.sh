@@ -29,7 +29,7 @@ else
 fi
 
 
-# pre_cert_conf_path=$(pwd)/server-configs/pre-cert/config.conf
+# pre_cert_conf_path=$(pwd)/server-configs/pre-cert/config.conf 
 # post_cert_conf_path=$(pwd)/server-configs/post-cert/config.conf
 
 # proxy_ctr_conf_path=/etc/nginx/conf.d/config.conf 
