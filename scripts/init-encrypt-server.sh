@@ -63,9 +63,6 @@ then
   echo
 fi
 
-echo CHECK DELETED 
-cat $data_path/conf/options-ssl-nginx.conf
-echo CHECK DELETED 
 
 echo "### Creating dummy certificate for $domains ..."
 
@@ -81,19 +78,9 @@ sudo docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
 echo
 
 
-echo CHECK DELETED 
-cat server-configs/certbot/conf/options-ssl-nginx.conf
-echo CHECK DELETED 
-
-
 echo "### Starting nginx reverse-proxy ..."
 sudo docker compose -f $COMPOSE_FNAME up --force-recreate -d reverse-proxy
 echo
-
-
-echo CHECK DELETED 
-cat $data_path/conf/options-ssl-nginx.conf
-echo CHECK DELETED 
 
 
 echo "### Deleting dummy certificate for $domains ..."
@@ -102,12 +89,6 @@ sudo docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
   rm -Rf /etc/letsencrypt/archive/$domains && \
   rm -Rf /etc/letsencrypt/renewal/$domains.conf" certbot
 echo
-
-
-
-echo CHECK DELETED 
-cat $data_path/conf/options-ssl-nginx.conf
-echo CHECK DELETED 
 
 
 echo "### Requesting Let's Encrypt certificate for $domains ..."
@@ -148,8 +129,6 @@ echo $cert
 echo CHECK DELETED 
 cat $data_path/conf/options-ssl-nginx.conf
 echo CHECK DELETED 
-
-
 
 
 echo "### Reloading nginx reverse-proxy ..."
