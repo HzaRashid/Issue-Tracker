@@ -152,8 +152,15 @@ echo CHECK DELETED
 
 
 
-# echo "### Reloading nginx reverse-proxy ..."
-# sudo docker compose -f $COMPOSE_FNAME exec reverse-proxy nginx -s reload 
+echo "### Reloading nginx reverse-proxy ..."
+sudo docker compose -f $COMPOSE_FNAME exec reverse-proxy nginx -s reload 
+
+echo CHECK DELETED 
+cat $data_path/conf/options-ssl-nginx.conf
+echo CHECK DELETED 
+
+
+
 # # sudo docker rm -f reverse-proxy || true 
 # # sudo bash -c 'echo y | docker system prune'
 # # sudo docker cp $post_cert_conf_path reverse-proxy:$proxy_ctr_conf_path
