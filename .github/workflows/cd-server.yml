@@ -29,7 +29,7 @@ jobs:
       
     - name: Get Configs for SSL Setup
       if: ${{ env.need_ssl }} == 'true'
-      uses: actions/checkout@v4ß
+      uses: actions/checkout@v4
       with:
         sparse-checkout: ./server-configs
 
