@@ -29,7 +29,6 @@ else
 fi
 
 
-
 post_cert_conf_path=./server-configs/proxy/post-cert.conf
 pre_cert_conf_path=./server-configs/proxy/pre-cert.conf
 proxy_ctr_conf_path=/etc/nginx/conf.d/config.conf 

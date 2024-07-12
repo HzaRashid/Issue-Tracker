@@ -4,20 +4,39 @@ on:
   push:
     branches: [ "aws" ]
 
+
+env:
+  need_ssl: 'false'
+
+
 jobs:
 
-  build:
+  Deploy:
 
     runs-on: self-hosted
 
     steps:
     - uses: actions/checkout@v4
       with:
-        sparse-checkout: |
-          ./scripts
-          ./server-configs
+        sparse-checkout: ./scripts
 
-    
+
+    - name: SSL Check
+      run: |
+        if [ -d ./server-configs/certbot ]; then
+            sudo bash -c 'echo "need_ssl=false" >> $GITHUB_ENV'
+        else
+            sudo bash -c 'echo "need_ssl=true" >> $GITHUB_ENV'
+        fi
+
+
+      
+    - name: Get Configs for SSL Setup
+      if: needs_ssl == 'true'
+      uses: actions/checkout@v4
+      with:
+        sparse-checkout: ./server-configs
+
 
       
     - name: Delete Old Containers
@@ -28,7 +47,7 @@ jobs:
         sudo bash -c 'echo y | docker system prune'
 
 
-    - name: Obtain SSL Cert
+    - name: Compose Services (Obtain SSL Cert if Necessary)
       env:
         
         COMPOSE_FNAME: docker-compose-server.yml
@@ -41,24 +60,5 @@ jobs:
         sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
         chmod +x ./scripts/server/ssl-cert.sh
         ./scripts/server/ssl-cert.sh
-      
-
-    
-    # - name: Load Server Environment Variables
-    #   run: |
-    #     sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
-
-        
-
-    # - name: Run Containers
-    #   run: docker compose -f docker-compose-server.yml up -d
-
-
-    # - name: 'Cleanup Build Folder'
-    #   run: |
-    #     ls -la ./
-    #     rm -rf ./* || true
-    #     rm -rf ./.??* || true
-    #     ls -la ./
   
         
