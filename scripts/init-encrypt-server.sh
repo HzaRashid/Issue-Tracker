@@ -34,8 +34,6 @@ rsa_key_size=4096
 data_path="./server-configs/certbot"
 email="$EMAIL"    # Adding a valid address is strongly recommended
 staging=1         # Set to 1 if you're testing your setup to avoid hitting request limits
-echo "shshsh $API_DOMAIN"
-echo "shshsh $COMPOSE_FNAME"
 
 
 
@@ -68,7 +66,6 @@ sudo docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
     -keyout '$path/privkey.pem' \
     -out '$path/fullchain.pem' \
     -subj '/CN=localhost'" certbot
-
 echo
 
 
@@ -101,6 +98,10 @@ esac
 # Enable staging mode if needed
 if [ $staging != "0" ]; then staging_arg="--staging"; fi
 
+cert=$(ls "./server-configs/certbot/conf/live/$API_DOMAIN")
+echo $cert
+echo foo
+
 sudo docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
   certbot -v certonly --webroot -w /var/www/certbot \
     $staging_arg \
@@ -111,9 +112,10 @@ sudo docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
     --force-renewal" certbot
 echo
 
+echo $cert
+
 echo "### Reloading nginx reverse-proxy ..."
 sudo docker compose -f $COMPOSE_FNAME exec reverse-proxy nginx -s reload 
-sudo docker compose -f $COMPOSE_FNAME run --name api-server -d
 
 # sudo docker compose -f $COMPOSE_FNAME up -d
 
