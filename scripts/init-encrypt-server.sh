@@ -127,9 +127,9 @@ cert=$(ls "./server-configs/certbot/conf/live/$API_DOMAIN")
 echo $cert
 
 echo "### Reloading nginx reverse-proxy ..."
-# sudo docker compose -f $COMPOSE_FNAME exec reverse-proxy nginx -s reload 
-sudo docker rm -f reverse-proxy || true 
-sudo bash -c 'echo y | docker system prune'
+sudo docker compose -f $COMPOSE_FNAME exec reverse-proxy nginx -s reload 
+# sudo docker rm -f reverse-proxy || true 
+# sudo bash -c 'echo y | docker system prune'
 # sudo docker cp $post_cert_conf_path reverse-proxy:$proxy_ctr_conf_path
 # sudo docker exec reverse-proxy nginx -s reload 
 
