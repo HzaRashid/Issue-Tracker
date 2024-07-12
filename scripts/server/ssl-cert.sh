@@ -29,13 +29,11 @@ else
 fi
 
 
-# pre_cert_conf_path=$(pwd)/server-configs/pre-cert/config.conf
-# post_cert_conf_path=$(pwd)/server-configs/post-cert/config.conf
+pre_cert_conf_path=$(pwd)/server-configs/proxy/pre-cert.conf
+post_cert_conf_path=$(pwd)/server-configs/proxy/post-cert.conf
 
-# proxy_ctr_conf_path=/etc/nginx/conf.d/config.conf 
-
+proxy_ctr_conf_path=/etc/nginx/conf.d/config.conf 
 data_path="./server-configs/certbot"
-
 
 domains=($API_DOMAIN)
 rsa_key_size=4096
