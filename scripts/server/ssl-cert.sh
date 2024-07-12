@@ -131,19 +131,23 @@ echo $cert
 
 
 
-# echo CHECK DELETED 
-# cat $data_path/conf/options-ssl-nginx.conf
-# echo CHECK DELETED 
+echo CHECK DELETED 
+cat $data_path/conf/options-ssl-nginx.conf
+echo CHECK DELETED 
 
 
 echo "### Clean Up ..."
 
 sudo docker rm -f reverse-proxy || true 
 sudo bash -c 'echo y | docker system prune'
+echo tar
+cp $post_cert_conf_path $pre_cert_conf_path
+echo CHECK DELETED 
+cat $data_path/conf/options-ssl-nginx.conf
+echo CHECK DELETED 
 echo foo
 sudo docker compose -f $COMPOSE_FNAME up -d
 echo bar
-
-cp $post_cert_conf_path $pre_cert_conf_path
-echo rororo
-sudo docker compose -f $COMPOSE_FNAME exec reverse-proxy nginx -s reload
+echo CHECK DELETED 
+cat $data_path/conf/options-ssl-nginx.conf
+echo CHECK DELETED 
