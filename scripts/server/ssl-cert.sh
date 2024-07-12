@@ -30,6 +30,7 @@ fi
 
 
 post_cert_conf_path=$(pwd)/server-configs/proxy/post-cert.conf
+pre_cert_conf_path=$(pwd)/server-configs/proxy/pre-cert.conf
 proxy_ctr_conf_path=/etc/nginx/conf.d/config.conf 
 data_path="./server-configs/certbot"
 
@@ -127,9 +128,9 @@ echo $cert
 
 
 
-# echo CHECK DELETED 
-# cat $data_path/conf/options-ssl-nginx.conf
-# echo CHECK DELETED 
+echo CHECK DELETED 
+cat $data_path/conf/options-ssl-nginx.conf
+echo CHECK DELETED 
 
 
 # echo "### Clean Up ..."
