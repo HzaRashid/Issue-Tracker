@@ -52,12 +52,10 @@ then
   echo foo 1
 
   sudo curl -o "$data_path/conf/options-ssl-nginx.conf" \
-  https://raw.githubusercontent.com/certbot/certbot/master\
-  /certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf
+  https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf
 
   sudo curl -o  "$data_path/conf/ssl-dhparams.pem" \
-  https://raw.githubusercontent.com/certbot/certbot/master\
-  /certbot/certbot/ssl-dhparams.pem
+  https://raw.githubusercontent.com/certbot/certbot/master/certbot/certbot/ssl-dhparams.pem
 
   sslconf=$(ls "$data_path/conf")
   echo $sslconf
@@ -134,13 +132,13 @@ echo $cert
 # echo CHECK DELETED 
 
 
-echo "### Clean Up ..."
+# echo "### Clean Up ..."
 
-sudo docker rm -f reverse-proxy || true 
-sudo bash -c 'echo y | docker system prune'
-echo foo
-sudo docker compose -f $COMPOSE_FNAME up -d
-echo bar
-sudo docker cp $post_cert_conf_path reverse-proxy:$proxy_ctr_conf_path
-echo rororo
-sudo docker compose -f $COMPOSE_FNAME exec reverse-proxy nginx -s reload
+# sudo docker rm -f reverse-proxy || true 
+# sudo bash -c 'echo y | docker system prune'
+# echo foo
+# sudo docker compose -f $COMPOSE_FNAME up -d
+# echo bar
+# sudo docker cp $post_cert_conf_path reverse-proxy:$proxy_ctr_conf_path
+# echo rororo
+# sudo docker compose -f $COMPOSE_FNAME exec reverse-proxy nginx -s reload
