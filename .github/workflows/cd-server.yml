@@ -20,16 +20,16 @@ jobs:
     - name: SSL Check
       run: |
         if [ -d ./server-configs/certbot ]; then
-            sudo bash -c 'echo "need_ssl=false" >> $GITHUB_ENV'
+            sudo bash -c 'echo "need_ssl=false" >> "${GITHUB_ENV}"'
         else
-            sudo bash -c 'echo "need_ssl=true" >> $GITHUB_ENV'
+            sudo bash -c 'echo "need_ssl=true" >> "${GITHUB_ENV}"'
         fi
 
 
       
     - name: Get Configs for SSL Setup
       if: ${{ env.need_ssl }} == 'true'
-      uses: actions/checkout@v4
+      uses: actions/checkout@v4ß
       with:
         sparse-checkout: ./server-configs
 
