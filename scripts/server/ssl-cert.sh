@@ -29,6 +29,18 @@ else
 fi
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 post_cert_conf_path=./server-configs/proxy/post-cert.conf
 pre_cert_conf_path=./server-configs/pre-cert/config.conf
 proxy_ctr_conf_path=/etc/nginx/conf.d/config.conf 
@@ -38,6 +50,7 @@ domains=($API_DOMAIN)
 rsa_key_size=4096
 email="$EMAIL"    # Adding a valid address is strongly recommended
 staging=1         # Set to 1 if you're testing your setup to avoid hitting request limits
+
 
 
 if [ -d "$data_path" ]; then exit; fi
@@ -66,6 +79,10 @@ then
 fi
 
 
+
+
+
+
 echo "### Creating dummy certificate for $domains ..."
 
 path="/etc/letsencrypt/live/$domains"
@@ -80,9 +97,25 @@ sudo docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
 echo
 
 
+
+
+
+echo CHECK CONFIG
+cat $pre_cert_conf_path
+echo CHECK CONFIG
+
+
+
+
 echo "### Starting nginx reverse-proxy ..."
 sudo docker compose -f $COMPOSE_FNAME up --force-recreate -d reverse-proxy
 echo
+
+
+
+echo CHECK CONFIG
+cat $pre_cert_conf_path
+echo CHECK CONFIG
 
 
 echo "### Deleting dummy certificate for $domains ..."
@@ -91,6 +124,16 @@ sudo docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
   rm -Rf /etc/letsencrypt/archive/$domains && \
   rm -Rf /etc/letsencrypt/renewal/$domains.conf" certbot
 echo
+
+
+
+
+
+echo CHECK CONFIG
+cat $pre_cert_conf_path
+echo CHECK CONFIG
+
+
 
 
 echo "### Requesting Let's Encrypt certificate for $domains ..."
@@ -128,9 +171,11 @@ echo $cert
 
 
 
-echo CHECK DELETED 
-cat $data_path/conf/options-ssl-nginx.conf
-echo CHECK DELETED 
+
+
+echo CHECK CONFIG
+cat $pre_cert_conf_path
+echo CHECK CONFIG
 
 
 echo "### Clean Up ..."
@@ -138,21 +183,28 @@ echo "### Clean Up ..."
 sudo docker rm -f reverse-proxy || true 
 sudo bash -c 'echo y | docker system prune'
 
-echo CHECK DELETED 
-cat $data_path/conf/options-ssl-nginx.conf
-echo CHECK DELETED 
+
+
+echo CHECK CONFIG
+cat $pre_cert_conf_path
+echo CHECK CONFIG
 
 cp $post_cert_conf_path $pre_cert_conf_path
+
+
+echo CHECK CONFIG
+cat $pre_cert_conf_path
+echo CHECK CONFIG
 
 # echo CHECK DELETED 
 # cat $data_path/conf/options-ssl-nginx.conf
 # echo CHECK DELETED 
 
-sudo cat $pre_cert_conf_path
+# cat $pre_cert_conf_path
 
-sudo docker compose -f $COMPOSE_FNAME up -d
+# sudo docker compose -f $COMPOSE_FNAME up -d
 
-sudo cat $pre_cert_conf_path
+# cat $pre_cert_conf_path
 
 # echo CHECK DELETED 
 # cat $data_path/conf/options-ssl-nginx.conf
