@@ -116,10 +116,8 @@ sudo docker rm -f reverse-proxy || true
 sudo bash -c 'echo y | docker system prune'
 
 sudo docker compose -f $COMPOSE_FNAME up -d
-ls
-cd
 
-# sudo docker cp $(pwd)/server-configs/post-cert/config.conf reverse-proxy:/etc/nginx/conf.d/config.conf
+sudo docker cp $(pwd)/server-configs/post-cert/config.conf reverse-proxy:/etc/nginx/conf.d/config.conf
 
 # sudo bash -c 'docker compose -f $COMPOSE_FNAME cp $(pwd)/server-configs/post-cert/config.conf reverse-proxy:/etc/nginx/conf.d/config.conf > /dev/null 2>&1'
 
