@@ -196,15 +196,26 @@ echo CHECK CONFIG
 cat $pre_cert_conf_path
 echo CHECK CONFIG
 
-# echo CHECK DELETED 
-# cat $data_path/conf/options-ssl-nginx.conf
-# echo CHECK DELETED 
 
-# cat $pre_cert_conf_path
 
-# sudo docker compose -f $COMPOSE_FNAME up -d
+echo CHECK CONFIG
+cat $pre_cert_conf_path
+echo CHECK CONFIG
 
-# cat $pre_cert_conf_path
+sudo docker compose -f $COMPOSE_FNAME up -d
+
+echo CHECK CONFIG
+cat $pre_cert_conf_path
+echo CHECK CONFIG
+
+
+
+
+
+
+
+
+
 
 # echo CHECK DELETED 
 # cat $data_path/conf/options-ssl-nginx.conf
