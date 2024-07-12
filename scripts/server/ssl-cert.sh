@@ -30,7 +30,7 @@ fi
 
 
 post_cert_conf_path=$(pwd)/server-configs/proxy/post-cert.conf
-pre_cert_conf_path=$(pwd)/server-configs/proxy/pre-cert.conf
+pre_cert_conf_path=$(pwd)/server-configs/pre-cert/config.conf
 proxy_ctr_conf_path=/etc/nginx/conf.d/config.conf 
 data_path="./server-configs/certbot"
 
@@ -133,13 +133,20 @@ cat $data_path/conf/options-ssl-nginx.conf
 echo CHECK DELETED 
 
 
-# echo "### Clean Up ..."
+echo "### Clean Up ..."
 
-# sudo docker rm -f reverse-proxy || true 
-# sudo bash -c 'echo y | docker system prune'
-# echo foo
-# sudo docker compose -f $COMPOSE_FNAME up -d
-# echo bar
-# sudo docker cp $post_cert_conf_path reverse-proxy:$proxy_ctr_conf_path
+sudo docker rm -f reverse-proxy || true 
+sudo bash -c 'echo y | docker system prune'
+
+echo CHECK DELETED 
+cat $data_path/conf/options-ssl-nginx.conf
+echo CHECK DELETED 
+
+cp $post_cert_conf_path $pre_cert_conf_path
+
+echo CHECK DELETED 
+cat $data_path/conf/options-ssl-nginx.conf
+echo CHECK DELETED 
+
 # echo rororo
 # sudo docker compose -f $COMPOSE_FNAME exec reverse-proxy nginx -s reload
