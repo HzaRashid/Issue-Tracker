@@ -29,7 +29,9 @@ else
 fi
 
 
+pre_cert_conf_path=$(pwd)/server-configs/proxy/pre-cert.conf
 post_cert_conf_path=$(pwd)/server-configs/proxy/post-cert.conf
+
 proxy_ctr_conf_path=/etc/nginx/conf.d/config.conf 
 data_path="./server-configs/certbot"
 
@@ -141,6 +143,7 @@ sudo bash -c 'echo y | docker system prune'
 echo foo
 sudo docker compose -f $COMPOSE_FNAME up -d
 echo bar
-sudo docker cp $post_cert_conf_path reverse-proxy:$proxy_ctr_conf_path
+
+cp $post_cert_conf_path $pre_cert_conf_path
 echo rororo
 sudo docker compose -f $COMPOSE_FNAME exec reverse-proxy nginx -s reload
