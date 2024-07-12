@@ -5,10 +5,6 @@ on:
     branches: [ "aws" ]
 
 
-env:
-  need_ssl: 'false'
-
-
 jobs:
 
   Deploy:
@@ -32,7 +28,7 @@ jobs:
 
       
     - name: Get Configs for SSL Setup
-      if: needs_ssl == 'true'
+      if: ${{ env.need_ssl }} == 'true'
       uses: actions/checkout@v4
       with:
         sparse-checkout: ./server-configs
