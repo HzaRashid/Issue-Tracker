@@ -148,5 +148,11 @@ echo CHECK DELETED
 cat $data_path/conf/options-ssl-nginx.conf
 echo CHECK DELETED 
 
+sudo docker compose -f $COMPOSE_FNAME up -d
+
+echo CHECK DELETED 
+cat $data_path/conf/options-ssl-nginx.conf
+echo CHECK DELETED 
+
 # echo rororo
 # sudo docker compose -f $COMPOSE_FNAME exec reverse-proxy nginx -s reload
