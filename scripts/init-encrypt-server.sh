@@ -140,9 +140,12 @@ echo CHECK DELETED
 
 
 
-# # sudo docker rm -f reverse-proxy || true 
-# # sudo bash -c 'echo y | docker system prune'
-# # sudo docker cp $post_cert_conf_path reverse-proxy:$proxy_ctr_conf_path
+sudo docker rm -f reverse-proxy || true 
+sudo bash -c 'echo y | docker system prune'
+sudo docker compose -f $COMPOSE_FNAME up -d
+sudo docker cp $post_cert_conf_path reverse-proxy:$proxy_ctr_conf_path
+sudo docker compose -f $COMPOSE_FNAME exec reverse-proxy nginx -s reload
+
 # # sudo docker exec reverse-proxy nginx -s reload 
 
 # # sudo docker compose -f $COMPOSE_FNAME up --no-recreate -d
