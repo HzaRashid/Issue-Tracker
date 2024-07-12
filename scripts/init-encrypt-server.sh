@@ -112,6 +112,7 @@ sudo docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
     --force-renewal" certbot
 echo
 
+cert=$(ls "./server-configs/certbot/conf/live/$API_DOMAIN")
 echo $cert
 
 echo "### Reloading nginx reverse-proxy ..."
