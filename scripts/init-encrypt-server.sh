@@ -28,13 +28,14 @@ else
 fi
 
 
+post_cert_conf_path=$(pwd)/server-configs/post-cert/config.conf
+proxy_ctr_conf_path=/etc/nginx/conf.d/config.conf 
+data_path="./server-configs/certbot"
 
 domains=($API_DOMAIN)
 rsa_key_size=4096
-data_path="./server-configs/certbot"
 email="$EMAIL"    # Adding a valid address is strongly recommended
 staging=1         # Set to 1 if you're testing your setup to avoid hitting request limits
-
 
 
 if [ -d "$data_path" ]; then exit; fi
@@ -49,12 +50,13 @@ then
   echo $sslconf
   echo foo 1
 
-  sudo curl -o "$data_path/conf/options-ssl-nginx.conf" https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf
+  sudo curl -o "$data_path/conf/options-ssl-nginx.conf" \
+  https://raw.githubusercontent.com/certbot/certbot/master\
+  /certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf
 
-  # sudo bash -c 'curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf > "$data_path/conf/options-ssl-nginx.conf"'
-  
-  # sudo bash -c 'curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot/certbot/ssl-dhparams.pem > "$data_path/conf/ssl-dhparams.pem"'
-  sudo curl -o  "$data_path/conf/ssl-dhparams.pem" https://raw.githubusercontent.com/certbot/certbot/master/certbot/certbot/ssl-dhparams.pem
+  sudo curl -o  "$data_path/conf/ssl-dhparams.pem" \
+  https://raw.githubusercontent.com/certbot/certbot/master\
+  /certbot/certbot/ssl-dhparams.pem
 
   sslconf=$(ls "$data_path/conf")
   echo $sslconf
@@ -125,15 +127,10 @@ cert=$(ls "./server-configs/certbot/conf/live/$API_DOMAIN")
 echo $cert
 
 echo "### Reloading nginx reverse-proxy ..."
-sudo docker compose -f $COMPOSE_FNAME exec reverse-proxy nginx -s reload 
-
-# sudo docker compose -f $COMPOSE_FNAME up -d
-
-# sudo docker cp $(pwd)/server-configs/post-cert/config.conf reverse-proxy:/etc/nginx/conf.d/config.conf
-
-# sudo bash -c 'docker compose -f $COMPOSE_FNAME cp $(pwd)/server-configs/post-cert/config.conf reverse-proxy:/etc/nginx/conf.d/config.conf > /dev/null 2>&1'
-
 # sudo docker compose -f $COMPOSE_FNAME exec reverse-proxy nginx -s reload 
+# sudo docker rm -f reverse-proxy || true 
+# sudo bash -c 'echo y | docker system prune'
+sudo docker cp $post_cert_conf_path reverse-proxy:$proxy_ctr_conf_path
+sudo docker exec reverse-proxy nginx -s reload 
 
-
-# sudo docker compose -f $COMPOSE_FNAME run --name api-server -d -v $(pwd)/.env.server:/.env api-server
+sudo docker compose -f $COMPOSE_FNAME up --no-recreate -d
