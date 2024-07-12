@@ -45,11 +45,20 @@ then
   echo "### Downloading recommended TLS parameters ..."
   sudo mkdir -p "$data_path/conf"
 
-  sudo bash -c 'curl -s https://raw.githubusercontent.com/certbot/certbot/master/\
-  certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf > "$data_path/conf/options-ssl-nginx.conf"'
+  sslconf=$(ls "$data_path/conf")
+  echo $sslconf
+  echo foo 1
+
+  sudo curl -o "$data_path/conf/options-ssl-nginx.conf" https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf
+
+  # sudo bash -c 'curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf > "$data_path/conf/options-ssl-nginx.conf"'
   
-  sudo bash -c 'curl -s https://raw.githubusercontent.com/certbot/certbot/master/\
-  certbot/certbot/ssl-dhparams.pem > "$data_path/conf/ssl-dhparams.pem"'
+  # sudo bash -c 'curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot/certbot/ssl-dhparams.pem > "$data_path/conf/ssl-dhparams.pem"'
+  sudo curl -o  "$data_path/conf/ssl-dhparams.pem" https://raw.githubusercontent.com/certbot/certbot/master/certbot/certbot/ssl-dhparams.pem
+
+  sslconf=$(ls "$data_path/conf")
+  echo $sslconf
+  echo foo 1
 
   echo
 fi
@@ -100,7 +109,7 @@ if [ $staging != "0" ]; then staging_arg="--staging"; fi
 
 cert=$(ls "./server-configs/certbot/conf/live/$API_DOMAIN")
 echo $cert
-echo foo
+echo foo 2
 
 sudo docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
   certbot -v certonly --webroot -w /var/www/certbot \
