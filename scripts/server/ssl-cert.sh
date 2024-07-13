@@ -1,47 +1,11 @@
 #!/usr/bin/env bash
 
 
-docker compose &>/dev/null # sending output to /dev/null because we don't want it printed
-if [ $? -eq 0 ]; then
-    echo "INSTALLED"
-else
-    # Install Compose plugin for Ubuntu via Docker's Repository:
-    # Add Docker's official GPG key:
-    apt-get update
-    apt-get install ca-certificates curl
-    install -m 0755 -d /etc/apt/keyrings
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-    chmod a+r /etc/apt/keyrings/docker.asc
-    # Add the repository to Apt sources:
-    echo \
-      "deb [arch=$(dpkg --print-architecture) \
-      signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-      $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-      tee /etc/apt/sources.list.d/docker.list > /dev/null
-    apt-get update
-    # install the latest version
-    apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-    # Update the package index, and install the latest version of docker compose
-    apt-get update
-    apt-get install docker-compose-plugin
-    # Verify that docker compose is installed correctly by checking the version.
-    docker compose version
-fi
-
-
-post_cert_conf_path=./server-configs/proxy/post-cert.conf
-pre_cert_conf_path=./server-configs/proxy/pre-cert.conf
-proxy_ctr_conf_path=/etc/nginx/conf.d/config.conf 
-data_path="./server-configs/certbot"
-
 domains=($API_DOMAIN)
 rsa_key_size=4096
 email="$EMAIL"    # Adding a valid address is strongly recommended
 staging=1         # Set to 1 if you're testing your setup to avoid hitting request limits
 
-
-
-if [ -d "$data_path" ]; then exit; fi
 
 if  [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || \ 
     [ ! -e "$data_path/conf/ssl-dhparams.pem" ]
@@ -114,8 +78,3 @@ echo "### Clean Up ..."
 sudo docker rm -f reverse-proxy || true 
 sudo bash -c 'echo y | docker system prune'
 echo
-
-
-echo "### Compose Up ..."
-cp $post_cert_conf_path $pre_cert_conf_path
-sudo docker compose -f $COMPOSE_FNAME up -d
