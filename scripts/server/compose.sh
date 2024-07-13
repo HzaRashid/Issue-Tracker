@@ -14,7 +14,7 @@ pre_cert_conf_path=./server-configs/proxy/pre-cert.conf
 export data_path="./server-configs/certbot"
 
 
-if [ ! -d "$data_path" ] then  # ssl cert not found
+if [ ! -d "$data_path" ]; then  # ssl cert not found
   chmod +x ./ssl-cert.sh
   ./ssl-cert.sh
 fi

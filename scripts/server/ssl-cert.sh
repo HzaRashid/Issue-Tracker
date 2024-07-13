@@ -8,8 +8,8 @@ staging=1         # Set to 1 if you're testing your setup to avoid hitting reque
 
 
 if  [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || \ 
-    [ ! -e "$data_path/conf/ssl-dhparams.pem" ]
-then
+    [ ! -e "$data_path/conf/ssl-dhparams.pem" ]; then
+    
   echo "### Downloading recommended TLS parameters ..."
   sudo mkdir -p "$data_path/conf"
 
