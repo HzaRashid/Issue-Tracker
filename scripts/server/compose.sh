@@ -23,5 +23,5 @@ fi
 
 
 echo "### Compose Up ..."
-cp $post_cert_conf_path $pre_cert_conf_path
+cp $post_cert_conf_path $pre_cert_conf_path # do not move/remove - source file might be updated
 sudo docker compose -f $COMPOSE_FNAME up -d
