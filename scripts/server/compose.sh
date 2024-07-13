@@ -4,8 +4,8 @@ docker compose &>/dev/null # sending output to /dev/null because we don't want i
 if [ $? -eq 0 ]; then
     echo "INSTALLED"
 else
-  chmod +x ./install-docker-compose.sh
-  ./install-docker-compose.sh
+  chmod +x $(pwd)/install-docker-compose.sh
+  $(pwd)/install-docker-compose.sh
 fi
 
 
@@ -15,8 +15,8 @@ export data_path="./server-configs/certbot"
 
 
 if [ ! -d "$data_path" ]; then  # ssl cert not found
-  chmod +x ./ssl-cert.sh
-  ./ssl-cert.sh
+  chmod +x $(pwd)/ssl-cert.sh
+  $(pwd)/ssl-cert.sh
 fi
 
 
