@@ -4,61 +4,36 @@ on:
   push:
     branches: [ "aws" ]
 
-
 jobs:
 
-  Deploy:
+  build:
 
     runs-on: self-hosted
 
     steps:
     - uses: actions/checkout@v4
       with:
-        sparse-checkout: ./scripts
+        sparse-checkout: |
+          ./scripts
+          ./server-configs
+        clean: false
+        
 
-
-    - name: SSL Check
+      
+    - name: Delete Old Containers
       run: |
-        sudo su
-        if [ -d ./server-configs/certbot ]; then
-            echo "need_ssl=false" >> $GITHUB_ENV
-        else
-            echo "need_ssl=true" >> $GITHUB_ENV
-        fi
-        
+        sudo docker rm -f api-server || true
+        sudo docker rm -f reverse-proxy || true 
+        sudo docker rm -f certbot || true
+        sudo bash -c 'echo y | docker system prune'
 
-
-      
-    - name: Get Configs for SSL Setup
-      if: ${{ env.need_ssl }} == 'true'
-      run: echo foo
-      # uses: actions/checkout@v4
-      # with:
-      #   sparse-checkout: ./server-configs
-     
-
-
-      
-    # - name: Delete Old Containers
-    #   run: |
-    #     sudo docker rm -f api-server || true
-    #     sudo docker rm -f reverse-proxy || true 
-    #     sudo docker rm -f certbot || true
-    #     sudo bash -c 'echo y | docker system prune'
-
-
-    # - name: Compose Services (Obtain SSL Cert if Necessary)
-    #   env:
-        
-    #     COMPOSE_FNAME: docker-compose-server.yml
-    #     API_DOMAIN: ${{vars.API_DOMAIN}}
-    #     EMAIL: ${{secrets.EMAIL}}
-        
-        
-    #   run: |
-    #     touch .env.server 
-    #     sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
-    #     chmod +x ./scripts/server/ssl-cert.sh
-    #     ./scripts/server/ssl-cert.sh
-  
-        
+    - name: Obtain SSL Cert
+      env:
+        COMPOSE_FNAME: docker-compose-server.yml
+        API_DOMAIN: ${{vars.API_DOMAIN}}
+        EMAIL: ${{secrets.EMAIL}}
+      run: |
+        touch .env.server 
+        sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
+        chmod +x ./scripts/server/ssl-cert.sh
+        ./scripts/server/ssl-cert.sh
