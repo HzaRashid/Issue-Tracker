@@ -8,7 +8,7 @@ jobs:
 
   build:
 
-    runs-on: Reverse-Proxy
+    runs-on: self-hosted 
 
     steps:
     - uses: actions/checkout@v4
@@ -19,26 +19,19 @@ jobs:
         clean: false
 
 
-    - name: Check if Docker Installed
+      
+    - name: Delete Old Containers
       run: |
-        if [ -x "$(command -v docker)" ]; then
-          echo "Docker installed"
-        else
-          sudo curl -fsSL https://get.docker.com -o get-docker.sh
-          sudo sh get-docker.sh
-        fi
-
-    - name: Delete Old Containers 
-      run: |
-        sudo docker rm -f $(sudo docker ps -qa) || true
-        sudo bash -c 'echo y | docker system prune' 
+        sudo docker rm -f api-server || true
+        sudo docker rm -f reverse-proxy || true 
+        sudo docker rm -f certbot || true
+        sudo bash -c 'echo y | docker system prune'
 
     - name: Compose Up Services
       env:
-        COMPOSE_FNAME: docker-compose-lb.yml
+        COMPOSE_FNAME: docker-compose-server.yml
         API_DOMAIN: ${{vars.API_DOMAIN}}
         EMAIL: ${{secrets.EMAIL}}
-        CONFIG_DIR: load-balancer
       run: |
         touch .env.server 
         sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
