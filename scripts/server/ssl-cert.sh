@@ -20,7 +20,9 @@ if  [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || \
   https://raw.githubusercontent.com/certbot/certbot/master/certbot/certbot/ssl-dhparams.pem
   echo
 fi
-
+echo foo foo
+ls $data_path/conf
+echo foo foo
 
 echo "### Creating dummy certificate for $domains ..."
 

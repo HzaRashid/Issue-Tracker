@@ -49,6 +49,6 @@ jobs:
         CONFIG_TYPE: root-server
       run: |
         touch .env.server 
-        sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > ./docker-compose-files/server/.env.server'
+        sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
         chmod +x ./scripts/server/compose.sh
         ./scripts/server/compose.sh
