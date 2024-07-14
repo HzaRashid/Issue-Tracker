@@ -8,7 +8,7 @@ jobs:
 
   build:
 
-    runs-on: Reverse Proxy
+    runs-on: [self-hosted, Reverse Proxy]
 
     steps:
     - uses: actions/checkout@v4
