@@ -2,7 +2,7 @@
 FROM arm64v8/node:18.20.4-alpine3.20
 
 
-WORKDIR /server
+WORKDIR /server 
 
 COPY package*.json ./
 
