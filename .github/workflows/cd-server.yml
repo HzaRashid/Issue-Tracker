@@ -19,7 +19,15 @@ jobs:
         clean: false
 
 
-      
+    - name: Check if Docker Installed
+      run: |
+        if [ -x "$(command -v docker)" ]; then
+          echo "Docker installed"
+        else
+          chmod +x ./scripts/server/install-docker.sh
+          ./scripts/server/install-docker.sh
+        fi
+
     - name: Delete Old Containers 
       run: |
         sudo docker rm -f $(sudo docker ps -qa) || true
