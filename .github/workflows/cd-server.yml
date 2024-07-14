@@ -8,7 +8,7 @@ jobs:
 
   build:
 
-    runs-on: self-hosted 
+    runs-on: Reverse-Proxy
 
     steps:
     - uses: actions/checkout@v4
@@ -27,9 +27,10 @@ jobs:
 
     - name: Compose Up Services
       env:
-        COMPOSE_FNAME: docker-compose-server.yml
+        COMPOSE_FNAME: docker-compose-lb.yml
         API_DOMAIN: ${{vars.API_DOMAIN}}
         EMAIL: ${{secrets.EMAIL}}
+        CONFIG_DIR: lb
       run: |
         touch .env.server 
         sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
