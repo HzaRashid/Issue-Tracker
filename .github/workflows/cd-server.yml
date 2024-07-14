@@ -22,7 +22,7 @@ jobs:
       
     - name: Delete Old Containers
       run: |
-        sudo docker rm -f $(docker ps -qa)
+        sudo docker rm -f $(sudo docker ps -qa)
         sudo bash -c 'echo y | docker system prune'
 
     - name: Compose Up Services
