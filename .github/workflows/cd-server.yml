@@ -27,7 +27,7 @@ jobs:
         sudo docker rm -f certbot || true
         sudo bash -c 'echo y | docker system prune' 
 
-    - name: Compose Up Services
+    - name: Compose Up Services 
       env:
         COMPOSE_FNAME: compose-server-root.yml
         API_DOMAIN: ${{vars.API_DOMAIN}}
