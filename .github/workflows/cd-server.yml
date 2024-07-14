@@ -24,10 +24,18 @@ jobs:
     - name: Delete Old Containers
       run: |
         ls
+        
         echo foo
         echo foo
         echo foo
         echo foo
+        ls docker-compose-files
+        echo foo
+        echo foo
+        echo foo
+        echo foo
+        ls docker-compose-files
+
         sudo docker rm -f api-server || true
         sudo docker rm -f reverse-proxy || true  
         sudo docker rm -f certbot || true
