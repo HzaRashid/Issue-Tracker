@@ -6,17 +6,17 @@ services:
     ports: 
       - "8080:8080"
     env_file: .env.server
-
+    
 
   reverse-proxy:
     image: nginx:latest
-    container_name: reverse-proxy 
+    container_name: reverse-proxy
     restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./server-configs/lb/pre-cert.conf:/etc/nginx/conf.d/config.conf
+      - ./server-configs/load-balancer/pre-cert.conf:/etc/nginx/conf.d/config.conf
       - ./server-configs/certbot/conf:/etc/letsencrypt
       - ./server-configs/certbot/www:/var/www/certbot
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"

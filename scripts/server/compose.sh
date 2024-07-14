@@ -3,8 +3,8 @@
 scripts_path="./scripts/server"
 
 
-post_cert_conf_path=./server-configs/proxy/post-cert.conf
-pre_cert_conf_path=./server-configs/proxy/pre-cert.conf
+post_cert_conf_path=./server-configs/$CONFIG_TYPE/post-cert.conf
+pre_cert_conf_path=./server-configs/$CONFIG_TYPE/pre-cert.conf
 export data_path="./server-configs/certbot"
 
 

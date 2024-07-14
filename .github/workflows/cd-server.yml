@@ -32,6 +32,7 @@ jobs:
         COMPOSE_FNAME: docker-compose-server.yml
         API_DOMAIN: ${{vars.API_DOMAIN}}
         EMAIL: ${{secrets.EMAIL}}
+        CONFIG_TYPE: proxy
       run: |
         touch .env.server 
         sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
