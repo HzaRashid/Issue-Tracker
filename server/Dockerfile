@@ -1,4 +1,6 @@
-FROM --platform=linux/arm64 arm64v8/node:18.20
+# FROM node:18.20.3
+FROM --platform=linux/arm64 arm64v8/node:18.20.4-alpine
+
 
 WORKDIR /server
 
