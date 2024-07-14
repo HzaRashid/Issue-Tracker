@@ -16,7 +16,7 @@ jobs:
         sparse-checkout: |
           ./scripts
           ./server-configs
-        clean: false
+        clean: false 
 
 
       
