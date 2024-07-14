@@ -1,4 +1,4 @@
-FROM arm64v8/node
+FROM --platform=linux/arm64 arm64v8/node:18.20
 
 WORKDIR /server
 
