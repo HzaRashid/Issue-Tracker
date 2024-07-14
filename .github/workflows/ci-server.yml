@@ -23,10 +23,10 @@ jobs:
       working-directory: ./server
       env: 
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-      run: docker build -t $DOCKER_USERNAME/flow-issue-tracker:server .
+      run: sudo docker build -t $DOCKER_USERNAME/flow-issue-tracker:server .
 
     - name: Push to Dockerhub
       env: 
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-      run: docker push $DOCKER_USERNAME/flow-issue-tracker:server
+      run: sudo docker push $DOCKER_USERNAME/flow-issue-tracker:server
     
