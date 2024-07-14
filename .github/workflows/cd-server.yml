@@ -24,8 +24,8 @@ jobs:
         if [ -x "$(command -v docker)" ]; then
           echo "Docker installed"
         else
-          chmod +x ./scripts/server/install-docker.sh
-          ./scripts/server/install-docker.sh
+          sudo curl -fsSL https://get.docker.com -o get-docker.sh
+          sudo sh get-docker.sh
         fi
 
     - name: Delete Old Containers 
