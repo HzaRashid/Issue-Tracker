@@ -1,4 +1,4 @@
-FROM node:18.20.3
+FROM arm64v8/node:18.20.3
 
 WORKDIR /server
 
