@@ -6,11 +6,11 @@ services:
     ports: 
       - "8080:8080"
     env_file: .env.server
-    
+
 
   reverse-proxy:
     image: nginx:latest
-    container_name: reverse-proxy
+    container_name: reverse-proxy 
     restart: unless-stopped
     ports:
       - "80:80"
