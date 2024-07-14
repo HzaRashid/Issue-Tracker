@@ -29,7 +29,7 @@ jobs:
 
     - name: Compose Up Services
       env:
-        COMPOSE_FNAME: compose-proxied-server.yml
+        COMPOSE_FNAME: compose-server-proxied.yml
         API_DOMAIN: ${{vars.API_DOMAIN}}
         EMAIL: ${{secrets.EMAIL}} 
         CONFIG_TYPE: root-server
