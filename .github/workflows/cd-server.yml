@@ -28,7 +28,7 @@ jobs:
           sudo sh get-docker.sh
         fi
 
-    - name: Delete Old Containers
+    - name: Delete Old Containers 
       run: |
         sudo docker rm -f $(sudo docker ps -qa) || true
         sudo bash -c 'echo y | docker system prune' 
