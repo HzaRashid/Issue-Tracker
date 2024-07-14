@@ -25,13 +25,13 @@ jobs:
         sudo docker rm -f $(sudo docker ps -qa)
         sudo bash -c 'echo y | docker system prune'
 
-    # - name: Compose Up Services
-    #   env:
-    #     COMPOSE_FNAME: docker-compose-server.yml
-    #     API_DOMAIN: ${{vars.API_DOMAIN}}
-    #     EMAIL: ${{secrets.EMAIL}}
-    #   run: |
-    #     touch .env.server 
-    #     sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
-    #     chmod +x ./scripts/server/compose.sh
-    #     ./scripts/server/compose.sh
+    - name: Compose Up Services
+      env:
+        COMPOSE_FNAME: docker-compose-server.yml
+        API_DOMAIN: ${{vars.API_DOMAIN}}
+        EMAIL: ${{secrets.EMAIL}}
+      run: |
+        touch .env.server 
+        sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
+        chmod +x ./scripts/server/compose.sh
+        ./scripts/server/compose.sh
