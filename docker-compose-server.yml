@@ -10,7 +10,7 @@ services:
 
   reverse-proxy:
     image: nginx:latest
-    container_name: reverse-proxy
+    container_name: reverse-proxy 
     restart: unless-stopped
     ports:
       - "80:80"
