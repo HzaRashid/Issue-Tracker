@@ -38,7 +38,7 @@ jobs:
         COMPOSE_FNAME: docker-compose-lb.yml
         API_DOMAIN: ${{vars.API_DOMAIN}}
         EMAIL: ${{secrets.EMAIL}}
-        CONFIG_DIR: lb
+        CONFIG_DIR: load-balancer
       run: |
         touch .env.server 
         sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
