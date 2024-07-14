@@ -26,7 +26,7 @@ jobs:
         sudo docker rm -f api-server || true
         sudo docker rm -f reverse-proxy || true  
         sudo docker rm -f certbot || true
-        sudo bash -c 'echo y | docker system prune'
+        sudo bash -c 'echo y | docker system prune' 
 
     - name: Compose Up Services
       env:
