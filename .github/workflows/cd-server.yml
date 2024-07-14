@@ -16,6 +16,7 @@ jobs:
         sparse-checkout: |
           ./scripts
           ./server-configs
+          ./docker-compose-files
         clean: false
 
 
