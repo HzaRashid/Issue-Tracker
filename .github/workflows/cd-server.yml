@@ -1,10 +1,8 @@
 name: API CD Pipeline
 
 on:
-  workflow_run:
-    workflows: ["API CI Pipeline"]
-    types:
-      - completed
+  push:
+    branches: [ "aws" ]
 
 jobs: 
 
@@ -34,7 +32,7 @@ jobs:
         COMPOSE_FNAME: compose-server-proxied.yml
         API_DOMAIN: ${{vars.API_DOMAIN}}
         EMAIL: ${{secrets.EMAIL}} 
-        CONFIG_TYPE: root-server
+        CONFIG_TYPE: proxied
       run: |
         touch .env.server 
         sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'

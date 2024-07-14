@@ -2,7 +2,7 @@ name: API CI Pipeline
 
 on:
   push:
-    branches: [ "aws" ]
+    branches: [ "server" ]
     
 jobs:
 
