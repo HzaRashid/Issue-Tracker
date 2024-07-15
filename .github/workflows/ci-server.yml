@@ -13,7 +13,7 @@ jobs:
 
 
   check-changes:
-
+    needs: permission
     runs-on: [self-hosted, Reverse-Proxy]
 
     # Required permissions
