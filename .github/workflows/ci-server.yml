@@ -6,8 +6,29 @@ on:
     
 jobs:
 
-  check-changes:
+  check-docker:
+    runs-on: [self-hosted, Reverse-Proxy]
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        sparse-checkout: |
+          ./scripts/server/install-docker.sh
 
+    - name: Install Docker
+      run: |
+        chmod +x ./scripts/server/install-docker.sh
+        ./scripts/server/install-docker.sh
+
+    # Login to build from private registry
+    - name: Login to Dockerhub
+      env:
+        DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+
+
+  check-changes:
     runs-on: [self-hosted, Reverse-Proxy]
 
     # Required permissions
@@ -25,21 +46,14 @@ jobs:
         filters: |
           backend:
             - 'server/**'
-
-    # Login required regardless of server changes
-    - name: Login to Dockerhub
-      env:
-        DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-      run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-
-  # Build and backend code image
+            
+  # Build and push backend code image
   build-backend:
     needs: check-changes
     if: ${{ needs.check-changes.outputs.backend == 'true' }}
     runs-on: [self-hosted, Reverse-Proxy]
     steps:
-      
+
     - name: Build Image
       working-directory: ./server
       env: 

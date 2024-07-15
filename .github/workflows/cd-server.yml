@@ -20,15 +20,12 @@ jobs:
           ./server-configs
         clean: false 
 
-
       
     - name: Delete Old Containers
       run: |
-        sudo docker rm -f api-server || true
-        sudo docker rm -f reverse-proxy || true  
-        sudo docker rm -f certbot || true
+        sudo docker rm -f $(sudo docker ps -qa)
         sudo bash -c 'echo y | docker system prune' 
-        
+
 
     - name: Compose Up Services 
       env:
