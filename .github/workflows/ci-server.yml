@@ -3,7 +3,8 @@ name: API CI Pipeline
 on:
   push:
     branches: [ "aws" ]
-    
+permissions:
+  contents: read  
 jobs:
 
   check-changes:
@@ -25,6 +26,9 @@ jobs:
         sparse-checkout: |
           ./scripts
           ./server-configs
+        repository: Madurad/jenkinsfiles
+        token: ${{ secrets.GITHUB_TOKEN }}
+        ref: master
     - uses: dorny/paths-filter@v3.0.2
       id: filter
       with:
