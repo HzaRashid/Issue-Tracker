@@ -26,7 +26,7 @@ jobs:
         sparse-checkout: |
           ./scripts
           ./server-configs
-        repository: Madurad/jenkinsfiles
+        repository: HzaRashid/Issue-Tracker
         token: ${{ secrets.GITHUB_TOKEN }}
         ref: master
     - uses: dorny/paths-filter@v3.0.2
