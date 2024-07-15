@@ -1,40 +1,40 @@
-# name: API CD Pipeline
+name: API CD Pipeline
 
-# on:
-#   workflow_run:
-#     workflows: ["API CI Pipeline"]
-#     types:
-#       - completed
+on:
+  workflow_run:
+    workflows: ["API CI Pipeline"]
+    types:
+      - completed
 
-# jobs: 
+jobs: 
 
-#   build:
+  build:
 
-#     runs-on: [self-hosted, Reverse-Proxy]
+    runs-on: [self-hosted, Reverse-Proxy]
 
-#     steps:
-#     - uses: actions/checkout@v4
-#       with:
-#         sparse-checkout: |
-#           ./scripts
-#           ./server-configs
-#         clean: false 
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        sparse-checkout: |
+          ./scripts
+          ./server-configs
+        clean: false 
 
       
-#     - name: Delete Old Containers
-#       run: |
-#         sudo docker rm -f $(sudo docker ps -qa)
-#         sudo bash -c 'echo y | docker system prune' 
+    - name: Delete Old Containers
+      run: |
+        sudo docker rm -f $(sudo docker ps -qa)
+        sudo bash -c 'echo y | docker system prune' 
 
 
-#     - name: Compose Up Services 
-#       env:
-#         COMPOSE_FNAME: compose-server-root.yml
-#         API_DOMAIN: ${{vars.API_DOMAIN}}
-#         EMAIL: ${{secrets.EMAIL}} 
-#         CONFIG_TYPE: root-server
-#       run: |
-#         touch .env.server 
-#         sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
-#         chmod +x ./scripts/server/compose.sh
-#         ./scripts/server/compose.sh
+    - name: Compose Up Services 
+      env:
+        COMPOSE_FNAME: compose-server-root.yml
+        API_DOMAIN: ${{vars.API_DOMAIN}}
+        EMAIL: ${{secrets.EMAIL}} 
+        CONFIG_TYPE: root-server
+      run: |
+        touch .env.server 
+        sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
+        chmod +x ./scripts/server/compose.sh
+        ./scripts/server/compose.sh
