@@ -26,8 +26,9 @@ jobs:
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
       run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  
 
-
+  # Check if backend (~/server) has changes
   check-changes:
     runs-on: [self-hosted, Reverse-Proxy]
 
@@ -46,14 +47,15 @@ jobs:
         filters: |
           backend:
             - 'server/**'
-            
+
+
   # Build and push backend code image
   build-backend:
     needs: check-changes
     if: ${{ needs.check-changes.outputs.backend == 'true' }}
     runs-on: [self-hosted, Reverse-Proxy]
-    steps:
 
+    steps:
     - name: Build Image
       working-directory: ./server
       env: 
