@@ -3,17 +3,12 @@ name: API CI Pipeline
 on:
   push:
     branches: [ "aws" ]
+
+permissions:
+  contents: read
     
 jobs:
-  permission:
-    runs-on: [self-hosted, Reverse-Proxy]
-    steps:
-    - name: Give Runner Permission
-      run: sudo chown -R $USER /home/ubuntu/actions-runner/_work/Issue-Tracker/Issue-Tracker
-
-
   check-changes:
-    needs: permission
     runs-on: [self-hosted, Reverse-Proxy]
 
     # Required permissions
