@@ -6,7 +6,7 @@ on:
     
 jobs:
 
-  test:
+  check-changes:
     runs-on: [self-hosted, root-server] 
 
     steps:
@@ -22,53 +22,45 @@ jobs:
           backend:
             - 'server/**'
 
-  # check-changes:
+  check-docker:
+    needs: check-changes
+    
+    runs-on: [self-hosted, root-server] 
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        sparse-checkout:
+          ./scripts/server/install-docker.sh
+        clean: false
+    - name: Install Docker
+      run: |
+        chmod +x ./scripts/server/install-docker.sh
+        ./scripts/server/install-docker.sh
+        
+    # Login to build from private registry
+    - name: Login to Dockerhub
+      env:
+        DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
-  #   runs-on: [self-hosted, root-server] 
+  # Build and backend code image
+  build-backend:
+    needs: 
+      - check-changes
+      - check-docker
 
-  #   # Required permissions
-  #   permissions:
-  #     pull-requests: read 
-
-  #   # Set job outputs to values from filter step
-  #   outputs:
-  #     backend: ${{ steps.filter.outputs.backend }}
-
-  #   steps:
-  #   - uses: actions/checkout@v4
-  #     with:
-  #       clean: false
-  #       sparse-checkout: |
-  #         ./scripts
-  #         ./server-configs
-  #   - uses: dorny/paths-filter@v3.0.2
-  #     id: filter
-  #     with:
-  #       filters: |
-  #         backend:
-  #           - 'server/**'
-
-  #   # Login required regardless of server changes
-  #   - name: Login to Dockerhub
-  #     env:
-  #       DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-  #       DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-  #     run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-
-  # # Build and backend code image
-  # build-backend:
-  #   needs: check-changes
-  #   if: ${{ needs.check-changes.outputs.backend == 'true' }}
-  #   runs-on: [self-hosted, root-server]
-  #   steps:
+    if: ${{ needs.check-changes.outputs.backend == 'true' }}
+    runs-on: [self-hosted, root-server]
+    steps:
       
-  #   - name: Build Image
-  #     working-directory: ./server
-  #     env: 
-  #       DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-  #     run: sudo docker build -t $DOCKER_USERNAME/flow-issue-tracker:server .
+    - name: Build Image
+      working-directory: ./server
+      env: 
+        DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+      run: sudo docker build -t $DOCKER_USERNAME/flow-issue-tracker:server .
 
-  #   - name: Push to Dockerhub
-  #     env: 
-  #       DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-  #     run: sudo docker push $DOCKER_USERNAME/flow-issue-tracker:server
+    - name: Push to Dockerhub
+      env: 
+        DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+      run: sudo docker push $DOCKER_USERNAME/flow-issue-tracker:server
