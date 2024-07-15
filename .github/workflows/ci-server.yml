@@ -11,11 +11,12 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
-      # with:
-      #   sparse-checkout: |
-      #     ./scripts
-      #     ./server-configs
-        clean: false
+      with:
+        clean: false 
+        # sparse-checkout: |
+        #   ./scripts
+        #   ./server-configs
+        
 
 
     - name: Install Docker
