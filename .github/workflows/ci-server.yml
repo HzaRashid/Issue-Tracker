@@ -10,14 +10,16 @@ jobs:
     runs-on: [self-hosted, Reverse-Proxy]
     
     steps:
-
+    - uses: actions/checkout@v4
+      # with:
+      #   sparse-checkout: |
+      #     ./scripts
+      #     ./server-configs
+        clean: false
 
 
     - name: Install Docker
       run: |
-        git remote add Issue-Tracker https://github.com/HzaRashid/Issue-Tracker
-        git fetch Issue-Tracker aws
-        git checkout Issue-Tracker/aws -- scripts/server/install-docker.sh
         chmod +x ./scripts/server/install-docker.sh
         ./scripts/server/install-docker.sh
 
