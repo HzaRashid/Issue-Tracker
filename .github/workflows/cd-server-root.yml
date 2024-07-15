@@ -35,7 +35,7 @@ jobs:
         EMAIL: ${{secrets.EMAIL}} 
         CONFIG_TYPE: root-server
       run: |
-        touch .env.server 
-        sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
+        touch .env.server && touch .env.proxy
+        sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server && echo ${{secrets.PROXIED1}} > .env.proxy'
         chmod +x ./scripts/server/compose.sh
         ./scripts/server/compose.sh
