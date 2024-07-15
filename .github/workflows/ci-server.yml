@@ -42,7 +42,7 @@ jobs:
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
       run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
-  # Build and backend code image
+  # Build and push backend code image
   build-backend:
     needs: 
       - check-changes

@@ -1,19 +1,18 @@
-name: API CD Pipeline
+name: API (Proxied Server(s)) CD
 
 on:
-  # push:
-  #   branches: [ "aws" ]
-
-  workflow_run:
-    workflows: ["API CI Pipeline"]
-    types:
-      - completed
+    push:
+        branches: [ "foo" ]
+#   workflow_run:
+#     workflows: ["API CI Pipeline"]
+#     types:
+#       - completed
 
 jobs: 
 
   build:
 
-    runs-on: [self-hosted, root-server]
+    runs-on: [self-hosted, proxied-server]
 
     steps:
     - uses: actions/checkout@v4
@@ -32,12 +31,10 @@ jobs:
 
     - name: Compose Up Services 
       env:
-        COMPOSE_FNAME: compose-server-root.yml
+        COMPOSE_FNAME: compose-server-proxied.yml
         API_DOMAIN: ${{vars.API_DOMAIN}}
         EMAIL: ${{secrets.EMAIL}} 
-        CONFIG_TYPE: root-server
+        CONFIG_TYPE: proxied
       run: |
-        touch .env.server 
-        sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
-        chmod +x ./scripts/server/compose.sh
-        ./scripts/server/compose.sh
+        mkdir -p certs
+        openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./certs/nginx.key -out ./certs/nginx.crt

@@ -1,0 +1,41 @@
+name: API (Root Server) CD
+
+on:
+
+  workflow_run:
+    workflows: ["API CI Pipeline"]
+    types:
+      - completed
+
+jobs: 
+
+  build:
+
+    runs-on: [self-hosted, root-server]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        sparse-checkout: |
+          ./scripts
+          ./server-configs
+        clean: false 
+
+      
+    - name: Delete Old Containers
+      run: |
+        sudo docker rm -f $(sudo docker ps -qa) || true
+        sudo bash -c 'echo y | docker system prune' 
+
+
+    - name: Compose Up Services 
+      env:
+        COMPOSE_FNAME: compose-server-root.yml
+        API_DOMAIN: ${{vars.API_DOMAIN}}
+        EMAIL: ${{secrets.EMAIL}} 
+        CONFIG_TYPE: root-server
+      run: |
+        touch .env.server 
+        sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
+        chmod +x ./scripts/server/compose.sh
+        ./scripts/server/compose.sh
