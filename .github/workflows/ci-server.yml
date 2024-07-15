@@ -9,20 +9,18 @@ jobs:
   check-docker:
 
     runs-on: [self-hosted, Reverse-Proxy]
-
     steps:
-    - uses: actions/checkout@v4
-      with:
-        sparse-checkout: |
-          ./scripts
-          ./server-configs
-        clean: false 
           
-
     - name: Install Docker
       run: |
-        chmod +x ./scripts/server/install-docker.sh
-        ./scripts/server/install-docker.sh
+        # Only recommended for testing and development environments.
+        if [ -x "$(command -v docker)" ]; then
+            echo "Docker installed"
+        else
+            echo "Install docker"
+            sudo curl -fsSL https://get.docker.com -o get-docker.sh
+            sudo sh get-docker.sh
+        fi
 
     # Login to build from private registry
     - name: Login to Dockerhub
