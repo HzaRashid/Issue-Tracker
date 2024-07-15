@@ -6,8 +6,8 @@ on:
     
 jobs:
 
-  # Check if backend (~/server) has changes
   check-changes:
+
     runs-on: [self-hosted, Reverse-Proxy]
 
     # Required permissions
@@ -25,41 +25,21 @@ jobs:
         filters: |
           backend:
             - 'server/**'
-            
 
-  check-docker:
-    needs: check-changes
-    runs-on: [self-hosted, Reverse-Proxy]
-    steps:
-          
-    - name: Install Docker
-      run: |
-        # Only recommended for testing and development environments.
-        if [ -x "$(command -v docker)" ]; then
-            echo "Docker installed"
-        else
-            echo "Install docker"
-            sudo curl -fsSL https://get.docker.com -o get-docker.sh
-            sudo sh get-docker.sh
-        fi
-
-    # Login to build from private registry
+    # Login required regardless of server changes
     - name: Login to Dockerhub
       env:
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
       run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
-
-  # Build and push backend code image
+  # Build and backend code image
   build-backend:
-    needs: 
-      - check-changes
-      - check-docker
+    needs: check-changes
     if: ${{ needs.check-changes.outputs.backend == 'true' }}
     runs-on: [self-hosted, Reverse-Proxy]
-
     steps:
+      
     - name: Build Image
       working-directory: ./server
       env: 
