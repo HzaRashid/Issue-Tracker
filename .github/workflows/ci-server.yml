@@ -24,7 +24,6 @@ jobs:
 
   # Login to build from private registry (& install Docker if necessary)
   login-docker:
-    needs: check-changes
     runs-on: [self-hosted, root-server, parallel-2]
     steps:
     - uses: actions/checkout@v4
