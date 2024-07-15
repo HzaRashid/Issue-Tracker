@@ -5,6 +5,12 @@ on:
     branches: [ "aws" ]
     
 jobs:
+  permission:
+    runs-on: [self-hosted, Reverse-Proxy]
+    steps:
+    - name: Give Runner Permission
+      run: sudo chown -R $USER /home/ubuntu/actions-runner/_work/Issue-Tracker/Issue-Tracker
+
 
   check-changes:
 
