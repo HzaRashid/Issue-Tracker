@@ -20,22 +20,15 @@ jobs:
       backend: ${{ steps.filter.outputs.backend }}
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        clean: false
-        sparse-checkout: |
-          ./scripts
-          ./server-configs
-        repository: HzaRashid/Issue-Tracker
-        token: ${{ secrets.GITHUB_TOKEN }}
-        ref: master
+
     - uses: dorny/paths-filter@v3.0.2
       id: filter
       with:
         filters: |
           backend:
             - 'server/**'
-
+        token: ${{ secrets.GITHUB_TOKEN }}
+        ref: master
     # Login required regardless of server changes
     - name: Login to Dockerhub
       env:
