@@ -32,6 +32,7 @@ jobs:
 
   # Check if backend (~/server) has changes
   check-changes:
+    needs: check-docker
     runs-on: [self-hosted, Reverse-Proxy]
 
     # Required permissions
