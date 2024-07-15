@@ -24,7 +24,6 @@ jobs:
 
   check-docker:
     needs: check-changes
-    
     runs-on: [self-hosted, root-server] 
     steps:
     - uses: actions/checkout@v4
@@ -36,7 +35,7 @@ jobs:
       run: |
         chmod +x ./scripts/server/install-docker.sh
         ./scripts/server/install-docker.sh
-        
+
     # Login to build from private registry
     - name: Login to Dockerhub
       env:
