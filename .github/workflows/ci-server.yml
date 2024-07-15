@@ -17,6 +17,7 @@ jobs:
           ./server-configs
         clean: false 
 
+
     - name: Install Docker
       run: |
         chmod +x ./scripts/server/install-docker.sh
