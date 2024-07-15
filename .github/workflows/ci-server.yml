@@ -8,7 +8,7 @@ jobs:
 
   check-changes:
 
-    runs-on: [self-hosted, Reverse-Proxy] 
+    runs-on: [self-hosted, root-server] 
 
     # Required permissions
     permissions:
@@ -37,7 +37,7 @@ jobs:
   build-backend:
     needs: check-changes
     if: ${{ needs.check-changes.outputs.backend == 'true' }}
-    runs-on: [self-hosted, Reverse-Proxy]
+    runs-on: [self-hosted, root-server]
     steps:
       
     - name: Build Image

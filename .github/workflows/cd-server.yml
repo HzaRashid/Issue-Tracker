@@ -10,7 +10,7 @@ jobs:
 
   build:
 
-    runs-on: [self-hosted, Reverse-Proxy]
+    runs-on: [self-hosted, root-server]
 
     steps:
     - uses: actions/checkout@v4
