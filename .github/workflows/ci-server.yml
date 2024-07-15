@@ -6,8 +6,29 @@ on:
     
 jobs:
 
-  check-docker:
+  # Check if backend (~/server) has changes
+  check-changes:
+    runs-on: [self-hosted, Reverse-Proxy]
 
+    # Required permissions
+    permissions:
+      pull-requests: read
+
+    # Set job outputs to values from filter step
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+
+    steps:
+    - uses: dorny/paths-filter@v3.0.2
+      id: filter
+      with:
+        filters: |
+          backend:
+            - 'server/**'
+            
+
+  check-docker:
+    needs: check-changes
     runs-on: [self-hosted, Reverse-Proxy]
     steps:
           
@@ -28,28 +49,6 @@ jobs:
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
       run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-  
-
-  # Check if backend (~/server) has changes
-  check-changes:
-    needs: check-docker
-    runs-on: [self-hosted, Reverse-Proxy]
-
-    # Required permissions
-    permissions:
-      pull-requests: read
-
-    # Set job outputs to values from filter step
-    outputs:
-      backend: ${{ steps.filter.outputs.backend }}
-
-    steps:
-    - uses: dorny/paths-filter@v3.0.2
-      id: filter
-      with:
-        filters: |
-          backend:
-            - 'server/**'
 
 
   # Build and push backend code image
