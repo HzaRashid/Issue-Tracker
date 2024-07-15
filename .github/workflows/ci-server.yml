@@ -6,7 +6,7 @@ on:
     
 jobs:
 
-  build:
+  check-docker:
 
     runs-on: [self-hosted, Reverse-Proxy]
 
