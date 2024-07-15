@@ -22,9 +22,10 @@ jobs:
           backend:
             - 'server/**'
 
-  check-docker:
+  # Login to build from private registry (& install Docker if necessary)
+  login-docker:
     needs: check-changes
-    runs-on: [self-hosted, root-server] 
+    runs-on: [self-hosted, root-server, parallel-2]
     steps:
     - uses: actions/checkout@v4
       with:
@@ -36,7 +37,6 @@ jobs:
         chmod +x ./scripts/server/install-docker.sh
         ./scripts/server/install-docker.sh
 
-    # Login to build from private registry
     - name: Login to Dockerhub
       env:
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
@@ -47,7 +47,7 @@ jobs:
   build-backend:
     needs: 
       - check-changes
-      - check-docker
+      - login-docker
 
     if: ${{ needs.check-changes.outputs.backend == 'true' }}
     runs-on: [self-hosted, root-server]
