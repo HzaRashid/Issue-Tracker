@@ -3,26 +3,22 @@ name: API CI Pipeline
 on:
   push:
     branches: [ "aws" ]
-
-permissions:
-  contents: read
     
 jobs:
+
   check-changes:
+
     runs-on: [self-hosted, Reverse-Proxy]
 
     # Required permissions
     permissions:
       pull-requests: read
- 
+
     # Set job outputs to values from filter step
     outputs:
       backend: ${{ steps.filter.outputs.backend }}
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        clean: false
     - uses: dorny/paths-filter@v3.0.2
       id: filter
       with:
