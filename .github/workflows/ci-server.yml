@@ -7,7 +7,7 @@ on:
 jobs:
 
   check-changes:
-    runs-on: [self-hosted, root-server] 
+    runs-on: [self-hosted, root-server-runner] 
 
     steps:
     - uses: actions/checkout@v4
@@ -24,7 +24,15 @@ jobs:
 
   # Login to build from private registry (& install Docker if necessary)
   login-docker:
-    runs-on: [self-hosted, root-server, root-server-runner-2]
+
+    strategy:
+      matrix:
+        runner: [root-server-runner-2]
+
+    runs-on:
+      - self-hosted
+      - ${{ matrix.runner }}
+      
     steps:
     - uses: actions/checkout@v4
       with:
