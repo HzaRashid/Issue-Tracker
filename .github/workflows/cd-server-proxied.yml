@@ -12,7 +12,14 @@ jobs:
 
   build:
 
-    runs-on: [self-hosted, proxied-server]
+    
+    strategy:
+      matrix:
+        server: [ PROXIED_1 ]
+
+    runs-on: 
+      - self-hosted
+      - ${{ matrix.server }}
 
     steps:
     - uses: actions/checkout@v4
@@ -36,5 +43,8 @@ jobs:
         EMAIL: ${{secrets.EMAIL}} 
         CONFIG_TYPE: proxied
       run: |
-        mkdir -p certs
-        openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./certs/nginx.key -out ./certs/nginx.crt
+        touch .env.server && touch .env.proxy
+        sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
+        sudo bash -c 'echo "SERVER_NAME"=${{ secrets[format('{0}', matrix.server)] }} > .proxy.server'
+        chmod +x ./scripts/server/compose.sh
+        ./scripts/server/compose.sh
