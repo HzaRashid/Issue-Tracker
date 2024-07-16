@@ -9,10 +9,10 @@ export data_path="./server-configs/certbot"
 
 if [ "$CONFIG_TYPE" = "proxied" ]; then
   tmpfile=$(mktemp)
-  cp --attributes-only --preserve $pre_cert_conf_path $tmpfile
-  cat $pre_cert_conf_path | envsubst > $tmpfile && mv $tmpfile $pre_cert_conf_path
-  cp --attributes-only --preserve $post_cert_conf_path $tmpfile
-  cat $post_cert_conf_path | envsubst > $tmpfile && mv $tmpfile $post_cert_conf_path
+  envsubst '$SERVER_NAME' < $pre_cert_conf_path > $tmpfile && mv $tmpfile $pre_cert_conf_path
+  tmpfile=$(mktemp)
+  envsubst '$SERVER_NAME' < $post_cert_conf_path > $tmpfile && mv $tmpfile $post_cert_conf_path
+
 fi
 
 if [ ! -d "$data_path" ]; then  # ssl cert not found
