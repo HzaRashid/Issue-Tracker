@@ -41,9 +41,12 @@ jobs:
         API_DOMAIN: ${{ secrets[format('{0}', matrix.server)] }}
         EMAIL: ${{secrets.EMAIL}} 
         CONFIG_TYPE: proxied
+        DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
       run: |
         touch .env.server && touch .env.proxy
         sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
         sudo bash -c 'echo "SERVER_NAME=$API_DOMAIN" > .proxy.server'
+        echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin
         chmod +x ./scripts/server/compose.sh
         ./scripts/server/compose.sh
