@@ -24,9 +24,7 @@ services:
     entrypoint:
     - /docker-entrypoint.d/20-envsubst-on-templates.sh
     - '&&'
-    - "/bin/sh -c
-    'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'
-    "
+    - echo foo
     env_file: .env.proxy
     # environment:
     # - NGINX_ENVSUBST_TEMPLATE_SUFFIX: ".conf"
