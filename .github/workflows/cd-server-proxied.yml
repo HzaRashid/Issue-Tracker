@@ -49,7 +49,9 @@ jobs:
         
       run: |
         echo "${COMPOSE_FNAME}"
-        touch .env.server && touch .env.proxy
+        touch .env.server
+        touch .env.proxy
         sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
+        sudo bash -c 'echo "${{secrets.NGINX_ENV}}" > .env.proxy'
         chmod +x ./scripts/server/compose.sh
         ./scripts/server/compose.sh
