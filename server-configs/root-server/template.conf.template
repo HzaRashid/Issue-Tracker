@@ -1,3 +1,0 @@
-map $host $PROXIED_1 {
-  default "$PROXIED_1";
-}
