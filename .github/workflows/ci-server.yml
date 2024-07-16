@@ -22,7 +22,7 @@ jobs:
           backend:
             - 'server/**'
 
-  # Install Docker if necessary)
+  # Install Docker if necessary
   check-docker:
 
     strategy:
