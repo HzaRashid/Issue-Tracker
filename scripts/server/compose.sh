@@ -16,8 +16,8 @@ while IFS= read -r line; do
   value=${line#*=}
   name=${line%%=*}
   # echo "V: $value"
-  echo "N: $$name"
-  subs="$subs $$name"
+  echo "N: '$$name'"
+  subs="$subs '$$name'"
 
 done < .env.proxy
 echo $subs
