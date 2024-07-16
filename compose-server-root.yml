@@ -16,13 +16,12 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./server-configs/root-server/template.conf.template:/etc/nginx/templates/template.conf.template:ro
       - ./server-configs/root-server/pre-cert.conf:/etc/nginx/conf.d/config.conf
       - ./server-configs/certbot/conf:/etc/letsencrypt
       - ./server-configs/certbot/www:/var/www/certbot
-    # command: "/bin/sh -c 
-    # 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'
-    # "
+    command: "/bin/sh -c 
+    'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'
+    "
     env_file: .env.proxy
 
 
