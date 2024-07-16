@@ -29,6 +29,7 @@ jobs:
         sparse-checkout: |
           ./scripts
           ./server-configs
+          ./compose-server-proxied.yml
         clean: false 
 
       
