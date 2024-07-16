@@ -24,7 +24,7 @@ services:
     # entrypoint:
       # - docker-entrypoint.sh
     env_file: .env.proxy
-    command: "sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    command: "'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     # environment:
     # - NGINX_ENVSUBST_TEMPLATE_SUFFIX: ".conf"
 
