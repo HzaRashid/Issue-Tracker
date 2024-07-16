@@ -1,9 +1,9 @@
-name: API (Root Server) CD
+name: API Deployment (root-server)
 
 on:
 
   workflow_run:
-    workflows: ["API CI Pipeline"]
+    workflows: ["API Integration"]
     types:
       - completed
 
