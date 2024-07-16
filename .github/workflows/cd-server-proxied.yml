@@ -1,17 +1,16 @@
 name: API Deployment (proxied-servers)
 
 on:
-    push:
-        branches: [ "foo" ]
-#   workflow_run:
-#     workflows: ["API CI Pipeline"]
-#     types:
-#       - completed
+    # push:
+    #     branches: [ "foo" ]
+  workflow_run:
+    workflows: ["API Integration"]
+    types:
+      - completed
 
 jobs: 
 
   build:
-
     
     strategy:
       matrix:
@@ -39,12 +38,12 @@ jobs:
     - name: Compose Up Services 
       env:
         COMPOSE_FNAME: compose-server-proxied.yml
-        API_DOMAIN: ${{vars.API_DOMAIN}}
+        API_DOMAIN: ${{ secrets[format('{0}', matrix.server)] }}
         EMAIL: ${{secrets.EMAIL}} 
         CONFIG_TYPE: proxied
       run: |
         touch .env.server && touch .env.proxy
         sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
-        sudo bash -c 'echo "SERVER_NAME"=${{ secrets[format('{0}', matrix.server)] }} > .proxy.server'
+        sudo bash -c 'echo "SERVER_NAME=$API_DOMAIN" > .proxy.server'
         chmod +x ./scripts/server/compose.sh
         ./scripts/server/compose.sh
