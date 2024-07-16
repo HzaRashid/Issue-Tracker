@@ -22,12 +22,12 @@ jobs:
           backend:
             - 'server/**'
 
-  # Login to build from private registry (& install Docker if necessary)
+  # Login to Dockerhub (& install Docker if necessary)
   login-docker:
 
     strategy:
       matrix:
-        runner: [root-server-runner-2, proxied_1]
+        runner: [root-server-runner-2, PROXIED_1]
 
     runs-on:
       - self-hosted
