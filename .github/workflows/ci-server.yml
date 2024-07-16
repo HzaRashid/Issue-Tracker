@@ -50,7 +50,7 @@ jobs:
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
       run: |
         echo "$DOCKER_PASSWORD" | sudo docker login -u $DOCKER_USERNAME --password-stdin
-        sudo usermod -aG docker $USER
+        sudo usermod -aG docker $USER # add runner to docker permissions group
         sudo docker logout
         echo "$DOCKER_PASSWORD" | sudo docker login -u $DOCKER_USERNAME --password-stdin
 
