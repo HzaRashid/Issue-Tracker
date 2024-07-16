@@ -23,5 +23,8 @@ fi
 
 echo "### Compose Up ..."
 cp $post_cert_conf_path $pre_cert_conf_path # do not move/remove - source file might be updated
+if [ "$CONFIG_TYPE" = "proxied" ]; then
+  sudo docker compose -f $COMPOSE_FNAME up -d 
 
+fi
 # sudo docker compose -f $COMPOSE_FNAME up -d 
