@@ -49,9 +49,7 @@ jobs:
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
       run: |
-        echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin
-        sudo usermod -aG docker $DOCKER_USERNAME
-        docker logout
+        sudo usermod -aG docker $USER
         echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin
 
   # Build and push backend code image
