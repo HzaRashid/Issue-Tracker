@@ -46,6 +46,6 @@ jobs:
         echo "${API_DOMAIN}"
         touch .env.server && touch .env.proxy
         sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
-        sudo bash -c 'echo "SERVER_NAME=\${API_DOMAIN}\" > .env.proxy'
+        sudo bash -c 'echo "SERVER_NAME=`$API_DOMAIN`" > .env.proxy'
         chmod +x ./scripts/server/compose.sh
         ./scripts/server/compose.sh
