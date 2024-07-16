@@ -38,12 +38,11 @@ jobs:
     - name: Compose Up Services 
       env:
         COMPOSE_FNAME: compose-server-proxied.yml
-        API_DOMAIN: ${{ vars[matrix.server] }}
+        API_DOMAIN: ${{ secrets[matrix.server] }}
         EMAIL: ${{secrets.EMAIL}} 
         CONFIG_TYPE: proxied
       run: |
         echo "${COMPOSE_FNAME}"
-        echo "${API_DOMAIN}"
         touch .env.server && touch .env.proxy
         sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
         sudo --preserve-env=API_DOMAIN bash -c 'echo "SERVER_NAME=$API_DOMAIN" > .env.proxy'
