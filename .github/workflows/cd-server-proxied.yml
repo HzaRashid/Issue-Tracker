@@ -4,7 +4,7 @@ on:
     # push:
     #     branches: [ "foo" ]
   workflow_run:
-    workflows: ["API Integration"]
+    workflows: ["API Integration"] #foo
     types:
       - completed
 
