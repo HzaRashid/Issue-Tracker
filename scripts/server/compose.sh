@@ -8,6 +8,14 @@ pre_cert_conf_path=./server-configs/$CONFIG_TYPE/pre-cert.conf
 export data_path="./server-configs/certbot"
 
 # if [ "$CONFIG_TYPE" = "proxied" ]; then
+
+.env.proxy | while IFS= read -r line; do
+  value=${line#*=}
+  name=${line%%=*}
+  echo "V: $value"
+  echo "N: $name"
+done
+
 tmpfile=$(mktemp)
 envsubst < $pre_cert_conf_path > $tmpfile && mv $tmpfile $pre_cert_conf_path
 tmpfile=$(mktemp)
