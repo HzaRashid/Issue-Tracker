@@ -10,7 +10,7 @@ on:
 
 permissions:
   contents: write
-  
+
 jobs: 
 
   build:
@@ -42,12 +42,13 @@ jobs:
       env:
         COMPOSE_FNAME: compose-server-proxied.yml
         API_DOMAIN: ${{ secrets[matrix.server] }}
+        SERVER_NAME: ${{ secrets[matrix.server] }}
         EMAIL: ${{secrets.EMAIL}} 
         CONFIG_TYPE: proxied
+        
       run: |
         echo "${COMPOSE_FNAME}"
-        touch .env.server && touch .env.proxy
+        touch .env.server
         sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
-        sudo --preserve-env=API_DOMAIN bash -c 'echo "SERVER_NAME=$API_DOMAIN" > .env.proxy'
         chmod +x ./scripts/server/compose.sh
         ./scripts/server/compose.sh
