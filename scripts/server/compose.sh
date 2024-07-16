@@ -11,6 +11,7 @@ if [ "$CONFIG_TYPE" = "proxied" ]; then
   tmpfile=$(mktemp)
   cp --attributes-only --preserve $pre_cert_conf_path $tmpfile
   cat $pre_cert_conf_path | envsubst > $tmpfile && mv $tmpfile $pre_cert_conf_path
+  tmpfile=$(mktemp)
   cp --attributes-only --preserve $post_cert_conf_path $tmpfile
   cat $post_cert_conf_path | envsubst > $tmpfile && mv $tmpfile $post_cert_conf_path
 fi
