@@ -20,22 +20,22 @@ done < .env.proxy
 echo $subs
 
 tmpfile=$(mktemp)
-envsubst $subs '$SERVER_NAME' < $pre_cert_conf_path > $tmpfile && mv $tmpfile $pre_cert_conf_path
+envsubst $subs < $pre_cert_conf_path > $tmpfile && mv $tmpfile $pre_cert_conf_path
 tmpfile=$(mktemp)
-envsubst $subs '$SERVER_NAME' < $post_cert_conf_path > $tmpfile && mv $tmpfile $post_cert_conf_path
+envsubst $subs < $post_cert_conf_path > $tmpfile && mv $tmpfile $post_cert_conf_path
 
 # fi
 
-if [ ! -d "$data_path" ]; then  # ssl cert not found
-  chmod +x $scripts_path/ssl-cert.sh
-  $scripts_path/ssl-cert.sh
-fi
-
-
-echo "### Compose Up ..."
-# cp $post_cert_conf_path $pre_cert_conf_path # do not move/remove - source file might be updated
-# if [ "$CONFIG_TYPE" = "proxied" ]; then
-#   sudo docker compose -f $COMPOSE_FNAME up -d 
-
+# if [ ! -d "$data_path" ]; then  # ssl cert not found
+#   chmod +x $scripts_path/ssl-cert.sh
+#   $scripts_path/ssl-cert.sh
 # fi
-sudo docker compose -f $COMPOSE_FNAME up -d 
+
+
+# echo "### Compose Up ..."
+# # cp $post_cert_conf_path $pre_cert_conf_path # do not move/remove - source file might be updated
+# # if [ "$CONFIG_TYPE" = "proxied" ]; then
+# #   sudo docker compose -f $COMPOSE_FNAME up -d 
+
+# # fi
+# sudo docker compose -f $COMPOSE_FNAME up -d 
