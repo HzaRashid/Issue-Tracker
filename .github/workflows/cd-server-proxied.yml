@@ -42,7 +42,7 @@ jobs:
         EMAIL: ${{secrets.EMAIL}} 
         CONFIG_TYPE: proxied
       run: |
-        echo "$API_DOMAIN"
+        echo "${{ matrix.server }}"
         touch .env.server && touch .env.proxy
         sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
         sudo bash -c 'echo "SERVER_NAME=\"$API_DOMAIN\"" > .env.proxy'
