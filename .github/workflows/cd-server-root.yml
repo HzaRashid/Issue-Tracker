@@ -37,6 +37,6 @@ jobs:
         CONFIG_TYPE: root-server
       run: | 
         touch .env.server && touch .env.proxy
-        sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server && echo ${{secrets.NGINX_ENV}} > .env.proxy'
+        sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server && echo "${{secrets.NGINX_ENV}}" > .env.proxy'
         chmod +x ./scripts/server/compose.sh
         ./scripts/server/compose.sh
