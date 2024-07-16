@@ -8,11 +8,17 @@ pre_cert_conf_path=./server-configs/$CONFIG_TYPE/pre-cert.conf
 export data_path="./server-configs/certbot"
 
 # if [ "$CONFIG_TYPE" = "proxied" ]; then
+subs=""
+for domain in "${domains[@]}"; do
+  domain_args="$domain_args -d $domain"
+done
 while IFS= read -r line; do
   value=${line#*=}
   name=${line%%=*}
-  echo "V: $value"
-  echo "N: $name"
+  # echo "V: $value"
+  # echo "N: $name"
+  subs="$subs $$name"
+  echo $subs
 done < .env.proxy
 
 
