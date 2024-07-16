@@ -21,13 +21,10 @@ services:
       - ./server-configs/certbot/conf:/etc/letsencrypt
       - ./server-configs/certbot/www:/var/www/certbot
 
-    # entrypoint:
-    # - /docker-entrypoint.d/20-envsubst-on-templates.sh
+    entrypoint:
+    - docker-entrypoint.sh
     env_file: .env.proxy
-    command: sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'
-    # "/bin/sh -c
-    # 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'
-    # # "
+    # command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     # environment:
     # - NGINX_ENVSUBST_TEMPLATE_SUFFIX: ".conf"
 
