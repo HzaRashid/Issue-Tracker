@@ -23,6 +23,7 @@ unset IFS
 
 export $(cat .env.proxy | xargs)
 echo foo"$PROXIED_1"foo
+echo "$unsets"
 # export $(cat .env.proxy | xargs) && rails c
 
 # while IFS= read -r line; do
