@@ -23,7 +23,8 @@ done
 unset IFS
 foo=FOO
 bar=BAR
-$(command $foo)=$(command $bar)
+"$(command $foo)"="$(command $bar)"
+"$foo"="$bar"
 echo foo"$FOO"foo
 
 # while IFS= read -r line; do
