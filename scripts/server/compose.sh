@@ -16,16 +16,14 @@ for line in $foo
 do
   name=${line%%=*}
   value=${line#*=}
+  name_val=$name
+  name_val=$value
   # $($name)=$($value)
-  subs="$subs '\$${line%%=*}'"
-  unsets="$unsets '\$${line%%=*}'"
+  subs="$subs '\$$name'"
+  unsets="$unsets $name"
 done
 unset IFS
-foo=FOO
-bar=BAR
-"$(command $foo)"="$(command $bar)"
-"$foo"="$bar"
-echo foo"$FOO"foo
+
 
 # while IFS= read -r line; do
 #   name=${line%%=*}
