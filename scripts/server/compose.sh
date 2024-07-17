@@ -9,38 +9,22 @@ export data_path="./server-configs/certbot"
 
 
 subs=""
-unsets=
+unsets=""
 IFS=$'\n' 
-foo=$(cat .env.proxy)
-for line in $foo
+for line in $(cat .env.proxy)
 do
-  name=${line%%=*}
-  value=${line#*=}
-  subs="$subs '\$$name'"
-  unsets="$unsets $name"
+  key=${line%%=*}
+  subs="$subs '\$$key'"
+  unsets="$unsets $key"
 done
 unset IFS
 
 export $(cat .env.proxy | xargs)
-echo foo"$PROXIED_1"foo
-echo "$unsets"
-# export $(cat .env.proxy | xargs) && rails c
 
-# while IFS= read -r line; do
-#   name=${line%%=*}
-#   value=${line#*=}
-#   sudo -E bash -c '"$name"="$value"'
-#   subs="$subs '\$${line%%=*}'"
-# done < .env.proxy
-echo begin"$subs"end
-echo begin"$unsets"end
-# subs="$(echo -e "${subs}" | sed -e 's/^[[:space:]]*//')"
-# echo begin"$subs"end
 tmpfile=$(mktemp)
 envsubst "$subs" < $pre_cert_conf_path > $tmpfile && mv $tmpfile $pre_cert_conf_path
 tmpfile=$(mktemp)
 envsubst "$subs" < $post_cert_conf_path > $tmpfile && mv $tmpfile $post_cert_conf_path
-
 
 
 if [ ! -d "$data_path" ]; then  # ssl cert not found
@@ -51,4 +35,6 @@ fi
 
 echo "### Compose Up ..."
 cp $post_cert_conf_path $pre_cert_conf_path
-# sudo docker compose -f $COMPOSE_FNAME up -d 
+sudo docker compose -f $COMPOSE_FNAME up -d
+
+unset "$unsets"
