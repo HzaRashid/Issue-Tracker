@@ -50,8 +50,8 @@ jobs:
 
     - name: Login to Dockerhub
       env:
-        DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: |
         echo "$DOCKER_PASSWORD" | sudo docker login -u $DOCKER_USERNAME --password-stdin
         sudo usermod -aG docker $USER # add runner to docker permissions group
@@ -71,10 +71,10 @@ jobs:
     - name: Build Image
       working-directory: ./server
       env: 
-        DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       run: sudo docker build -t $DOCKER_USERNAME/flow-issue-tracker:server .
 
     - name: Push to Dockerhub
       env: 
-        DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       run: sudo docker push $DOCKER_USERNAME/flow-issue-tracker:server
