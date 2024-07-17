@@ -18,14 +18,13 @@ do
   value=${line#*=}
   name_val=$name
   echo $name_val
-  sudo bash -c 'declare -n "$name_val"="$value"'
-  echo $PROXIED_1
   # $($name)=$($value)
   subs="$subs '\$$name'"
   unsets="$unsets $name"
 done
 unset IFS
 
+export $(cat .proxy.env | xargs) && rails c
 
 # while IFS= read -r line; do
 #   name=${line%%=*}
