@@ -9,16 +9,23 @@ export data_path="./server-configs/certbot"
 
 
 subs=""
+unsets=
 IFS=$'\n' 
 foo=$(cat .env.proxy)
 for line in $foo
 do
   name=${line%%=*}
   value=${line#*=}
-  $name=$value
+  # $($name)=$($value)
   subs="$subs '\$${line%%=*}'"
+  unsets="$unsets '\$${line%%=*}'"
 done
 unset IFS
+foo=FOO
+bar=BAR
+$foo=$bar
+echo foo"$FOO"foo
+
 # while IFS= read -r line; do
 #   name=${line%%=*}
 #   value=${line#*=}
@@ -26,6 +33,7 @@ unset IFS
 #   subs="$subs '\$${line%%=*}'"
 # done < .env.proxy
 echo begin"$subs"end
+echo begin"$unsets"end
 # subs="$(echo -e "${subs}" | sed -e 's/^[[:space:]]*//')"
 # echo begin"$subs"end
 tmpfile=$(mktemp)
