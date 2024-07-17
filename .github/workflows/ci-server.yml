@@ -8,7 +8,9 @@ jobs:
 
   check-changes:
     runs-on: [self-hosted, root-server-runner] 
-
+    # Set job outputs to values from filter step
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
     steps:
     - uses: actions/checkout@v4
       with:
