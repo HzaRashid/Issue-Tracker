@@ -21,7 +21,8 @@ do
   unsets="$unsets $name"
 done
 unset IFS
-echo "$PROXIED_1"
+
+echo foo"$PROXIED_1"foo
 # export $(cat .env.proxy | xargs) && rails c
 
 # while IFS= read -r line; do
