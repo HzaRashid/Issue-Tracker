@@ -9,14 +9,24 @@ export data_path="./server-configs/certbot"
 
 
 subs=""
-while IFS= read -r line; do
+IFS=$'\n' 
+foo=$(cat .env.proxy)
+for line in foo
+do
   name=${line%%=*}
+  value=${line#*=}
+  sudo -E bash -c '"$name"="$value"'
   subs="$subs '\$${line%%=*}'"
-
-done < .env.proxy
+done
+# while IFS= read -r line; do
+#   name=${line%%=*}
+#   value=${line#*=}
+#   sudo -E bash -c '"$name"="$value"'
+#   subs="$subs '\$${line%%=*}'"
+# done < .env.proxy
 echo begin"$subs"end
-subs="$(echo -e "${subs}" | sed -e 's/^[[:space:]]*//')"
-echo begin"$subs"end
+# subs="$(echo -e "${subs}" | sed -e 's/^[[:space:]]*//')"
+# echo begin"$subs"end
 tmpfile=$(mktemp)
 envsubst "$subs" < $pre_cert_conf_path > $tmpfile && mv $tmpfile $pre_cert_conf_path
 tmpfile=$(mktemp)
