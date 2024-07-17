@@ -17,12 +17,12 @@ while IFS= read -r line; do
   subs="$subs '\$$name'"
 
 done < .env.proxy
-echo $subs
+echo begin"$subs"end
 
 tmpfile=$(mktemp)
-envsubst $subs < $pre_cert_conf_path > $tmpfile && mv $tmpfile $pre_cert_conf_path
+envsubst "$subs" < $pre_cert_conf_path > $tmpfile && mv $tmpfile $pre_cert_conf_path
 tmpfile=$(mktemp)
-envsubst $subs < $post_cert_conf_path > $tmpfile && mv $tmpfile $post_cert_conf_path
+envsubst "$subs" < $post_cert_conf_path > $tmpfile && mv $tmpfile $post_cert_conf_path
 
 # fi
 
