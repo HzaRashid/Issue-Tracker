@@ -15,9 +15,10 @@ for line in $foo
 do
   name=${line%%=*}
   value=${line#*=}
-  sudo -E bash -c '"$name"="$value"'
+  sudo -E bash -c 'export $name=$value'
   subs="$subs '\$${line%%=*}'"
 done
+unset IFS
 # while IFS= read -r line; do
 #   name=${line%%=*}
 #   value=${line#*=}
