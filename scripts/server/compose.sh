@@ -10,7 +10,8 @@ export data_path="./server-configs/certbot"
 
 subs=""
 while IFS= read -r line; do
-  subs="$subs '\$$name'"
+  name=${line%%=*}
+  subs="$subs '\$${line%%=*}'"
 
 done < .env.proxy
 echo begin"$subs"end
