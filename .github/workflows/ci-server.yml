@@ -1,82 +1,32 @@
-name: API Integration
+name: API CI Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "server" ]
     
 jobs:
 
-  check-changes:
-    runs-on: [self-hosted, root-server-runner-2] 
-    # Set job outputs to values from filter step
-    outputs:
-      backend: ${{ steps.filter.outputs.backend }}
+  build:
+
+    runs-on: [self-hosted, Reverse-Proxy]
+
     steps:
-    - uses: actions/checkout@v4
-      with:
-        sparse-checkout: # test
-          ./server
-        clean: false
-    - uses: dorny/paths-filter@v3.0.2
-      id: filter
-      with:
-        filters: |
-          backend:
-            - 'server/**'
-
-  # Install Docker if necessary
-  check-docker:
-
-    strategy:
-      matrix:
-        runner: [
-          root-server-runner, 
-          PROXIED_1, 
-          PROXIED_2
-          ]
-
-    runs-on:
-      - self-hosted
-      - ${{ matrix.runner }}
-      
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        sparse-checkout:
-          ./scripts/server/install-docker.sh
-        clean: false
-    - name: Install Docker
-      run: |
-        chmod +x ./scripts/server/install-docker.sh
-        ./scripts/server/install-docker.sh
-
-    - name: Login to Dockerhub
+    - uses: actions/checkout@v4 
+    
+    - name: Login Dockerhub
       env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      run: |
-        echo "$DOCKER_PASSWORD" | sudo docker login -u $DOCKER_USERNAME --password-stdin
-        sudo usermod -aG docker $USER # add runner to docker permissions group
-        sudo docker logout
-        echo "$DOCKER_PASSWORD" | sudo docker login -u $DOCKER_USERNAME --password-stdin
-
-  # Build and push backend code image
-  build-backend:
-    needs: 
-      - check-changes
-      - check-docker
-
-    if: ${{ needs.check-changes.outputs.backend == 'true' }}
-    runs-on: [self-hosted, root-server-runner-2]
-    steps:
+        DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       
-    - name: Build Image
+    - name: Build the Docker image
       working-directory: ./server
       env: 
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
       run: sudo docker build -t $DOCKER_USERNAME/flow-issue-tracker:server .
 
     - name: Push to Dockerhub
       env: 
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
       run: sudo docker push $DOCKER_USERNAME/flow-issue-tracker:server
+    
