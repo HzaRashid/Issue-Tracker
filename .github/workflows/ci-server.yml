@@ -2,7 +2,7 @@ name: API Integration
 
 on:
   push:
-    branches: [ "aws" ]
+    branches: [ "main" ]
     
 jobs:
 
