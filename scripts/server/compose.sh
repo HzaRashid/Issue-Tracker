@@ -14,17 +14,15 @@ IFS=$'\n'
 foo=$(cat .env.proxy)
 for line in $foo
 do
+  export line
   name=${line%%=*}
   value=${line#*=}
-  name_val=$name
-  echo $name_val
-  # $($name)=$($value)
   subs="$subs '\$$name'"
   unsets="$unsets $name"
 done
 unset IFS
-
-export $(cat .proxy.env | xargs) && rails c
+echo "$PROXIED_1"
+# export $(cat .env.proxy | xargs) && rails c
 
 # while IFS= read -r line; do
 #   name=${line%%=*}
