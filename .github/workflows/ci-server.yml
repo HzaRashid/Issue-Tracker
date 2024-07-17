@@ -7,13 +7,13 @@ on:
 jobs:
 
   check-changes:
-    runs-on: [self-hosted, root-server-runner-1] 
+    runs-on: [self-hosted, root-server-runner] 
 
     steps:
     - uses: actions/checkout@v4
       with:
         sparse-checkout:
-          ./server
+          ./server 
         clean: false
     - uses: dorny/paths-filter@v3.0.2
       id: filter
