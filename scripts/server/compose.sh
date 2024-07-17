@@ -14,15 +14,15 @@ to hydrate in nginx configuration files
 subs=""
 unsets=""
 IFS=$'\n'
-proxy_env=$(cat .env.proxy)
-for line in $proxy_env; do
+
+for line in $(cat .env.proxy); do
   key=${line%%=*}
   subs="$subs '\$$key'"
   unsets="$unsets $key"
 done
 unset IFS
 
-export $($proxy_env | xargs) # load key-val assignments into environment
+export $(cat .env.proxy | xargs) # load key-val assignments into environment
 tmpfile=$(mktemp)
 envsubst "$subs" < $pre_cert_conf_path > $tmpfile && mv $tmpfile $pre_cert_conf_path
 tmpfile=$(mktemp)
