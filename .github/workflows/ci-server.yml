@@ -7,7 +7,7 @@ on:
 jobs:
 
   check-changes:
-    runs-on: [self-hosted, root-server] 
+    runs-on: [self-hosted, root-server-runner1] 
 
     steps:
     - uses: actions/checkout@v4
@@ -27,7 +27,11 @@ jobs:
 
     strategy:
       matrix:
-        runner: [root-server-runner-2, PROXIED_1]
+        runner: [
+          root-server-runner-2, 
+          PROXIED_1, 
+          PROXIED_2
+          ]
 
     runs-on:
       - self-hosted

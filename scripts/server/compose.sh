@@ -8,13 +8,12 @@ pre_cert_conf_path=./server-configs/$CONFIG_TYPE/pre-cert.conf
 export data_path="./server-configs/certbot"
 
 : '
-extract the key-val pairs 
+extract the key-value pairs 
 to hydrate in nginx configuration files
 '
 subs=""
 unsets=""
 IFS=$'\n'
-
 for line in $(cat .env.proxy); do
   key=${line%%=*}
   subs="$subs '\$$key'"
@@ -22,7 +21,7 @@ for line in $(cat .env.proxy); do
 done
 unset IFS
 
-export $(cat .env.proxy | xargs) # load key-val assignments into environment
+export $(cat .env.proxy | xargs) # load key-value assignments into environment
 tmpfile=$(mktemp)
 envsubst "$subs" < $pre_cert_conf_path > $tmpfile && mv $tmpfile $pre_cert_conf_path
 tmpfile=$(mktemp)
