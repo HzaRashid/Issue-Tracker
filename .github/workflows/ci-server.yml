@@ -7,7 +7,7 @@ on:
 jobs:
 
   check-changes:
-    runs-on: [self-hosted, root-server-runner] 
+    runs-on: [self-hosted, root-server-runner-2] 
     # Set job outputs to values from filter step
     outputs:
       backend: ${{ steps.filter.outputs.backend }}
@@ -30,7 +30,7 @@ jobs:
     strategy:
       matrix:
         runner: [
-          root-server-runner-2, 
+          root-server-runner, 
           PROXIED_1, 
           PROXIED_2
           ]
@@ -67,7 +67,7 @@ jobs:
       - check-docker
 
     if: ${{ needs.check-changes.outputs.backend == 'true' }}
-    runs-on: [self-hosted, root-server-runner]
+    runs-on: [self-hosted, root-server-runner-2]
     steps:
       
     - name: Build Image
