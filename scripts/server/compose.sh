@@ -10,14 +10,8 @@ export data_path="./server-configs/certbot"
 
 subs=""
 while IFS= read -r line; do
-  value=${line#*=}
-  name=${line%%=*}
-  # echo "V: $value"
-  echo "N: '\$$name'"
   subs="$subs '\$$name'"
-
 done < .env.proxy
-echo begin"$subs"end
 
 tmpfile=$(mktemp)
 envsubst "$subs" < $pre_cert_conf_path > $tmpfile && mv $tmpfile $pre_cert_conf_path
@@ -34,4 +28,4 @@ fi
 
 echo "### Compose Up ..."
 cp $post_cert_conf_path $pre_cert_conf_path
-sudo docker compose -f $COMPOSE_FNAME up -d 
+# sudo docker compose -f $COMPOSE_FNAME up -d 
