@@ -14,7 +14,7 @@ const cors = require('cors');
 
 ConnectMDB(); 
 
-const app = express(); // foo ??
+const app = express(); // 
 app.set('trust proxy', 1)
 app.get('/ip', (request, response) => response.send(request.ip))
 
@@ -33,6 +33,13 @@ app.use(
     credentials: true,
     methods: 'GET,POST,PUT,OPTIONS',
 }));
+
+// app.get('/', (req, res) => {
+//   res.json({
+//       status: 200,
+//       message: "hello world"
+//   })
+// })
 
 let redisStore = new sessionStore({
   client: RedisClient,
