@@ -2,7 +2,7 @@ name: API CD Pipeline
 
 on:
   push:
-    branches: [ "aws" ]
+    branches: [ "main" ]
 
 jobs: 
 
