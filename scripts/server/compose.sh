@@ -11,7 +11,7 @@ export data_path="./server-configs/certbot"
 subs=""
 IFS=$'\n' 
 foo=$(cat .env.proxy)
-for line in foo
+for line in $foo
 do
   name=${line%%=*}
   value=${line#*=}
