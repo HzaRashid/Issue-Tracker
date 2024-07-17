@@ -4,7 +4,7 @@ on:
     # push:
     #     branches: [ "foo" ]
   workflow_run:
-    workflows: ["API Integration"] #foo
+    workflows: ["API Integration"] 
     types:
       - completed
 
@@ -47,8 +47,7 @@ jobs:
         CONFIG_TYPE: proxied
         
       run: |
-        touch .env.server
-        touch .env.proxy
+        touch .env.server && touch .env.proxy
         sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
         sudo --preserve-env=API_DOMAIN bash -c 'echo "SERVER_NAME=$API_DOMAIN" > .env.proxy'
         chmod +x ./scripts/server/compose.sh

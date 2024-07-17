@@ -3,7 +3,7 @@ name: API Deployment (root-server)
 on:
 
   workflow_run:
-    workflows: ["API Integration"] #foo
+    workflows: ["API Integration"] 
     types:
       - completed
 
@@ -36,11 +36,8 @@ jobs:
         EMAIL: ${{secrets.EMAIL}} 
         CONFIG_TYPE: root-server
       run: | 
-        echo FOO
-        touch .env.server
-        touch .env.proxy
+        touch .env.server && touch .env.proxy
         sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
-        sudo -E bash -c 'echo "${{secrets.NGINX_ENV}}" > .env.proxy'
-        cat .env.proxy
+        sudo bash -c 'echo "${{secrets.NGINX_ENV}}" > .env.proxy'
         chmod +x ./scripts/server/compose.sh
         ./scripts/server/compose.sh
