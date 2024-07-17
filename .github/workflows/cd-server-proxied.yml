@@ -1,8 +1,6 @@
 name: API Deployment (proxied-servers)
 
 on:
-    # push:
-    #     branches: [ "foo" ]
   workflow_run:
     workflows: ["API Integration"] 
     types:
