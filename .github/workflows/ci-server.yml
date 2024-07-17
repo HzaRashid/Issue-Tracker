@@ -7,7 +7,7 @@ on:
 jobs:
 
   check-changes:
-    runs-on: [self-hosted, root-server-runner1] 
+    runs-on: [self-hosted, root-server-runner-1] 
 
     steps:
     - uses: actions/checkout@v4
