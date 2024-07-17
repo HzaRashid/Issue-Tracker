@@ -14,7 +14,6 @@ IFS=$'\n'
 foo=$(cat .env.proxy)
 for line in $foo
 do
-  export line
   name=${line%%=*}
   value=${line#*=}
   subs="$subs '\$$name'"
@@ -22,6 +21,7 @@ do
 done
 unset IFS
 
+export $(cat .env.proxy | xargs)
 echo foo"$PROXIED_1"foo
 # export $(cat .env.proxy | xargs) && rails c
 
