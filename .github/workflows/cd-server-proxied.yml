@@ -17,7 +17,7 @@ jobs:
     
     strategy:
       matrix:
-        server: [ PROXIED_1 ]
+        server: [PROXIED_1, PROXIED_2]
 
     runs-on: 
       - self-hosted
@@ -48,7 +48,6 @@ jobs:
         CONFIG_TYPE: proxied
         
       run: |
-        echo "${COMPOSE_FNAME}"
         touch .env.server
         touch .env.proxy
         sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
