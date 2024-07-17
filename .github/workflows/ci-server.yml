@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        sparse-checkout:
+        sparse-checkout: # test
           ./server
         clean: false
     - uses: dorny/paths-filter@v3.0.2
