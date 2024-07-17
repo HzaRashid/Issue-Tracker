@@ -42,8 +42,7 @@ jobs:
     - name: Compose Up Services 
       env:
         COMPOSE_FNAME: compose-server-proxied.yml
-        API_DOMAIN: ${{ vars[matrix.server] }}
-        SERVER_NAME: ${{ vars[matrix.server] }}
+        API_DOMAIN: ${{vars[matrix.server]}}
         EMAIL: ${{secrets.EMAIL}} 
         CONFIG_TYPE: proxied
         
