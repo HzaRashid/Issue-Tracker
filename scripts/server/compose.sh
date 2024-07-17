@@ -26,16 +26,11 @@ envsubst "$subs" < $post_cert_conf_path > $tmpfile && mv $tmpfile $post_cert_con
 
 
 
-# if [ ! -d "$data_path" ]; then  # ssl cert not found
-#   chmod +x $scripts_path/ssl-cert.sh
-#   $scripts_path/ssl-cert.sh
-# fi
+if [ ! -d "$data_path" ]; then  # ssl cert not found
+  chmod +x $scripts_path/ssl-cert.sh
+  $scripts_path/ssl-cert.sh
+fi
 
 
-# echo "### Compose Up ..."
-# # cp $post_cert_conf_path $pre_cert_conf_path # do not move/remove - source file might be updated
-# # if [ "$CONFIG_TYPE" = "proxied" ]; then
-# #   sudo docker compose -f $COMPOSE_FNAME up -d 
-
-# # fi
-# sudo docker compose -f $COMPOSE_FNAME up -d 
+echo "### Compose Up ..."
+sudo docker compose -f $COMPOSE_FNAME up -d 
