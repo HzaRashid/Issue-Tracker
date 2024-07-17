@@ -1,14 +1,16 @@
-name: API CD Pipeline
+name: API Deployment (root-server)
 
 on:
-  push:
-    branches: [ "main" ]
+  workflow_run:
+    workflows: ["API Integration"] 
+    types:
+      - completed
 
 jobs: 
 
   build:
 
-    runs-on: [self-hosted, Reverse-Proxy]
+    runs-on: [self-hosted, root-server-runner]
 
     steps:
     - uses: actions/checkout@v4
@@ -16,25 +18,25 @@ jobs:
         sparse-checkout: |
           ./scripts
           ./server-configs
+          ./compose-server-root.yml
         clean: false 
-
 
       
     - name: Delete Old Containers
       run: |
-        sudo docker rm -f api-server || true
-        sudo docker rm -f reverse-proxy || true  
-        sudo docker rm -f certbot || true
+        sudo docker rm -f $(sudo docker ps -qa) || true
         sudo bash -c 'echo y | docker system prune' 
+
 
     - name: Compose Up Services 
       env:
         COMPOSE_FNAME: compose-server-root.yml
-        API_DOMAIN: ${{vars.API_DOMAIN}}
-        EMAIL: ${{secrets.EMAIL}} 
+        API_DOMAIN: ${{ vars.API_DOMAIN }}
+        EMAIL: ${{ secrets.EMAIL }} 
         CONFIG_TYPE: root-server
-      run: |
-        touch .env.server 
-        sudo bash -c 'echo "${{secrets.SERVER_ENV}}" > .env.server'
+      run: | 
+        touch .env.server && touch .env.proxy
+        sudo bash -c 'echo "${{ secrets.SERVER_ENV }}" > .env.server'
+        sudo bash -c 'echo "${{ secrets.NGINX_ENV }}" > .env.proxy'
         chmod +x ./scripts/server/compose.sh
         ./scripts/server/compose.sh
