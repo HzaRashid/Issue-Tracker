@@ -33,4 +33,5 @@ fi
 
 
 echo "### Compose Up ..."
+cp $post_cert_conf_path $pre_cert_conf_path
 sudo docker compose -f $COMPOSE_FNAME up -d 
