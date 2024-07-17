@@ -15,7 +15,7 @@ for line in $foo
 do
   name=${line%%=*}
   value=${line#*=}
-  sudo -E bash -c 'export $name=$value'
+  $name=$value
   subs="$subs '\$${line%%=*}'"
 done
 unset IFS
