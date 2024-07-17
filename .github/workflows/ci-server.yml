@@ -67,11 +67,11 @@ jobs:
       - check-docker
 
     if: ${{ needs.check-changes.outputs.backend == 'true' }}
-    runs-on: [self-hosted, root-server]
+    runs-on: [self-hosted, root-server-runner]
     steps:
       
     - name: Build Image
-      working-directory: server
+      working-directory: ./server
       env: 
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       run: sudo docker build -t $DOCKER_USERNAME/flow-issue-tracker:server .
