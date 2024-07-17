@@ -17,7 +17,9 @@ do
   name=${line%%=*}
   value=${line#*=}
   name_val=$name
-  name_val=$value
+  echo $name_val
+  sudo bash -c 'declare -n "$name_val"="$value"'
+  echo $PROXIED_1
   # $($name)=$($value)
   subs="$subs '\$$name'"
   unsets="$unsets $name"
