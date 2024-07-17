@@ -11,8 +11,11 @@ export data_path="./server-configs/certbot"
 subs=""
 while IFS= read -r line; do
   subs="$subs '\$$name'"
-done < .env.proxy
 
+done < .env.proxy
+echo begin"$subs"end
+subs="$(echo -e "${subs}" | sed -e 's/^[[:space:]]*//')"
+echo begin"$subs"end
 tmpfile=$(mktemp)
 envsubst "$subs" < $pre_cert_conf_path > $tmpfile && mv $tmpfile $pre_cert_conf_path
 tmpfile=$(mktemp)
