@@ -27,12 +27,12 @@ app.use(express.json())
 app.use(compression())
 app.use(express.urlencoded({ extended: false }))
 
-app.use(
-    cors({
-    origin: [process.env.ORIGIN, `${process.env.ORIGIN}/`],
-    credentials: true,
-    methods: 'GET,POST,PUT,OPTIONS',
-}));
+// app.use(
+//     cors({
+//     origin: [process.env.ORIGIN, `${process.env.ORIGIN}/`],
+//     credentials: true,
+//     methods: 'GET,POST,PUT,OPTIONS',
+// }));
 
 // app.get('/', (req, res) => {
 //   res.json({
