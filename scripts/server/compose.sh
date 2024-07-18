@@ -20,7 +20,7 @@ unset IFS
 
 export $(cat .env.proxy | xargs) # load key-value assignments into environment
 tmpfile=$(mktemp)
-envsubst "$subs" < $pre_cert_conf_path > $tmpfile && mv $tmpfile $pre_cert_conf_path
+envsubst "$subs" < $pre_cert_conf_path > $tmpfile && cp $tmpfile $pre_cert_conf_path
 
 
 if [ ! -d "$data_path" ]; then  # ssl cert not found
@@ -30,7 +30,7 @@ fi
 
 
 echo "### Compose Up ..."
-envsubst "$subs" < $post_cert_conf_path > $tmpfile && mv $tmpfile $pre_cert_conf_path
+envsubst "$subs" < $post_cert_conf_path > $tmpfile && cp $tmpfile $pre_cert_conf_path
 sudo docker compose -f $COMPOSE_FNAME up -d
 
 unset "$unsets"
