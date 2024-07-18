@@ -3,7 +3,7 @@
 domains=($API_DOMAIN)
 rsa_key_size=4096
 email="$EMAIL"    # Adding a valid address is strongly recommended
-staging=1         # Set to 1 if you're testing your setup to avoid hitting request limits
+staging=0         # Set to 1 if you're testing your setup to avoid hitting request limits
 
 
 if  [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || \ 
