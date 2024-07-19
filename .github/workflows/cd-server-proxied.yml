@@ -22,7 +22,8 @@ jobs:
       - ${{ matrix.server }}
 
     steps:
-    - run: sudo su
+    - run: |
+        sudo rm -rf server-configs/proxied
     - uses: actions/checkout@v4
       with:
         sparse-checkout: |
