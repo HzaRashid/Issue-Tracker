@@ -38,5 +38,6 @@ jobs:
         touch .env.server && touch .env.proxy
         sudo bash -c 'echo "${{ secrets.SERVER_ENV }}" > .env.server'
         sudo bash -c 'echo "${{ secrets.NGINX_ENV }}" > .env.proxy'
+        sudo --preserve-env=API_DOMAIN bash -c 'echo "SERVER_NAME=$API_DOMAIN" >> .env.proxy'
         chmod +x ./scripts/server/compose.sh
         ./scripts/server/compose.sh
