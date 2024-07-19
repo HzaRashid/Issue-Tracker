@@ -42,7 +42,7 @@ jobs:
     - name: Compose Up Services 
       env:
         COMPOSE_FNAME: compose-server-proxied.yml
-        API_DOMAIN: ec2api.flow-issue-tracker.com
+        API_DOMAIN: ${{ vars.API_DOMAIN }}
         EMAIL: ${{ secrets.EMAIL }} 
         CONFIG_TYPE: proxied
         
