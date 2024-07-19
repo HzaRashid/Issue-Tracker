@@ -15,7 +15,7 @@ jobs:
     
     strategy:
       matrix:
-        server: [PROXIED_1, PROXIED_2]
+        server: [SERVER_2, SERVER_3]
 
     runs-on: 
       - self-hosted
@@ -42,7 +42,7 @@ jobs:
     - name: Compose Up Services 
       env:
         COMPOSE_FNAME: compose-server-proxied.yml
-        API_DOMAIN: ${{ vars[matrix.server] }}
+        API_DOMAIN: ec2api.flow-issue-tracker.com
         EMAIL: ${{ secrets.EMAIL }} 
         CONFIG_TYPE: proxied
         
