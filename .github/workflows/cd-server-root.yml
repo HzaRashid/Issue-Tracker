@@ -13,6 +13,8 @@ jobs:
     runs-on: [self-hosted, root-server-runner]
 
     steps:
+    - run: |
+        sudo rm -rf server-configs/root-server
     - uses: actions/checkout@v4
       with:
         sparse-checkout: |
