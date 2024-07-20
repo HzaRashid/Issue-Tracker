@@ -1,10 +1,10 @@
-name: API Deployment (root-server)
+name: Backend Deployment
 
 on:
   push:
     branches: [ "main" ]
   # workflow_run:
-  #   workflows: ["API Integration"] 
+  #   workflows: ["Backend Integration"] 
   #   types:
   #     - completed
 
@@ -43,9 +43,6 @@ jobs:
     - name: Compose Up Services 
       env:
         COMPOSE_FNAME: compose-server.yml
-        # API_DOMAIN: ${{ vars.API_DOMAIN }}
-        # EMAIL: ${{ secrets.EMAIL }} 
-        # CONFIG_TYPE: root-server
         CERT: ${{ secrets.CERT }}
         CERT_KEY: ${{ secrets.CERT_KEY }}
       run: | 
