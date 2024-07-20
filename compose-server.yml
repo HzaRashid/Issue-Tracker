@@ -20,6 +20,5 @@ services:
       - ./server-configs/ssl/certs/flow-cert.pem:/etc/ssl/certs/flow-cert.pem
       - ./server-configs/ssl/private/flow-key.pem:/etc/ssl/private/flow-key.pem
     env_file: .env.proxy
-    # command: /bin/sh -c "envsubst '$SERVER_NAME'< /etc/nginx/conf.d/config.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'" 
     
     

@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
     
 jobs:
-
+  # check if api code (~/server) has changes
   check-changes:
     runs-on: [self-hosted, SERVER_1] 
     # Set job outputs to values from filter step
@@ -25,7 +25,6 @@ jobs:
           api-src:
             - 'server/**'
           
-
   # Install Docker if necessary
   check-docker:
 
@@ -43,10 +42,7 @@ jobs:
       
     steps:
     - run: |
-        sudo -s
-        ls
-        sudo rm -rf /Issue-Tracker/server-configs/proxied
-        sudo rm -rf /Issue-Tracker/server-configs/root-server
+        sudo chown -R $USER .
     - uses: actions/checkout@v4
       with:
         sparse-checkout:
@@ -66,7 +62,7 @@ jobs:
         sudo docker logout
         echo "$DOCKER_PASSWORD" | sudo docker login -u $DOCKER_USERNAME --password-stdin
 
-  # Build and push backend code image
+  # Build and push api code image
   build-backend:
     needs: 
       - check-changes
