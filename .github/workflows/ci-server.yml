@@ -2,7 +2,7 @@ name: Backend Integration
 
 on:
   push:
-    branches: [ "foo" ]
+    branches: [ "main" ]
     
 jobs:
 
@@ -12,12 +12,12 @@ jobs:
     outputs:
       backend: ${{ steps.filter.outputs.backend }}
     steps:
-    - run: sudo -s
+    - run: |
+        sudo chown -R $USER .
     - uses: actions/checkout@v4
       with:
-        sparse-checkout: # test
+        sparse-checkout:
           ./server
-        clean: false
     - uses: dorny/paths-filter@v3.0.2
       id: filter
       with:
@@ -32,8 +32,8 @@ jobs:
       matrix:
         runner: [
           SERVER-1-RUNNER-2, 
-          # PROXIED_1, 
-          # PROXIED_2
+          SERVER_2, 
+          SERVER_3
           ]
     
     runs-on:
@@ -50,7 +50,6 @@ jobs:
       with:
         sparse-checkout:
           ./scripts/server/install-docker.sh
-        clean: false
     - name: Install Docker
       run: |
         chmod +x ./scripts/server/install-docker.sh
