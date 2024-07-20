@@ -63,7 +63,7 @@ esac
 if [ $staging != "0" ]; then staging_arg="--staging"; fi
 
 sudo docker compose -f $COMPOSE_FNAME run --rm --entrypoint "\
-  certbot -v certonly --webroot -w /var/www/certbot \
+  certbot -v certonly --cert-name $CERT_NAME --webroot -w /var/www/certbot \
     $staging_arg \
     $email_arg \
     $domain_args \

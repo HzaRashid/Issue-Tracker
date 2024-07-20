@@ -45,6 +45,7 @@ jobs:
       env:
         COMPOSE_FNAME: compose-server-proxied.yml
         API_DOMAIN: ${{ vars.API_DOMAIN }}
+        CERT_NAME:  ${{ matrix.server }}
         EMAIL: ${{ secrets.EMAIL }} 
         CONFIG_TYPE: proxied
         
