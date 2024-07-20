@@ -29,8 +29,8 @@ if [ ! -d "$data_path" ]; then  # ssl cert not found
   touch $data_path/private/flow-key.pem
   ls $data_path/certs
   ls $data_path/private
-  # sudo -E bash -c 'echo "$CERT" > "$data_path/certs/flow-cert.pem"'
-  # sudo -E bash -c 'echo "$CERT_KEY" > "$data_path/private/flow-key.pem"'
+  sudo -E bash -c 'echo "$CERT" > "$data_path/certs/flow-cert.pem"'
+  sudo -E bash -c 'echo "$CERT_KEY" > "$data_path/private/flow-key.pem"'
 fi
 
 
