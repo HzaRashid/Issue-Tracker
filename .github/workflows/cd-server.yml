@@ -2,15 +2,14 @@ name: Backend Deployment
 
 on:
   push:
-    branches: [ "main" ]
-  # workflow_run:
-  #   workflows: ["Backend Integration"] 
-  #   types:
-  #     - completed
+  workflow_run:
+    workflows: ["Backend Integration"] 
+    types:
+      - completed
 
 jobs: 
 
-  build:
+  deploy:
     strategy:
       matrix:
         server: [
@@ -29,7 +28,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         sparse-checkout: |
-          ./scripts
+          ./scripts/server
           ./server-configs
           ./compose-server-root.yml
 
@@ -48,7 +47,6 @@ jobs:
       run: | 
         touch .env.server && touch .env.proxy
         sudo bash -c 'echo "${{ secrets.SERVER_ENV }}" > .env.server'
-
         sudo --preserve-env=API_DOMAIN bash -c 'echo "SERVER_NAME=${{ vars.API_DOMAIN }}" >> .env.proxy'
         chmod +x ./scripts/server/compose.sh
         ./scripts/server/compose.sh
