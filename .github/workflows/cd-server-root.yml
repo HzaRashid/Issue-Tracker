@@ -23,7 +23,6 @@ jobs:
           ./scripts
           ./server-configs
           ./compose-server-root.yml
-        clean: false 
 
       
     - name: Delete Old Containers
