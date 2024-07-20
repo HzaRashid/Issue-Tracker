@@ -2,7 +2,7 @@ name: API Integration
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "foo" ]
     
 jobs:
 

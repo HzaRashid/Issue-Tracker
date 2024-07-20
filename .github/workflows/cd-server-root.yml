@@ -1,10 +1,12 @@
 name: API Deployment (root-server)
 
 on:
-  workflow_run:
-    workflows: ["API Integration"] 
-    types:
-      - completed
+  push:
+    branches: [ "main" ]
+  # workflow_run:
+  #   workflows: ["API Integration"] 
+  #   types:
+  #     - completed
 
 jobs: 
 
