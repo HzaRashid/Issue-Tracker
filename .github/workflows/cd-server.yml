@@ -30,7 +30,7 @@ jobs:
         sparse-checkout: |
           ./scripts/server
           ./server-configs
-          ./compose-server-root.yml
+          ./compose-server.yml
 
     - name: Delete Old Containers
       run: |
