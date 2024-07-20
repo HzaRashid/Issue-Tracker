@@ -11,12 +11,20 @@ on:
 jobs: 
 
   build:
+    strategy:
+      matrix:
+        server: [
+          SERVER_1, 
+          SERVER_2, 
+          SERVER_3
+          ]
 
-    runs-on: [self-hosted, root-server-runner]
+    runs-on: 
+      - self-hosted
+      - ${{ matrix.server }}
 
     steps:
     - run: |
-        ls
         sudo chown -R $USER .
     - uses: actions/checkout@v4
       with:
@@ -35,15 +43,15 @@ jobs:
     - name: Compose Up Services 
       env:
         COMPOSE_FNAME: compose-server.yml
-        API_DOMAIN: ${{ vars.API_DOMAIN }}
-        EMAIL: ${{ secrets.EMAIL }} 
-        CONFIG_TYPE: root-server
+        # API_DOMAIN: ${{ vars.API_DOMAIN }}
+        # EMAIL: ${{ secrets.EMAIL }} 
+        # CONFIG_TYPE: root-server
         CERT: ${{ secrets.CERT }}
         CERT_KEY: ${{ secrets.CERT_KEY }}
       run: | 
         touch .env.server && touch .env.proxy
         sudo bash -c 'echo "${{ secrets.SERVER_ENV }}" > .env.server'
-        sudo bash -c 'echo "${{ secrets.NGINX_ENV }}" > .env.proxy'
-        sudo --preserve-env=API_DOMAIN bash -c 'echo "SERVER_NAME=$API_DOMAIN" >> .env.proxy'
+        # sudo bash -c 'echo "${{ secrets.NGINX_ENV }}" > .env.proxy'
+        sudo --preserve-env=API_DOMAIN bash -c 'echo "SERVER_NAME=${{ vars.API_DOMAIN }}" >> .env.proxy'
         chmod +x ./scripts/server/compose.sh
         ./scripts/server/compose.sh
