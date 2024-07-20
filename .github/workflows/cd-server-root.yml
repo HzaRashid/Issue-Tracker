@@ -16,6 +16,7 @@ jobs:
 
     steps:
     - run: |
+        ls
         sudo chown -R $USER Issue-Tracker
     - uses: actions/checkout@v4
       with:
