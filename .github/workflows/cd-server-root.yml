@@ -16,7 +16,7 @@ jobs:
 
     steps:
     - run: |
-        sudo rm -rf server-configs/root-server
+        sudo chown -R $USER Issue-Tracker
     - uses: actions/checkout@v4
       with:
         sparse-checkout: |
