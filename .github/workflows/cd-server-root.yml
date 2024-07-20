@@ -36,6 +36,8 @@ jobs:
         API_DOMAIN: ${{ vars.API_DOMAIN }}
         EMAIL: ${{ secrets.EMAIL }} 
         CONFIG_TYPE: root-server
+        CERT: ${{ secrets.CERT }}
+        CERT_KEY: ${{ secrets.CERT_KEY }}
       run: | 
         touch .env.server && touch .env.proxy
         sudo bash -c 'echo "${{ secrets.SERVER_ENV }}" > .env.server'

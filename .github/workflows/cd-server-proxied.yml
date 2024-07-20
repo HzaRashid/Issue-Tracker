@@ -2,7 +2,7 @@ name: API Deployment (proxied-servers)
 
 on:
   workflow_run:
-    workflows: ["API Integration"] 
+    workflows: ["foo"] 
     types:
       - completed
 
@@ -45,7 +45,7 @@ jobs:
       env:
         COMPOSE_FNAME: compose-server-proxied.yml
         API_DOMAIN: ${{ vars.API_DOMAIN }}
-        CERT_NAME:  ${{ matrix.server }}
+        SERVER_NAME:  ${{ matrix.server }}
         EMAIL: ${{ secrets.EMAIL }} 
         CONFIG_TYPE: proxied
         

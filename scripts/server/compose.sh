@@ -4,7 +4,7 @@ scripts_path="./scripts/server"
 
 post_cert_conf_path=./server-configs/$CONFIG_TYPE/post-cert.conf
 pre_cert_conf_path=./server-configs/$CONFIG_TYPE/pre-cert.conf
-export data_path="./server-configs/certbot"
+export data_path="./etc/ssl/"
 
 
 # extract key-value pairs that will hydrate nginx config files
@@ -20,17 +20,19 @@ unset IFS
 
 export $(cat .env.proxy | xargs) # load key-value assignments into environment
 tmpfile=$(mktemp)
-envsubst "$subs" < $pre_cert_conf_path > $tmpfile && mv $tmpfile $pre_cert_conf_path
+envsubst "$subs" < $post_cert_conf_path > $tmpfile && mv $tmpfile $pre_cert_conf_path
 
 
 if [ ! -d "$data_path" ]; then  # ssl cert not found
-  chmod +x $scripts_path/ssl-cert.sh
-  $scripts_path/ssl-cert.sh
+  touch $data_path/certs/flow-cert.pem
+  touch $data_path/private/flow-key.pem
+  sudo -E bash -c 'echo "$CERT" > "$data_path/certs/flow-cert.pem"'
+  sudo -E bash -c 'echo "$CERT_KEY" > "$data_path/certs/flow-key.pem"'
 fi
 
 
+
 echo "### Compose Up ..."
-envsubst "$subs" < $post_cert_conf_path > $tmpfile && mv $tmpfile $pre_cert_conf_path
 sudo docker compose -f $COMPOSE_FNAME up -d
 
 unset "$unsets"

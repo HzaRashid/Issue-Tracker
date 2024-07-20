@@ -32,8 +32,8 @@ jobs:
       matrix:
         runner: [
           root-server-runner-2, 
-          PROXIED_1, 
-          PROXIED_2
+          # PROXIED_1, 
+          # PROXIED_2
           ]
     
     runs-on:
