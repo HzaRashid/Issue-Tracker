@@ -70,7 +70,14 @@ jobs:
 
     if: ${{ needs.check-changes.outputs.api-src== 'true' }}
     runs-on: [self-hosted, root-server-runner]
+
     steps:
+    - run: |
+        sudo chown -R $USER .
+    - uses: actions/checkout@v4
+      with:
+        sparse-checkout:
+          ./server
       
     - name: Build Image
       working-directory: ./server
