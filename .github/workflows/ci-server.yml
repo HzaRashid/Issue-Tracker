@@ -41,6 +41,7 @@ jobs:
       
     steps:
     - run: |
+        sudo su
         ls
         sudo rm -rf /Issue-Tracker/server-configs/proxied
         sudo rm -rf /Issue-Tracker/server-configs/root-server
