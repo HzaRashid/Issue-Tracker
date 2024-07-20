@@ -16,7 +16,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./server-configs/config.conf:/etc/nginx/templates/config.template
+      - ./server-configs/config.conf:/etc/nginx/templates/config.conf.template
       - ./server-configs/ssl/certs/flow-cert.pem:/etc/ssl/certs/flow-cert.pem
       - ./server-configs/ssl/private/flow-key.pem:/etc/ssl/private/flow-key.pem
     env_file: .env.proxy
