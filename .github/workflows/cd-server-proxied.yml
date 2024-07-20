@@ -23,8 +23,7 @@ jobs:
 
     steps:
     - run: |
-        sudo su
-        sudo -S
+        sudo -s
         ls
         sudo rm -rf /Issue-Tracker/server-configs/proxied
     - uses: actions/checkout@v4

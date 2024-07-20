@@ -12,6 +12,7 @@ jobs:
     outputs:
       backend: ${{ steps.filter.outputs.backend }}
     steps:
+    - run: sudo -s
     - uses: actions/checkout@v4
       with:
         sparse-checkout: # test
@@ -41,8 +42,7 @@ jobs:
       
     steps:
     - run: |
-        sudo su
-        sudo -S
+        sudo -s
         ls
         sudo rm -rf /Issue-Tracker/server-configs/proxied
         sudo rm -rf /Issue-Tracker/server-configs/root-server
