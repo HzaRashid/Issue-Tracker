@@ -10,7 +10,7 @@ jobs:
     runs-on: [self-hosted, SERVER_1] 
     # Set job outputs to values from filter step
     outputs:
-      backend: ${{ steps.filter.outputs.backend }}
+      api-src: ${{ steps.filter.outputs.api-src}}
     steps:
     - run: |
         sudo chown -R $USER .
@@ -22,8 +22,9 @@ jobs:
       id: filter
       with:
         filters: |
-          backend:
+          api-src:
             - 'server/**'
+          
 
   # Install Docker if necessary
   check-docker:
@@ -71,7 +72,7 @@ jobs:
       - check-changes
       - check-docker
 
-    if: ${{ needs.check-changes.outputs.backend == 'true' }}
+    if: ${{ needs.check-changes.outputs.api-src== 'true' }}
     runs-on: [self-hosted, root-server-runner]
     steps:
       
