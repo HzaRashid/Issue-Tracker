@@ -4,7 +4,7 @@ scripts_path="./scripts/server"
 
 post_cert_conf_path=./server-configs/$CONFIG_TYPE/post-cert.conf
 pre_cert_conf_path=./server-configs/$CONFIG_TYPE/pre-cert.conf
-data_path="./server-configs/ssl"
+export data_path="./server-configs/ssl"
 
 
 # extract key-value pairs that will hydrate nginx config files
