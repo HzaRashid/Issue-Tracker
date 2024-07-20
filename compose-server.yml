@@ -16,11 +16,10 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./server-configs/root-server/post-cert.conf:/etc/nginx/conf.d/config.template
+      - ./server-configs/config.conf:/etc/nginx/conf.d/config.template
       - ./server-configs/ssl/certs/flow-cert.pem:/etc/ssl/certs/flow-cert.pem
       - ./server-configs/ssl/private/flow-key.pem:/etc/ssl/private/flow-key.pem
-
-    # command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-    command: /bin/sh -c "envsubst '$SERVER_NAME'< /etc/nginx/conf.d/config.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'" 
     env_file: .env.proxy
+    command: /bin/sh -c "envsubst '$SERVER_NAME'< /etc/nginx/conf.d/config.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'" 
+    
     

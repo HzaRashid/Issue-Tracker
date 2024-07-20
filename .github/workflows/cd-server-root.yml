@@ -34,7 +34,7 @@ jobs:
 
     - name: Compose Up Services 
       env:
-        COMPOSE_FNAME: compose-server-root.yml
+        COMPOSE_FNAME: compose-server.yml
         API_DOMAIN: ${{ vars.API_DOMAIN }}
         EMAIL: ${{ secrets.EMAIL }} 
         CONFIG_TYPE: root-server
