@@ -12,8 +12,7 @@ jobs:
     outputs:
       api-src: ${{ steps.filter.outputs.api-src }}
     steps:
-    - run: |
-        sudo chown -R $USER .
+    - run: sudo chown -R $USER .
     - uses: actions/checkout@v4
       with:
         sparse-checkout:
@@ -25,9 +24,9 @@ jobs:
           api-src:
             - 'server/**'
           
+
   # Install Docker if necessary
   check-docker:
-
     strategy:
       matrix:
         runner: [
@@ -41,8 +40,7 @@ jobs:
       - ${{ matrix.runner }}
       
     steps:
-    - run: |
-        sudo chown -R $USER .
+    - run: sudo chown -R $USER .
     - uses: actions/checkout@v4
       with:
         sparse-checkout:
@@ -62,6 +60,7 @@ jobs:
         sudo docker logout
         echo "$DOCKER_PASSWORD" | sudo docker login -u $DOCKER_USERNAME --password-stdin
 
+
   # Build and push api code image
   build-backend:
     needs: 
@@ -72,8 +71,7 @@ jobs:
     runs-on: [self-hosted, root-server-runner]
 
     steps:
-    - run: |
-        sudo chown -R $USER .
+    - run: sudo chown -R $USER .
     - uses: actions/checkout@v4
       with:
         sparse-checkout:

@@ -23,8 +23,7 @@ jobs:
       - ${{ matrix.server }}
 
     steps:
-    - run: |
-        sudo chown -R $USER .
+    - run: sudo chown -R $USER .
     - uses: actions/checkout@v4
       with:
         sparse-checkout: |
