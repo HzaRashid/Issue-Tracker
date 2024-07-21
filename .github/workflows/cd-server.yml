@@ -1,7 +1,6 @@
 name: Backend Deployment
 
 on:
-  push:
   workflow_run:
     workflows: ["Backend Integration"] 
     types:
