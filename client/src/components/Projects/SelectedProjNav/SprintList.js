@@ -12,7 +12,8 @@ function SprintList( props ) {
     const { 
         Sprints,
         SelectedSprint, 
-        setSelectedSprint 
+        setSelectedSprint ,
+        setEditStage
     } = SprintContexts();
     const { setIsLoading } = useStateContext()
     // const goToPage = useNavigate();
@@ -43,6 +44,7 @@ function SprintList( props ) {
                             setSelectedSprint(sprint)
                             goToPage(sprintLink)
                             setIsLoading(true);
+                            setEditStage(false)
                         }
                     }}
                     >

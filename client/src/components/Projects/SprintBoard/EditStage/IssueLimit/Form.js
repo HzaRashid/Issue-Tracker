@@ -15,6 +15,7 @@ function Form() {
         SelectedStage, 
         SelectedSprint, 
         setSelectedSprint,
+        setEditStage
         // items
       } = SprintContexts();
 
@@ -38,6 +39,7 @@ function Form() {
 
       const handleSuccessClose = () => {
         setOpenIssuesLimit(false);
+        setEditStage(false)
         formik.setFieldValue('IssueLimit', undefined);
         formik.resetForm()
       }
@@ -46,7 +48,7 @@ function Form() {
     <> 
     <div className='sticky top-0 bg-inherit flex items-center justify-between'>
     <h1 className='p-3 text-[1.05em] 
-      text-[#6a6a6a] break-words font-lato flex items-center' >
+      text-[#404040] break-words font-lato flex items-center' >
         Issue Limit
     </h1>
     <div className='flex items-center mr-3 shadow-sm
@@ -62,13 +64,12 @@ function Form() {
     h-auto max-h-[18vh] overflow-auto mt-[1em]'>
     <div className='color-[#0000001a] font-light'>
       <label
-      className='block mb-[0.2em] text-[0.8em] text-[#505050]'
+      className='block mb-[0.2em] text-[0.75em] font-bold text-[#4a4a4a]'
       >
         Set Issue Limit
       </label>
     <div className='flex items-center'> 
     <input 
-
     name='IssueLimit'
     placeholder='Limit is not set'
     className={`block bg-[#0000001a]
@@ -95,7 +96,7 @@ function Form() {
     {
         formik.touched.IssueLimit && formik.errors.IssueLimit ?
         <div
-        className='text-[#c94e4e] text-[0.75em] absolute'
+        className='text-[#ad4343] text-[0.75em] absolute'
         >
           {formik.errors.IssueLimit}
         </div> : null
@@ -107,7 +108,7 @@ function Form() {
     <div className='flex items-center-center mt-[1em] justify-between'> 
     <CustomTooltip title='Cancel' placement='top'>
     <button 
-    className='float-left hover:bg-[#e2e2e2] 
+    className=' hover:bg-[#e2e2e2] 
     ml-[0.25em] ease-in-out duration-100'
     onClick={handleSuccessClose}
     >

@@ -21,10 +21,11 @@ function CurrentWork( ) {
         if (nav && ProjectNav)  setIsMobile(ScreenWidth < 1340)
         else if (nav) setIsMobile(ScreenWidth < 981)
         else if (ProjectNav) setIsMobile(ScreenWidth < 1100)
+        else if (nav && ProjectNav) setIsMobile(ScreenWidth < 1300)
         else setIsMobile(ScreenWidth < 768)
         return () => {}
     // eslint-disable-next-line
-  }, [ScreenWidth])
+  }, [ScreenWidth, nav, ProjectNav])
 
   return (
     <div className=''> 

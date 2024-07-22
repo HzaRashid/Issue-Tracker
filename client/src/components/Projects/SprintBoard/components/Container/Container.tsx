@@ -160,7 +160,7 @@ export const Container = forwardRef<HTMLDivElement, Props>(
           >
 
             <h1 className='text-[0.85em] 
-            text-[#505050] ml-[0.5em] pt-1' 
+            text-[#505050] ml-[0.5em] pt-1 w-[11em]' 
             onMouseDown={stopDrag}
             onPointerDown={stopDrag}
             onKeyDown={stopDrag}
@@ -173,7 +173,7 @@ export const Container = forwardRef<HTMLDivElement, Props>(
               outline-none hover:bg-[#0000001a] 
               placeholder:text-[#707070]
                rounded-md focus:bg-[#e5e5e5]
-              focus:placeholder:text-[#707070]'
+              focus:placeholder:text-[#707070] w-[11em]'
               onClick={handleInputOpen} 
               //@ts-ignore
               ref={inputRef}
@@ -315,7 +315,7 @@ export const Container = forwardRef<HTMLDivElement, Props>(
                 setSelectedStage(Stage)
                 return
               }
-              setEditStage(!editStage)
+              setEditStage(true)
               setSelectedStage(Stage)
             }}
             style={{

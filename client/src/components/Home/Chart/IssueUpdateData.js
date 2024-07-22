@@ -134,7 +134,7 @@ export default function IssueUpdateData( { IssueVersions, isMobile } ) {
   };
 
 
-  return <div className='h-[200px] w-[45vw] '
+  return <div className='h-[203px] w-[45vw] '
   style={{
     width: isMobile ? '65vw' : '45vw',
     marginRight: isMobile ? '25vw' : '',
