@@ -3,14 +3,14 @@ import { Avatar, ThemeProvider, createTheme } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import { IssueContexts } from '../../contexts/IssueContexts'; 
-import axios from 'axios';
+// import axios from 'axios';
 import { TeamContexts } from '../../contexts/TeamContexts'; 
 import TitleCase from '../utils/TitleCase'; 
 import { AiFillCheckSquare, AiFillTool } from 'react-icons/ai';
 import { MdError } from 'react-icons/md';
 import stringAvatar from '../utils/UserAvatar/StringAvatar'; 
 import { ProjContexts } from '../../contexts/ProjectContexts';
-import { AuthContexts } from '../../App/Auth';
+// import { AuthContexts } from '../../App/Auth';
 import { DatagridStyle } from '../Home/Issues/DatagridStyle';
 import { theme } from '../Home/Issues/theme';
 import CustomToolbar from '../Home/Issues/CustomToolbar';
@@ -20,33 +20,12 @@ import CustomToolbar from '../Home/Issues/CustomToolbar';
 function PostedList() {
   const { 
     setSelectedIssue, setEditIssueModal,
-    Issues,
-    PstdIssues, setPstdIssues
+    // Issues,
+    PstdIssues, 
+    // setPstdIssues
     } = IssueContexts();
   const { Users } = TeamContexts();
   const { Projects } = ProjContexts();
-  const { user } = AuthContexts();
-
-  useEffect(() => {
-    const getMyIsssues = () => {
-      if (!PstdIssues?.length) {
-        if (!Issues?.length) {
-          axios.get(
-            process.env.REACT_APP_API_Issues,
-            { withCredentials: true })
-          .then(res => { 
-            setPstdIssues(
-              res.data.filter(
-                i => { return i?.createdBy === user.user}
-              ))}).catch(err => console.log(err))
-          } else { 
-            setPstdIssues(Issues?.filter(
-            i => { return i?.createdBy === user.user}
-            ))}
-      }}
-      getMyIsssues()
-  // eslint-disable-next-line
-  }, []);
 
   const issueList = useMemo(() => {
     return PstdIssues
@@ -249,70 +228,6 @@ function PostedList() {
 
 
 }
-
-
-// function CustomToolbar( props ) {
-
-//     const issueCount = props?.issues?.length
-
-//     return (
-//     <div className='flex items-center font-lato'> 
-//     <GridToolbarContainer sx={{m: 1.25}}>
-//       <div className='flex items-center'> 
-//       <div className='font-bold text-[1.75em]'>
-//           Posted by me
-//           <div className='text-[0.5em]'>
-//               {issueCount + ' total'}
-//           </div>
-//       </div>
-//       <GridToolbarQuickFilter 
-//         sx={{
-//             marginLeft: 4, 
-//             marginTop: -2, 
-//             textTransform:'none',
-//             color: '#7895B3',
-//         }}
-//       />
-//       </div>
-//       </GridToolbarContainer>
-//       </div>
-//     );
-//   };
-
-
-  // const theme = createTheme({
-  //   typography: {
-  //    "fontFamily": `"Lato", sans-serif`,
-  //    "fontSize": 14.5,
-  //    "fontWeightLight": 400,
-  //    "fontWeightRegular": 300,
-  //    "fontWeightMedium": 400
-  //   },
-  //   palette: {
-  //     primary: {
-  //       main: '#7895B3',
-  //         },
-  //       role: {
-  //         main: '#00000020',
-  //         contrastText: '#000000',
-  //       },
-  //       projects: {
-  //           main: '#00000020',
-  //           contrastText: '#000000',
-  //         },
-  //     },
-  
-  //   components: {
-  //     MuiDataGrid: {
-  //         styleOverrides: {
-  //             root: {
-  //                 border: 'none'
-  //             }
-  //         }
-  //     }
-  // }
-  
-  // });
   
   
 

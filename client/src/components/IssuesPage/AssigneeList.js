@@ -3,12 +3,12 @@ import { ThemeProvider, createTheme } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import { IssueContexts } from '../../contexts/IssueContexts'; 
-import axios from 'axios';
+// import axios from 'axios';
 import TitleCase from '../utils/TitleCase'; 
 import { AiFillCheckSquare, AiFillTool } from 'react-icons/ai';
 import { MdError } from 'react-icons/md';
 import { ProjContexts } from '../../contexts/ProjectContexts';
-import { AuthContexts } from '../../App/Auth';
+// import { AuthContexts } from '../../App/Auth';
 import { DatagridStyle } from '../Home/Issues/DatagridStyle';
 import CustomToolbar from '../Home/Issues/CustomToolbar';
 import { theme } from '../Home/Issues/theme';
@@ -16,33 +16,12 @@ import { theme } from '../Home/Issues/theme';
 function AssigneeList() {
     const { 
       setSelectedIssue, setEditIssueModal,
-      Issues,
-      AsgndIssues, setAsgndIssues,
+      // Issues,
+      AsgndIssues, 
+      // setAsgndIssues,
       // PstdIssues, setPstdIssues
       } = IssueContexts();
     const { Projects } = ProjContexts();
-    const { user } = AuthContexts();
-
-    useEffect(() => {
-      const getMyIsssues = () => {
-        if (!AsgndIssues?.length) {
-          if (!Issues?.length) {
-            axios.get(
-              process.env.REACT_APP_API_Issues,
-              { withCredentials: true })
-            .then(res => { 
-              setAsgndIssues(
-                res.data.filter(
-                  i => { return i?.assignedTo === user.user}
-                ))}).catch(err => console.log(err))
-            } else { 
-            setAsgndIssues(Issues?.filter(
-              i => { return i?.assignedTo === user.user}
-              ))}
-        }}
-        getMyIsssues()
-    // eslint-disable-next-line
-    }, []);
 
     const columns = [ 
         {
