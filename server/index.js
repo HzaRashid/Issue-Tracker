@@ -60,8 +60,8 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
-      httpOnly: false,
-      secure: true,
+      httpOnly: process.env.NODE_ENV != "production",
+      secure: process.env.NODE_ENV == "production",
       sameSite: 'none'
     },
     store: redisStore,

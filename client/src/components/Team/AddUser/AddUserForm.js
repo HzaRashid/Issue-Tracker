@@ -88,12 +88,9 @@ function AddUserForm() {
     </h1>
     </div>
     
-    <div className='max-h-[20em] overflow-auto'> 
+    <div className='max-h-[20em] overflow-x-hidden overflow-y-auto'> 
     <div className='flex items-center justify-center w-[100%] mt-8'>
-
-    <div className='flex items-center space-x-8'>
     <div> 
-
     <p
     className='block mb-[0.2em] 
     text-[0.8em] font-bold text-[#303030]'
@@ -103,9 +100,7 @@ function AddUserForm() {
     <input 
     type='text'
     { ...register("FirstName") }
-    className=' rounded p-1 bg-[#00000010] outline-none text-[0.9em]'
-    // value={Name?.first}
-    // onChange={handleFirstName}
+    className='rounded p-1 bg-[#00000010] outline-none text-[0.9em] w-[14em]'
     > 
     </input>
     { errors.FirstName && 
@@ -116,8 +111,10 @@ function AddUserForm() {
     }
 
     </div>
-    <div> 
+    </div>
 
+    <div className='flex items-center justify-center w-[100%] mt-8'>
+    <div> 
     <p
     className='block mb-[0.2em] 
     text-[0.8em] font-bold text-[#303030]'
@@ -127,7 +124,7 @@ function AddUserForm() {
     <input 
     type='text'
     { ...register("LastName") }
-    className='rounded p-1 bg-[#00000010] outline-none text-[0.9em]'
+    className='rounded p-1 bg-[#00000010] outline-none text-[0.9em] w-[14em]'
     >
     </input>
     { errors.LastName && 
@@ -138,7 +135,6 @@ function AddUserForm() {
 
     </div>
     </div>
-    </div> 
 
 
     <div className='flex items-center justify-center w-[100%] mt-8'>
