@@ -697,7 +697,7 @@ The Issue Tracker project is a comprehensive tool designed to streamline the man
 
 ## API Endpoints
 
-<details open>
+<details closed>
 <summary>Click to expand API Endpoints</summary>
 
 ### User Routes (Located in `UserRoute.js`)
