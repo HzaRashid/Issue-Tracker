@@ -10,9 +10,6 @@
     <h1 align="center">ISSUE-TRACKER</h1>
 </p>
 <p align="center">
-    <em>Track, Manage, and Resolve with Precision!</em>
-</p>
-<p align="center">
 	<img src="https://img.shields.io/github/license/HzaRashid/Issue-Tracker?style=default&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
 	<img src="https://img.shields.io/github/last-commit/HzaRashid/Issue-Tracker?style=default&logo=git&logoColor=white&color=0080ff" alt="last-commit">
 	<img src="https://img.shields.io/github/languages/top/HzaRashid/Issue-Tracker?style=default&color=0080ff" alt="repo-top-language">
@@ -30,6 +27,7 @@
 - [ Features](#-features)
 - [ Repository Structure](#-repository-structure)
 - [ Modules](#-modules)
+- [ API Endpoints](#api-endpoints)
 - [ Getting Started](#-getting-started)
   - [ Installation](#-installation)
   - [ Usage](#-usage)
@@ -43,7 +41,7 @@
 
 ##  Overview
 
-The Issue-Tracker project is a robust platform for managing user authentication, projects, sprints, and issue tracking. It facilitates seamless collaboration through features like real-time comment updates, role management, and dynamic issue handling. With a focus on user experience and project efficiency, Issue-Tracker integrates essential functionalities such as project creation, sprint management, and team coordination. The system ensures data integrity, security, and performance optimization through caching mechanisms and real-time event streaming. Overall, Issue-Tracker streamlines project workflows and fosters efficient project management for teams.
+The Issue Tracker project is a comprehensive tool designed to streamline the management of tasks and issues within a project. It features a robust REST API hosted on AWS EC2 instances, containerized with Docker, and load-balanced using DNS round-robin. The front-end utilizes React.js to provide a dynamic and responsive user interface.
 
 ---
 
@@ -52,11 +50,9 @@ The Issue-Tracker project is a robust platform for managing user authentication,
 |    |   Feature         | Description |
 |----|-------------------|---------------------------------------------------------------|
 | ⚙️  | **Architecture**  | *The project follows a modular architecture with a client-server setup. It utilizes Node.js for the server-side and React for the client-side. Docker is employed for containerization, enhancing scalability and deployment.* |
-| 🔩 | **Code Quality**  | *The codebase maintains good quality standards with extensive use of TypeScript for type safety. It leverages various libraries for functionality like authentication, caching, and form handling. The project follows industry best practices for code readability and maintainability.* |
-| 📄 | **Documentation** | *The project offers detailed documentation covering setup, usage, and architecture. It explains key components, API routes, and setup instructions with examples. The codebase is well-documented with inline comments for better code comprehension.* |
-| 🔌 | **Integrations**  | *Key integrations include React libraries like Formik and hooks for UI interactions, Passport for authentication strategies, Redis for caching, and Axios for API requests. The project is well-integrated with external tools enhancing functionality and performance.* |
+| 📄 | **Documentation** | *The project offers detailed documentation covering setup, usage, and architecture. It explains key components, API routes, and setup instructions with examples.* |
+| 🔌 | **Integrations**  | *Key integrations include Node.js middleware and libraries like Passport.js for authentication strategies, Redis for caching, and Mongoose for MongoDB interactions. The project is well-integrated with external tools enhancing functionality and performance.* |
 | 🧩 | **Modularity**    | *The codebase exhibits high modularity and reusability with components like contexts for state management, controllers for API logic, and models for database interactions. Each module focuses on specific functionalities, allowing easy extension and maintenance.* |
-<!-- | 🧪 | **Testing**       | *Testing frameworks such as Jest and React Testing Library are utilized for unit and integration testing. The project emphasizes testing for code reliability, ensuring that changes don't introduce regressions.* | -->
 | ⚡️  | **Performance**   | *Efficiency and speed are prioritized through Redis caching for data models, rate limiting for API calls, and optimized data fetching. The usage of React for frontend ensures a responsive user interface with minimal loading times.* |
 | 🛡️ | **Security**      | *Security measures include Passport for authentication, Redis for cache protection, rate limiting, and bcrypt for password hashing. OAuth strategies are implemented for secure user login. The project focuses on data protection and access control.* |
 | 📦 | **Dependencies**  | *Key external libraries and dependencies include React ecosystem, Express for API handling, Mongoose for MongoDB interactions, and Docker for containerization. These libraries enhance functionality, performance, and development efficiency.* |
@@ -698,6 +694,85 @@ The Issue-Tracker project is a robust platform for managing user authentication,
 </details>
 
 ---
+
+## API Endpoints
+
+<details open>
+<summary>Click to expand API Endpoints</summary>
+
+### User Routes (Located in `UserRoute.js`)
+
+| Method | Endpoint | Description | Function |
+| --- | --- | --- | --- |
+| GET | /users/ | Get all users | `getUsers` |
+| POST | /users/add | Add a new user | `addUser` |
+| PUT | /users/project | Add a user to a project | `addProjectUser` |
+| PUT | /users/project-team | Add or delete a user from a project team | `addProjectUserNext`, `deleteProjectUser` |
+| PUT | /users/edit-role/ | Edit a user's role | `editUserRole` |
+| PUT | /users/edit | Edit user details | `editUser` |
+| DELETE | /users/:id | Delete a user | `deleteUser` |
+
+### Issue Routes (Located in `IssueRoute.js`)
+
+| Method | Endpoint | Description | Function |
+| --- | --- | --- | --- |
+| GET | /issues/ | Get all issues | `getIssues` |
+| GET | /issues/table | Get issues table | `getIssuesTable` |
+| GET | /issues/versions/sse/:id | Send issue versions using SSE | `sendIssueVersions` |
+| GET | /issues/versions/:id | Get issue versions | `getIssueVersions` |
+| POST | /issues/add-issue | Add a new issue | `addIssue` |
+| PUT | /issues/summary | Edit issue summary | `editIssueSummary` |
+| PUT | /issues/type | Edit issue type | `editIssueType` |
+| PUT | /issues/sprint | Edit issue sprint | `editIssueSprint` |
+| PUT | /issues/assignee | Edit issue assignee | `editIssueAssignee` |
+| PUT | /issues/stage | Edit issue stage | `editIssueStage` |
+| PUT | /issues/board-stage | Edit issue board stage | `editIssueStage` |
+| PUT | /issues/many-issues-stage | Transfer many issues to another stage and delete sprint stage | `transferManyIssuesStage`, `deleteSprintStage` |
+| DELETE | /issues/delete | Delete an issue | `deleteIssue` |
+| PUT | /issues/reorder | Reorder issues | `reOrderIssues` |
+
+### Sprint Routes (Located in `SprintRoute.js`)
+
+| Method | Endpoint | Description | Function |
+| --- | --- | --- | --- |
+| GET | /sprints/get | Get all sprints | `getSprints` |
+| POST | /sprints/ | Add a new sprint and edit issue sprint | `addSprint`, `editIssueSprint` |
+| PUT | /sprints/title | Edit sprint title | `editSprintTitle` |
+| PUT | /sprints/startDate | Edit sprint start date | `editSprintStartDate` |
+| PUT | /sprints/endDate | Edit sprint end date | `editSprintEndDate` |
+| PUT | /sprints/edit | General edit for sprint | `GeneralEdit` |
+| PUT | /sprints/update-stage-title | Update sprint stage title and edit many issues stage | `editSprintStageTitle`, `editManyIssuesStage` |
+| PUT | /sprints/update-stage-issue-limit | Update sprint stage issue limit | `editSprintStageIssueLimit` |
+| PUT | /sprints/add-stage | Add a new sprint stage | `addSprintStage` |
+| DELETE | /sprints/delete | Delete a sprint | `deleteSprint` |
+
+### Project Routes (Located in `ProjectRoute.js`)
+
+| Method | Endpoint | Description | Function |
+| --- | --- | --- | --- |
+| GET | /projects/ | Get all projects | `getProjects` |
+| POST | /projects/ | Add a new project | `addProject` |
+| PUT | /projects/title | Edit project title | `editProjectTitle` |
+| PUT | /projects/edit-all | Edit project details and manage users | `editProjectTitleNext`, `addProjectUserNext`, `deleteProjectUser` |
+| PUT | /projects/add-team | Add a team to a project | `addProjectUser` |
+| PUT | /projects/team | Edit project team | `editProjectTeam` |
+| PUT | /projects/key | Edit project key | `editProjectTitle` |
+| PUT | /projects/startDate | Edit project start date | `editProjectStartDate` |
+| PUT | /projects/endDate | Edit project end date | `editProjectEndDate` |
+| PUT | /projects/description | Edit project description | `editProjectDesc` |
+| DELETE | /projects/delete | Delete a project | `deleteProject` |
+
+### Comment Routes (Located in `CommentRoute.js`)
+
+| Method | Endpoint | Description | Function |
+| --- | --- | --- | --- |
+| GET | /comments/SSE/:id | Send comments using Server-Sent Events (SSE) | `sendComments` |
+| POST | /comments/ | Write a comment | `writeComment` |
+
+</details>
+
+
+
 
 ##  Getting Started
 
