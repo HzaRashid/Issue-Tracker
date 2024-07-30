@@ -10,7 +10,6 @@
     <h1 align="center">ISSUE-TRACKER</h1>
 </p>
 <p align="center">
-	<img src="https://img.shields.io/github/license/HzaRashid/Issue-Tracker?style=default&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
 	<img src="https://img.shields.io/github/last-commit/HzaRashid/Issue-Tracker?style=default&logo=git&logoColor=white&color=0080ff" alt="last-commit">
 	<img src="https://img.shields.io/github/languages/top/HzaRashid/Issue-Tracker?style=default&color=0080ff" alt="repo-top-language">
 	<img src="https://img.shields.io/github/languages/count/HzaRashid/Issue-Tracker?style=default&color=0080ff" alt="repo-language-count">
