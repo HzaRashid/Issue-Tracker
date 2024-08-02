@@ -35,7 +35,7 @@ app.use(
 }));
 
 app.get('/health', (req, res) => { 
-  res.status(200).send("healthy?") 
+  res.status(200);
   } 
 )
 
