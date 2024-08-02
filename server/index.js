@@ -34,9 +34,9 @@ app.use(
     methods: 'GET,POST,PUT,OPTIONS',
 }));
 
-// app.get('/', (req, res) => { 
-//   res.json({ status: 200, message: "hello world"}) } 
-// )
+app.get('/health', (req, res) => { 
+  res.json({ status: 200, message: "healthy?"}) } 
+)
 
 let redisStore = new sessionStore({
   client: RedisClient,
