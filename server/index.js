@@ -35,7 +35,8 @@ app.use(
 }));
 
 app.get('/health', (req, res) => { 
-  res.json({ status: 200, message: "healthy?"}) } 
+  res.status(200).send("healthy?") 
+  } 
 )
 
 let redisStore = new sessionStore({
