@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use(
     cors({
-    origin: [process.env.ORIGIN, `${process.env.ORIGIN}/`],
+    origin: [process.env.ORIGIN, `${process.env.ORIGIN}/`, process.env.ORIGIN2],
     credentials: true,
     methods: 'GET,POST,PUT,OPTIONS',
 }));
