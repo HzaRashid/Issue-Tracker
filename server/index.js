@@ -56,14 +56,14 @@ if (process.env.NODE_ENV == 'production') {
     // limiter.on('connection', () => console.log('rate-limiter on'))
     app.use(limiter)
 }
-
+let isProduction = process.env.NODE_ENV == "production"
 app.use(session({
     secret: process.env.SESSION_SECRET,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
-      httpOnly: process.env.NODE_ENV != "production",
-      secure: process.env.NODE_ENV == "production",
-      sameSite: 'none'
+      httpOnly: !isProduction,
+      secure: isProduction,
+      sameSite: isProduction ? 'none' : ''
     },
     store: redisStore,
     resave: false,
