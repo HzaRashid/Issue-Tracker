@@ -37,9 +37,9 @@
 <details>
   <summary>Table of Contents</summary><br>
 
-- [ Overview](#-overview)
-- [ Repository Structure](#-repository-structure)
-- [ Modules](#-modules)
+- [ Overview](#overview)
+- [ Repository Structure](#repository-structure)
+- [ Modules](#modules)
 - [ API Endpoints](#api-endpoints)
 </details>
 <hr>
@@ -90,6 +90,8 @@ The Issue Tracker project is a comprehensive tool designed to streamline the man
 ---
 
 ##  Modules
+<details closed>
+<summary>Click to expand</summary>
 
 <details closed><summary>.</summary>
 
@@ -684,6 +686,7 @@ The Issue Tracker project is a comprehensive tool designed to streamline the man
 
 </details>
 
+</details>
 ---
 
 ## API Endpoints
