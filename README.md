@@ -47,7 +47,7 @@
 
 ##  Overview
 
-The Issue Tracker project is a comprehensive tool designed to streamline the management of tasks and issues within a project. It features a robust REST API hosted on AWS EC2 instances, containerized with Docker, and load-balanced using DNS round-robin. The front-end utilizes React.js to provide a dynamic and responsive user interface.
+The Issue Tracker project is a comprehensive tool designed to streamline the management of tasks and issues within a project. It features a robust REST API that is reverse-proxied through Nginx (handling SSL/TLS and additional security configurations), with both services containerized with Docker. This setup is replicated across multiple AWS EC2 instances, and load-balanced with proximity-based routing. The front-end utilizes React.js to provide a dynamic and responsive user interface.
 
 ---
 
