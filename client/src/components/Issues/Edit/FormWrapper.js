@@ -58,8 +58,8 @@ function FormWrapper( props ) {
         .then(res => setSprints(res?.data))
       }
       // eslint-disable-next-line
-    }, []);
-
+    }, [SelectedIssue]);
+    // console.log(Sprints)
     useEffect(() => {
 
       if (SelectedIssue?.sprint) {

@@ -1,4 +1,5 @@
 import { TeamContexts } from '../../contexts/TeamContexts'
+import { ProjContexts } from '../../contexts/ProjectContexts';
 import { 
   DataGrid, 
   GridToolbarContainer,
@@ -84,20 +85,23 @@ function TeamTable() {
         setEditUserModal,
         setSelectedUser
         } = TeamContexts()
+    const {Projects, setProjects} = ProjContexts()
 
     
     // console.log(SelectedUsers)
 
     useEffect(() => {
-      if (!Users.length) {
-        axios.get(process.env.REACT_APP_API_getUsers, { withCredentials: true })
-        .then(res => { 
-            if (res.status === 200) setUsers(res.data); 
-            // console.log(res.data)
-          })
-          .catch(err => {
-            // console.log(err)
-          })
+      if (!Users?.length || !Projects?.length) {
+        const withCreds = { withCredentials: true };
+        axios.all([
+          axios.get(process.env.REACT_APP_API_getUsers, withCreds),
+          axios.get(process.env.REACT_APP_API_Projects, withCreds),
+        ])
+        .then(axios.spread((res1, res2) => {
+                  setUsers(res1.data);
+                  setProjects(res2.data);
+        }));
+
       } // eslint-disable-next-line
     }, [])
 
