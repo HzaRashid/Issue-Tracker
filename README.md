@@ -38,7 +38,6 @@
   <summary>Table of Contents</summary><br>
 
 - [ Overview](#-overview)
-<!-- - [ Features](#-features) -->
 - [ Repository Structure](#-repository-structure)
 - [ Modules](#-modules)
 - [ API Endpoints](#api-endpoints)
@@ -50,19 +49,6 @@
 The Issue Tracker project is a comprehensive tool designed to streamline the management of tasks and issues within a project. It features a robust REST API that is reverse-proxied through Nginx (handling SSL/TLS termination and additional security configurations), with both services containerized with Docker. This setup is replicated across multiple AWS EC2 instances, and load-balanced with proximity-based routing. The front-end utilizes React.js to provide a dynamic and responsive user interface.
 
 ---
-
-<!-- ##  Features
-
-|    |   Feature         | Description |
-|----|-------------------|---------------------------------------------------------------|
-| ⚙️ | **Architecture**  | *The project follows a modular architecture with a client-server setup. It utilizes Node.js for the server-side and React for the client-side. Docker is employed for containerization, enhancing scalability and deployment.* |
-| ♾️ | **DevOps**  | *A CI/CD pipeline is implemented for the backend using Docker and GitHub Actions, while the frontend is handled by Vercel.* |
-| 🔌 | **Integrations**  | *Key integrations include Vercel for the frontend CI\CD and hosting, and Github Actions for the backend CI/CD.* |
-| 🧩 | **Modularity**    | *The codebase exhibits high modularity and reusability with components like contexts for state management, controllers for API logic, and models for database interactions. Each module focuses on specific functionalities, allowing easy extension and maintenance.* |
-| 🛡️ | **Security**      | *Security measures include Passport for authentication, Redis for cache protection, rate limiting, and bcrypt for password hashing. OAuth strategies are implemented for secure user login. The project focuses on data protection and access control.* |
-| 📦 | **Dependencies**  | *Key external libraries and dependencies include React ecosystem, Express for API handling, Mongoose for MongoDB interactions, and Docker for containerization. These libraries enhance functionality, performance, and development efficiency.* |
-
---- -->
 
 ##  Repository Structure
 
