@@ -687,7 +687,7 @@ The Issue Tracker project is a comprehensive tool designed to streamline the man
 </details>
 
 </details>
----
+
 
 ## API Endpoints
 
