@@ -25,7 +25,7 @@ function Confirm({...props}) {
         assignedTo: props?.Team.map(user => user?._id),  // new team
         removeUsers: props?.initTeam?.map(u => u._id)?.filter(
             initID => { // return user if not included in the new team
-                return !props?.Team.map(u => u._id).includes(initID)
+                return !props?.Team.map(u => u._id)?.includes(initID)
             })
     }
     // console.log(EditProj)

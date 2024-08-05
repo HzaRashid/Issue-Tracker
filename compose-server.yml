@@ -1,4 +1,4 @@
-services: #test commit
+services: 
   api-server:
     image: hzadocker/flow-issue-tracker:server
     container_name: api-server

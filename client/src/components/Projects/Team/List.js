@@ -12,7 +12,7 @@ function List() {
     const { SelectedProj } = ProjContexts();
 
     const rows = useMemo(() => {
-      return Users?.filter(u => u?.projects.includes(SelectedProj?._id))
+      return Users?.filter(u => u?.projects?.includes(SelectedProj?._id))
       ?.map((u, key) => {
            u.id = key
            return u

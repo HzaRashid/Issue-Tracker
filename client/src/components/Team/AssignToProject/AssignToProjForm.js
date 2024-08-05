@@ -23,9 +23,11 @@ function AssignToProjForm() {
 
     const [InitTeam, setInitTeam] = useState([])
     useEffect(() => {
-      const teamIds = Users?.filter(u => u.projects.includes(SelectedProj?._id))
-                            .map(u => u._id)
-      setInitTeam(teamIds);
+      if (Users) {
+        const teamIds = Users?.filter(u => u?.projects?.includes(SelectedProj?._id))
+                            .map(u => u?._id)
+        setInitTeam(teamIds);
+      }
     }
     ,[SelectedProj, SelectedProj?.title, SelectedProj?.assignedTo, Users]);
 

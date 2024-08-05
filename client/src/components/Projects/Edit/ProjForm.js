@@ -68,13 +68,15 @@ function ProjForm( { showReview, setShowReview } ) {
       setProjTitle(SelectedProjModal?.title);
       // console.log(SelectedProjModal)
       // const teamIds = SelectedProjModal?.assignedTo?.slice()
+      if (Users) {
       const teamIds = Users?.filter(
-        u => { return u.projects.includes(SelectedProjModal?._id) }
+        u => { return u?.projects?.includes(SelectedProjModal?._id) }
       )
       .map(u => u._id)
       setProjTeam(teamIds?.map(id => getAssignee(id)));
       setInitTeam(teamIds?.map(id => getAssignee(id)));
       setProjID(SelectedProjModal?._id)
+    }
     },
       // eslint-disable-next-line
       [

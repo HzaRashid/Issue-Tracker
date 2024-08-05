@@ -221,7 +221,7 @@ function FormWrapper( props ) {
     })
     .catch(err => console.log(err))
 
-    if (origIssue.stage.toLowerCase() === 'backlog' && currLoc.pathname.includes('backlog')) {
+    if (origIssue.stage.toLowerCase() === 'backlog' && currLoc.pathname?.includes('backlog')) {
       setBacklog(
         Backlog?.filter(i => i._id !== origIssue._id)
       )
@@ -474,7 +474,7 @@ const [ShowSprints, setShowSprints] = useState(false);
             return sprint
           
           else if(
-            title?.toLowerCase().includes(
+            title?.toLowerCase()?.includes(
               sprintSearch?.toLowerCase()
             )
           ) {
@@ -556,7 +556,7 @@ const [ShowSprints, setShowSprints] = useState(false);
             return user
           
           else if(
-            Name?.toLowerCase().includes(
+            Name?.toLowerCase()?.includes(
             Search.toLowerCase()
             )
           ) {

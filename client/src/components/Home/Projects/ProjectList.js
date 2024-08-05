@@ -11,7 +11,7 @@ function ProjectList( { search, Projects, isMobile, setSwitchedProj } ) {
             if (search === '') return p
             else if (
             p.title?.toLowerCase()
-            .includes(search.toLowerCase()) 
+            ?.includes(search.toLowerCase()) 
             ) { return p }
         }
     )

@@ -340,7 +340,7 @@ function IssueForm() {
         {
           
         Users
-        .filter(u => u.projects.includes(SelectedProj._id))
+        .filter(u => u?.projects ? u?.projects?.includes(SelectedProj?._id) : false)
         .filter(// eslint-disable-next-line
           user => {
             const Name = user.firstName + ' ' + user.lastName;
@@ -348,7 +348,7 @@ function IssueForm() {
               return user
             
             else if(
-              Name?.toLowerCase().includes(
+              Name?.toLowerCase()?.includes(
               Search.toLowerCase()
               )
             ) {

@@ -14,7 +14,8 @@ const getUsers = async (req, res) => {
         } 
         else { 
             console.log("miss")
-            results = await User.find({}).lean();
+            results = await User.find({}, {password:0}).lean();
+            console.log(results)
             await RedisClient.set("User", JSON.stringify(results))
         }
         res.send(results)
