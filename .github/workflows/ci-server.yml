@@ -30,7 +30,7 @@ jobs:
     strategy:
       matrix:
         runner: [
-          SERVER-1-RUNNER-2, 
+          SERVER_1, 
           SERVER_2, 
           ]
     
